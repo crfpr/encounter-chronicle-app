@@ -34,6 +34,16 @@ const EncounterTracker = () => {
         setRound((prevRound) => {
           setShowSparkles(true);
           setTimeout(() => setShowSparkles(false), 1000);
+          
+          // Reset all characters when a new round starts
+          setCharacters(prevCharacters => prevCharacters.map(char => ({
+            ...char,
+            action: false,
+            bonusAction: false,
+            reaction: false,
+            currentMovement: char.maxMovement
+          })));
+          
           return prevRound + 1;
         });
       }
