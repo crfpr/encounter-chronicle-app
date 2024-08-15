@@ -12,6 +12,7 @@ const EncounterTracker = () => {
   const [turnTime, setTurnTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [showSparkles, setShowSparkles] = useState(false);
+  const [previousRoundState, setPreviousRoundState] = useState(null);
 
   useEffect(() => {
     let interval;
@@ -31,6 +32,9 @@ const EncounterTracker = () => {
     setActiveCharacterIndex((prevIndex) => {
       const nextIndex = (prevIndex + 1) % characters.length;
       if (nextIndex === 0) {
+        // Save the current state before starting a new round
+        setPreviousRoundState(characters);
+
         setRound((prevRound) => {
           setShowSparkles(true);
           setTimeout(() => setShowSparkles(false), 1000);
@@ -49,7 +53,7 @@ const EncounterTracker = () => {
       }
       return nextIndex;
     });
-  }, [characters.length]);
+  }, [characters]);
 
   const handlePreviousTurn = useCallback(() => {
     if (characters.length === 0) return;
@@ -58,11 +62,18 @@ const EncounterTracker = () => {
     setActiveCharacterIndex((prevIndex) => {
       const nextIndex = (prevIndex - 1 + characters.length) % characters.length;
       if (prevIndex === 0) {
-        setRound((prevRound) => Math.max(1, prevRound - 1));
+        setRound((prevRound) => {
+          if (prevRound > 1 && previousRoundState) {
+            // Restore the previous round's state
+            setCharacters(previousRoundState);
+            setPreviousRoundState(null);
+          }
+          return Math.max(1, prevRound - 1);
+        });
       }
       return nextIndex;
     });
-  }, [characters.length]);
+  }, [characters.length, previousRoundState]);
 
   const toggleEncounter = () => {
     setIsRunning((prevIsRunning) => !prevIsRunning);
