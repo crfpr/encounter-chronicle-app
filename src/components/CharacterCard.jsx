@@ -93,52 +93,56 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         ></div>
         <div className="relative z-10 space-y-4">
           {/* First row */}
-          <div className="flex items-center space-x-4">
-            <Input
-              value={character.initiative}
-              onChange={(e) => handleChange('initiative', parseInt(e.target.value) || 0)}
-              className="w-16"
-              type="number"
-              placeholder="Init"
-            />
-            <Select value={character.type} onValueChange={(value) => handleChange('type', value)}>
-              <SelectTrigger className="w-[100px]">
-                <SelectValue placeholder="Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="PC">PC</SelectItem>
-                <SelectItem value="NPC">NPC</SelectItem>
-                <SelectItem value="Enemy">Enemy</SelectItem>
-              </SelectContent>
-            </Select>
-            <Input
-              value={character.name}
-              onChange={(e) => handleChange('name', e.target.value)}
-              className="flex-grow"
-              placeholder="Character Name"
-            />
-            <div className="flex items-center space-x-2">
+          <div className="space-y-1">
+            <div className="flex items-center space-x-4">
+              <div className="w-16 text-xs text-center">Init.</div>
+              <div className="w-[100px] text-xs text-center">Type</div>
+              <div className="flex-grow text-xs">Name</div>
+              <div className="w-[140px] text-xs text-center">HP</div>
+              <div className="w-16 text-xs text-center">AC</div>
+            </div>
+            <div className="flex items-center space-x-4">
               <Input
-                value={character.currentHp}
-                onChange={(e) => handleChange('currentHp', parseInt(e.target.value) || 0)}
+                value={character.initiative}
+                onChange={(e) => handleChange('initiative', parseInt(e.target.value) || 0)}
                 className="w-16"
                 type="number"
-                placeholder="Current HP"
               />
-              <span>/</span>
+              <Select value={character.type} onValueChange={(value) => handleChange('type', value)}>
+                <SelectTrigger className="w-[100px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="PC">PC</SelectItem>
+                  <SelectItem value="NPC">NPC</SelectItem>
+                  <SelectItem value="Enemy">Enemy</SelectItem>
+                </SelectContent>
+              </Select>
               <Input
-                value={character.maxHp}
-                onChange={(e) => handleChange('maxHp', parseInt(e.target.value) || 0)}
-                className="w-16"
-                type="number"
-                placeholder="Max HP"
+                value={character.name}
+                onChange={(e) => handleChange('name', e.target.value)}
+                className="flex-grow"
               />
+              <div className="flex items-center space-x-2">
+                <Input
+                  value={character.currentHp}
+                  onChange={(e) => handleChange('currentHp', parseInt(e.target.value) || 0)}
+                  className="w-16"
+                  type="number"
+                />
+                <span>/</span>
+                <Input
+                  value={character.maxHp}
+                  onChange={(e) => handleChange('maxHp', parseInt(e.target.value) || 0)}
+                  className="w-16"
+                  type="number"
+                />
+              </div>
               <Input
                 value={character.ac}
                 onChange={(e) => handleChange('ac', parseInt(e.target.value) || 0)}
                 className="w-16 text-center"
                 type="number"
-                placeholder="AC"
                 min="0"
                 max="99"
               />
