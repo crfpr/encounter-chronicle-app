@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import EncounterHeader from './EncounterHeader';
 import CharacterList from './CharacterList';
-import NotesSection from './NotesSection';
 import Sparkles from './Sparkles';
 
 const EncounterTracker = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
   const [round, setRound] = useState(1);
   const [characters, setCharacters] = useState([]);
-  const [notes, setNotes] = useState('');
   const [activeCharacterIndex, setActiveCharacterIndex] = useState(0);
   const [encounterTime, setEncounterTime] = useState(0);
   const [turnTime, setTurnTime] = useState(0);
@@ -89,7 +87,6 @@ const EncounterTracker = () => {
         onNextTurn={handleNextTurn}
         onPreviousTurn={handlePreviousTurn}
       />
-      <NotesSection notes={notes} setNotes={setNotes} />
     </div>
   );
 };
