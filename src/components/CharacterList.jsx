@@ -11,6 +11,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
       type: 'PC',
       currentHp: 10,
       maxHp: 10,
+      ac: 10,
       action: false,
       bonusAction: false,
       movement: 30,

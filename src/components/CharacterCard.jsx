@@ -133,6 +133,15 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 type="number"
                 placeholder="Max HP"
               />
+              <Input
+                value={character.ac}
+                onChange={(e) => handleChange('ac', parseInt(e.target.value) || 0)}
+                className="w-12"
+                type="number"
+                placeholder="AC"
+                min="0"
+                max="99"
+              />
             </div>
           </div>
 
