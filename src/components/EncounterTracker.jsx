@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import EncounterHeader from './EncounterHeader';
 import CharacterList from './CharacterList';
+import CharacterStats from './CharacterStats';
 import Sparkles from './Sparkles';
 
 const EncounterTracker = () => {
@@ -28,11 +29,21 @@ const EncounterTracker = () => {
   const handleNextTurn = useCallback(() => {
     if (characters.length === 0) return;
 
+    setCharacters(prevCharacters => prevCharacters.map((char, index) => {
+      if (index === activeCharacterIndex) {
+        return {
+          ...char,
+          turnCount: (char.turnCount || 0) + 1,
+          cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime
+        };
+      }
+      return char;
+    }));
+
     setTurnTime(0);
     setActiveCharacterIndex((prevIndex) => {
       const nextIndex = (prevIndex + 1) % characters.length;
       if (nextIndex === 0) {
-        // Save the current state before starting a new round
         setRoundStates(prevStates => [...prevStates, characters]);
 
         setRound((prevRound) => {
@@ -41,7 +52,6 @@ const EncounterTracker = () => {
           return prevRound + 1;
         });
 
-        // Reset all characters when a new round starts and update conditions
         setCharacters(prevCharacters => prevCharacters.map(char => ({
           ...char,
           action: false,
@@ -58,7 +68,7 @@ const EncounterTracker = () => {
       }
       return nextIndex;
     });
-  }, [characters]);
+  }, [characters, activeCharacterIndex, turnTime]);
 
   const handlePreviousTurn = useCallback(() => {
     if (characters.length === 0) return;
@@ -69,7 +79,6 @@ const EncounterTracker = () => {
       if (prevIndex === 0) {
         setRound((prevRound) => {
           if (prevRound > 1) {
-            // Restore the previous round's state
             const previousState = roundStates[prevRound - 2];
             if (previousState) {
               setCharacters(previousState);
@@ -132,6 +141,7 @@ const EncounterTracker = () => {
         onNextTurn={handleNextTurn}
         onPreviousTurn={handlePreviousTurn}
       />
+      <CharacterStats characters={characters} round={round} />
     </div>
   );
 };
