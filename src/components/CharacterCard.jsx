@@ -136,7 +136,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               <Input
                 value={character.ac}
                 onChange={(e) => handleChange('ac', parseInt(e.target.value) || 0)}
-                className="w-12"
+                className="w-16 text-center"
                 type="number"
                 placeholder="AC"
                 min="0"
