@@ -3,7 +3,8 @@ import EncounterHeader from './EncounterHeader';
 import CharacterList from './CharacterList';
 import NotesSection from './NotesSection';
 import { Button } from '../components/ui/button';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
 
 const EncounterTracker = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
@@ -14,7 +15,7 @@ const EncounterTracker = () => {
   const [encounterTime, setEncounterTime] = useState(0);
   const [turnTime, setTurnTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [showNewRoundAnimation, setShowNewRoundAnimation] = useState(false);
+  const [showNewRoundModal, setShowNewRoundModal] = useState(false);
 
   useEffect(() => {
     let encounterInterval, turnInterval;
@@ -60,8 +61,7 @@ const EncounterTracker = () => {
       // Check if we've completed a round
       if (nextIndex === 0) {
         setRound(prevRound => prevRound + 1);
-        setShowNewRoundAnimation(true);
-        setTimeout(() => setShowNewRoundAnimation(false), 2000); // Hide animation after 2 seconds
+        setShowNewRoundModal(true);
       }
 
       return updatedCharacters;
@@ -89,16 +89,28 @@ const EncounterTracker = () => {
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 relative">
-      {showNewRoundAnimation && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.5 }}
-          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-        >
-          <div className="text-white text-4xl font-bold">New Round!</div>
-        </motion.div>
-      )}
+      <AnimatePresence>
+        {showNewRoundModal && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+          >
+            <div className="bg-white rounded-lg p-8 relative">
+              <button
+                onClick={() => setShowNewRoundModal(false)}
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              >
+                <X size={24} />
+              </button>
+              <h2 className="text-2xl font-bold mb-4">New Round!</h2>
+              <p className="text-lg mb-4">Don't forget any environmental actions!</p>
+              <Button onClick={() => setShowNewRoundModal(false)}>Close</Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <EncounterHeader
         encounterName={encounterName}
         setEncounterName={setEncounterName}
