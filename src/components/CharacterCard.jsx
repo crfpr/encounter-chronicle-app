@@ -166,10 +166,13 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               </button>
             </div>
           ))}
-          <div className="flex-grow"></div>
+        </div>
+
+        {/* Fourth row */}
+        <div className="flex items-center">
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <button className="text-red-500 hover:underline text-sm">Remove Character</button>
+              <button className="text-red-500 hover:underline text-sm">Delete Character</button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -181,7 +184,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction onClick={() => removeCharacter(character.id)}>
-                  Yes, remove character
+                  Yes, delete character
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
