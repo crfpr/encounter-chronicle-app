@@ -160,7 +160,9 @@ const EncounterTracker = () => {
         </div>
       </div>
       <NotesSection notes={notes} setNotes={setNotes} />
-      <CharacterStats characters={characters} round={round} />
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <CharacterStats characters={characters} round={round} />
+      </div>
     </div>
   );
 };
