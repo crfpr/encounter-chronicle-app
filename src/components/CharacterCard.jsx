@@ -104,65 +104,64 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 className="w-full"
               />
             </div>
-          </div>
-          <div className="flex items-center space-x-2 mb-2">
-            <div className="flex flex-col">
-              <Label htmlFor={`currentHp-${character.id}`}>Current HP</Label>
-              <Input
-                id={`currentHp-${character.id}`}
-                value={character.currentHp}
-                onChange={(e) => handleChange('currentHp', parseInt(e.target.value) || 0)}
-                className="w-16"
-                type="number"
-              />
-            </div>
-            <span className="self-end">/</span>
-            <div className="flex flex-col">
-              <Label htmlFor={`maxHp-${character.id}`}>Max HP</Label>
-              <Input
-                id={`maxHp-${character.id}`}
-                value={character.maxHp}
-                onChange={(e) => handleChange('maxHp', parseInt(e.target.value) || 0)}
-                className="w-16"
-                type="number"
-              />
-            </div>
-            <div className="flex flex-col items-center">
-              <Label htmlFor={`action-${character.id}`}>Action</Label>
-              <Checkbox
-                id={`action-${character.id}`}
-                checked={character.action}
-                onCheckedChange={(checked) => handleChange('action', checked)}
-              />
-            </div>
-            <div className="flex flex-col items-center">
-              <Label htmlFor={`bonus-action-${character.id}`}>Bonus Action</Label>
-              <Checkbox
-                id={`bonus-action-${character.id}`}
-                checked={character.bonusAction}
-                onCheckedChange={(checked) => handleChange('bonusAction', checked)}
-              />
-            </div>
-            <div className="flex flex-col">
-              <Label htmlFor={`movement-${character.id}`}>Movement</Label>
-              <div className="flex items-center">
-                <Input
-                  id={`movement-${character.id}`}
-                  value={character.movement}
-                  onChange={(e) => handleChange('movement', parseInt(e.target.value) || 0)}
-                  className="w-16"
-                  type="number"
-                />
-                <span className="ml-1">ft</span>
+            <div className="flex items-center space-x-2">
+              <div className="flex flex-col">
+                <Label htmlFor={`currentHp-${character.id}`}>HP</Label>
+                <div className="flex items-center">
+                  <Input
+                    id={`currentHp-${character.id}`}
+                    value={character.currentHp}
+                    onChange={(e) => handleChange('currentHp', parseInt(e.target.value) || 0)}
+                    className="w-16"
+                    type="number"
+                  />
+                  <span className="mx-1">/</span>
+                  <Input
+                    id={`maxHp-${character.id}`}
+                    value={character.maxHp}
+                    onChange={(e) => handleChange('maxHp', parseInt(e.target.value) || 0)}
+                    className="w-16"
+                    type="number"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col items-center">
-              <Label htmlFor={`reaction-${character.id}`}>Reaction</Label>
-              <Checkbox
-                id={`reaction-${character.id}`}
-                checked={character.reaction}
-                onCheckedChange={(checked) => handleChange('reaction', checked)}
-              />
+              <div className="flex flex-col items-center">
+                <Label htmlFor={`action-${character.id}`}>Action</Label>
+                <Checkbox
+                  id={`action-${character.id}`}
+                  checked={character.action}
+                  onCheckedChange={(checked) => handleChange('action', checked)}
+                />
+              </div>
+              <div className="flex flex-col items-center">
+                <Label htmlFor={`bonus-action-${character.id}`}>Bonus</Label>
+                <Checkbox
+                  id={`bonus-action-${character.id}`}
+                  checked={character.bonusAction}
+                  onCheckedChange={(checked) => handleChange('bonusAction', checked)}
+                />
+              </div>
+              <div className="flex flex-col">
+                <Label htmlFor={`movement-${character.id}`}>Move</Label>
+                <div className="flex items-center">
+                  <Input
+                    id={`movement-${character.id}`}
+                    value={character.movement}
+                    onChange={(e) => handleChange('movement', parseInt(e.target.value) || 0)}
+                    className="w-16"
+                    type="number"
+                  />
+                  <span className="ml-1">ft</span>
+                </div>
+              </div>
+              <div className="flex flex-col items-center">
+                <Label htmlFor={`reaction-${character.id}`}>Reaction</Label>
+                <Checkbox
+                  id={`reaction-${character.id}`}
+                  checked={character.reaction}
+                  onCheckedChange={(checked) => handleChange('reaction', checked)}
+                />
+              </div>
             </div>
           </div>
           <div className="flex items-center space-x-2 mb-2">

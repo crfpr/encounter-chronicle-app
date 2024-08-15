@@ -62,6 +62,13 @@ const EncounterTracker = () => {
       if (nextIndex === 0) {
         setRound(prevRound => prevRound + 1);
         setShowNewRoundModal(true);
+        // Decrease condition durations
+        updatedCharacters.forEach(character => {
+          character.conditions = character.conditions.map(condition => ({
+            ...condition,
+            duration: Math.max(0, condition.duration - 1)
+          })).filter(condition => condition.duration > 0);
+        });
       }
 
       return updatedCharacters;
