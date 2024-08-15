@@ -95,11 +95,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           {/* First row */}
           <div className="space-y-1">
             <div className="flex items-center space-x-4">
-              <div className="w-16 text-xs text-center">Init.</div>
-              <div className="w-[100px] text-xs text-center">Type</div>
+              <div className="w-16 text-xs">Init.</div>
+              <div className="w-[100px] text-xs">Type</div>
               <div className="flex-grow text-xs">Name</div>
-              <div className="w-[140px] text-xs text-center">HP</div>
-              <div className="w-16 text-xs text-center">AC</div>
+              <div className="w-[140px] text-xs">HP</div>
+              <div className="w-16 text-xs">AC</div>
             </div>
             <div className="flex items-center space-x-4">
               <Input
