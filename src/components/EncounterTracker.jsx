@@ -92,11 +92,11 @@ const EncounterTracker = () => {
       <EncounterHeader
         encounterName={encounterName}
         setEncounterName={setEncounterName}
-        round={round}
         isRunning={isRunning}
         toggleEncounter={toggleEncounter}
       />
-      <div className="flex justify-end items-center mb-4">
+      <div className="flex justify-between items-center mb-4">
+        <div className="text-xl font-semibold">Round {round}</div>
         <div>Encounter Time: {formatTime(encounterTime)}</div>
       </div>
       <CharacterList 
