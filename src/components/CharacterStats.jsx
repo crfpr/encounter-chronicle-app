@@ -9,12 +9,11 @@ const CharacterStats = ({ characters, round }) => {
   };
 
   return (
-    <div className="mt-4 flex-shrink-0">
-      <h2 className="text-xl font-semibold mb-2">Character Statistics</h2>
-      <Table className="w-full">
+    <div>
+      <h2 className="text-xl font-semibold mb-4">Character Statistics</h2>
+      <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[calc(16px+0.5rem)]"></TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Turn Count</TableHead>
             <TableHead>Round Count</TableHead>
@@ -25,7 +24,6 @@ const CharacterStats = ({ characters, round }) => {
         <TableBody>
           {characters.map((character) => (
             <TableRow key={character.id}>
-              <TableCell className="w-[calc(16px+0.5rem)]"></TableCell>
               <TableCell>{character.name}</TableCell>
               <TableCell>{character.turnCount || 0}</TableCell>
               <TableCell>{round}</TableCell>
