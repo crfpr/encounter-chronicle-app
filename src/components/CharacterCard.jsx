@@ -41,9 +41,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   const getBackgroundColor = () => {
     switch (character.type) {
-      case 'PC': return 'bg-blue-100'; // Light blue
-      case 'NPC': return 'bg-gray-100'; // Light grey
-      case 'Enemy': return 'bg-gray-300'; // Dark grey
+      case 'PC': return 'bg-blue-100';
+      case 'NPC': return 'bg-gray-100';
+      case 'Enemy': return 'bg-gray-300';
       default: return 'bg-white';
     }
   };
@@ -224,7 +224,18 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             ))}
           </div>
 
-          {/* Fourth row */}
+          {/* Fourth row - Inline Note */}
+          <div className="mt-2">
+            <textarea
+              value={character.note || ''}
+              onChange={(e) => handleChange('note', e.target.value)}
+              className="w-full p-2 text-sm bg-gray-50 border border-gray-200 rounded-md"
+              placeholder="Add notes for this character..."
+              rows="2"
+            />
+          </div>
+
+          {/* Fifth row */}
           <div className="flex justify-end mt-2">
             <AlertDialog>
               <AlertDialogTrigger asChild>
