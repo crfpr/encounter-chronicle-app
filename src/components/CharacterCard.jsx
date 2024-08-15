@@ -70,7 +70,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           style={{ borderWidth: '4px' }}
         ></div>
         <div className="relative z-10 space-y-4">
-          <div className="flex flex-wrap items-end space-x-4 space-y-4 sm:space-y-0">
+          <div className="flex flex-wrap items-end space-x-4">
             <div className="flex flex-col relative w-full sm:w-auto">
               <label htmlFor={`initiative-${character.id}`} className="absolute -top-7 left-0 text-xs">Initiative</label>
               <Input
@@ -124,24 +124,24 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               </div>
             </div>
             <div className="flex flex-wrap items-end space-x-4 w-full sm:w-auto">
-              <div className="flex flex-col items-center">
-                <label htmlFor={`action-${character.id}`} className="mb-1 text-xs">Action</label>
+              <div className="flex flex-col items-center justify-end h-[38px]">
+                <label htmlFor={`action-${character.id}`} className="absolute -top-7 left-0 text-xs">Action</label>
                 <Checkbox
                   id={`action-${character.id}`}
                   checked={character.action}
                   onCheckedChange={(checked) => handleChange('action', checked)}
                 />
               </div>
-              <div className="flex flex-col items-center">
-                <label htmlFor={`bonus-action-${character.id}`} className="mb-1 text-xs">Bonus</label>
+              <div className="flex flex-col items-center justify-end h-[38px]">
+                <label htmlFor={`bonus-action-${character.id}`} className="absolute -top-7 left-0 text-xs">Bonus</label>
                 <Checkbox
                   id={`bonus-action-${character.id}`}
                   checked={character.bonusAction}
                   onCheckedChange={(checked) => handleChange('bonusAction', checked)}
                 />
               </div>
-              <div className="flex flex-col items-center">
-                <label htmlFor={`movement-${character.id}`} className="mb-1 text-xs">Move</label>
+              <div className="flex flex-col relative w-full sm:w-auto">
+                <label htmlFor={`movement-${character.id}`} className="absolute -top-7 left-0 text-xs">Move</label>
                 <Input
                   id={`movement-${character.id}`}
                   value={character.movement}
@@ -150,8 +150,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   type="number"
                 />
               </div>
-              <div className="flex flex-col items-center">
-                <label htmlFor={`reaction-${character.id}`} className="mb-1 text-xs">Reaction</label>
+              <div className="flex flex-col items-center justify-end h-[38px]">
+                <label htmlFor={`reaction-${character.id}`} className="absolute -top-7 left-0 text-xs">Reaction</label>
                 <Checkbox
                   id={`reaction-${character.id}`}
                   checked={character.reaction}
