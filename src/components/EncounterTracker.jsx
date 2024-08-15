@@ -87,12 +87,6 @@ const EncounterTracker = () => {
     setIsRunning((prevIsRunning) => !prevIsRunning);
   };
 
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
-
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
@@ -122,13 +116,13 @@ const EncounterTracker = () => {
         setEncounterName={setEncounterName}
         isRunning={isRunning}
         toggleEncounter={toggleEncounter}
+        encounterTime={encounterTime}
       />
       <div className="flex justify-between items-center mb-4">
         <div className="text-xl font-semibold flex items-center">
           Round {round}
           {showSparkles && <Sparkles />}
         </div>
-        <div>Encounter Time: {formatTime(encounterTime)}</div>
       </div>
       <CharacterList 
         characters={characters} 
