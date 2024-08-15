@@ -21,7 +21,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const addCondition = () => {
-    const newCondition = { name: 'New Condition', duration: 1, persistent: false };
+    const newCondition = { name: 'New Condition', duration: '1' };
     handleChange('conditions', [...character.conditions, newCondition]);
   };
 
@@ -208,29 +208,20 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   placeholder="Condition"
                   maxLength={25}
                 />
-                {condition.persistent ? (
-                  <button
-                    onClick={() => updateCondition(index, 'persistent', false)}
-                    className="px-2 text-xs bg-blue-500 text-white"
-                  >
-                    Persistent
-                  </button>
-                ) : (
-                  <input
-                    value={condition.duration}
-                    onChange={(e) => updateCondition(index, 'duration', parseInt(e.target.value) || 1)}
-                    className="bg-transparent border-none focus:outline-none w-12 text-center text-sm"
-                    type="number"
-                    placeholder="Rounds"
-                    min="1"
-                  />
-                )}
-                <button
-                  onClick={() => updateCondition(index, 'persistent', !condition.persistent)}
-                  className="px-2 text-xs bg-gray-300 hover:bg-gray-400"
+                <Select
+                  value={condition.duration}
+                  onValueChange={(value) => updateCondition(index, 'duration', value)}
                 >
-                  {condition.persistent ? 'Timed' : 'Persist'}
-                </button>
+                  <SelectTrigger className="w-14 h-full border-none">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[...Array(10)].map((_, i) => (
+                      <SelectItem key={i + 1} value={(i + 1).toString()}>{i + 1}</SelectItem>
+                    ))}
+                    <SelectItem value="P">P</SelectItem>
+                  </SelectContent>
+                </Select>
                 <button onClick={() => removeCondition(index)} className="px-2 h-full flex items-center justify-center text-gray-500 hover:bg-gray-200">
                   <X size={16} />
                 </button>
