@@ -3,7 +3,7 @@ import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
-import { X, Crown, ChevronUp, ChevronDown } from 'lucide-react';
+import { X, ChevronUp, ChevronDown } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn }) => {
   const handleChange = (field, value) => {
@@ -89,7 +89,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               <ChevronUp className="h-6 w-6" />
             </Button>
             <div className="flex flex-col items-center">
-              <Crown size={24} className="text-yellow-500 mb-1" />
               <div className="text-sm font-semibold">{formatTime(turnTime)}</div>
             </div>
             <Button onClick={onNextTurn} variant="ghost" size="icon" className="p-0 mt-2">
