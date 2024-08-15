@@ -6,35 +6,205 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { X, ChevronUp, ChevronDown } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn }) => {
-  // ... (keep all existing code up to the Fifth row)
+  const getBackgroundColor = () => {
+    switch (character.type) {
+      case 'PC': return 'bg-blue-100';
+      case 'NPC': return 'bg-gray-100';
+      default: return 'bg-red-100';
+    }
+  };
 
-  {/* Fifth row */}
-  <div className="flex justify-end mt-2">
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <button className={`text-sm px-2 py-1 rounded ${
-          character.type === 'PC' ? 'bg-blue-200 text-blue-800 hover:bg-blue-300' :
-          character.type === 'NPC' ? 'bg-gray-200 text-gray-800 hover:bg-gray-300' :
-          'bg-gray-400 text-gray-800 hover:bg-gray-500'
-        }`}>
-          Delete Character
-        </button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the character from the encounter.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => removeCharacter(character.id)}>
-            Yes, delete character
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  </div>
+  const getDeleteButtonStyle = () => {
+    switch (character.type) {
+      case 'PC': return 'bg-blue-200 text-blue-800 hover:bg-blue-300';
+      case 'NPC': return 'bg-gray-300 text-gray-800 hover:bg-gray-400';
+      default: return 'bg-red-200 text-red-800 hover:bg-red-300';
+    }
+  };
 
-  // ... (keep all closing tags and export statement)
+  return (
+    <div className={`p-4 rounded-lg shadow-md ${getBackgroundColor()} ${isActive ? 'border-2 border-black' : ''}`}>
+      <div className="flex justify-between items-center mb-2">
+        <Input
+          value={character.name}
+          onChange={(e) => updateCharacter({ ...character, name: e.target.value })}
+          className="font-bold text-lg w-1/3"
+        />
+        <div className="flex items-center space-x-2">
+          <Select
+            value={character.type}
+            onValueChange={(value) => updateCharacter({ ...character, type: value })}
+          >
+            <SelectTrigger className="w-[100px]">
+              <SelectValue placeholder="Type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="PC">PC</SelectItem>
+              <SelectItem value="NPC">NPC</SelectItem>
+              <SelectItem value="Enemy">Enemy</SelectItem>
+            </SelectContent>
+          </Select>
+          <Input
+            type="number"
+            value={character.initiative}
+            onChange={(e) => updateCharacter({ ...character, initiative: parseInt(e.target.value) })}
+            className="w-16 text-center"
+          />
+        </div>
+      </div>
+
+      <div className="flex justify-between items-center mb-2">
+        <div className="flex items-center space-x-2">
+          <Input
+            type="number"
+            value={character.currentHp}
+            onChange={(e) => updateCharacter({ ...character, currentHp: parseInt(e.target.value) })}
+            className="w-16 text-center"
+          />
+          <span>/</span>
+          <Input
+            type="number"
+            value={character.maxHp}
+            onChange={(e) => updateCharacter({ ...character, maxHp: parseInt(e.target.value) })}
+            className="w-16 text-center"
+          />
+        </div>
+        <Input
+          type="number"
+          value={character.ac}
+          onChange={(e) => updateCharacter({ ...character, ac: parseInt(e.target.value) })}
+          className="w-16 text-center"
+        />
+      </div>
+
+      <div className="flex justify-between items-center mb-2">
+        <Button
+          variant={character.action ? "default" : "outline"}
+          onClick={() => updateCharacter({ ...character, action: !character.action })}
+          className="w-1/3"
+        >
+          Action
+        </Button>
+        <Button
+          variant={character.bonusAction ? "default" : "outline"}
+          onClick={() => updateCharacter({ ...character, bonusAction: !character.bonusAction })}
+          className="w-1/3"
+        >
+          Bonus Action
+        </Button>
+        <Button
+          variant={character.reaction ? "default" : "outline"}
+          onClick={() => updateCharacter({ ...character, reaction: !character.reaction })}
+          className="w-1/3"
+        >
+          Reaction
+        </Button>
+      </div>
+
+      <div className="flex justify-between items-center mb-2">
+        <Input
+          type="number"
+          value={character.currentMovement}
+          onChange={(e) => updateCharacter({ ...character, currentMovement: parseInt(e.target.value) })}
+          className="w-16 text-center"
+        />
+        <span>/</span>
+        <Input
+          type="number"
+          value={character.maxMovement}
+          onChange={(e) => updateCharacter({ ...character, maxMovement: parseInt(e.target.value) })}
+          className="w-16 text-center"
+        />
+      </div>
+
+      <div className="flex flex-wrap gap-2 mb-2">
+        {character.conditions.map((condition, index) => (
+          <div key={index} className="flex items-center bg-gray-200 rounded px-2 py-1">
+            <span>{condition.name}</span>
+            <Select
+              value={condition.duration}
+              onValueChange={(value) => {
+                const updatedConditions = [...character.conditions];
+                updatedConditions[index].duration = value;
+                updateCharacter({ ...character, conditions: updatedConditions });
+              }}
+            >
+              <SelectTrigger className="w-[60px] ml-2">
+                <SelectValue placeholder="Duration" />
+              </SelectTrigger>
+              <SelectContent>
+                {[...Array(10)].map((_, i) => (
+                  <SelectItem key={i + 1} value={(i + 1).toString()}>{i + 1}</SelectItem>
+                ))}
+                <SelectItem value="P">P</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                const updatedConditions = character.conditions.filter((_, i) => i !== index);
+                updateCharacter({ ...character, conditions: updatedConditions });
+              }}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        ))}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            const newCondition = { name: 'New Condition', duration: '1' };
+            updateCharacter({ ...character, conditions: [...character.conditions, newCondition] });
+          }}
+        >
+          Add Condition
+        </Button>
+      </div>
+
+      <div className="flex justify-between items-center">
+        {isActive && (
+          <>
+            <Button onClick={onPreviousTurn}>
+              <ChevronUp className="h-4 w-4" />
+            </Button>
+            <div className="text-center">
+              <div className="text-sm font-semibold">Turn Time</div>
+              <div>{Math.floor(turnTime / 60)}:{(turnTime % 60).toString().padStart(2, '0')}</div>
+            </div>
+            <Button onClick={onNextTurn}>
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+          </>
+        )}
+      </div>
+
+      <div className="flex justify-end mt-2">
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <button className={`text-sm px-2 py-1 rounded ${getDeleteButtonStyle()}`}>
+              Delete Character
+            </button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete the character from the encounter.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={() => removeCharacter(character.id)}>
+                Yes, delete character
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+    </div>
+  );
+};
+
+export default CharacterCard;
