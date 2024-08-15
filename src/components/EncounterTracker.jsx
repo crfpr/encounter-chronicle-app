@@ -18,7 +18,53 @@ const EncounterTracker = () => {
   const [showNewRoundModal, setShowNewRoundModal] = useState(false);
   const [showNotes, setShowNotes] = useState(true);
 
-  // ... (keep all the existing useEffect and handler functions)
+  useEffect(() => {
+    let interval;
+    if (isRunning) {
+      interval = setInterval(() => {
+        setEncounterTime((prevTime) => prevTime + 1);
+        setTurnTime((prevTime) => prevTime + 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isRunning]);
+
+  const handleNextTurn = () => {
+    if (characters.length === 0) return;
+
+    setTurnTime(0);
+    setActiveCharacterIndex((prevIndex) => {
+      const nextIndex = (prevIndex + 1) % characters.length;
+      if (nextIndex === 0) {
+        setRound((prevRound) => prevRound + 1);
+        setShowNewRoundModal(true);
+      }
+      return nextIndex;
+    });
+  };
+
+  const handlePreviousTurn = () => {
+    if (characters.length === 0) return;
+
+    setTurnTime(0);
+    setActiveCharacterIndex((prevIndex) => {
+      const nextIndex = (prevIndex - 1 + characters.length) % characters.length;
+      if (prevIndex === 0) {
+        setRound((prevRound) => Math.max(1, prevRound - 1));
+      }
+      return nextIndex;
+    });
+  };
+
+  const toggleEncounter = () => {
+    setIsRunning((prevIsRunning) => !prevIsRunning);
+  };
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 relative">
