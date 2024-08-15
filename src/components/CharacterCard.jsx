@@ -83,7 +83,68 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           style={{ borderWidth: '4px' }}
         ></div>
         <div className="relative z-10 space-y-4">
-          {/* ... (previous input fields remain unchanged) ... */}
+          <div className="flex items-center space-x-4">
+            <Input
+              value={character.initiative}
+              onChange={(e) => handleChange('initiative', parseInt(e.target.value) || 0)}
+              className="w-16"
+              type="number"
+            />
+            <Input
+              value={character.name}
+              onChange={(e) => handleChange('name', e.target.value)}
+              className="flex-grow"
+            />
+            <Select value={character.type} onValueChange={(value) => handleChange('type', value)}>
+              <SelectTrigger className="w-[120px]">
+                <SelectValue placeholder="Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="PC">PC</SelectItem>
+                <SelectItem value="NPC">NPC</SelectItem>
+                <SelectItem value="Enemy">Enemy</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-4">
+            <Input
+              value={character.currentHp}
+              onChange={(e) => handleChange('currentHp', parseInt(e.target.value) || 0)}
+              className="w-16"
+              type="number"
+            />
+            <span>/</span>
+            <Input
+              value={character.maxHp}
+              onChange={(e) => handleChange('maxHp', parseInt(e.target.value) || 0)}
+              className="w-16"
+              type="number"
+            />
+            <CustomCheckbox
+              id={`action-${character.id}`}
+              checked={character.action}
+              onChange={(checked) => handleChange('action', checked)}
+              label="Action"
+            />
+            <CustomCheckbox
+              id={`bonus-action-${character.id}`}
+              checked={character.bonusAction}
+              onChange={(checked) => handleChange('bonusAction', checked)}
+              label="Bonus Action"
+            />
+            <Input
+              value={character.movement}
+              onChange={(e) => handleChange('movement', parseInt(e.target.value) || 0)}
+              className="w-16"
+              type="number"
+            />
+            <CustomCheckbox
+              id={`reaction-${character.id}`}
+              checked={character.reaction}
+              onChange={(checked) => handleChange('reaction', checked)}
+              label="Reaction"
+            />
+          </div>
           <div className="flex flex-wrap items-center gap-2">
             <Button onClick={addCondition} variant="outline" size="sm" className="h-[38px]">Add Condition</Button>
             {character.conditions.map((condition, index) => (
