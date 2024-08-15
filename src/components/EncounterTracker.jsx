@@ -3,6 +3,7 @@ import EncounterHeader from './EncounterHeader';
 import CharacterList from './CharacterList';
 import NotesSection from './NotesSection';
 import { Button } from '../components/ui/button';
+import { motion } from 'framer-motion';
 
 const EncounterTracker = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
@@ -13,6 +14,7 @@ const EncounterTracker = () => {
   const [encounterTime, setEncounterTime] = useState(0);
   const [turnTime, setTurnTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [showNewRoundAnimation, setShowNewRoundAnimation] = useState(false);
 
   useEffect(() => {
     let encounterInterval, turnInterval;
@@ -48,19 +50,18 @@ const EncounterTracker = () => {
       activeCharacter.movement = activeCharacter.maxMovement;
       activeCharacter.reaction = false;
 
-      // Move the active character to the end of the list
-      updatedCharacters.splice(activeCharacterIndex, 1);
-      updatedCharacters.push(activeCharacter);
-
-      // Reset the active character index
-      setActiveCharacterIndex(0);
+      // Move to the next character
+      const nextIndex = (activeCharacterIndex + 1) % updatedCharacters.length;
+      setActiveCharacterIndex(nextIndex);
 
       // Reset turn timer
       setTurnTime(0);
 
       // Check if we've completed a round
-      if (activeCharacterIndex === updatedCharacters.length - 1) {
+      if (nextIndex === 0) {
         setRound(prevRound => prevRound + 1);
+        setShowNewRoundAnimation(true);
+        setTimeout(() => setShowNewRoundAnimation(false), 2000); // Hide animation after 2 seconds
       }
 
       return updatedCharacters;
@@ -68,23 +69,10 @@ const EncounterTracker = () => {
   };
 
   const handlePreviousTurn = () => {
-    setCharacters(prevCharacters => {
-      const updatedCharacters = [...prevCharacters];
-      
-      // Move the last character to the active position
-      const lastCharacter = updatedCharacters.pop();
-      updatedCharacters.unshift(lastCharacter);
-
-      // Update the active character index
-      setActiveCharacterIndex(prevIndex => 
-        prevIndex === 0 ? updatedCharacters.length - 1 : prevIndex - 1
-      );
-
-      // Reset turn timer
-      setTurnTime(0);
-
-      return updatedCharacters;
-    });
+    setActiveCharacterIndex(prevIndex => 
+      prevIndex === 0 ? characters.length - 1 : prevIndex - 1
+    );
+    setTurnTime(0);
   };
 
   const toggleEncounter = () => {
@@ -99,7 +87,17 @@ const EncounterTracker = () => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6">
+    <div className="bg-white shadow-md rounded-lg p-6 relative">
+      {showNewRoundAnimation && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.5 }}
+          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+        >
+          <div className="text-white text-4xl font-bold">New Round!</div>
+        </motion.div>
+      )}
       <EncounterHeader
         encounterName={encounterName}
         setEncounterName={setEncounterName}

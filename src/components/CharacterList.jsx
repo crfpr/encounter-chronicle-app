@@ -24,11 +24,9 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
     setCharacters(characters.filter(c => c.id !== id));
   };
 
-  const sortedCharacters = [...characters].sort((a, b) => b.initiative - a.initiative);
-
   return (
     <div className="space-y-4 mb-4">
-      {sortedCharacters.map((character, index) => (
+      {characters.map((character, index) => (
         <CharacterCard
           key={character.id}
           character={character}
