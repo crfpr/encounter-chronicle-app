@@ -19,6 +19,12 @@ const CharacterStats = ({ characters, round }) => {
             <TableHead>Round Count</TableHead>
             <TableHead>Cumulative Turn Time</TableHead>
             <TableHead>Average Turn Time</TableHead>
+            <TableHead>Total Movement</TableHead>
+            <TableHead>Total Damage Taken</TableHead>
+            <TableHead>Action Count</TableHead>
+            <TableHead>Bonus Action Count</TableHead>
+            <TableHead>Reaction Count</TableHead>
+            <TableHead>Conditions (Duration)</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -32,6 +38,18 @@ const CharacterStats = ({ characters, round }) => {
                 {character.turnCount > 0
                   ? formatTime(Math.floor((character.cumulativeTurnTime || 0) / character.turnCount))
                   : '0:00'}
+              </TableCell>
+              <TableCell>{character.totalMovement || 0} ft</TableCell>
+              <TableCell>{character.totalDamageTaken || 0}</TableCell>
+              <TableCell>{character.actionCount || 0}</TableCell>
+              <TableCell>{character.bonusActionCount || 0}</TableCell>
+              <TableCell>{character.reactionCount || 0}</TableCell>
+              <TableCell>
+                {character.conditions.map((condition, index) => (
+                  <div key={index}>
+                    {condition.name} ({condition.duration})
+                  </div>
+                ))}
               </TableCell>
             </TableRow>
           ))}
