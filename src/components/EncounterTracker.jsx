@@ -41,7 +41,7 @@ const EncounterTracker = () => {
 
   const handleNextTurn = () => {
     setCharacters(prevCharacters => {
-      const updatedCharacters = [...prevCharacters];
+      const updatedCharacters = [...prevCharacters].sort((a, b) => b.initiative - a.initiative);
       const activeCharacter = updatedCharacters[activeCharacterIndex];
       
       // Reset actions for the active character
@@ -69,10 +69,11 @@ const EncounterTracker = () => {
   };
 
   const handlePreviousTurn = () => {
-    setActiveCharacterIndex(prevIndex => 
-      prevIndex === 0 ? characters.length - 1 : prevIndex - 1
-    );
-    setTurnTime(0);
+    setActiveCharacterIndex(prevIndex => {
+      const newIndex = prevIndex === 0 ? characters.length - 1 : prevIndex - 1;
+      setTurnTime(0);
+      return newIndex;
+    });
   };
 
   const toggleEncounter = () => {
