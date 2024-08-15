@@ -14,46 +14,47 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     }
   };
 
-  const getDeleteButtonStyle = () => {
-    switch (character.type) {
-      case 'PC': return 'bg-blue-200 text-blue-800 hover:bg-blue-300';
-      case 'NPC': return 'bg-gray-300 text-gray-800 hover:bg-gray-400';
-      default: return 'bg-red-200 text-red-800 hover:bg-red-300';
-    }
-  };
-
   return (
     <div className={`p-4 rounded-lg shadow-md ${getBackgroundColor()} ${isActive ? 'border-2 border-black' : ''}`}>
-      <div className="flex justify-between items-center mb-2">
+      <div className="flex items-center space-x-2 mb-2">
+        {isActive && (
+          <>
+            <Button onClick={onPreviousTurn}>
+              <ChevronUp className="h-4 w-4" />
+            </Button>
+            <div>{Math.floor(turnTime / 60)}:{(turnTime % 60).toString().padStart(2, '0')}</div>
+            <Button onClick={onNextTurn}>
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+          </>
+        )}
+      </div>
+
+      <div className="flex items-center space-x-2 mb-2">
+        <Input
+          type="number"
+          value={character.initiative}
+          onChange={(e) => updateCharacter({ ...character, initiative: parseInt(e.target.value) })}
+          className="w-16 text-center"
+        />
+        <Select
+          value={character.type}
+          onValueChange={(value) => updateCharacter({ ...character, type: value })}
+        >
+          <SelectTrigger className="w-[100px]">
+            <SelectValue placeholder="Type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="PC">PC</SelectItem>
+            <SelectItem value="NPC">NPC</SelectItem>
+            <SelectItem value="Enemy">Enemy</SelectItem>
+          </SelectContent>
+        </Select>
         <Input
           value={character.name}
           onChange={(e) => updateCharacter({ ...character, name: e.target.value })}
-          className="font-bold text-lg w-1/3"
+          className="font-bold text-lg flex-grow"
         />
-        <div className="flex items-center space-x-2">
-          <Select
-            value={character.type}
-            onValueChange={(value) => updateCharacter({ ...character, type: value })}
-          >
-            <SelectTrigger className="w-[100px]">
-              <SelectValue placeholder="Type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="PC">PC</SelectItem>
-              <SelectItem value="NPC">NPC</SelectItem>
-              <SelectItem value="Enemy">Enemy</SelectItem>
-            </SelectContent>
-          </Select>
-          <Input
-            type="number"
-            value={character.initiative}
-            onChange={(e) => updateCharacter({ ...character, initiative: parseInt(e.target.value) })}
-            className="w-16 text-center"
-          />
-        </div>
-      </div>
-
-      <div className="flex justify-between items-center mb-2">
         <div className="flex items-center space-x-2">
           <Input
             type="number"
@@ -77,44 +78,43 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         />
       </div>
 
-      <div className="flex justify-between items-center mb-2">
+      <div className="flex items-center space-x-2 mb-2">
         <Button
           variant={character.action ? "default" : "outline"}
           onClick={() => updateCharacter({ ...character, action: !character.action })}
-          className="w-1/3"
+          className="flex-grow"
         >
           Action
         </Button>
         <Button
           variant={character.bonusAction ? "default" : "outline"}
           onClick={() => updateCharacter({ ...character, bonusAction: !character.bonusAction })}
-          className="w-1/3"
+          className="flex-grow"
         >
           Bonus Action
         </Button>
         <Button
           variant={character.reaction ? "default" : "outline"}
           onClick={() => updateCharacter({ ...character, reaction: !character.reaction })}
-          className="w-1/3"
+          className="flex-grow"
         >
           Reaction
         </Button>
-      </div>
-
-      <div className="flex justify-between items-center mb-2">
-        <Input
-          type="number"
-          value={character.currentMovement}
-          onChange={(e) => updateCharacter({ ...character, currentMovement: parseInt(e.target.value) })}
-          className="w-16 text-center"
-        />
-        <span>/</span>
-        <Input
-          type="number"
-          value={character.maxMovement}
-          onChange={(e) => updateCharacter({ ...character, maxMovement: parseInt(e.target.value) })}
-          className="w-16 text-center"
-        />
+        <div className="flex items-center space-x-2">
+          <Input
+            type="number"
+            value={character.currentMovement}
+            onChange={(e) => updateCharacter({ ...character, currentMovement: parseInt(e.target.value) })}
+            className="w-16 text-center"
+          />
+          <span>/</span>
+          <Input
+            type="number"
+            value={character.maxMovement}
+            onChange={(e) => updateCharacter({ ...character, maxMovement: parseInt(e.target.value) })}
+            className="w-16 text-center"
+          />
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-2 mb-2">
@@ -163,29 +163,20 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         </Button>
       </div>
 
-      <div className="flex justify-between items-center">
-        {isActive && (
-          <>
-            <Button onClick={onPreviousTurn}>
-              <ChevronUp className="h-4 w-4" />
-            </Button>
-            <div className="text-center">
-              <div className="text-sm font-semibold">Turn Time</div>
-              <div>{Math.floor(turnTime / 60)}:{(turnTime % 60).toString().padStart(2, '0')}</div>
-            </div>
-            <Button onClick={onNextTurn}>
-              <ChevronDown className="h-4 w-4" />
-            </Button>
-          </>
-        )}
+      <div className="mb-2">
+        <Input
+          value={character.notes || ''}
+          onChange={(e) => updateCharacter({ ...character, notes: e.target.value })}
+          placeholder="Add notes here..."
+        />
       </div>
 
-      <div className="flex justify-end mt-2">
+      <div className="flex justify-end">
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <button className={`text-sm px-2 py-1 rounded ${getDeleteButtonStyle()}`}>
+            <Button variant="destructive" size="sm">
               Delete Character
-            </button>
+            </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
