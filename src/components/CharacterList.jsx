@@ -15,7 +15,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
       action: false,
       bonusAction: false,
       currentMovement: 30,
-maxMovement: 30,
+      maxMovement: 30,
       reaction: false,
       conditions: []
     };
@@ -34,7 +34,7 @@ maxMovement: 30,
   };
 
   return (
-    <div className="space-y-4 mb-4">
+    <div className="space-y-4 mb-4 flex-grow">
       {characters.map((character, index) => (
         <CharacterCard
           key={character.id}
@@ -47,7 +47,7 @@ maxMovement: 30,
           onPreviousTurn={onPreviousTurn}
         />
       ))}
-      <div className="flex">
+      <div className="flex mt-4">
         <div className="w-16 mr-2"></div>
         <Button onClick={addCharacter} className="flex-grow bg-black hover:bg-gray-800 text-white">Add Character</Button>
       </div>

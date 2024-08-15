@@ -9,21 +9,23 @@ const CharacterStats = ({ characters, round }) => {
   };
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 flex-shrink-0">
       <h2 className="text-xl font-semibold mb-2">Character Statistics</h2>
-      <Table>
+      <Table className="w-full">
         <TableHeader>
           <TableRow>
-            <TableHead className="w-1/5">Name</TableHead>
-            <TableHead className="w-1/5">Turn Count</TableHead>
-            <TableHead className="w-1/5">Round Count</TableHead>
-            <TableHead className="w-1/5">Cumulative Turn Time</TableHead>
-            <TableHead className="w-1/5">Average Turn Time</TableHead>
+            <TableHead className="w-[calc(16px+0.5rem)]"></TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Turn Count</TableHead>
+            <TableHead>Round Count</TableHead>
+            <TableHead>Cumulative Turn Time</TableHead>
+            <TableHead>Average Turn Time</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {characters.map((character) => (
             <TableRow key={character.id}>
+              <TableCell className="w-[calc(16px+0.5rem)]"></TableCell>
               <TableCell>{character.name}</TableCell>
               <TableCell>{character.turnCount || 0}</TableCell>
               <TableCell>{round}</TableCell>
