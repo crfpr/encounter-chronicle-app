@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 
-const EncounterHeader = ({ encounterName, setEncounterName, round, onNextTurn, onPreviousTurn, isRunning, toggleEncounter }) => {
+const EncounterHeader = ({ encounterName, setEncounterName, round, isRunning, toggleEncounter }) => {
   return (
     <div className="flex items-center justify-between mb-4">
       <Input
@@ -14,8 +14,6 @@ const EncounterHeader = ({ encounterName, setEncounterName, round, onNextTurn, o
         <Button onClick={toggleEncounter} variant="outline">
           {isRunning ? 'Pause Encounter' : 'Start Encounter'}
         </Button>
-        <Button onClick={onPreviousTurn} variant="outline">Previous</Button>
-        <Button onClick={onNextTurn} variant="outline">Next</Button>
         <span className="text-xl font-semibold">Round {round}</span>
       </div>
     </div>
