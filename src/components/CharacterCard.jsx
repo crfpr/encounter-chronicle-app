@@ -66,8 +66,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   return (
-    <div className="flex items-start space-x-2">
-      <div className="w-16 flex flex-col items-center">
+    <div className="flex items-stretch space-x-2">
+      <div className="w-16 flex flex-col items-center justify-center">
         {isActive && (
           <>
             <Crown size={24} className="text-yellow-500 mb-1" />
