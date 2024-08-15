@@ -16,6 +16,7 @@ const EncounterTracker = () => {
   const [showSparkles, setShowSparkles] = useState(false);
   const [roundStates, setRoundStates] = useState([]);
   const [notes, setNotes] = useState('');
+  const [lastCompletedTurn, setLastCompletedTurn] = useState(-1);
 
   useEffect(() => {
     let interval;
@@ -31,69 +32,76 @@ const EncounterTracker = () => {
   const handleNextTurn = useCallback(() => {
     if (characters.length === 0) return;
 
-    setCharacters(prevCharacters => prevCharacters.map((char, index) => {
-      if (index === activeCharacterIndex) {
-        return {
-          ...char,
-          turnCount: (char.turnCount || 0) + 1,
-          cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime
-        };
-      }
-      return char;
-    }));
+    const nextIndex = (activeCharacterIndex + 1) % characters.length;
+
+    if (nextIndex > lastCompletedTurn) {
+      setCharacters(prevCharacters => prevCharacters.map((char, index) => {
+        if (index === activeCharacterIndex) {
+          return {
+            ...char,
+            turnCount: (char.turnCount || 0) + 1,
+            cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime
+          };
+        }
+        return char;
+      }));
+      setLastCompletedTurn(activeCharacterIndex);
+    }
 
     setTurnTime(0);
-    setActiveCharacterIndex((prevIndex) => {
-      const nextIndex = (prevIndex + 1) % characters.length;
-      if (nextIndex === 0) {
-        setRoundStates(prevStates => [...prevStates, characters]);
+    setActiveCharacterIndex(nextIndex);
 
-        setRound((prevRound) => {
-          setShowSparkles(true);
-          setTimeout(() => setShowSparkles(false), 1000);
-          return prevRound + 1;
-        });
+    if (nextIndex === 0) {
+      setRoundStates(prevStates => [...prevStates, characters]);
 
-        setCharacters(prevCharacters => prevCharacters.map(char => ({
-          ...char,
-          action: false,
-          bonusAction: false,
-          reaction: false,
-          currentMovement: char.maxMovement,
-          conditions: char.conditions
-            .map(condition => ({
-              ...condition,
-              duration: condition.duration === 'P' ? 'P' : 
-                (parseInt(condition.duration) > 1 ? (parseInt(condition.duration) - 1).toString() : '0')
-            }))
-            .filter(condition => condition.duration !== '0')
-        })));
-      }
-      return nextIndex;
-    });
-  }, [characters, activeCharacterIndex, turnTime]);
+      setRound((prevRound) => {
+        setShowSparkles(true);
+        setTimeout(() => setShowSparkles(false), 1000);
+        return prevRound + 1;
+      });
+
+      setCharacters(prevCharacters => prevCharacters.map(char => ({
+        ...char,
+        action: false,
+        bonusAction: false,
+        reaction: false,
+        currentMovement: char.maxMovement,
+        conditions: char.conditions
+          .map(condition => ({
+            ...condition,
+            duration: condition.duration === 'P' ? 'P' : 
+              (parseInt(condition.duration) > 1 ? (parseInt(condition.duration) - 1).toString() : '0')
+          }))
+          .filter(condition => condition.duration !== '0')
+      })));
+
+      setLastCompletedTurn(-1);
+    }
+  }, [characters, activeCharacterIndex, turnTime, lastCompletedTurn]);
 
   const handlePreviousTurn = useCallback(() => {
     if (characters.length === 0) return;
 
     setTurnTime(0);
-    setActiveCharacterIndex((prevIndex) => {
-      const nextIndex = (prevIndex - 1 + characters.length) % characters.length;
-      if (prevIndex === 0) {
-        setRound((prevRound) => {
-          if (prevRound > 1) {
-            const previousState = roundStates[prevRound - 2];
-            if (previousState) {
-              setCharacters(previousState);
-              setRoundStates(prevStates => prevStates.slice(0, -1));
-            }
+    const prevIndex = (activeCharacterIndex - 1 + characters.length) % characters.length;
+    setActiveCharacterIndex(prevIndex);
+
+    if (prevIndex === characters.length - 1) {
+      setRound((prevRound) => {
+        if (prevRound > 1) {
+          const previousState = roundStates[prevRound - 2];
+          if (previousState) {
+            setCharacters(previousState);
+            setRoundStates(prevStates => prevStates.slice(0, -1));
           }
-          return Math.max(1, prevRound - 1);
-        });
-      }
-      return nextIndex;
-    });
-  }, [characters.length, roundStates]);
+        }
+        return Math.max(1, prevRound - 1);
+      });
+      setLastCompletedTurn(characters.length - 1);
+    } else {
+      setLastCompletedTurn(prevIndex);
+    }
+  }, [characters.length, roundStates, activeCharacterIndex]);
 
   const toggleEncounter = () => {
     setIsRunning((prevIsRunning) => !prevIsRunning);
@@ -152,9 +160,7 @@ const EncounterTracker = () => {
         </div>
       </div>
       <NotesSection notes={notes} setNotes={setNotes} />
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <CharacterStats characters={characters} round={round} />
-      </div>
+      <CharacterStats characters={characters} round={round} />
     </div>
   );
 };
