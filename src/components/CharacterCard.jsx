@@ -150,14 +150,14 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               <input
                 value={condition.name}
                 onChange={(e) => updateCondition(index, 'name', e.target.value)}
-                className="bg-transparent border-none focus:outline-none px-2 w-full max-w-[150px]"
+                className="bg-transparent border-none focus:outline-none px-2 w-full max-w-[150px] text-sm"
                 placeholder="Condition"
                 maxLength={25}
               />
               <input
                 value={condition.duration}
                 onChange={(e) => updateCondition(index, 'duration', parseInt(e.target.value) || 0)}
-                className="bg-transparent border-none focus:outline-none w-12 text-center"
+                className="bg-transparent border-none focus:outline-none w-12 text-center text-sm"
                 type="number"
                 placeholder="Rounds"
               />
@@ -169,7 +169,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         </div>
 
         {/* Fourth row */}
-        <div className="flex items-center">
+        <div className="flex justify-end mt-2">
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <button className="text-red-500 hover:underline text-sm">Delete Character</button>
