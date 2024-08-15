@@ -133,15 +133,20 @@ const EncounterTracker = () => {
           {showSparkles && <Sparkles />}
         </div>
       </div>
-      <CharacterList 
-        characters={characters} 
-        setCharacters={setCharacters} 
-        activeCharacterIndex={activeCharacterIndex}
-        turnTime={turnTime}
-        onNextTurn={handleNextTurn}
-        onPreviousTurn={handlePreviousTurn}
-      />
-      <CharacterStats characters={characters} round={round} />
+      <div className="flex">
+        <div className="w-16 mr-2"></div>
+        <div className="flex-grow">
+          <CharacterList 
+            characters={characters} 
+            setCharacters={setCharacters} 
+            activeCharacterIndex={activeCharacterIndex}
+            turnTime={turnTime}
+            onNextTurn={handleNextTurn}
+            onPreviousTurn={handlePreviousTurn}
+          />
+          <CharacterStats characters={characters} round={round} />
+        </div>
+      </div>
     </div>
   );
 };
