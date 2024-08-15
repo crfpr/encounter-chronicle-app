@@ -2,7 +2,7 @@ import React from 'react';
 import CharacterCard from './CharacterCard';
 import { Button } from '../components/ui/button';
 
-const CharacterList = ({ characters, setCharacters, activeCharacterIndex }) => {
+const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTime }) => {
   const addCharacter = () => {
     const newCharacter = {
       id: Date.now(),
@@ -37,6 +37,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex }) => {
           }}
           removeCharacter={removeCharacter}
           isActive={index === activeCharacterIndex}
+          turnTime={turnTime}
         />
       ))}
       <Button onClick={addCharacter} className="w-full">Add Character</Button>

@@ -112,12 +112,12 @@ const EncounterTracker = () => {
           {isRunning ? 'Pause Encounter' : 'Start Encounter'}
         </Button>
         <div>Encounter Time: {formatTime(encounterTime)}</div>
-        <div>Turn Time: {formatTime(turnTime)}</div>
       </div>
       <CharacterList 
         characters={characters} 
         setCharacters={setCharacters} 
         activeCharacterIndex={activeCharacterIndex}
+        turnTime={turnTime}
       />
       <NotesSection notes={notes} setNotes={setNotes} />
     </div>
