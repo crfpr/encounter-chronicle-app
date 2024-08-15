@@ -4,6 +4,7 @@ import CharacterList from './CharacterList';
 import CharacterStats from './CharacterStats';
 import NotesSection from './NotesSection';
 import Sparkles from './Sparkles';
+import { Button } from '../components/ui/button';
 
 const EncounterTracker = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
@@ -16,6 +17,21 @@ const EncounterTracker = () => {
   const [showSparkles, setShowSparkles] = useState(false);
   const [roundStates, setRoundStates] = useState([]);
   const [notes, setNotes] = useState('');
+  const [history, setHistory] = useState([]);
+
+  useEffect(() => {
+    setHistory(prevHistory => [
+      ...prevHistory,
+      {
+        round,
+        characters: characters.map(char => ({ ...char })),
+        activeCharacterIndex,
+        encounterTime,
+        turnTime,
+        notes
+      }
+    ]);
+  }, [round, characters, activeCharacterIndex, encounterTime, turnTime, notes]);
 
   useEffect(() => {
     let interval;
@@ -120,6 +136,22 @@ const EncounterTracker = () => {
     };
   }, [handleNextTurn, handlePreviousTurn]);
 
+  const exportEncounterData = () => {
+    const encounterData = {
+      encounterName,
+      history,
+      roundStates
+    };
+    const dataStr = JSON.stringify(encounterData, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    const exportFileDefaultName = `${encounterName.replace(/\s+/g, '_')}_export.json`;
+
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+  };
+
   return (
     <div className="space-y-6">
       <div className="bg-white shadow-md rounded-lg p-6 relative">
@@ -153,6 +185,11 @@ const EncounterTracker = () => {
       <NotesSection notes={notes} setNotes={setNotes} />
       <div className="bg-white shadow-md rounded-lg p-6">
         <CharacterStats characters={characters} round={round} />
+      </div>
+      <div className="flex justify-center">
+        <Button onClick={exportEncounterData} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          Export Encounter Data
+        </Button>
       </div>
     </div>
   );
