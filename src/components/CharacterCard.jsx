@@ -123,42 +123,44 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 />
               </div>
             </div>
-            <div className="flex flex-col items-center relative w-full sm:w-auto">
-              <label htmlFor={`action-${character.id}`} className="absolute -top-5 left-0 text-xs">Action</label>
-              <Checkbox
-                id={`action-${character.id}`}
-                checked={character.action}
-                onCheckedChange={(checked) => handleChange('action', checked)}
-              />
-            </div>
-            <div className="flex flex-col items-center relative w-full sm:w-auto">
-              <label htmlFor={`bonus-action-${character.id}`} className="absolute -top-5 left-0 text-xs">Bonus</label>
-              <Checkbox
-                id={`bonus-action-${character.id}`}
-                checked={character.bonusAction}
-                onCheckedChange={(checked) => handleChange('bonusAction', checked)}
-              />
-            </div>
-            <div className="flex flex-col relative w-full sm:w-auto">
-              <label htmlFor={`movement-${character.id}`} className="absolute -top-5 left-0 text-xs">Move</label>
-              <div className="flex items-center">
-                <Input
-                  id={`movement-${character.id}`}
-                  value={character.movement}
-                  onChange={(e) => handleChange('movement', parseInt(e.target.value) || 0)}
-                  className="w-16"
-                  type="number"
+            <div className="flex flex-wrap items-end space-x-4 w-full sm:w-auto">
+              <div className="flex flex-col items-center relative">
+                <label htmlFor={`action-${character.id}`} className="absolute -top-5 left-0 text-xs">Action</label>
+                <Checkbox
+                  id={`action-${character.id}`}
+                  checked={character.action}
+                  onCheckedChange={(checked) => handleChange('action', checked)}
                 />
-                <span className="ml-1">ft</span>
               </div>
-            </div>
-            <div className="flex flex-col items-center relative w-full sm:w-auto">
-              <label htmlFor={`reaction-${character.id}`} className="absolute -top-5 left-0 text-xs">Reaction</label>
-              <Checkbox
-                id={`reaction-${character.id}`}
-                checked={character.reaction}
-                onCheckedChange={(checked) => handleChange('reaction', checked)}
-              />
+              <div className="flex flex-col items-center relative">
+                <label htmlFor={`bonus-action-${character.id}`} className="absolute -top-5 left-0 text-xs">Bonus</label>
+                <Checkbox
+                  id={`bonus-action-${character.id}`}
+                  checked={character.bonusAction}
+                  onCheckedChange={(checked) => handleChange('bonusAction', checked)}
+                />
+              </div>
+              <div className="flex flex-col relative">
+                <label htmlFor={`movement-${character.id}`} className="absolute -top-5 left-0 text-xs">Move</label>
+                <div className="flex items-center">
+                  <Input
+                    id={`movement-${character.id}`}
+                    value={character.movement}
+                    onChange={(e) => handleChange('movement', parseInt(e.target.value) || 0)}
+                    className="w-16"
+                    type="number"
+                  />
+                  <span className="ml-1">ft</span>
+                </div>
+              </div>
+              <div className="flex flex-col items-center relative">
+                <label htmlFor={`reaction-${character.id}`} className="absolute -top-5 left-0 text-xs">Reaction</label>
+                <Checkbox
+                  id={`reaction-${character.id}`}
+                  checked={character.reaction}
+                  onCheckedChange={(checked) => handleChange('reaction', checked)}
+                />
+              </div>
             </div>
           </div>
           <div className="flex flex-wrap items-center space-x-2 space-y-2">
