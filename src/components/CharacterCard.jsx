@@ -124,20 +124,22 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               </div>
             </div>
             <div className="flex flex-wrap items-end space-x-4 w-full sm:w-auto">
-              <div className="flex flex-col items-center justify-end h-[38px]">
+              <div className="flex flex-col relative">
                 <label htmlFor={`action-${character.id}`} className="absolute -top-7 left-0 text-xs">Action</label>
                 <Checkbox
                   id={`action-${character.id}`}
                   checked={character.action}
                   onCheckedChange={(checked) => handleChange('action', checked)}
+                  className="h-[38px] w-[38px]"
                 />
               </div>
-              <div className="flex flex-col items-center justify-end h-[38px]">
+              <div className="flex flex-col relative">
                 <label htmlFor={`bonus-action-${character.id}`} className="absolute -top-7 left-0 text-xs">Bonus</label>
                 <Checkbox
                   id={`bonus-action-${character.id}`}
                   checked={character.bonusAction}
                   onCheckedChange={(checked) => handleChange('bonusAction', checked)}
+                  className="h-[38px] w-[38px]"
                 />
               </div>
               <div className="flex flex-col relative w-full sm:w-auto">
@@ -150,12 +152,13 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   type="number"
                 />
               </div>
-              <div className="flex flex-col items-center justify-end h-[38px]">
+              <div className="flex flex-col relative">
                 <label htmlFor={`reaction-${character.id}`} className="absolute -top-7 left-0 text-xs">Reaction</label>
                 <Checkbox
                   id={`reaction-${character.id}`}
                   checked={character.reaction}
                   onCheckedChange={(checked) => handleChange('reaction', checked)}
+                  className="h-[38px] w-[38px]"
                 />
               </div>
             </div>
