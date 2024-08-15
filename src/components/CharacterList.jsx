@@ -2,7 +2,7 @@ import React from 'react';
 import CharacterCard from './CharacterCard';
 import { Button } from '../components/ui/button';
 
-const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTime }) => {
+const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTime, onNextTurn, onPreviousTurn }) => {
   const addCharacter = () => {
     const newCharacter = {
       id: Date.now(),
@@ -41,6 +41,8 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
           removeCharacter={removeCharacter}
           isActive={index === activeCharacterIndex}
           turnTime={turnTime}
+          onNextTurn={onNextTurn}
+          onPreviousTurn={onPreviousTurn}
         />
       ))}
       <div className="flex">

@@ -93,8 +93,6 @@ const EncounterTracker = () => {
         encounterName={encounterName}
         setEncounterName={setEncounterName}
         round={round}
-        onNextTurn={handleNextTurn}
-        onPreviousTurn={handlePreviousTurn}
         isRunning={isRunning}
         toggleEncounter={toggleEncounter}
       />
@@ -106,6 +104,8 @@ const EncounterTracker = () => {
         setCharacters={setCharacters} 
         activeCharacterIndex={activeCharacterIndex}
         turnTime={turnTime}
+        onNextTurn={handleNextTurn}
+        onPreviousTurn={handlePreviousTurn}
       />
       <NotesSection notes={notes} setNotes={setNotes} />
     </div>
