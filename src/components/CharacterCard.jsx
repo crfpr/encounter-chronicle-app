@@ -126,7 +126,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           </div>
 
           {/* Second row */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
             <CustomCheckbox
               id={`action-${character.id}`}
               checked={character.action}
