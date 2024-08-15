@@ -43,7 +43,10 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
           turnTime={turnTime}
         />
       ))}
-      <Button onClick={addCharacter} className="w-full">Add Character</Button>
+      <div className="flex">
+        <div className="w-16 mr-2"></div>
+        <Button onClick={addCharacter} className="flex-grow">Add Character</Button>
+      </div>
     </div>
   );
 };
