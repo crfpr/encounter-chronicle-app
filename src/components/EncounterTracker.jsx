@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import EncounterHeader from './EncounterHeader';
 import CharacterList from './CharacterList';
 import CharacterStats from './CharacterStats';
+import NotesSection from './NotesSection';
 import Sparkles from './Sparkles';
 
 const EncounterTracker = () => {
@@ -14,6 +15,7 @@ const EncounterTracker = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [showSparkles, setShowSparkles] = useState(false);
   const [roundStates, setRoundStates] = useState([]);
+  const [notes, setNotes] = useState('');
 
   useEffect(() => {
     let interval;
@@ -147,6 +149,9 @@ const EncounterTracker = () => {
             />
           </div>
         </div>
+      </div>
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <NotesSection notes={notes} setNotes={setNotes} />
       </div>
       <div className="bg-white shadow-md rounded-lg p-6">
         <CharacterStats characters={characters} round={round} />
