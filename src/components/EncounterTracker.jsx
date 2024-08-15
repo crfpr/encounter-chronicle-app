@@ -63,9 +63,9 @@ const EncounterTracker = () => {
           conditions: char.conditions
             .map(condition => ({
               ...condition,
-              duration: condition.duration - 1
+              duration: condition.persistent ? condition.duration : condition.duration - 1
             }))
-            .filter(condition => condition.duration > 0)
+            .filter(condition => condition.persistent || condition.duration > 0)
         })));
       }
       return nextIndex;

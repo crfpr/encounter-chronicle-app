@@ -9,12 +9,10 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   const handleChange = (field, value) => {
     let updatedCharacter = { ...character, [field]: value };
 
-    // Ensure current movement doesn't exceed max movement
     if (field === 'currentMovement') {
       updatedCharacter.currentMovement = Math.min(value, character.maxMovement);
     }
 
-    // Adjust current movement if max movement is reduced
     if (field === 'maxMovement' && value < character.currentMovement) {
       updatedCharacter.currentMovement = value;
     }
@@ -23,7 +21,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const addCondition = () => {
-    const newCondition = { name: 'New Condition', duration: 1 };
+    const newCondition = { name: 'New Condition', duration: 1, persistent: false };
     handleChange('conditions', [...character.conditions, newCondition]);
   };
 
@@ -210,13 +208,29 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   placeholder="Condition"
                   maxLength={25}
                 />
-                <input
-                  value={condition.duration}
-                  onChange={(e) => updateCondition(index, 'duration', parseInt(e.target.value) || 0)}
-                  className="bg-transparent border-none focus:outline-none w-12 text-center text-sm"
-                  type="number"
-                  placeholder="Rounds"
-                />
+                {condition.persistent ? (
+                  <button
+                    onClick={() => updateCondition(index, 'persistent', false)}
+                    className="px-2 text-xs bg-blue-500 text-white"
+                  >
+                    Persistent
+                  </button>
+                ) : (
+                  <input
+                    value={condition.duration}
+                    onChange={(e) => updateCondition(index, 'duration', parseInt(e.target.value) || 1)}
+                    className="bg-transparent border-none focus:outline-none w-12 text-center text-sm"
+                    type="number"
+                    placeholder="Rounds"
+                    min="1"
+                  />
+                )}
+                <button
+                  onClick={() => updateCondition(index, 'persistent', !condition.persistent)}
+                  className="px-2 text-xs bg-gray-300 hover:bg-gray-400"
+                >
+                  {condition.persistent ? 'Timed' : 'Persist'}
+                </button>
                 <button onClick={() => removeCondition(index)} className="px-2 h-full flex items-center justify-center text-gray-500 hover:bg-gray-200">
                   <X size={16} />
                 </button>
