@@ -20,6 +20,10 @@ const CharacterList = ({ characters, setCharacters }) => {
     setCharacters([...characters, newCharacter]);
   };
 
+  const removeCharacter = (id) => {
+    setCharacters(characters.filter(c => c.id !== id));
+  };
+
   return (
     <div className="space-y-4 mb-4">
       {characters.map((character) => (
@@ -29,6 +33,7 @@ const CharacterList = ({ characters, setCharacters }) => {
           updateCharacter={(updatedCharacter) => {
             setCharacters(characters.map(c => c.id === updatedCharacter.id ? updatedCharacter : c));
           }}
+          removeCharacter={removeCharacter}
         />
       ))}
       <Button onClick={addCharacter} className="w-full">Add Character</Button>
