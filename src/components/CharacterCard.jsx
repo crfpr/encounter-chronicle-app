@@ -67,19 +67,21 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   return (
     <div className="flex items-stretch space-x-2">
-      <div className="w-16 flex flex-col items-center justify-between">
-        <Button onClick={onPreviousTurn} variant="ghost" size="icon" className="p-0">
-          <ChevronUp className="h-6 w-6" />
-        </Button>
+      <div className="w-16 flex flex-col items-center justify-center">
         {isActive && (
-          <div className="flex flex-col items-center">
-            <Crown size={24} className="text-yellow-500 mb-1" />
-            <div className="text-sm font-semibold">{formatTime(turnTime)}</div>
-          </div>
+          <>
+            <Button onClick={onPreviousTurn} variant="ghost" size="icon" className="p-0 mb-2">
+              <ChevronUp className="h-6 w-6" />
+            </Button>
+            <div className="flex flex-col items-center">
+              <Crown size={24} className="text-yellow-500 mb-1" />
+              <div className="text-sm font-semibold">{formatTime(turnTime)}</div>
+            </div>
+            <Button onClick={onNextTurn} variant="ghost" size="icon" className="p-0 mt-2">
+              <ChevronDown className="h-6 w-6" />
+            </Button>
+          </>
         )}
-        <Button onClick={onNextTurn} variant="ghost" size="icon" className="p-0">
-          <ChevronDown className="h-6 w-6" />
-        </Button>
       </div>
       <div className={`flex-grow p-4 rounded-lg ${getBackgroundColor()} relative overflow-hidden`}>
         <div 
