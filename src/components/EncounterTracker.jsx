@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import EncounterHeader from './EncounterHeader';
 import CharacterList from './CharacterList';
 import NotesSection from './NotesSection';
-import { Button } from '../components/ui/button';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Flame } from 'lucide-react';
 
 const EncounterTracker = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
@@ -15,7 +14,7 @@ const EncounterTracker = () => {
   const [encounterTime, setEncounterTime] = useState(0);
   const [turnTime, setTurnTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [showNewRoundModal, setShowNewRoundModal] = useState(false);
+  const [showFlameAnimation, setShowFlameAnimation] = useState(false);
 
   useEffect(() => {
     let interval;
@@ -35,8 +34,11 @@ const EncounterTracker = () => {
     setActiveCharacterIndex((prevIndex) => {
       const nextIndex = (prevIndex + 1) % characters.length;
       if (nextIndex === 0) {
-        setRound((prevRound) => prevRound + 1);
-        setShowNewRoundModal(true);
+        setRound((prevRound) => {
+          setShowFlameAnimation(true);
+          setTimeout(() => setShowFlameAnimation(false), 1000);
+          return prevRound + 1;
+        });
       }
       return nextIndex;
     });
@@ -67,28 +69,6 @@ const EncounterTracker = () => {
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 relative">
-      <AnimatePresence>
-        {showNewRoundModal && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-          >
-            <div className="bg-white rounded-lg p-8 relative">
-              <button
-                onClick={() => setShowNewRoundModal(false)}
-                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-              >
-                <X size={24} />
-              </button>
-              <h2 className="text-2xl font-bold mb-4">New Round!</h2>
-              <p className="text-lg mb-4">Don't forget any environmental actions!</p>
-              <Button onClick={() => setShowNewRoundModal(false)}>Close</Button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
       <EncounterHeader
         encounterName={encounterName}
         setEncounterName={setEncounterName}
@@ -96,7 +76,19 @@ const EncounterTracker = () => {
         toggleEncounter={toggleEncounter}
       />
       <div className="flex justify-between items-center mb-4">
-        <div className="text-xl font-semibold">Round {round}</div>
+        <div className="text-xl font-semibold flex items-center">
+          Round {round}
+          {showFlameAnimation && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              className="ml-2"
+            >
+              <Flame className="text-orange-500" size={24} />
+            </motion.div>
+          )}
+        </div>
         <div>Encounter Time: {formatTime(encounterTime)}</div>
       </div>
       <CharacterList 
