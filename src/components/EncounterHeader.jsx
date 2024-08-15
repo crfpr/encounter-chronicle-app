@@ -12,8 +12,8 @@ const EncounterHeader = ({ encounterName, setEncounterName, round, onNextTurn, o
       />
       <div className="flex items-center space-x-2">
         <Button onClick={onPreviousTurn} variant="outline">Previous</Button>
-        <span className="text-xl font-semibold">Round {round}</span>
         <Button onClick={onNextTurn} variant="outline">Next</Button>
+        <span className="text-xl font-semibold">Round {round}</span>
       </div>
     </div>
   );
