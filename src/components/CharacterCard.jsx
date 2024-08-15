@@ -1,6 +1,5 @@
 import React from 'react';
 import { Input } from '../components/ui/input';
-import { Checkbox } from '../components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -53,6 +52,19 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     const remainingSeconds = seconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
+
+  const CustomCheckbox = ({ id, checked, onChange, label }) => (
+    <div className="flex flex-col relative">
+      <label htmlFor={id} className="absolute -top-4 left-0 text-xs text-center w-full">{label}</label>
+      <div
+        id={id}
+        className={`h-[38px] w-[38px] rounded cursor-pointer flex items-center justify-center ${checked ? 'bg-red-500' : 'bg-green-500'}`}
+        onClick={() => onChange(!checked)}
+      >
+        {checked && <span className="text-white">✓</span>}
+      </div>
+    </div>
+  );
 
   return (
     <div className="flex mb-4">
@@ -124,24 +136,18 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               </div>
             </div>
             <div className="flex flex-wrap items-end space-x-4 w-full sm:w-auto">
-              <div className="flex flex-col relative">
-                <label htmlFor={`action-${character.id}`} className="absolute -top-4 left-0 text-xs text-center w-full">Action</label>
-                <Checkbox
-                  id={`action-${character.id}`}
-                  checked={character.action}
-                  onCheckedChange={(checked) => handleChange('action', checked)}
-                  className="h-[38px] w-[38px]"
-                />
-              </div>
-              <div className="flex flex-col relative">
-                <label htmlFor={`bonus-action-${character.id}`} className="absolute -top-4 left-0 text-xs text-center w-full">Bonus</label>
-                <Checkbox
-                  id={`bonus-action-${character.id}`}
-                  checked={character.bonusAction}
-                  onCheckedChange={(checked) => handleChange('bonusAction', checked)}
-                  className="h-[38px] w-[38px]"
-                />
-              </div>
+              <CustomCheckbox
+                id={`action-${character.id}`}
+                checked={character.action}
+                onChange={(checked) => handleChange('action', checked)}
+                label="Action"
+              />
+              <CustomCheckbox
+                id={`bonus-action-${character.id}`}
+                checked={character.bonusAction}
+                onChange={(checked) => handleChange('bonusAction', checked)}
+                label="Bonus"
+              />
               <div className="flex flex-col relative w-full sm:w-auto">
                 <label htmlFor={`movement-${character.id}`} className="absolute -top-4 left-0 text-xs">Move</label>
                 <Input
@@ -152,15 +158,12 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   type="number"
                 />
               </div>
-              <div className="flex flex-col relative">
-                <label htmlFor={`reaction-${character.id}`} className="absolute -top-4 left-0 text-xs text-center w-full">Reaction</label>
-                <Checkbox
-                  id={`reaction-${character.id}`}
-                  checked={character.reaction}
-                  onCheckedChange={(checked) => handleChange('reaction', checked)}
-                  className="h-[38px] w-[38px]"
-                />
-              </div>
+              <CustomCheckbox
+                id={`reaction-${character.id}`}
+                checked={character.reaction}
+                onChange={(checked) => handleChange('reaction', checked)}
+                label="Reaction"
+              />
             </div>
           </div>
           <div className="flex flex-wrap items-center space-x-2 space-y-2">
