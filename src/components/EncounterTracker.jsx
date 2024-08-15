@@ -16,7 +16,6 @@ const EncounterTracker = () => {
   const [showSparkles, setShowSparkles] = useState(false);
   const [roundStates, setRoundStates] = useState([]);
   const [notes, setNotes] = useState('');
-  const [lastCompletedTurn, setLastCompletedTurn] = useState(-1);
 
   useEffect(() => {
     let interval;
@@ -34,19 +33,16 @@ const EncounterTracker = () => {
 
     const nextIndex = (activeCharacterIndex + 1) % characters.length;
 
-    if (nextIndex > lastCompletedTurn) {
-      setCharacters(prevCharacters => prevCharacters.map((char, index) => {
-        if (index === activeCharacterIndex) {
-          return {
-            ...char,
-            turnCount: (char.turnCount || 0) + 1,
-            cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime
-          };
-        }
-        return char;
-      }));
-      setLastCompletedTurn(activeCharacterIndex);
-    }
+    setCharacters(prevCharacters => prevCharacters.map((char, index) => {
+      if (index === activeCharacterIndex) {
+        return {
+          ...char,
+          turnCount: Math.min((char.turnCount || 0) + 1, round),
+          cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime
+        };
+      }
+      return char;
+    }));
 
     setTurnTime(0);
     setActiveCharacterIndex(nextIndex);
@@ -74,10 +70,8 @@ const EncounterTracker = () => {
           }))
           .filter(condition => condition.duration !== '0')
       })));
-
-      setLastCompletedTurn(-1);
     }
-  }, [characters, activeCharacterIndex, turnTime, lastCompletedTurn]);
+  }, [characters, activeCharacterIndex, turnTime, round]);
 
   const handlePreviousTurn = useCallback(() => {
     if (characters.length === 0) return;
@@ -97,9 +91,6 @@ const EncounterTracker = () => {
         }
         return Math.max(1, prevRound - 1);
       });
-      setLastCompletedTurn(characters.length - 1);
-    } else {
-      setLastCompletedTurn(prevIndex);
     }
   }, [characters.length, roundStates, activeCharacterIndex]);
 
