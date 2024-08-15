@@ -43,7 +43,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     switch (character.type) {
       case 'PC': return 'bg-blue-100'; // Light blue
       case 'NPC': return 'bg-gray-100'; // Light grey
-      case 'Enemy': return 'bg-gray-300'; // Dark grey (unchanged)
+      case 'Enemy': return 'bg-gray-300'; // Dark grey
       default: return 'bg-white';
     }
   };
