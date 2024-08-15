@@ -55,13 +55,15 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   const CustomCheckbox = ({ id, checked, onChange, label }) => (
     <div className="flex flex-col relative">
-      <label htmlFor={id} className="absolute -top-4 left-0 text-xs text-center w-full">{label}</label>
+      <label htmlFor={id} className="absolute -top-4 left-0 text-xs">{label}</label>
       <div
         id={id}
-        className={`h-[38px] w-[38px] rounded cursor-pointer flex items-center justify-center border border-gray-300 ${checked ? 'bg-gray-700' : 'bg-white'}`}
+        className={`h-[38px] w-[38px] rounded cursor-pointer flex items-center justify-center ${
+          checked ? 'bg-gray-200 border-gray-400' : 'bg-white border-gray-200'
+        } border`}
         onClick={() => onChange(!checked)}
       >
-        {checked && <span className="text-white">✓</span>}
+        {checked && <span className="text-gray-700">✓</span>}
       </div>
     </div>
   );
@@ -89,14 +91,14 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 id={`initiative-${character.id}`}
                 value={character.initiative}
                 onChange={(e) => handleChange('initiative', parseInt(e.target.value) || 0)}
-                className="w-16"
+                className="w-16 h-[38px] bg-white border-gray-200"
                 type="number"
               />
             </div>
             <div className="flex flex-col relative w-full sm:w-auto">
               <label htmlFor={`type-${character.id}`} className="absolute -top-4 left-0 text-xs">Type</label>
               <Select value={character.type} onValueChange={(value) => handleChange('type', value)}>
-                <SelectTrigger id={`type-${character.id}`} className="w-24">
+                <SelectTrigger id={`type-${character.id}`} className="w-24 h-[38px] bg-white border-gray-200">
                   <SelectValue placeholder="Type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -112,7 +114,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 id={`name-${character.id}`}
                 value={character.name}
                 onChange={(e) => handleChange('name', e.target.value)}
-                className="w-full"
+                className="w-full h-[38px] bg-white border-gray-200"
               />
             </div>
             <div className="flex flex-col relative w-full sm:w-auto">
@@ -122,7 +124,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   id={`currentHp-${character.id}`}
                   value={character.currentHp}
                   onChange={(e) => handleChange('currentHp', parseInt(e.target.value) || 0)}
-                  className="w-16"
+                  className="w-16 h-[38px] bg-white border-gray-200"
                   type="number"
                 />
                 <span className="mx-1">/</span>
@@ -130,7 +132,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   id={`maxHp-${character.id}`}
                   value={character.maxHp}
                   onChange={(e) => handleChange('maxHp', parseInt(e.target.value) || 0)}
-                  className="w-16"
+                  className="w-16 h-[38px] bg-white border-gray-200"
                   type="number"
                 />
               </div>
@@ -154,7 +156,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   id={`movement-${character.id}`}
                   value={character.movement}
                   onChange={(e) => handleChange('movement', parseInt(e.target.value) || 0)}
-                  className="w-16"
+                  className="w-16 h-[38px] bg-white border-gray-200"
                   type="number"
                 />
               </div>
@@ -173,12 +175,12 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 <Input
                   value={condition.name}
                   onChange={(e) => updateCondition(index, 'name', e.target.value)}
-                  className="w-24 mr-1"
+                  className="w-24 mr-1 h-[38px] bg-white border-gray-200"
                 />
                 <Input
                   value={condition.duration}
                   onChange={(e) => updateCondition(index, 'duration', parseInt(e.target.value) || 0)}
-                  className="w-12 mr-1"
+                  className="w-12 mr-1 h-[38px] bg-white border-gray-200"
                   type="number"
                 />
                 <button onClick={() => removeCondition(index)} className="ml-2 text-red-500">×</button>
