@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import EncounterHeader from './EncounterHeader';
 import CharacterList from './CharacterList';
 import Sparkles from './Sparkles';
@@ -24,7 +24,7 @@ const EncounterTracker = () => {
     return () => clearInterval(interval);
   }, [isRunning]);
 
-  const handleNextTurn = () => {
+  const handleNextTurn = useCallback(() => {
     if (characters.length === 0) return;
 
     setTurnTime(0);
@@ -39,9 +39,9 @@ const EncounterTracker = () => {
       }
       return nextIndex;
     });
-  };
+  }, [characters.length]);
 
-  const handlePreviousTurn = () => {
+  const handlePreviousTurn = useCallback(() => {
     if (characters.length === 0) return;
 
     setTurnTime(0);
@@ -52,7 +52,7 @@ const EncounterTracker = () => {
       }
       return nextIndex;
     });
-  };
+  }, [characters.length]);
 
   const toggleEncounter = () => {
     setIsRunning((prevIsRunning) => !prevIsRunning);
@@ -63,6 +63,28 @@ const EncounterTracker = () => {
     const remainingSeconds = seconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        handlePreviousTurn();
+      } else if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        handleNextTurn();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleNextTurn, handlePreviousTurn]);
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 relative">
