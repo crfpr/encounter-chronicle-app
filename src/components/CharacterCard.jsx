@@ -41,8 +41,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   const getBackgroundColor = () => {
     switch (character.type) {
-      case 'PC': return 'bg-blue-100';
-      case 'NPC': return 'bg-gray-100';
+      case 'PC': return 'bg-yellow-100';
+      case 'NPC': return 'bg-blue-100';
       case 'Enemy': return 'bg-gray-300';
       default: return 'bg-white';
     }
