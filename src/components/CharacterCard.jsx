@@ -37,6 +37,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const getBorderColor = () => {
+    if (isActive) {
+      return 'border-black';
+    }
     const hpPercentage = (character.currentHp / character.maxHp) * 100;
     if (hpPercentage <= 25) {
       return 'border-red-600';
