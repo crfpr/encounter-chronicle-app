@@ -117,11 +117,10 @@ const EncounterTracker = () => {
         round={round}
         onNextTurn={handleNextTurn}
         onPreviousTurn={handlePreviousTurn}
+        isRunning={isRunning}
+        toggleEncounter={toggleEncounter}
       />
-      <div className="flex justify-between items-center mb-4">
-        <Button onClick={toggleEncounter}>
-          {isRunning ? 'Pause Encounter' : 'Start Encounter'}
-        </Button>
+      <div className="flex justify-end items-center mb-4">
         <div>Encounter Time: {formatTime(encounterTime)}</div>
       </div>
       <CharacterList 
