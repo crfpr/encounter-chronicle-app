@@ -7,7 +7,7 @@ import { Badge } from '../components/ui/badge';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import { Label } from '../components/ui/label';
 
-const CharacterCard = ({ character, updateCharacter, removeCharacter }) => {
+const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive }) => {
   const handleChange = (field, value) => {
     updateCharacter({ ...character, [field]: value });
   };
@@ -39,19 +39,29 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter }) => {
   };
 
   const getBorderColor = () => {
-    return character.currentHp <= character.maxHp / 2 ? 'border-red-600' : 'border-gray-200';
+    const hpPercentage = (character.currentHp / character.maxHp) * 100;
+    if (hpPercentage <= 25) {
+      return 'border-red-600 animate-pulse';
+    } else if (hpPercentage <= 50) {
+      return 'border-red-600';
+    }
+    return 'border-gray-200';
   };
 
   return (
-    <div className={`p-4 rounded-lg border-2 ${getBackgroundColor()} ${getBorderColor()}`}>
+    <div className={`p-4 rounded-lg border-2 ${getBackgroundColor()} ${getBorderColor()} relative`}>
+      {isActive && (
+        <div className="absolute left-0 top-0 bottom-0 w-2 bg-green-500 rounded-l-lg"></div>
+      )}
       <div className="flex items-center space-x-2 mb-2">
         <div className="flex flex-col">
           <Label htmlFor={`initiative-${character.id}`}>Initiative</Label>
           <Input
             id={`initiative-${character.id}`}
             value={character.initiative}
-            onChange={(e) => handleChange('initiative', e.target.value)}
+            onChange={(e) => handleChange('initiative', parseInt(e.target.value) || 0)}
             className="w-16"
+            type="number"
           />
         </div>
         <div className="flex flex-col">
@@ -83,8 +93,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter }) => {
           <Input
             id={`currentHp-${character.id}`}
             value={character.currentHp}
-            onChange={(e) => handleChange('currentHp', e.target.value)}
+            onChange={(e) => handleChange('currentHp', parseInt(e.target.value) || 0)}
             className="w-16"
+            type="number"
           />
         </div>
         <span className="self-end">/</span>
@@ -93,8 +104,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter }) => {
           <Input
             id={`maxHp-${character.id}`}
             value={character.maxHp}
-            onChange={(e) => handleChange('maxHp', e.target.value)}
+            onChange={(e) => handleChange('maxHp', parseInt(e.target.value) || 0)}
             className="w-16"
+            type="number"
           />
         </div>
         <div className="flex flex-col items-center">
@@ -119,8 +131,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter }) => {
             <Input
               id={`movement-${character.id}`}
               value={character.movement}
-              onChange={(e) => handleChange('movement', e.target.value)}
+              onChange={(e) => handleChange('movement', parseInt(e.target.value) || 0)}
               className="w-16"
+              type="number"
             />
             <span className="ml-1">ft</span>
           </div>
@@ -145,7 +158,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter }) => {
             />
             <Input
               value={condition.duration}
-              onChange={(e) => updateCondition(index, 'duration', e.target.value)}
+              onChange={(e) => updateCondition(index, 'duration', parseInt(e.target.value) || 0)}
               className="w-12 mr-1"
               type="number"
             />
