@@ -14,7 +14,8 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
       ac: 10,
       action: false,
       bonusAction: false,
-      movement: 30,
+      currentMovement: 30,
+maxMovement: 30,
       reaction: false,
       conditions: []
     };

@@ -171,11 +171,17 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             />
             <div className="flex items-center space-x-2">
               <Input
-                value={character.movement}
-                onChange={(e) => handleChange('movement', parseInt(e.target.value) || 0)}
+                value={character.currentMovement}
+                onChange={(e) => handleChange('currentMovement', parseInt(e.target.value) || 0)}
                 className="w-16"
                 type="number"
-                placeholder="Movement"
+              />
+              <span>/</span>
+              <Input
+                value={character.maxMovement}
+                onChange={(e) => handleChange('maxMovement', parseInt(e.target.value) || 0)}
+                className="w-16"
+                type="number"
               />
               <span className="text-sm">ft</span>
             </div>
