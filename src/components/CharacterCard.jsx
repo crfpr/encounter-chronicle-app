@@ -7,7 +7,19 @@ import { X, Crown, ChevronUp, ChevronDown } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn }) => {
   const handleChange = (field, value) => {
-    updateCharacter({ ...character, [field]: value });
+    let updatedCharacter = { ...character, [field]: value };
+
+    // Ensure current movement doesn't exceed max movement
+    if (field === 'currentMovement') {
+      updatedCharacter.currentMovement = Math.min(value, character.maxMovement);
+    }
+
+    // Adjust current movement if max movement is reduced
+    if (field === 'maxMovement' && value < character.currentMovement) {
+      updatedCharacter.currentMovement = value;
+    }
+
+    updateCharacter(updatedCharacter);
   };
 
   const addCondition = () => {
