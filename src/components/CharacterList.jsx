@@ -49,7 +49,7 @@ maxMovement: 30,
       ))}
       <div className="flex">
         <div className="w-16 mr-2"></div>
-        <Button onClick={addCharacter} className="flex-grow">Add Character</Button>
+        <Button onClick={addCharacter} className="flex-grow bg-pink-500 hover:bg-pink-600 text-white">Add Character</Button>
       </div>
     </div>
   );
