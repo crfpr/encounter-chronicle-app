@@ -49,7 +49,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive }
   };
 
   return (
-    <div className={`p-4 rounded-lg border-2 ${getBackgroundColor()} ${getBorderColor()} relative`}>
+    <div className={`p-4 rounded-lg ${getBackgroundColor()} relative`}>
+      <div className={`absolute inset-0 rounded-lg pointer-events-none ${getBorderColor()}`} style={{ borderWidth: '2px' }}></div>
       {isActive && (
         <div className="absolute left-0 top-0 bottom-0 w-2 bg-green-500 rounded-l-lg"></div>
       )}
