@@ -38,24 +38,23 @@ const EncounterTracker = () => {
         setRound((prevRound) => {
           setShowSparkles(true);
           setTimeout(() => setShowSparkles(false), 1000);
-          
-          // Reset all characters when a new round starts and update conditions
-          setCharacters(prevCharacters => prevCharacters.map(char => ({
-            ...char,
-            action: false,
-            bonusAction: false,
-            reaction: false,
-            currentMovement: char.maxMovement,
-            conditions: char.conditions
-              .map(condition => ({
-                ...condition,
-                duration: condition.duration - 1
-              }))
-              .filter(condition => condition.duration > 0)
-          })));
-          
           return prevRound + 1;
         });
+
+        // Reset all characters when a new round starts and update conditions
+        setCharacters(prevCharacters => prevCharacters.map(char => ({
+          ...char,
+          action: false,
+          bonusAction: false,
+          reaction: false,
+          currentMovement: char.maxMovement,
+          conditions: char.conditions
+            .map(condition => ({
+              ...condition,
+              duration: condition.duration - 1
+            }))
+            .filter(condition => condition.duration > 0)
+        })));
       }
       return nextIndex;
     });
