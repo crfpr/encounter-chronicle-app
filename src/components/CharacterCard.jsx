@@ -3,7 +3,7 @@ import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
-import { X } from 'lucide-react';
+import { X, Crown } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime }) => {
   const handleChange = (field, value) => {
@@ -65,6 +65,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         className={`absolute inset-0 rounded-lg pointer-events-none ${getBorderColor()} ${character.currentHp / character.maxHp <= 0.25 ? 'animate-pulse' : ''}`} 
         style={{ borderWidth: '4px' }}
       ></div>
+      {isActive && (
+        <div className="absolute top-2 right-2 text-yellow-500">
+          <Crown size={24} />
+        </div>
+      )}
       <div className="relative z-10 space-y-4">
         {/* First row */}
         <div className="flex items-center space-x-4">
