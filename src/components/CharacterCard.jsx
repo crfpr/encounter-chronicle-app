@@ -58,7 +58,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       <label htmlFor={id} className="absolute -top-4 left-0 text-xs text-center w-full">{label}</label>
       <div
         id={id}
-        className={`h-[38px] w-[38px] rounded cursor-pointer flex items-center justify-center ${checked ? 'bg-red-500' : 'bg-green-500'}`}
+        className={`h-[38px] w-[38px] rounded cursor-pointer flex items-center justify-center border border-gray-300 ${checked ? 'bg-gray-700' : 'bg-white'}`}
         onClick={() => onChange(!checked)}
       >
         {checked && <span className="text-white">✓</span>}
