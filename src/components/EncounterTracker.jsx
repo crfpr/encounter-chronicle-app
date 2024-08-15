@@ -4,7 +4,7 @@ import CharacterList from './CharacterList';
 import NotesSection from './NotesSection';
 import { Button } from '../components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronRight, ChevronLeft } from 'lucide-react';
+import { X } from 'lucide-react';
 
 const EncounterTracker = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
@@ -16,7 +16,6 @@ const EncounterTracker = () => {
   const [turnTime, setTurnTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [showNewRoundModal, setShowNewRoundModal] = useState(false);
-  const [showNotes, setShowNotes] = useState(true);
 
   useEffect(() => {
     let interval;
@@ -102,38 +101,13 @@ const EncounterTracker = () => {
       <div className="flex justify-end items-center mb-4">
         <div>Encounter Time: {formatTime(encounterTime)}</div>
       </div>
-      <div className="flex">
-        <div className="flex-grow mr-4">
-          <CharacterList 
-            characters={characters} 
-            setCharacters={setCharacters} 
-            activeCharacterIndex={activeCharacterIndex}
-            turnTime={turnTime}
-          />
-        </div>
-        <div className="w-1/3 relative">
-          <Button
-            onClick={() => setShowNotes(!showNotes)}
-            className="absolute -left-4 top-0 z-10"
-            variant="outline"
-            size="sm"
-          >
-            {showNotes ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
-          </Button>
-          <AnimatePresence>
-            {showNotes && (
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.2 }}
-              >
-                <NotesSection notes={notes} setNotes={setNotes} />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
+      <CharacterList 
+        characters={characters} 
+        setCharacters={setCharacters} 
+        activeCharacterIndex={activeCharacterIndex}
+        turnTime={turnTime}
+      />
+      <NotesSection notes={notes} setNotes={setNotes} />
     </div>
   );
 };
