@@ -150,9 +150,7 @@ const EncounterTracker = () => {
           </div>
         </div>
       </div>
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <NotesSection notes={notes} setNotes={setNotes} />
-      </div>
+      <NotesSection notes={notes} setNotes={setNotes} />
       <div className="bg-white shadow-md rounded-lg p-6">
         <CharacterStats characters={characters} round={round} />
       </div>

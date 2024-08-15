@@ -6,7 +6,6 @@ import { Copy } from 'lucide-react';
 const NotesSection = ({ notes, setNotes }) => {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(notes).then(() => {
-      // You could add a toast notification here to confirm the copy action
       console.log('Notes copied to clipboard');
     }).catch(err => {
       console.error('Failed to copy notes: ', err);
@@ -21,7 +20,7 @@ const NotesSection = ({ notes, setNotes }) => {
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Enter encounter notes here..."
-          className="w-full h-full min-h-[200px] pr-20" // Added right padding to accommodate the button
+          className="w-full h-full min-h-[200px] pr-20"
         />
         <Button 
           onClick={copyToClipboard} 
