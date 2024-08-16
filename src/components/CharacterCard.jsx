@@ -3,7 +3,6 @@ import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
-import { X, ChevronUp, ChevronDown } from 'lucide-react';
 import TurnNavigator from './TurnNavigator';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn }) => {
@@ -12,9 +11,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       case 'PC':
         return 'bg-blue-100';
       case 'Enemy':
-        return 'bg-gray-300';
+        return 'bg-red-100';
       case 'Neutral':
-        return 'bg-gray-200';
+        return 'bg-green-100';
       default:
         return 'bg-white';
     }
@@ -28,9 +27,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       case 'PC':
         return 'border-blue-300';
       case 'Enemy':
-        return 'border-gray-500';
+        return 'border-red-300';
       case 'Neutral':
-        return 'border-gray-300';
+        return 'border-green-300';
       default:
         return 'border-gray-200';
     }
@@ -44,9 +43,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       case 'PC':
         return 'bg-blue-300';
       case 'Enemy':
-        return 'bg-gray-500';
+        return 'bg-red-300';
       case 'Neutral':
-        return 'bg-gray-300';
+        return 'bg-green-300';
       default:
         return 'bg-gray-200';
     }
@@ -186,8 +185,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           <div className="flex justify-end mt-2">
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="sm">
-                  <X className="h-4 w-4" />
+                <Button variant="link" size="sm" className="text-red-500 text-xs p-0">
+                  Delete character
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
