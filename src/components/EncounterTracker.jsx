@@ -175,15 +175,15 @@ const EncounterTracker = () => {
             </div>
           </div>
           <div className="flex">
-            <div className="w-8 mr-2 flex flex-col items-start">
+            <div className="w-12 mr-2 flex flex-col items-start">
               {characters.length > 0 && (
                 <>
                   <Button onClick={handlePreviousTurn} variant="ghost" size="icon" className="p-0 mb-2">
-                    <ChevronUp className="h-4 w-4" />
+                    <ChevronUp className="h-6 w-6" />
                   </Button>
-                  <div className="text-xs font-semibold mb-2">{formatTime(turnTime)}</div>
+                  <div className="text-sm font-semibold mb-2">{formatTime(turnTime)}</div>
                   <Button onClick={handleNextTurn} variant="ghost" size="icon" className="p-0">
-                    <ChevronDown className="h-4 w-4" />
+                    <ChevronDown className="h-6 w-6" />
                   </Button>
                 </>
               )}
