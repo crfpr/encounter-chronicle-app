@@ -215,7 +215,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
           {/* Third row */}
           <div className="flex flex-wrap items-center gap-2">
-            <Button onClick={addCondition} variant="outline" size="sm" className="h-9">Add Condition</Button>
+            <Button onClick={addCondition} variant="outline" size="sm" className="h-9">Add Token</Button>
             {character.conditions.map((condition, index) => (
               <div key={index} className="flex items-center bg-gray-100 rounded h-9 overflow-hidden">
                 <input
