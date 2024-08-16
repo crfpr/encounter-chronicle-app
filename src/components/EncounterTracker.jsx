@@ -170,23 +170,6 @@ const EncounterTracker = () => {
               Round {round}
               {showSparkles && <Sparkles />}
             </div>
-            <Button onClick={() => setCharacters(prev => [...prev, {
-              id: Date.now(),
-              initiative: 10,
-              name: 'New Character',
-              type: 'PC',
-              currentHp: 10,
-              maxHp: 10,
-              ac: 10,
-              action: false,
-              bonusAction: false,
-              currentMovement: 30,
-              maxMovement: 30,
-              reaction: false,
-              conditions: []
-            }])}>
-              Add Token
-            </Button>
           </div>
           <div className="flex relative">
             <div className="flex-grow">
