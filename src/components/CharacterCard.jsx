@@ -92,183 +92,184 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           style={{ borderWidth: '4px', borderLeftWidth: '0' }}
         ></div>
         <div className="relative z-10 space-y-4">
-        {/* First row */}
-        <div className="flex items-end space-x-4">
-          <div className="flex flex-col">
-            <div className="text-xs mb-1">Init.</div>
-            <Input
-              value={character.initiative}
-              onChange={(e) => handleChange('initiative', parseInt(e.target.value) || 0)}
-              className="w-16"
-              type="number"
-            />
-          </div>
-          <div className="flex flex-col">
-            <div className="text-xs mb-1">Type</div>
-            <Select value={character.type} onValueChange={(value) => handleChange('type', value)}>
-              <SelectTrigger className="w-[100px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="PC">PC</SelectItem>
-                <SelectItem value="NPC">NPC</SelectItem>
-                <SelectItem value="Enemy">Enemy</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex flex-col flex-grow">
-            <div className="text-xs mb-1">Name</div>
-            <Input
-              value={character.name}
-              onChange={(e) => handleChange('name', e.target.value)}
-              className="w-full"
-            />
-          </div>
-          <div className="flex space-x-2">
+          {/* First row */}
+          <div className="flex items-end space-x-4">
             <div className="flex flex-col">
-              <div className="text-xs mb-1">Temp HP</div>
+              <div className="text-xs mb-1">Init.</div>
               <Input
-                value={character.tempHp || 0}
-                onChange={(e) => handleChange('tempHp', parseInt(e.target.value) || 0)}
+                value={character.initiative}
+                onChange={(e) => handleChange('initiative', parseInt(e.target.value) || 0)}
                 className="w-16"
                 type="number"
               />
             </div>
             <div className="flex flex-col">
-              <div className="text-xs mb-1">HP</div>
-              <div className="flex items-center space-x-2">
+              <div className="text-xs mb-1">Type</div>
+              <Select value={character.type} onValueChange={(value) => handleChange('type', value)}>
+                <SelectTrigger className="w-[100px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="PC">PC</SelectItem>
+                  <SelectItem value="NPC">NPC</SelectItem>
+                  <SelectItem value="Enemy">Enemy</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex flex-col flex-grow">
+              <div className="text-xs mb-1">Name</div>
+              <Input
+                value={character.name}
+                onChange={(e) => handleChange('name', e.target.value)}
+                className="w-full"
+              />
+            </div>
+            <div className="flex space-x-2">
+              <div className="flex flex-col">
+                <div className="text-xs mb-1">Temp HP</div>
                 <Input
-                  value={character.currentHp}
-                  onChange={(e) => handleChange('currentHp', parseInt(e.target.value) || 0)}
-                  className="w-16"
-                  type="number"
-                />
-                <span>/</span>
-                <Input
-                  value={character.maxHp}
-                  onChange={(e) => handleChange('maxHp', parseInt(e.target.value) || 0)}
+                  value={character.tempHp || 0}
+                  onChange={(e) => handleChange('tempHp', parseInt(e.target.value) || 0)}
                   className="w-16"
                   type="number"
                 />
               </div>
+              <div className="flex flex-col">
+                <div className="text-xs mb-1">HP</div>
+                <div className="flex items-center space-x-2">
+                  <Input
+                    value={character.currentHp}
+                    onChange={(e) => handleChange('currentHp', parseInt(e.target.value) || 0)}
+                    className="w-16"
+                    type="number"
+                  />
+                  <span>/</span>
+                  <Input
+                    value={character.maxHp}
+                    onChange={(e) => handleChange('maxHp', parseInt(e.target.value) || 0)}
+                    className="w-16"
+                    type="number"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col">
-            <div className="text-xs mb-1">AC</div>
-            <Input
-              value={character.ac}
-              onChange={(e) => handleChange('ac', parseInt(e.target.value) || 0)}
-              className="w-16 text-center"
-              type="number"
-              min="0"
-              max="99"
-            />
-          </div>
-        </div>
-
-        {/* Second row */}
-        <div className="flex items-center space-x-4">
-          <CustomCheckbox
-            id={`action-${character.id}`}
-            checked={character.action}
-            onChange={(checked) => handleChange('action', checked)}
-            label="Action"
-          />
-          <CustomCheckbox
-            id={`bonus-action-${character.id}`}
-            checked={character.bonusAction}
-            onChange={(checked) => handleChange('bonusAction', checked)}
-            label="Bonus"
-          />
-          <CustomCheckbox
-            id={`reaction-${character.id}`}
-            checked={character.reaction}
-            onChange={(checked) => handleChange('reaction', checked)}
-            label="Reaction"
-          />
-          <div className="flex items-center space-x-2">
-            <Input
-              value={character.currentMovement}
-              onChange={(e) => handleChange('currentMovement', parseInt(e.target.value) || 0)}
-              className="w-16"
-              type="number"
-            />
-            <span>/</span>
-            <Input
-              value={character.maxMovement}
-              onChange={(e) => handleChange('maxMovement', parseInt(e.target.value) || 0)}
-              className="w-16"
-              type="number"
-            />
-            <span className="text-sm">ft</span>
-          </div>
-        </div>
-
-        {/* Third row */}
-        <div className="flex flex-wrap items-center gap-2">
-          <Button onClick={addCondition} variant="outline" size="sm" className="h-9">Add Token</Button>
-          {character.conditions.map((condition, index) => (
-            <div key={index} className="flex items-center bg-gray-100 rounded h-9 overflow-hidden">
-              <input
-                value={condition.name}
-                onChange={(e) => updateCondition(index, 'name', e.target.value)}
-                className="bg-transparent border-none focus:outline-none px-2 w-full max-w-[150px] text-sm"
-                placeholder="Condition"
-                maxLength={25}
+            <div className="flex flex-col">
+              <div className="text-xs mb-1">AC</div>
+              <Input
+                value={character.ac}
+                onChange={(e) => handleChange('ac', parseInt(e.target.value) || 0)}
+                className="w-16 text-center"
+                type="number"
+                min="0"
+                max="99"
               />
-              <Select
-                value={condition.duration}
-                onValueChange={(value) => updateCondition(index, 'duration', value)}
-              >
-                <SelectTrigger className="w-14 h-full border-none">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {[...Array(10)].map((_, i) => (
-                    <SelectItem key={i + 1} value={(i + 1).toString()}>{i + 1}</SelectItem>
-                  ))}
-                  <SelectItem value="P">P</SelectItem>
-                </SelectContent>
-              </Select>
-              <button onClick={() => removeCondition(index)} className="px-2 h-full flex items-center justify-center text-gray-500 hover:bg-gray-200">
-                <X size={16} />
-              </button>
             </div>
-          ))}
-        </div>
+          </div>
 
-        {/* Fourth row - Inline Note */}
-        <div className="mt-2">
-          <textarea
-            value={character.note || ''}
-            onChange={(e) => handleChange('note', e.target.value)}
-            className="w-full p-2 text-sm bg-gray-50 border border-gray-200 rounded-md"
-            placeholder="Add notes for this character..."
-            rows="2"
-          />
-        </div>
+          {/* Second row */}
+          <div className="flex items-center space-x-4">
+            <CustomCheckbox
+              id={`action-${character.id}`}
+              checked={character.action}
+              onChange={(checked) => handleChange('action', checked)}
+              label="Action"
+            />
+            <CustomCheckbox
+              id={`bonus-action-${character.id}`}
+              checked={character.bonusAction}
+              onChange={(checked) => handleChange('bonusAction', checked)}
+              label="Bonus"
+            />
+            <CustomCheckbox
+              id={`reaction-${character.id}`}
+              checked={character.reaction}
+              onChange={(checked) => handleChange('reaction', checked)}
+              label="Reaction"
+            />
+            <div className="flex items-center space-x-2">
+              <Input
+                value={character.currentMovement}
+                onChange={(e) => handleChange('currentMovement', parseInt(e.target.value) || 0)}
+                className="w-16"
+                type="number"
+              />
+              <span>/</span>
+              <Input
+                value={character.maxMovement}
+                onChange={(e) => handleChange('maxMovement', parseInt(e.target.value) || 0)}
+                className="w-16"
+                type="number"
+              />
+              <span className="text-sm">ft</span>
+            </div>
+          </div>
 
-        {/* Fifth row */}
-        <div className="flex justify-end mt-2">
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <button className="text-red-500 hover:underline text-sm">Delete Character</button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete the character from the encounter.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={() => removeCharacter(character.id)}>
-                  Yes, delete character
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          {/* Third row */}
+          <div className="flex flex-wrap items-center gap-2">
+            <Button onClick={addCondition} variant="outline" size="sm" className="h-9">Add Token</Button>
+            {character.conditions.map((condition, index) => (
+              <div key={index} className="flex items-center bg-gray-100 rounded h-9 overflow-hidden">
+                <input
+                  value={condition.name}
+                  onChange={(e) => updateCondition(index, 'name', e.target.value)}
+                  className="bg-transparent border-none focus:outline-none px-2 w-full max-w-[150px] text-sm"
+                  placeholder="Condition"
+                  maxLength={25}
+                />
+                <Select
+                  value={condition.duration}
+                  onValueChange={(value) => updateCondition(index, 'duration', value)}
+                >
+                  <SelectTrigger className="w-14 h-full border-none">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[...Array(10)].map((_, i) => (
+                      <SelectItem key={i + 1} value={(i + 1).toString()}>{i + 1}</SelectItem>
+                    ))}
+                    <SelectItem value="P">P</SelectItem>
+                  </SelectContent>
+                </Select>
+                <button onClick={() => removeCondition(index)} className="px-2 h-full flex items-center justify-center text-gray-500 hover:bg-gray-200">
+                  <X size={16} />
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Fourth row - Inline Note */}
+          <div className="mt-2">
+            <textarea
+              value={character.note || ''}
+              onChange={(e) => handleChange('note', e.target.value)}
+              className="w-full p-2 text-sm bg-gray-50 border border-gray-200 rounded-md"
+              placeholder="Add notes for this character..."
+              rows="2"
+            />
+          </div>
+
+          {/* Fifth row */}
+          <div className="flex justify-end mt-2">
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <button className="text-red-500 hover:underline text-sm">Delete Character</button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete the character from the encounter.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => removeCharacter(character.id)}>
+                    Yes, delete character
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
         </div>
       </div>
     </div>
