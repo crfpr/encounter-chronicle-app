@@ -141,7 +141,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   <Input
                     value={character.tempHp || 0}
                     onChange={(e) => handleChange('tempHp', parseInt(e.target.value) || 0)}
-                    className="w-full"
+                    className="w-full h-9"
                     type="number"
                   />
                 </div>
@@ -151,14 +151,14 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                     <Input
                       value={character.currentHp}
                       onChange={(e) => handleChange('currentHp', parseInt(e.target.value) || 0)}
-                      className="w-16"
+                      className="w-16 h-9"
                       type="number"
                     />
                     <span>/</span>
                     <Input
                       value={character.maxHp}
                       onChange={(e) => handleChange('maxHp', parseInt(e.target.value) || 0)}
-                      className="w-16"
+                      className="w-16 h-9"
                       type="number"
                     />
                   </div>
