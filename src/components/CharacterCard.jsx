@@ -43,7 +43,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   return (
     <div className={`flex ${getBackgroundColor()} relative overflow-hidden rounded-lg`}>
-      {/* Tab element with TurnNavigator */}
+      {/* Left Tab */}
       <div className={`w-16 ${isActive ? 'bg-black text-white' : getBorderColor()} flex items-stretch`}>
         {isActive ? (
           <div className="flex-1 flex items-center justify-center">
@@ -75,7 +75,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               type="number"
               value={character.initiative}
               onChange={(e) => handleInputChange('initiative', parseInt(e.target.value))}
-              className="w-16 text-center" placeholder="AC" placeholder="Initiative"
+              className="w-16 text-center" placeholder="Initiative"
             />
             <Select
               value={character.type}
@@ -113,7 +113,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               type="number"
               value={character.ac}
               onChange={(e) => handleInputChange('ac', parseInt(e.target.value))}
-              className="w-16 text-center" placeholder="AC" placeholder="Initiative"
+              className="w-16 text-center" placeholder="AC"
             />
           </div>
 
@@ -192,6 +192,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             </AlertDialog>
           </div>
         </div>
+      </div>
+
+      {/* Right Tab */}
+      <div className={`w-16 ${isActive ? 'bg-black text-white' : getBorderColor()} flex items-stretch`}>
+        <div className="flex-1"></div>
       </div>
     </div>
   );
