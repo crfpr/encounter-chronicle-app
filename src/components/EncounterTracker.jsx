@@ -168,14 +168,16 @@ const EncounterTracker = () => {
             toggleEncounter={toggleEncounter}
             encounterTime={encounterTime}
           />
-          <div className="flex justify-between items-center mb-4">
-            <div className="text-xl font-semibold flex items-center">
+          <div className="flex items-center mb-4">
+            <div className="text-xl font-semibold flex items-center w-12">
               Round {round}
               {showSparkles && <Sparkles />}
             </div>
           </div>
           <div className="flex">
-            <div className="w-16 mr-2"></div>
+            <div className="w-12 mr-2">
+              {/* This empty div maintains the left alignment */}
+            </div>
             <div className="flex-grow flex flex-col">
               <CharacterList 
                 characters={characters} 

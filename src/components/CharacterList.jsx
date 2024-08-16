@@ -48,7 +48,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
         />
       ))}
       <div className="flex mt-4">
-        <div className="w-16 mr-2"></div>
+        <div className="w-12 mr-2"></div>
         <Button onClick={addCharacter} className="flex-grow bg-black hover:bg-gray-800 text-white">Add Character</Button>
       </div>
     </div>
