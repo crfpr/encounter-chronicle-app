@@ -19,6 +19,10 @@ const EncounterTracker = () => {
   const [notes, setNotes] = useState('');
   const [history, setHistory] = useState([]);
 
+  const toggleEncounter = () => {
+    setIsRunning(prevIsRunning => !prevIsRunning);
+  };
+
   // ... (keep all the existing useEffect hooks and functions)
 
   const addCharacter = () => {
@@ -46,6 +50,11 @@ const EncounterTracker = () => {
         <div className="bg-white shadow-md rounded-lg p-6 flex flex-col h-full">
           <div className="sticky top-0 bg-white z-10 pb-4">
             <EncounterHeader
+  encounterName={encounterName}
+  setEncounterName={setEncounterName}
+  isRunning={isRunning}
+  toggleEncounter={toggleEncounter}
+  encounterTime={encounterTime}
               encounterName={encounterName}
               setEncounterName={setEncounterName}
               isRunning={isRunning}
