@@ -171,14 +171,39 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             </div>
           </div>
 
-          {/* Fourth row - Inline Note */}
-          <div className="mt-2">
+          {/* Fourth row - Inline Note and Delete button */}
+          <div className="mt-2 flex items-center justify-between">
             <Input
               value={character.note || ''}
               onChange={(e) => handleInputChange('note', e.target.value)}
               placeholder="Add a note..."
-              className="w-full"
+              className="flex-grow mr-2"
             />
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button 
+                  variant="link" 
+                  size="sm" 
+                  className="text-gray-700 hover:text-red-500 text-xs p-0 transition-colors duration-200 whitespace-nowrap"
+                >
+                  Delete character
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete the character.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => removeCharacter(character.id)}>
+                    Delete
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </div>
       </div>
@@ -186,35 +211,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       {/* Right Tab */}
       <div className={`w-16 ${getTabColor()} ${isActive ? 'text-white' : ''} flex items-stretch`}>
         <div className="flex-1"></div>
-      </div>
-
-      {/* Delete button aligned at the bottom */}
-      <div className="absolute bottom-2 right-2">
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button 
-              variant="link" 
-              size="sm" 
-              className="text-gray-700 hover:text-red-500 text-xs p-0 transition-colors duration-200"
-            >
-              Delete character
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete the character.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={() => removeCharacter(character.id)}>
-                Delete
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
       </div>
     </div>
   );
