@@ -175,7 +175,7 @@ const EncounterTracker = () => {
             </div>
           </div>
           <div className="flex">
-            <div className="w-16 mr-2"></div>
+            <div className="w-8 mr-2"></div>
             <div className="flex-grow flex flex-col">
               <CharacterList 
                 characters={characters} 
