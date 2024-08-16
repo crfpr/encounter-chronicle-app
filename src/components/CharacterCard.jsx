@@ -40,16 +40,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     if (isActive) {
       return 'bg-black';
     }
-    switch (character.type) {
-      case 'PC':
-        return 'bg-blue-500';
-      case 'Enemy':
-        return 'bg-red-500';
-      case 'Neutral':
-        return 'bg-gray-500';
-      default:
-        return 'bg-gray-300';
-    }
+    return getBorderColor().replace('border-', 'bg-');
   };
 
   const handleInputChange = (field, value) => {
@@ -63,7 +54,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   return (
     <div className={`flex ${getBackgroundColor()} ${getBorderColor()} relative overflow-hidden rounded-lg border-4`}>
       {/* Left Tab */}
-      <div className={`w-16 ${isActive ? 'bg-black text-white' : ''} flex items-stretch`}>
+      <div className={`w-16 ${getTabColor()} ${isActive ? 'text-white' : ''} flex items-stretch`}>
         {isActive ? (
           <div className="flex-1 flex items-center justify-center">
             <TurnNavigator
