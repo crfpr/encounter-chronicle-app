@@ -21,9 +21,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const getBorderColor = () => {
-    if (isActive) {
-      return 'border-black';
-    }
     switch (character.type) {
       case 'PC':
         return 'border-blue-500';
@@ -32,7 +29,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       case 'Neutral':
         return 'border-gray-500';
       default:
-        return 'border-gray-300';
+        return 'border-black';
     }
   };
 
