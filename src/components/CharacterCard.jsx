@@ -117,16 +117,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           </div>
 
           {/* Second row */}
-          <div className="flex items-center space-x-4">
-            <Input
-              type="number"
-              value={character.ac}
-              onChange={(e) => handleInputChange('ac', parseInt(e.target.value))}
-              className="w-16 text-center" placeholder="AC"
-            />
-          </div>
-
-          {/* Third row */}
           <div className="flex flex-wrap items-center gap-2">
             <Button
               onClick={() => toggleAction('action')}
@@ -166,7 +156,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             </div>
           </div>
 
-          {/* Fourth row - Inline Note and Delete button */}
+          {/* Third row - Inline Note and Delete button */}
           <div className="mt-2 flex items-center justify-between">
             <Input
               value={character.note || ''}
@@ -204,31 +194,42 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       </div>
 
       {/* Right Tab */}
-      <div className={`w-24 ${getTabColor()} flex flex-col items-center justify-center p-2`}>
-        <div className="flex flex-col items-center mb-2">
-          <label className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>Temp HP</label>
-          <Input
-            type="number"
-            value={character.tempHp}
-            onChange={(e) => handleInputChange('tempHp', Math.max(0, parseInt(e.target.value) || 0))}
-            className="w-16 text-center bg-white text-black"
-          />
+      <div className={`w-24 ${getTabColor()} flex flex-col items-center justify-between p-2`}>
+        <div className="flex flex-col items-center space-y-2">
+          <div className="flex flex-col items-center">
+            <label className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>Temp HP</label>
+            <Input
+              type="number"
+              value={character.tempHp}
+              onChange={(e) => handleInputChange('tempHp', Math.max(0, parseInt(e.target.value) || 0))}
+              className="w-16 text-center bg-white text-black"
+            />
+          </div>
+          <div className="flex flex-col items-center">
+            <label className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>Current HP</label>
+            <Input
+              type="number"
+              value={character.currentHp}
+              onChange={(e) => handleInputChange('currentHp', parseInt(e.target.value) || 0)}
+              className="w-16 text-center bg-white text-black"
+            />
+          </div>
+          <div className="flex flex-col items-center">
+            <label className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>Max HP</label>
+            <Input
+              type="number"
+              value={character.maxHp}
+              onChange={(e) => handleInputChange('maxHp', parseInt(e.target.value) || 0)}
+              className="w-16 text-center bg-white text-black"
+            />
+          </div>
         </div>
-        <div className="flex flex-col items-center mb-2">
-          <label className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>Current HP</label>
+        <div className="flex flex-col items-center mt-2">
+          <label className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>AC</label>
           <Input
             type="number"
-            value={character.currentHp}
-            onChange={(e) => handleInputChange('currentHp', parseInt(e.target.value) || 0)}
-            className="w-16 text-center bg-white text-black"
-          />
-        </div>
-        <div className="flex flex-col items-center">
-          <label className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>Max HP</label>
-          <Input
-            type="number"
-            value={character.maxHp}
-            onChange={(e) => handleInputChange('maxHp', parseInt(e.target.value) || 0)}
+            value={character.ac}
+            onChange={(e) => handleInputChange('ac', parseInt(e.target.value))}
             className="w-16 text-center bg-white text-black"
           />
         </div>
