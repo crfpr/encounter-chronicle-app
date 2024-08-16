@@ -44,16 +44,20 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   return (
     <div className={`flex ${getBackgroundColor()} relative overflow-hidden rounded-lg`}>
       {/* Tab element with TurnNavigator */}
-      <div className={`w-16 h-full ${isActive ? 'bg-black text-white' : getBorderColor()} flex items-center justify-center`}>
+      <div className={`w-16 ${isActive ? 'bg-black text-white' : getBorderColor()} flex items-stretch`}>
         {isActive ? (
-          <TurnNavigator
-            turnTime={turnTime}
-            onPreviousTurn={onPreviousTurn}
-            onNextTurn={onNextTurn}
-          />
+          <div className="flex-1 flex items-center justify-center">
+            <TurnNavigator
+              turnTime={turnTime}
+              onPreviousTurn={onPreviousTurn}
+              onNextTurn={onNextTurn}
+            />
+          </div>
         ) : (
-          <div className="text-sm font-semibold rotate-[-90deg] whitespace-nowrap overflow-hidden text-ellipsis" style={{ maxWidth: '100px' }}>
-            {character.name}
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-sm font-semibold rotate-[-90deg] whitespace-nowrap overflow-hidden text-ellipsis" style={{ maxWidth: '100px' }}>
+              {character.name}
+            </div>
           </div>
         )}
       </div>
