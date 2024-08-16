@@ -107,7 +107,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               <div className="w-16 text-xs">Init.</div>
               <div className="w-[100px] text-xs">Type</div>
               <div className="flex-grow text-xs">Name</div>
-              <div className="w-[140px] text-xs">HP</div>
+              <div className="w-[220px] text-xs">Temp HP / HP</div>
               <div className="w-16 text-xs">AC</div>
             </div>
             <div className="flex items-center space-x-4">
@@ -133,6 +133,12 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 className="flex-grow"
               />
               <div className="flex items-center space-x-2">
+                <Input
+                  value={character.tempHp || 0}
+                  onChange={(e) => handleChange('tempHp', parseInt(e.target.value) || 0)}
+                  className="w-16"
+                  type="number"
+                />
                 <Input
                   value={character.currentHp}
                   onChange={(e) => handleChange('currentHp', parseInt(e.target.value) || 0)}
