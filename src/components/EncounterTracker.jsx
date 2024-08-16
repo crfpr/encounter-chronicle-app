@@ -172,13 +172,17 @@ const EncounterTracker = () => {
               {showSparkles && <Sparkles />}
             </div>
           </div>
-          <div className="flex">
-            <TurnNavigator
-              turnTime={turnTime}
-              onPreviousTurn={handlePreviousTurn}
-              onNextTurn={handleNextTurn}
-            />
-            <div className="flex-grow flex flex-col">
+          <div className="flex relative">
+            {characters.length > 0 && (
+              <div className="absolute left-0 top-0 bottom-0 flex items-center">
+                <TurnNavigator
+                  turnTime={turnTime}
+                  onPreviousTurn={handlePreviousTurn}
+                  onNextTurn={handleNextTurn}
+                />
+              </div>
+            )}
+            <div className="flex-grow flex flex-col pl-16">
               <CharacterList 
                 characters={characters} 
                 setCharacters={setCharacters} 
