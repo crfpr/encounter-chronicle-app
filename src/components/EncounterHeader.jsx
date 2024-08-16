@@ -14,11 +14,11 @@ const EncounterHeader = ({ encounterName, setEncounterName, isRunning, toggleEnc
       <Input
         value={encounterName}
         onChange={(e) => setEncounterName(e.target.value)}
-        className="text-2xl font-bold w-64"
+        className="text-lg font-bold w-64"
       />
       <div className="flex items-center space-x-4">
-        <div className="text-xl font-semibold">{formatTime(encounterTime)}</div>
-        <Button onClick={toggleEncounter} variant="outline">
+        <div className="text-lg font-semibold">{formatTime(encounterTime)}</div>
+        <Button onClick={toggleEncounter} variant="outline" className="h-[30px] px-3 text-sm">
           {isRunning ? 'Pause Encounter' : 'Start Encounter'}
         </Button>
       </div>

@@ -94,12 +94,13 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               type="number"
               value={character.initiative}
               onChange={(e) => handleInputChange('initiative', parseInt(e.target.value))}
-              className="w-16 text-center" placeholder="Initiative"
+              className="w-16 text-center"
+              placeholder="Initiative"
             />
             <Input
               value={character.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
-              className="text-xl font-bold flex-grow"
+              className="text-lg font-bold flex-grow"
             />
             <Select
               value={character.type}
@@ -121,21 +122,21 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             <Button
               onClick={() => toggleAction('action')}
               variant={character.action ? 'default' : 'outline'}
-              size="sm"
+              className="btn-sm"
             >
               Action
             </Button>
             <Button
               onClick={() => toggleAction('bonusAction')}
               variant={character.bonusAction ? 'default' : 'outline'}
-              size="sm"
+              className="btn-sm"
             >
               Bonus Action
             </Button>
             <Button
               onClick={() => toggleAction('reaction')}
               variant={character.reaction ? 'default' : 'outline'}
-              size="sm"
+              className="btn-sm"
             >
               Reaction
             </Button>
@@ -144,14 +145,16 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 type="number"
                 value={character.currentMovement}
                 onChange={(e) => handleInputChange('currentMovement', parseInt(e.target.value))}
-                className="w-16 text-center" placeholder="Current Move"
+                className="w-16 text-center"
+                placeholder="Current Move"
               />
               <span>/</span>
               <Input
                 type="number"
                 value={character.maxMovement}
                 onChange={(e) => handleInputChange('maxMovement', parseInt(e.target.value))}
-                className="w-16 text-center" placeholder="Max Move"
+                className="w-16 text-center"
+                placeholder="Max Move"
               />
             </div>
           </div>
@@ -168,8 +171,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               <AlertDialogTrigger asChild>
                 <Button 
                   variant="link" 
-                  size="sm" 
-                  className="text-gray-700 hover:text-red-500 text-xs p-0 transition-colors duration-200 whitespace-nowrap"
+                  className="btn-sm text-gray-700 hover:text-red-500 transition-colors duration-200 whitespace-nowrap"
                 >
                   Delete character
                 </Button>

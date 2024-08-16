@@ -73,4 +73,13 @@
   body {
     @apply bg-background text-foreground;
   }
+  input, select, button {
+    @apply h-[30px] text-sm;
+  }
+}
+
+@layer components {
+  .btn-sm {
+    @apply h-[30px] px-2 text-xs;
+  }
 }
