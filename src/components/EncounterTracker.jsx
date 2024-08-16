@@ -173,20 +173,14 @@ const EncounterTracker = () => {
             </div>
           </div>
           <div className="flex relative">
-            {characters.length > 0 && (
-              <div className="absolute left-0 top-0 bottom-0 flex items-center">
-                <TurnNavigator
-                  turnTime={turnTime}
-                  onPreviousTurn={handlePreviousTurn}
-                  onNextTurn={handleNextTurn}
-                />
-              </div>
-            )}
-            <div className="flex-grow flex flex-col pl-16">
+            <div className="flex-grow">
               <CharacterList 
                 characters={characters} 
                 setCharacters={setCharacters} 
                 activeCharacterIndex={activeCharacterIndex}
+                turnTime={turnTime}
+                onPreviousTurn={handlePreviousTurn}
+                onNextTurn={handleNextTurn}
               />
             </div>
           </div>

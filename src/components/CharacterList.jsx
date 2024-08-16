@@ -1,8 +1,9 @@
 import React from 'react';
 import CharacterCard from './CharacterCard';
 import { Button } from '../components/ui/button';
+import TurnNavigator from './TurnNavigator';
 
-const CharacterList = ({ characters, setCharacters, activeCharacterIndex }) => {
+const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTime, onPreviousTurn, onNextTurn }) => {
   const addCharacter = () => {
     const newCharacter = {
       id: Date.now(),
@@ -37,12 +38,25 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex }) => {
     <div className="space-y-4 mb-4">
       {characters.map((character, index) => (
         <div key={character.id} className={`relative ${index === activeCharacterIndex ? 'z-10' : 'z-0'}`}>
-          <CharacterCard
-            character={character}
-            updateCharacter={updateCharacter}
-            removeCharacter={removeCharacter}
-            isActive={index === activeCharacterIndex}
-          />
+          <div className="flex items-center">
+            {index === activeCharacterIndex && characters.length > 0 && (
+              <div className="mr-4">
+                <TurnNavigator
+                  turnTime={turnTime}
+                  onPreviousTurn={onPreviousTurn}
+                  onNextTurn={onNextTurn}
+                />
+              </div>
+            )}
+            <div className="flex-grow">
+              <CharacterCard
+                character={character}
+                updateCharacter={updateCharacter}
+                removeCharacter={removeCharacter}
+                isActive={index === activeCharacterIndex}
+              />
+            </div>
+          </div>
         </div>
       ))}
       <Button onClick={addCharacter} className="w-full bg-black hover:bg-gray-800 text-white">Add Character</Button>
