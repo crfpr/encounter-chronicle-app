@@ -36,6 +36,22 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     }
   };
 
+  const getTabColor = () => {
+    if (isActive) {
+      return 'bg-black';
+    }
+    switch (character.type) {
+      case 'PC':
+        return 'bg-blue-500';
+      case 'Enemy':
+        return 'bg-red-500';
+      case 'Neutral':
+        return 'bg-gray-500';
+      default:
+        return 'bg-gray-300';
+    }
+  };
+
   const handleInputChange = (field, value) => {
     updateCharacter({ ...character, [field]: value });
   };
@@ -194,7 +210,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       </div>
 
       {/* Right Tab */}
-      <div className={`w-16 ${isActive ? 'bg-black text-white' : ''} flex items-stretch`}>
+      <div className={`w-16 ${getTabColor()} ${isActive ? 'text-white' : ''} flex items-stretch`}>
         <div className="flex-1"></div>
       </div>
     </div>
