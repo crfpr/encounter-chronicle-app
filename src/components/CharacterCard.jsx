@@ -53,7 +53,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           />
         ) : (
           <div className="text-sm font-semibold rotate-[-90deg] whitespace-nowrap">
-            {character.name}
+            &nbsp;
           </div>
         )}
       </div>
@@ -75,14 +75,14 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               type="number"
               value={character.initiative}
               onChange={(e) => handleInputChange('initiative', parseInt(e.target.value))}
-              className="w-16 text-center"
+              className="w-16 text-center" placeholder="AC" placeholder="Initiative"
             />
             <Select
               value={character.type}
               onValueChange={(value) => handleInputChange('type', value)}
             >
               <SelectTrigger className="w-[120px]">
-                <SelectValue placeholder="Type" />
+                <SelectValue placeholder="Character Type" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="PC">PC</SelectItem>
@@ -99,21 +99,21 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 type="number"
                 value={character.currentHp}
                 onChange={(e) => handleInputChange('currentHp', parseInt(e.target.value))}
-                className="w-16 text-center"
+                className="w-16 text-center" placeholder="Current HP"
               />
               <span>/</span>
               <Input
                 type="number"
                 value={character.maxHp}
                 onChange={(e) => handleInputChange('maxHp', parseInt(e.target.value))}
-                className="w-16 text-center"
+                className="w-16 text-center" placeholder="Max HP"
               />
             </div>
             <Input
               type="number"
               value={character.ac}
               onChange={(e) => handleInputChange('ac', parseInt(e.target.value))}
-              className="w-16 text-center"
+              className="w-16 text-center" placeholder="AC" placeholder="Initiative"
             />
           </div>
 
@@ -145,14 +145,14 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 type="number"
                 value={character.currentMovement}
                 onChange={(e) => handleInputChange('currentMovement', parseInt(e.target.value))}
-                className="w-16 text-center"
+                className="w-16 text-center" placeholder="Current Move"
               />
               <span>/</span>
               <Input
                 type="number"
                 value={character.maxMovement}
                 onChange={(e) => handleInputChange('maxMovement', parseInt(e.target.value))}
-                className="w-16 text-center"
+                className="w-16 text-center" placeholder="Max Move"
               />
             </div>
           </div>
