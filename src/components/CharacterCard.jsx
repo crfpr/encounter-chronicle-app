@@ -42,9 +42,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   return (
-    <div className={`flex ${getBackgroundColor()} relative overflow-hidden rounded-lg`}>
+    <div className={`flex ${getBackgroundColor()} ${getBorderColor()} relative overflow-hidden rounded-lg border-4`}>
       {/* Left Tab */}
-      <div className={`w-16 ${isActive ? 'bg-black text-white' : getBorderColor()} flex items-stretch`}>
+      <div className={`w-16 ${isActive ? 'bg-black text-white' : ''} flex items-stretch`}>
         {isActive ? (
           <div className="flex-1 flex items-center justify-center">
             <TurnNavigator
@@ -58,11 +58,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         )}
       </div>
       
-      <div className={`flex-grow p-4 relative`}>
-        <div 
-          className={`absolute inset-0 pointer-events-none ${getBorderColor()} ${character.currentHp / character.maxHp <= 0.25 ? 'animate-pulse' : ''}`} 
-          style={{ borderWidth: '4px' }}
-        ></div>
+      <div className="flex-grow p-4 relative">
         <div className="relative z-10 space-y-4">
           {/* First row */}
           <div className="flex items-end space-x-4">
@@ -195,7 +191,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       </div>
 
       {/* Right Tab */}
-      <div className={`w-16 ${isActive ? 'bg-black text-white' : getBorderColor()} flex items-stretch`}>
+      <div className={`w-16 ${isActive ? 'bg-black text-white' : ''} flex items-stretch`}>
         <div className="flex-1"></div>
       </div>
     </div>
