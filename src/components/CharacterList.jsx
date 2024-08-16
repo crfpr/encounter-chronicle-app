@@ -1,9 +1,8 @@
 import React from 'react';
 import CharacterCard from './CharacterCard';
-import TurnNavigator from './TurnNavigator';
 import { Button } from '../components/ui/button';
 
-const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTime, onNextTurn, onPreviousTurn }) => {
+const CharacterList = ({ characters, setCharacters, activeCharacterIndex }) => {
   const addCharacter = () => {
     const newCharacter = {
       id: Date.now(),
@@ -35,30 +34,17 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
   };
 
   return (
-    <div className="space-y-4 mb-4 flex-grow">
+    <div className="space-y-4 mb-4">
       {characters.map((character, index) => (
-        <div key={character.id} className="flex items-stretch">
-          {index === activeCharacterIndex && (
-            <TurnNavigator
-              turnTime={turnTime}
-              onNextTurn={onNextTurn}
-              onPreviousTurn={onPreviousTurn}
-            />
-          )}
-          <div className="flex-grow">
-            <CharacterCard
-              character={character}
-              updateCharacter={updateCharacter}
-              removeCharacter={removeCharacter}
-              isActive={index === activeCharacterIndex}
-            />
-          </div>
-        </div>
+        <CharacterCard
+          key={character.id}
+          character={character}
+          updateCharacter={updateCharacter}
+          removeCharacter={removeCharacter}
+          isActive={index === activeCharacterIndex}
+        />
       ))}
-      <div className="flex mt-4">
-        <div className="w-16 mr-2"></div>
-        <Button onClick={addCharacter} className="flex-grow bg-black hover:bg-gray-800 text-white">Add Character</Button>
-      </div>
+      <Button onClick={addCharacter} className="w-full bg-black hover:bg-gray-800 text-white">Add Character</Button>
     </div>
   );
 };

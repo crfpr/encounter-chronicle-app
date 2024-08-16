@@ -3,6 +3,7 @@ import EncounterHeader from './EncounterHeader';
 import CharacterList from './CharacterList';
 import CharacterStats from './CharacterStats';
 import NotesSection from './NotesSection';
+import TurnNavigator from './TurnNavigator';
 import Sparkles from './Sparkles';
 import { Button } from '../components/ui/button';
 
@@ -51,14 +52,12 @@ const EncounterTracker = () => {
 
     setCharacters(prevCharacters => prevCharacters.map((char, index) => {
       if (index === activeCharacterIndex) {
-        // Update current character
         return {
           ...char,
           turnCount: Math.min((char.turnCount || 0) + 1, round),
           cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime
         };
       } else if (index === nextIndex) {
-        // Reset action, bonus action, and movement for the next character
         return {
           ...char,
           action: false,
@@ -86,7 +85,6 @@ const EncounterTracker = () => {
         return prevRound + 1;
       });
 
-      // Reset reactions for all characters at the start of a new round
       setCharacters(prevCharacters => prevCharacters.map(char => ({
         ...char,
         reaction: false
@@ -175,15 +173,16 @@ const EncounterTracker = () => {
             </div>
           </div>
           <div className="flex">
-            <div className="w-16 mr-2"></div>
+            <TurnNavigator
+              turnTime={turnTime}
+              onPreviousTurn={handlePreviousTurn}
+              onNextTurn={handleNextTurn}
+            />
             <div className="flex-grow flex flex-col">
               <CharacterList 
                 characters={characters} 
                 setCharacters={setCharacters} 
                 activeCharacterIndex={activeCharacterIndex}
-                turnTime={turnTime}
-                onNextTurn={handleNextTurn}
-                onPreviousTurn={handlePreviousTurn}
               />
             </div>
           </div>
