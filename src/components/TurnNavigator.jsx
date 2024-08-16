@@ -14,7 +14,7 @@ const TurnNavigator = ({ turnTime, onPreviousTurn, onNextTurn }) => {
       <Button onClick={onPreviousTurn} variant="ghost" size="icon" className="p-0">
         <ChevronUp className="h-4 w-4" />
       </Button>
-      <div className="text-xs font-semibold rotate-[-90deg] whitespace-nowrap">
+      <div className="text-xs font-semibold rotate-90 whitespace-nowrap">
         {formatTime(turnTime)}
       </div>
       <Button onClick={onNextTurn} variant="ghost" size="icon" className="p-0">
