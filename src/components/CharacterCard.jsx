@@ -54,11 +54,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             />
           </div>
         ) : (
-          <div className="flex-1 flex items-center justify-center">
-            <div className="text-sm font-semibold rotate-[-90deg] whitespace-nowrap overflow-hidden text-ellipsis" style={{ maxWidth: '100px' }}>
-              {character.name}
-            </div>
-          </div>
+          <div className="flex-1"></div>
         )}
       </div>
       
