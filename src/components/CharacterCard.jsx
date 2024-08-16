@@ -108,21 +108,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
           {/* Second row */}
           <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <Input
-                type="number"
-                value={character.currentHp}
-                onChange={(e) => handleInputChange('currentHp', parseInt(e.target.value))}
-                className="w-16 text-center" placeholder="Current HP"
-              />
-              <span>/</span>
-              <Input
-                type="number"
-                value={character.maxHp}
-                onChange={(e) => handleInputChange('maxHp', parseInt(e.target.value))}
-                className="w-16 text-center" placeholder="Max HP"
-              />
-            </div>
             <Input
               type="number"
               value={character.ac}
@@ -209,8 +194,34 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       </div>
 
       {/* Right Tab */}
-      <div className={`w-16 ${getTabColor()} ${isActive ? 'text-white' : ''} flex items-stretch`}>
-        <div className="flex-1"></div>
+      <div className={`w-24 ${getTabColor()} ${isActive ? 'text-white' : ''} flex flex-col items-center justify-center p-2`}>
+        <div className="flex flex-col items-center mb-2">
+          <label className="text-xs mb-1">Temp HP</label>
+          <Input
+            type="number"
+            value={character.tempHp || 0}
+            onChange={(e) => handleInputChange('tempHp', parseInt(e.target.value))}
+            className="w-16 text-center"
+          />
+        </div>
+        <div className="flex flex-col items-center mb-2">
+          <label className="text-xs mb-1">Current HP</label>
+          <Input
+            type="number"
+            value={character.currentHp}
+            onChange={(e) => handleInputChange('currentHp', parseInt(e.target.value))}
+            className="w-16 text-center"
+          />
+        </div>
+        <div className="flex flex-col items-center">
+          <label className="text-xs mb-1">Max HP</label>
+          <Input
+            type="number"
+            value={character.maxHp}
+            onChange={(e) => handleInputChange('maxHp', parseInt(e.target.value))}
+            className="w-16 text-center"
+          />
+        </div>
       </div>
     </div>
   );
