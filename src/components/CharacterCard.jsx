@@ -26,13 +26,13 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     }
     switch (character.type) {
       case 'PC':
-        return 'border-blue-500';
+        return 'border-blue-300';
       case 'Enemy':
-        return 'border-gray-500';
-      case 'Neutral':
-        return 'border-purple-500';
-      default:
         return 'border-gray-300';
+      case 'Neutral':
+        return 'border-purple-300';
+      default:
+        return 'border-gray-200';
     }
   };
 
@@ -42,13 +42,13 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     }
     switch (character.type) {
       case 'PC':
-        return 'bg-blue-500';
+        return 'bg-blue-300';
       case 'Enemy':
-        return 'bg-gray-500';
-      case 'Neutral':
-        return 'bg-purple-500';
-      default:
         return 'bg-gray-300';
+      case 'Neutral':
+        return 'bg-purple-300';
+      default:
+        return 'bg-gray-200';
     }
   };
 
