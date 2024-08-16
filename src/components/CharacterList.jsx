@@ -45,7 +45,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
               onPreviousTurn={onPreviousTurn}
             />
           )}
-          <div className={index === activeCharacterIndex ? '' : 'ml-16'}>
+          <div className="flex-grow">
             <CharacterCard
               character={character}
               updateCharacter={updateCharacter}

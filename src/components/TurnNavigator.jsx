@@ -10,7 +10,7 @@ const TurnNavigator = ({ turnTime, onPreviousTurn, onNextTurn }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-16">
+    <div className="flex flex-col items-center justify-center w-16 mr-2">
       <Button onClick={onPreviousTurn} variant="ghost" size="icon" className="p-0 mb-2">
         <ChevronUp className="h-6 w-6" />
       </Button>

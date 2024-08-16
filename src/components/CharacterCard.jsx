@@ -3,7 +3,7 @@ import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
-import { X, ChevronUp, ChevronDown } from 'lucide-react';
+import { X } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive }) => {
   const handleChange = (field, value) => {
