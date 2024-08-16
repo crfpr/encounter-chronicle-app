@@ -19,10 +19,6 @@ const EncounterTracker = () => {
   const [notes, setNotes] = useState('');
   const [history, setHistory] = useState([]);
 
-  const toggleEncounter = useCallback(() => {
-    setIsRunning(prevIsRunning => !prevIsRunning);
-  }, []);
-
   // ... (keep all other functions and useEffects as they were)
 
   return (
