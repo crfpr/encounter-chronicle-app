@@ -19,13 +19,91 @@ const EncounterTracker = () => {
   const [notes, setNotes] = useState('');
   const [history, setHistory] = useState([]);
 
-  // ... (keep all other functions and useEffects as they were)
+  const toggleEncounter = useCallback(() => {
+    setIsRunning(prevIsRunning => !prevIsRunning);
+  }, []);
+
+  const handlePreviousTurn = useCallback(() => {
+    setActiveCharacterIndex(prevIndex => {
+      if (prevIndex > 0) {
+        return prevIndex - 1;
+      } else {
+        setRound(prevRound => Math.max(1, prevRound - 1));
+        return characters.length - 1;
+      }
+    });
+    setTurnTime(0);
+  }, [characters.length]);
+
+  const handleNextTurn = useCallback(() => {
+    setActiveCharacterIndex(prevIndex => {
+      if (prevIndex < characters.length - 1) {
+        return prevIndex + 1;
+      } else {
+        setRound(prevRound => prevRound + 1);
+        setShowSparkles(true);
+        setTimeout(() => setShowSparkles(false), 1000);
+        return 0;
+      }
+    });
+    setTurnTime(0);
+  }, [characters.length]);
+
+  const addCharacter = useCallback(() => {
+    const newCharacter = {
+      id: Date.now(),
+      name: `Character ${characters.length + 1}`,
+      initiative: 10,
+      type: 'PC',
+      currentHp: 20,
+      maxHp: 20,
+      tempHp: 0,
+      ac: 15,
+      action: false,
+      bonusAction: false,
+      reaction: false,
+      currentMovement: 30,
+      maxMovement: 30,
+      conditions: [],
+      note: '',
+    };
+    setCharacters(prevCharacters => [...prevCharacters, newCharacter].sort((a, b) => b.initiative - a.initiative));
+  }, [characters.length]);
+
+  useEffect(() => {
+    let interval;
+    if (isRunning) {
+      interval = setInterval(() => {
+        setEncounterTime(prevTime => prevTime + 1);
+        setTurnTime(prevTime => prevTime + 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isRunning]);
+
+  const exportEncounterData = () => {
+    const data = {
+      encounterName,
+      round,
+      characters,
+      encounterTime,
+      notes,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${encounterName.replace(/\s+/g, '_')}_data.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="flex space-x-6">
       <div className="flex-grow space-y-6">
         <div className="bg-white shadow-md rounded-lg p-6 relative">
-          {/* Row 1: Header */}
           <EncounterHeader
             encounterName={encounterName}
             setEncounterName={setEncounterName}
@@ -34,7 +112,6 @@ const EncounterTracker = () => {
             encounterTime={encounterTime}
           />
           
-          {/* Row 2: Round */}
           <div className="flex justify-between items-center mb-4">
             <div className="text-xl font-semibold flex items-center">
               Round {round}
@@ -42,7 +119,6 @@ const EncounterTracker = () => {
             </div>
           </div>
           
-          {/* Row 3: Turn nav, time, and character cards */}
           <div className="flex">
             <div className="w-24 mr-2 flex flex-col items-start justify-start">
               <div className="text-sm font-semibold mb-2">
@@ -67,7 +143,6 @@ const EncounterTracker = () => {
             </div>
           </div>
           
-          {/* Row 4: Add Character Button */}
           <div className="mt-4">
             <Button onClick={addCharacter} className="w-full bg-black hover:bg-gray-800 text-white">
               Add Character
@@ -91,7 +166,6 @@ const EncounterTracker = () => {
   );
 };
 
-// Helper function to format time
 const formatTime = (seconds) => {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
