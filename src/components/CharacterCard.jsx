@@ -44,7 +44,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   return (
     <div className={`flex ${getBackgroundColor()} relative overflow-hidden rounded-lg`}>
       {/* Tab element with TurnNavigator */}
-      <div className={`w-16 h-full ${isActive ? 'bg-black text-white' : getBorderColor()} flex flex-col items-center justify-center`}>
+      <div className={`w-16 h-full ${isActive ? 'bg-black text-white' : getBorderColor()} flex items-center justify-center`}>
         {isActive ? (
           <TurnNavigator
             turnTime={turnTime}
@@ -53,7 +53,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           />
         ) : (
           <div className="text-sm font-semibold rotate-[-90deg] whitespace-nowrap">
-            &nbsp;
+            {character.name}
           </div>
         )}
       </div>
