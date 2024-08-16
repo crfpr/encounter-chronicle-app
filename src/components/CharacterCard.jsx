@@ -52,6 +52,16 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const handleInputChange = (field, value) => {
+    if (field === 'currentHp') {
+      value = Math.min(Math.max(0, value), character.maxHp);
+    }
+    if (field === 'maxHp') {
+      value = Math.max(0, value);
+      if (character.currentHp > value) {
+        updateCharacter({ ...character, [field]: value, currentHp: value });
+        return;
+      }
+    }
     updateCharacter({ ...character, [field]: value });
   };
 
@@ -196,29 +206,29 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       {/* Right Tab */}
       <div className={`w-24 ${getTabColor()} ${isActive ? 'text-white' : ''} flex flex-col items-center justify-center p-2`}>
         <div className="flex flex-col items-center mb-2">
-          <label className="text-xs mb-1">Temp HP</label>
+          <label className="text-[8px] mb-1">Temp HP</label>
           <Input
             type="number"
-            value={character.tempHp || 0}
-            onChange={(e) => handleInputChange('tempHp', parseInt(e.target.value))}
+            value={character.tempHp}
+            onChange={(e) => handleInputChange('tempHp', Math.max(0, parseInt(e.target.value) || 0))}
             className="w-16 text-center"
           />
         </div>
         <div className="flex flex-col items-center mb-2">
-          <label className="text-xs mb-1">Current HP</label>
+          <label className="text-[8px] mb-1">Current HP</label>
           <Input
             type="number"
             value={character.currentHp}
-            onChange={(e) => handleInputChange('currentHp', parseInt(e.target.value))}
+            onChange={(e) => handleInputChange('currentHp', parseInt(e.target.value) || 0)}
             className="w-16 text-center"
           />
         </div>
         <div className="flex flex-col items-center">
-          <label className="text-xs mb-1">Max HP</label>
+          <label className="text-[8px] mb-1">Max HP</label>
           <Input
             type="number"
             value={character.maxHp}
-            onChange={(e) => handleInputChange('maxHp', parseInt(e.target.value))}
+            onChange={(e) => handleInputChange('maxHp', parseInt(e.target.value) || 0)}
             className="w-16 text-center"
           />
         </div>
