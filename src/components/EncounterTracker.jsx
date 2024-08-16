@@ -51,10 +51,24 @@ const EncounterTracker = () => {
 
     setCharacters(prevCharacters => prevCharacters.map((char, index) => {
       if (index === activeCharacterIndex) {
+        // Update current character
         return {
           ...char,
           turnCount: Math.min((char.turnCount || 0) + 1, round),
           cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime
+        };
+      } else if (index === nextIndex) {
+        // Reset action, bonus action, and movement for the next character
+        return {
+          ...char,
+          action: false,
+          bonusAction: false,
+          currentMovement: char.maxMovement,
+          conditions: char.conditions.map(condition => ({
+            ...condition,
+            duration: condition.duration === 'P' ? 'P' : 
+              (parseInt(condition.duration) > 1 ? (parseInt(condition.duration) - 1).toString() : '0')
+          })).filter(condition => condition.duration !== '0')
         };
       }
       return char;
@@ -72,19 +86,10 @@ const EncounterTracker = () => {
         return prevRound + 1;
       });
 
+      // Reset reactions for all characters at the start of a new round
       setCharacters(prevCharacters => prevCharacters.map(char => ({
         ...char,
-        action: false,
-        bonusAction: false,
-        reaction: false,
-        currentMovement: char.maxMovement,
-        conditions: char.conditions
-          .map(condition => ({
-            ...condition,
-            duration: condition.duration === 'P' ? 'P' : 
-              (parseInt(condition.duration) > 1 ? (parseInt(condition.duration) - 1).toString() : '0')
-          }))
-          .filter(condition => condition.duration !== '0')
+        reaction: false
       })));
     }
   }, [characters, activeCharacterIndex, turnTime, round]);
