@@ -5,7 +5,7 @@ import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import { X } from 'lucide-react';
 
-const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn }) => {
+const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive }) => {
   const handleChange = (field, value) => {
     let updatedCharacter = { ...character, [field]: value };
 
@@ -47,6 +47,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const getBorderColor = () => {
+    if (isActive) {
+      return 'border-black';
+    }
     const hpPercentage = (character.currentHp / character.maxHp) * 100;
     if (hpPercentage <= 25) {
       return 'border-red-600';
@@ -69,29 +72,13 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     </div>
   );
 
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
-
   return (
-    <div className="flex">
-      <div className={`w-9 flex-shrink-0 ${isActive ? 'bg-black' : getBorderColor()}`}>
-        {isActive && (
-          <div className="flex flex-col items-center justify-between h-full py-2">
-            <button onClick={onPreviousTurn} className="text-white">▲</button>
-            <div className="text-white text-xs">{formatTime(turnTime)}</div>
-            <button onClick={onNextTurn} className="text-white">▼</button>
-          </div>
-        )}
-      </div>
-      <div className={`flex-grow p-4 rounded-r-lg ${getBackgroundColor()} relative overflow-hidden`}>
-        <div 
-          className={`absolute inset-0 rounded-r-lg pointer-events-none ${getBorderColor()} ${character.currentHp / character.maxHp <= 0.25 ? 'animate-pulse' : ''}`} 
-          style={{ borderWidth: '4px', borderLeftWidth: '0' }}
-        ></div>
-        <div className="relative z-10 space-y-4">
+    <div className={`flex-grow p-4 rounded-lg ${getBackgroundColor()} relative overflow-hidden`}>
+      <div 
+        className={`absolute inset-0 rounded-lg pointer-events-none ${getBorderColor()} ${character.currentHp / character.maxHp <= 0.25 ? 'animate-pulse' : ''}`} 
+        style={{ borderWidth: '4px' }}
+      ></div>
+      <div className="relative z-10 space-y-4">
         {/* First row */}
         <div className="flex items-end space-x-4">
           <div className="flex flex-col">
