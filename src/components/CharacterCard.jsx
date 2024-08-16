@@ -204,32 +204,32 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       </div>
 
       {/* Right Tab */}
-      <div className={`w-24 ${getTabColor()} ${isActive ? 'text-white' : ''} flex flex-col items-center justify-center p-2`}>
+      <div className={`w-24 ${getTabColor()} flex flex-col items-center justify-center p-2`}>
         <div className="flex flex-col items-center mb-2">
-          <label className="text-[8px] mb-1">Temp HP</label>
+          <label className="text-[8px] mb-1 text-black">Temp HP</label>
           <Input
             type="number"
             value={character.tempHp}
             onChange={(e) => handleInputChange('tempHp', Math.max(0, parseInt(e.target.value) || 0))}
-            className="w-16 text-center"
+            className="w-16 text-center bg-white text-black"
           />
         </div>
         <div className="flex flex-col items-center mb-2">
-          <label className="text-[8px] mb-1">Current HP</label>
+          <label className="text-[8px] mb-1 text-black">Current HP</label>
           <Input
             type="number"
             value={character.currentHp}
             onChange={(e) => handleInputChange('currentHp', parseInt(e.target.value) || 0)}
-            className="w-16 text-center"
+            className="w-16 text-center bg-white text-black"
           />
         </div>
         <div className="flex flex-col items-center">
-          <label className="text-[8px] mb-1">Max HP</label>
+          <label className="text-[8px] mb-1 text-black">Max HP</label>
           <Input
             type="number"
             value={character.maxHp}
             onChange={(e) => handleInputChange('maxHp', parseInt(e.target.value) || 0)}
-            className="w-16 text-center"
+            className="w-16 text-center bg-white text-black"
           />
         </div>
       </div>
