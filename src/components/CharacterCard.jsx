@@ -137,7 +137,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               />
               <div className="w-[300px] flex items-center space-x-2">
                 <div className="flex flex-col items-start w-16">
-                  <span className="text-xs mb-1">Temp HP</span>
                   <Input
                     value={character.tempHp || 0}
                     onChange={(e) => handleChange('tempHp', parseInt(e.target.value) || 0)}
@@ -146,7 +145,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   />
                 </div>
                 <div className="flex flex-col items-start ml-2 flex-grow">
-                  <span className="text-xs mb-1">HP</span>
                   <div className="flex items-center space-x-2 w-full">
                     <Input
                       value={character.currentHp}
