@@ -28,7 +28,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       case 'PC':
         return 'border-blue-300';
       case 'Enemy':
-        return 'border-red-500';
+        return 'border-gray-500';
       case 'Neutral':
         return 'border-purple-300';
       default:
@@ -44,7 +44,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       case 'PC':
         return 'bg-blue-300';
       case 'Enemy':
-        return 'bg-red-500';
+        return 'bg-gray-500';
       case 'Neutral':
         return 'bg-purple-300';
       default:
