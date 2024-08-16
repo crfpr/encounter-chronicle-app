@@ -3,7 +3,7 @@ import EncounterHeader from './EncounterHeader';
 import CharacterList from './CharacterList';
 import CharacterStats from './CharacterStats';
 import NotesSection from './NotesSection';
-import TurnNavigator from './TurnNavigator';
+// TurnNavigator import removed
 import Sparkles from './Sparkles';
 import { Button } from '../components/ui/button';
 
@@ -13,7 +13,7 @@ const EncounterTracker = () => {
   const [characters, setCharacters] = useState([]);
   const [activeCharacterIndex, setActiveCharacterIndex] = useState(0);
   const [encounterTime, setEncounterTime] = useState(0);
-  const [turnTime, setTurnTime] = useState(0);
+  // turnTime state removed
   const [isRunning, setIsRunning] = useState(false);
   const [showSparkles, setShowSparkles] = useState(false);
   const [roundStates, setRoundStates] = useState([]);
@@ -39,7 +39,6 @@ const EncounterTracker = () => {
     if (isRunning) {
       interval = setInterval(() => {
         setEncounterTime((prevTime) => prevTime + 1);
-        setTurnTime((prevTime) => prevTime + 1);
       }, 1000);
     }
     return () => clearInterval(interval);
@@ -55,7 +54,6 @@ const EncounterTracker = () => {
         return {
           ...char,
           turnCount: Math.min((char.turnCount || 0) + 1, round),
-          cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime
         };
       } else if (index === nextIndex) {
         return {
@@ -73,7 +71,7 @@ const EncounterTracker = () => {
       return char;
     }));
 
-    setTurnTime(0);
+    // setTurnTime(0) removed
     setActiveCharacterIndex(nextIndex);
 
     if (nextIndex === 0) {
@@ -95,7 +93,7 @@ const EncounterTracker = () => {
   const handlePreviousTurn = useCallback(() => {
     if (characters.length === 0) return;
 
-    setTurnTime(0);
+    // setTurnTime(0) removed
     const prevIndex = (activeCharacterIndex - 1 + characters.length) % characters.length;
     setActiveCharacterIndex(prevIndex);
 

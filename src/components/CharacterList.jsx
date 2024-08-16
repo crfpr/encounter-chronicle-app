@@ -1,9 +1,9 @@
 import React from 'react';
 import CharacterCard from './CharacterCard';
 import { Button } from '../components/ui/button';
-import TurnNavigator from './TurnNavigator';
+// TurnNavigator import removed
 
-const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTime, onPreviousTurn, onNextTurn }) => {
+const CharacterList = ({ characters, setCharacters, activeCharacterIndex }) => {
   const addCharacter = () => {
     const newCharacter = {
       id: Date.now(),
@@ -39,15 +39,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
       {characters.map((character, index) => (
         <div key={character.id} className={`relative ${index === activeCharacterIndex ? 'z-10' : 'z-0'}`}>
           <div className="flex items-center">
-            {index === activeCharacterIndex && characters.length > 0 && (
-              <div className="mr-4">
-                <TurnNavigator
-                  turnTime={turnTime}
-                  onPreviousTurn={onPreviousTurn}
-                  onNextTurn={onNextTurn}
-                />
-              </div>
-            )}
+            {/* TurnNavigator removed */}
             <div className="flex-grow">
               <CharacterCard
                 character={character}
