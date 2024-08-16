@@ -23,7 +23,85 @@ const EncounterTracker = () => {
     setIsRunning(prevIsRunning => !prevIsRunning);
   }, []);
 
-  // ... (keep all other functions and useEffects as they were)
+  const handlePreviousTurn = useCallback(() => {
+    setActiveCharacterIndex((prevIndex) => {
+      if (prevIndex > 0) {
+        return prevIndex - 1;
+      } else {
+        // If at the start of the round, go to the last character of the previous round
+        setRound((prevRound) => Math.max(1, prevRound - 1));
+        return characters.length - 1;
+      }
+    });
+    setTurnTime(0);
+  }, [characters.length]);
+
+  const handleNextTurn = useCallback(() => {
+    setActiveCharacterIndex((prevIndex) => {
+      if (prevIndex < characters.length - 1) {
+        return prevIndex + 1;
+      } else {
+        // If at the end of the round, start a new round
+        setRound((prevRound) => prevRound + 1);
+        setShowSparkles(true);
+        setTimeout(() => setShowSparkles(false), 1000);
+        return 0;
+      }
+    });
+    setTurnTime(0);
+  }, [characters.length]);
+
+  const addCharacter = useCallback(() => {
+    const newCharacter = {
+      id: Date.now(),
+      name: `Character ${characters.length + 1}`,
+      initiative: 10,
+      type: 'PC',
+      currentHp: 20,
+      maxHp: 20,
+      tempHp: 0,
+      ac: 15,
+      conditions: [],
+      action: false,
+      bonusAction: false,
+      reaction: false,
+      currentMovement: 30,
+      maxMovement: 30,
+      turnCount: 0,
+      cumulativeTurnTime: 0,
+    };
+    setCharacters(prevCharacters => [...prevCharacters, newCharacter].sort((a, b) => b.initiative - a.initiative));
+  }, [characters.length]);
+
+  const exportEncounterData = useCallback(() => {
+    const data = {
+      encounterName,
+      round,
+      characters,
+      encounterTime,
+      notes,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${encounterName.replace(/\s+/g, '_')}_data.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [encounterName, round, characters, encounterTime, notes]);
+
+  useEffect(() => {
+    let interval;
+    if (isRunning) {
+      interval = setInterval(() => {
+        setEncounterTime((prevTime) => prevTime + 1);
+        setTurnTime((prevTime) => prevTime + 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isRunning]);
 
   return (
     <div className="flex space-x-6">
