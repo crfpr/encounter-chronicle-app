@@ -8,6 +8,32 @@ import { X } from 'lucide-react';
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive }) => {
   // ... (keep all existing functions)
 
+  const getBackgroundColor = () => {
+    switch (character.type) {
+      case 'PC':
+        return 'bg-blue-100';
+      case 'Enemy':
+        return 'bg-red-100';
+      case 'Neutral':
+        return 'bg-gray-100';
+      default:
+        return 'bg-white';
+    }
+  };
+
+  const getBorderColor = () => {
+    switch (character.type) {
+      case 'PC':
+        return 'border-blue-500';
+      case 'Enemy':
+        return 'border-red-500';
+      case 'Neutral':
+        return 'border-gray-500';
+      default:
+        return 'border-black';
+    }
+  };
+
   return (
     <div className={`flex ${getBackgroundColor()} relative overflow-hidden rounded-lg`}>
       {/* New Tab element */}
