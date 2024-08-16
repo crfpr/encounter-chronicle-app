@@ -3,7 +3,6 @@ import EncounterHeader from './EncounterHeader';
 import CharacterList from './CharacterList';
 import CharacterStats from './CharacterStats';
 import NotesSection from './NotesSection';
-import TurnNavigator from './TurnNavigator';
 import Sparkles from './Sparkles';
 import { Button } from '../components/ui/button';
 

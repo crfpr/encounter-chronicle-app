@@ -3,9 +3,10 @@ import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
-import { X } from 'lucide-react';
+import { X, ChevronUp, ChevronDown } from 'lucide-react';
+import TurnNavigator from './TurnNavigator';
 
-const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive }) => {
+const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn }) => {
   const getBackgroundColor = () => {
     switch (character.type) {
       case 'PC':
@@ -42,8 +43,16 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive }
 
   return (
     <div className={`flex ${getBackgroundColor()} relative overflow-hidden rounded-lg`}>
-      {/* New Tab element */}
-      <div className={`w-9 h-full ${isActive ? 'bg-black' : getBorderColor()}`}></div>
+      {/* New Tab element with TurnNavigator */}
+      <div className={`w-16 h-full ${isActive ? 'bg-black' : getBorderColor()} flex flex-col items-center justify-center`}>
+        {isActive && (
+          <TurnNavigator
+            turnTime={turnTime}
+            onPreviousTurn={onPreviousTurn}
+            onNextTurn={onNextTurn}
+          />
+        )}
+      </div>
       
       <div className={`flex-grow p-4 relative`}>
         <div 
