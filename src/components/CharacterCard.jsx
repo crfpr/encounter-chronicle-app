@@ -206,7 +206,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       {/* Right Tab */}
       <div className={`w-24 ${getTabColor()} flex flex-col items-center justify-center p-2`}>
         <div className="flex flex-col items-center mb-2">
-          <label className="text-[8px] mb-1 text-black">Temp HP</label>
+          <label className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>Temp HP</label>
           <Input
             type="number"
             value={character.tempHp}
@@ -215,7 +215,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           />
         </div>
         <div className="flex flex-col items-center mb-2">
-          <label className="text-[8px] mb-1 text-black">Current HP</label>
+          <label className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>Current HP</label>
           <Input
             type="number"
             value={character.currentHp}
@@ -224,7 +224,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           />
         </div>
         <div className="flex flex-col items-center">
-          <label className="text-[8px] mb-1 text-black">Max HP</label>
+          <label className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>Max HP</label>
           <Input
             type="number"
             value={character.maxHp}
