@@ -23,6 +23,32 @@ const EncounterTracker = () => {
     setIsRunning(prevIsRunning => !prevIsRunning);
   };
 
+  const handlePreviousTurn = () => {
+    setActiveCharacterIndex((prevIndex) => {
+      if (prevIndex === 0) {
+        // If at the start of the list, go to the last character and decrease the round
+        setRound((prevRound) => Math.max(1, prevRound - 1));
+        return characters.length - 1;
+      }
+      return prevIndex - 1;
+    });
+    setTurnTime(0);
+  };
+
+  const handleNextTurn = () => {
+    setActiveCharacterIndex((prevIndex) => {
+      if (prevIndex === characters.length - 1) {
+        // If at the end of the list, go back to the first character and increase the round
+        setRound((prevRound) => prevRound + 1);
+        setShowSparkles(true);
+        setTimeout(() => setShowSparkles(false), 2000);
+        return 0;
+      }
+      return prevIndex + 1;
+    });
+    setTurnTime(0);
+  };
+
   // ... (keep all the existing useEffect hooks and functions)
 
   const addCharacter = () => {
