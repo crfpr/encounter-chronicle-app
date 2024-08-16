@@ -5,141 +5,246 @@ import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import { X } from 'lucide-react';
 
-const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive }) => {
-  // ... (keep all existing functions)
+const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn }) => {
+  const handleChange = (field, value) => {
+    let updatedCharacter = { ...character, [field]: value };
+
+    if (field === 'currentMovement') {
+      updatedCharacter.currentMovement = Math.min(value, character.maxMovement);
+    }
+
+    if (field === 'maxMovement' && value < character.currentMovement) {
+      updatedCharacter.currentMovement = value;
+    }
+
+    updateCharacter(updatedCharacter);
+  };
+
+  const addCondition = () => {
+    const newCondition = { name: 'New Condition', duration: '1' };
+    handleChange('conditions', [...character.conditions, newCondition]);
+  };
+
+  const updateCondition = (index, field, value) => {
+    const updatedConditions = character.conditions.map((condition, i) => 
+      i === index ? { ...condition, [field]: value } : condition
+    );
+    handleChange('conditions', updatedConditions);
+  };
+
+  const removeCondition = (index) => {
+    const updatedConditions = character.conditions.filter((_, i) => i !== index);
+    handleChange('conditions', updatedConditions);
+  };
 
   const getBackgroundColor = () => {
     switch (character.type) {
-      case 'PC':
-        return 'bg-blue-100';
-      case 'Enemy':
-        return 'bg-red-100';
-      case 'Neutral':
-        return 'bg-gray-100';
-      default:
-        return 'bg-white';
+      case 'PC': return 'bg-blue-100';
+      case 'NPC': return 'bg-gray-100';
+      case 'Enemy': return 'bg-gray-300';
+      default: return 'bg-white';
     }
   };
 
   const getBorderColor = () => {
-    switch (character.type) {
-      case 'PC':
-        return 'border-blue-500';
-      case 'Enemy':
-        return 'border-red-500';
-      case 'Neutral':
-        return 'border-gray-500';
-      default:
-        return 'border-black';
+    const hpPercentage = (character.currentHp / character.maxHp) * 100;
+    if (hpPercentage <= 25) {
+      return 'border-red-600';
+    } else if (hpPercentage <= 50) {
+      return 'border-yellow-600';
     }
+    return 'border-gray-200';
+  };
+
+  const CustomCheckbox = ({ id, checked, onChange, label }) => (
+    <div className="flex items-center space-x-2">
+      <input
+        id={id}
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        className="h-4 w-4"
+      />
+      <label htmlFor={id} className="text-sm">{label}</label>
+    </div>
+  );
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
   return (
-    <div className={`flex ${getBackgroundColor()} relative overflow-hidden rounded-lg`}>
-      {/* New Tab element */}
-      <div className={`w-9 h-full ${isActive ? 'bg-black' : getBorderColor()}`}></div>
-      
-      <div className={`flex-grow p-4 relative`}>
+    <div className="flex">
+      <div className={`w-9 flex-shrink-0 ${isActive ? 'bg-black' : getBorderColor()}`}>
+        {isActive && (
+          <div className="flex flex-col items-center justify-between h-full py-2">
+            <button onClick={onPreviousTurn} className="text-white">▲</button>
+            <div className="text-white text-xs">{formatTime(turnTime)}</div>
+            <button onClick={onNextTurn} className="text-white">▼</button>
+          </div>
+        )}
+      </div>
+      <div className={`flex-grow p-4 rounded-r-lg ${getBackgroundColor()} relative overflow-hidden`}>
         <div 
-          className={`absolute inset-0 pointer-events-none ${getBorderColor()} ${character.currentHp / character.maxHp <= 0.25 ? 'animate-pulse' : ''}`} 
-          style={{ borderWidth: '4px' }}
+          className={`absolute inset-0 rounded-r-lg pointer-events-none ${getBorderColor()} ${character.currentHp / character.maxHp <= 0.25 ? 'animate-pulse' : ''}`} 
+          style={{ borderWidth: '4px', borderLeftWidth: '0' }}
         ></div>
         <div className="relative z-10 space-y-4">
           {/* First row */}
           <div className="flex items-end space-x-4">
-            <Input
-              value={character.initiative}
-              onChange={(e) => updateCharacter({ ...character, initiative: e.target.value })}
-              className="w-16 text-center font-bold"
-            />
-            <Input
-              value={character.name}
-              onChange={(e) => updateCharacter({ ...character, name: e.target.value })}
-              className="flex-grow font-semibold"
-            />
-            <Select
-              value={character.type}
-              onValueChange={(value) => updateCharacter({ ...character, type: value })}
-            >
-              <SelectTrigger className="w-[120px]">
-                <SelectValue placeholder="Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="PC">PC</SelectItem>
-                <SelectItem value="Enemy">Enemy</SelectItem>
-                <SelectItem value="Neutral">Neutral</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex flex-col">
+              <div className="text-xs mb-1">Init.</div>
+              <Input
+                value={character.initiative}
+                onChange={(e) => handleChange('initiative', parseInt(e.target.value) || 0)}
+                className="w-16"
+                type="number"
+              />
+            </div>
+            <div className="flex flex-col">
+              <div className="text-xs mb-1">Type</div>
+              <Select value={character.type} onValueChange={(value) => handleChange('type', value)}>
+                <SelectTrigger className="w-[100px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="PC">PC</SelectItem>
+                  <SelectItem value="NPC">NPC</SelectItem>
+                  <SelectItem value="Enemy">Enemy</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex flex-col flex-grow">
+              <div className="text-xs mb-1">Name</div>
+              <Input
+                value={character.name}
+                onChange={(e) => handleChange('name', e.target.value)}
+                className="w-full"
+              />
+            </div>
+            <div className="flex space-x-2">
+              <div className="flex flex-col">
+                <div className="text-xs mb-1">Temp HP</div>
+                <Input
+                  value={character.tempHp || 0}
+                  onChange={(e) => handleChange('tempHp', parseInt(e.target.value) || 0)}
+                  className="w-16"
+                  type="number"
+                />
+              </div>
+              <div className="flex flex-col">
+                <div className="text-xs mb-1">HP</div>
+                <div className="flex items-center space-x-2">
+                  <Input
+                    value={character.currentHp}
+                    onChange={(e) => handleChange('currentHp', parseInt(e.target.value) || 0)}
+                    className="w-16"
+                    type="number"
+                  />
+                  <span>/</span>
+                  <Input
+                    value={character.maxHp}
+                    onChange={(e) => handleChange('maxHp', parseInt(e.target.value) || 0)}
+                    className="w-16"
+                    type="number"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <div className="text-xs mb-1">AC</div>
+              <Input
+                value={character.ac}
+                onChange={(e) => handleChange('ac', parseInt(e.target.value) || 0)}
+                className="w-16 text-center"
+                type="number"
+                min="0"
+                max="99"
+              />
+            </div>
           </div>
 
           {/* Second row */}
           <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <Input
-                value={character.currentHp}
-                onChange={(e) => updateCharacter({ ...character, currentHp: e.target.value })}
-                className="w-16 text-center"
-              />
-              <span>/</span>
-              <Input
-                value={character.maxHp}
-                onChange={(e) => updateCharacter({ ...character, maxHp: e.target.value })}
-                className="w-16 text-center"
-              />
-            </div>
-            <Input
-              value={character.ac}
-              onChange={(e) => updateCharacter({ ...character, ac: e.target.value })}
-              className="w-16 text-center"
-              placeholder="AC"
+            <CustomCheckbox
+              id={`action-${character.id}`}
+              checked={character.action}
+              onChange={(checked) => handleChange('action', checked)}
+              label="Action"
             />
-          </div>
-
-          {/* Third row */}
-          <div className="flex flex-wrap items-center gap-2">
-            <Button
-              variant={character.action ? 'default' : 'outline'}
-              onClick={() => updateCharacter({ ...character, action: !character.action })}
-              size="sm"
-            >
-              Action
-            </Button>
-            <Button
-              variant={character.bonusAction ? 'default' : 'outline'}
-              onClick={() => updateCharacter({ ...character, bonusAction: !character.bonusAction })}
-              size="sm"
-            >
-              Bonus Action
-            </Button>
+            <CustomCheckbox
+              id={`bonus-action-${character.id}`}
+              checked={character.bonusAction}
+              onChange={(checked) => handleChange('bonusAction', checked)}
+              label="Bonus"
+            />
+            <CustomCheckbox
+              id={`reaction-${character.id}`}
+              checked={character.reaction}
+              onChange={(checked) => handleChange('reaction', checked)}
+              label="Reaction"
+            />
             <div className="flex items-center space-x-2">
               <Input
                 value={character.currentMovement}
-                onChange={(e) => updateCharacter({ ...character, currentMovement: e.target.value })}
-                className="w-16 text-center"
+                onChange={(e) => handleChange('currentMovement', parseInt(e.target.value) || 0)}
+                className="w-16"
+                type="number"
               />
               <span>/</span>
               <Input
                 value={character.maxMovement}
-                onChange={(e) => updateCharacter({ ...character, maxMovement: e.target.value })}
-                className="w-16 text-center"
+                onChange={(e) => handleChange('maxMovement', parseInt(e.target.value) || 0)}
+                className="w-16"
+                type="number"
               />
+              <span className="text-sm">ft</span>
             </div>
-            <Button
-              variant={character.reaction ? 'default' : 'outline'}
-              onClick={() => updateCharacter({ ...character, reaction: !character.reaction })}
-              size="sm"
-            >
-              Reaction
-            </Button>
+          </div>
+
+          {/* Third row */}
+          <div className="flex flex-wrap items-center gap-2">
+            <Button onClick={addCondition} variant="outline" size="sm" className="h-9">Add Token</Button>
+            {character.conditions.map((condition, index) => (
+              <div key={index} className="flex items-center bg-gray-100 rounded h-9 overflow-hidden">
+                <input
+                  value={condition.name}
+                  onChange={(e) => updateCondition(index, 'name', e.target.value)}
+                  className="bg-transparent border-none focus:outline-none px-2 w-full max-w-[150px] text-sm"
+                  placeholder="Condition"
+                  maxLength={25}
+                />
+                <Select
+                  value={condition.duration}
+                  onValueChange={(value) => updateCondition(index, 'duration', value)}
+                >
+                  <SelectTrigger className="w-14 h-full border-none">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[...Array(10)].map((_, i) => (
+                      <SelectItem key={i + 1} value={(i + 1).toString()}>{i + 1}</SelectItem>
+                    ))}
+                    <SelectItem value="P">P</SelectItem>
+                  </SelectContent>
+                </Select>
+                <button onClick={() => removeCondition(index)} className="px-2 h-full flex items-center justify-center text-gray-500 hover:bg-gray-200">
+                  <X size={16} />
+                </button>
+              </div>
+            ))}
           </div>
 
           {/* Fourth row - Inline Note */}
           <div className="mt-2">
-            <Input
-              value={character.note}
-              onChange={(e) => updateCharacter({ ...character, note: e.target.value })}
-              className="w-full"
-              placeholder="Add a note..."
+            <textarea
+              value={character.note || ''}
+              onChange={(e) => handleChange('note', e.target.value)}
+              className="w-full p-2 text-sm bg-gray-50 border border-gray-200 rounded-md"
+              placeholder="Add notes for this character..."
+              rows="2"
             />
           </div>
 
@@ -147,21 +252,19 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive }
           <div className="flex justify-end mt-2">
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="sm">
-                  <X className="h-4 w-4" />
-                </Button>
+                <button className="text-red-500 hover:underline text-sm">Delete Character</button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete the character.
+                    This action cannot be undone. This will permanently delete the character from the encounter.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction onClick={() => removeCharacter(character.id)}>
-                    Delete
+                    Yes, delete character
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
