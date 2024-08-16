@@ -135,8 +135,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 onChange={(e) => handleChange('name', e.target.value)}
                 className="flex-grow"
               />
-              <div className="w-[300px] flex items-center space-x-2">
+              <div className="w-[300px] flex items-end space-x-2">
                 <div className="flex flex-col items-start w-16">
+                  <div className="text-xs mb-1">Temp HP</div>
                   <Input
                     value={character.tempHp || 0}
                     onChange={(e) => handleChange('tempHp', parseInt(e.target.value) || 0)}
@@ -145,6 +146,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   />
                 </div>
                 <div className="flex flex-col items-start ml-2 flex-grow">
+                  <div className="text-xs mb-1">HP</div>
                   <div className="flex items-center space-x-2 w-full">
                     <Input
                       value={character.currentHp}
