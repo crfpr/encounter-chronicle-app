@@ -185,7 +185,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           <div className="flex justify-end mt-2">
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="link" size="sm" className="text-red-500 text-xs p-0">
+                <Button 
+                  variant="link" 
+                  size="sm" 
+                  className="text-gray-700 hover:text-red-500 text-xs p-0 transition-colors duration-200"
+                >
                   Delete character
                 </Button>
               </AlertDialogTrigger>
