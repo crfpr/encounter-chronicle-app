@@ -5,7 +5,7 @@ import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import { X, ChevronUp, ChevronDown } from 'lucide-react';
 
-const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive }) => {
+const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn }) => {
   const handleChange = (field, value) => {
     let updatedCharacter = { ...character, [field]: value };
 
@@ -21,7 +21,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive }
   };
 
   const addCondition = () => {
-    const newCondition = { name: 'New Token', duration: '1' };
+    const newCondition = { name: 'New Condition', duration: '1' };
     handleChange('conditions', [...character.conditions, newCondition]);
   };
 
@@ -72,8 +72,30 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive }
     </div>
   );
 
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
   return (
-    <div className={`p-4 rounded-lg ${getBackgroundColor()} relative overflow-hidden`}>
+    <div className="flex items-stretch space-x-2">
+      <div className="w-16 flex flex-col items-center justify-center">
+        {isActive && (
+          <>
+            <Button onClick={onPreviousTurn} variant="ghost" size="icon" className="p-0 mb-2">
+              <ChevronUp className="h-6 w-6" />
+            </Button>
+            <div className="flex flex-col items-center">
+              <div className="text-sm font-semibold">{formatTime(turnTime)}</div>
+            </div>
+            <Button onClick={onNextTurn} variant="ghost" size="icon" className="p-0 mt-2">
+              <ChevronDown className="h-6 w-6" />
+            </Button>
+          </>
+        )}
+      </div>
+      <div className={`flex-grow p-4 rounded-lg ${getBackgroundColor()} relative overflow-hidden`}>
         <div 
           className={`absolute inset-0 rounded-lg pointer-events-none ${getBorderColor()} ${character.currentHp / character.maxHp <= 0.25 ? 'animate-pulse' : ''}`} 
           style={{ borderWidth: '4px' }}

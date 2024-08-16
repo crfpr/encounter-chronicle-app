@@ -168,27 +168,15 @@ const EncounterTracker = () => {
             toggleEncounter={toggleEncounter}
             encounterTime={encounterTime}
           />
-          <div className="flex items-center mb-4">
+          <div className="flex justify-between items-center mb-4">
             <div className="text-xl font-semibold flex items-center">
               Round {round}
               {showSparkles && <Sparkles />}
             </div>
           </div>
           <div className="flex">
-            <div className="w-12 mr-2 flex flex-col items-start">
-              {characters.length > 0 && (
-                <>
-                  <Button onClick={handlePreviousTurn} variant="ghost" size="icon" className="p-0 mb-2">
-                    <ChevronUp className="h-6 w-6" />
-                  </Button>
-                  <div className="text-sm font-semibold mb-2">{formatTime(turnTime)}</div>
-                  <Button onClick={handleNextTurn} variant="ghost" size="icon" className="p-0">
-                    <ChevronDown className="h-6 w-6" />
-                  </Button>
-                </>
-              )}
-            </div>
-            <div className="flex-grow">
+            <div className="w-16 mr-2"></div>
+            <div className="flex-grow flex flex-col">
               <CharacterList 
                 characters={characters} 
                 setCharacters={setCharacters} 
