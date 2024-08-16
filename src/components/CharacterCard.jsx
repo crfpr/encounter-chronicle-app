@@ -136,26 +136,32 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 className="flex-grow"
               />
               <div className="w-[300px] flex items-center space-x-2">
-                <Input
-                  value={character.tempHp || 0}
-                  onChange={(e) => handleChange('tempHp', parseInt(e.target.value) || 0)}
-                  className="w-16"
-                  type="number"
-                />
-                <div className="flex items-center space-x-2 ml-2">
+                <div className="flex flex-col items-start w-16">
+                  <span className="text-xs mb-1">Temp HP</span>
                   <Input
-                    value={character.currentHp}
-                    onChange={(e) => handleChange('currentHp', parseInt(e.target.value) || 0)}
-                    className="w-16"
+                    value={character.tempHp || 0}
+                    onChange={(e) => handleChange('tempHp', parseInt(e.target.value) || 0)}
+                    className="w-full"
                     type="number"
                   />
-                  <span>/</span>
-                  <Input
-                    value={character.maxHp}
-                    onChange={(e) => handleChange('maxHp', parseInt(e.target.value) || 0)}
-                    className="w-16"
-                    type="number"
-                  />
+                </div>
+                <div className="flex flex-col items-start ml-2 flex-grow">
+                  <span className="text-xs mb-1">HP</span>
+                  <div className="flex items-center space-x-2 w-full">
+                    <Input
+                      value={character.currentHp}
+                      onChange={(e) => handleChange('currentHp', parseInt(e.target.value) || 0)}
+                      className="w-16"
+                      type="number"
+                    />
+                    <span>/</span>
+                    <Input
+                      value={character.maxHp}
+                      onChange={(e) => handleChange('maxHp', parseInt(e.target.value) || 0)}
+                      className="w-16"
+                      type="number"
+                    />
+                  </div>
                 </div>
               </div>
               <Input
