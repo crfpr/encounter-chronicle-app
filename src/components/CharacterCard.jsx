@@ -91,15 +91,15 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           {/* First row */}
           <div className="flex items-end space-x-4">
             <Input
-              value={character.name}
-              onChange={(e) => handleInputChange('name', e.target.value)}
-              className="text-xl font-bold"
-            />
-            <Input
               type="number"
               value={character.initiative}
               onChange={(e) => handleInputChange('initiative', parseInt(e.target.value))}
               className="w-16 text-center" placeholder="Initiative"
+            />
+            <Input
+              value={character.name}
+              onChange={(e) => handleInputChange('name', e.target.value)}
+              className="text-xl font-bold flex-grow"
             />
             <Select
               value={character.type}
