@@ -1,5 +1,6 @@
 import React from 'react';
 import CharacterCard from './CharacterCard';
+import TurnNavigator from './TurnNavigator';
 import { Button } from '../components/ui/button';
 
 const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTime, onNextTurn, onPreviousTurn }) => {
@@ -36,16 +37,23 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
   return (
     <div className="space-y-4 mb-4 flex-grow">
       {characters.map((character, index) => (
-        <CharacterCard
-          key={character.id}
-          character={character}
-          updateCharacter={updateCharacter}
-          removeCharacter={removeCharacter}
-          isActive={index === activeCharacterIndex}
-          turnTime={turnTime}
-          onNextTurn={onNextTurn}
-          onPreviousTurn={onPreviousTurn}
-        />
+        <div key={character.id} className="flex items-stretch">
+          {index === activeCharacterIndex && (
+            <TurnNavigator
+              turnTime={turnTime}
+              onNextTurn={onNextTurn}
+              onPreviousTurn={onPreviousTurn}
+            />
+          )}
+          <div className={index === activeCharacterIndex ? '' : 'ml-16'}>
+            <CharacterCard
+              character={character}
+              updateCharacter={updateCharacter}
+              removeCharacter={removeCharacter}
+              isActive={index === activeCharacterIndex}
+            />
+          </div>
+        </div>
       ))}
       <div className="flex mt-4">
         <div className="w-16 mr-2"></div>
