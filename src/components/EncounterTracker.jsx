@@ -19,148 +19,13 @@ const EncounterTracker = () => {
   const [notes, setNotes] = useState('');
   const [history, setHistory] = useState([]);
 
-  useEffect(() => {
-    setHistory(prevHistory => [
-      ...prevHistory,
-      {
-        round,
-        characters: characters.map(char => ({ ...char })),
-        activeCharacterIndex,
-        encounterTime,
-        turnTime,
-        notes
-      }
-    ]);
-  }, [round, characters, activeCharacterIndex, encounterTime, turnTime, notes]);
-
-  useEffect(() => {
-    let interval;
-    if (isRunning) {
-      interval = setInterval(() => {
-        setEncounterTime((prevTime) => prevTime + 1);
-        setTurnTime((prevTime) => prevTime + 1);
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [isRunning]);
-
-  const handleNextTurn = useCallback(() => {
-    if (characters.length === 0) return;
-
-    const nextIndex = (activeCharacterIndex + 1) % characters.length;
-
-    setCharacters(prevCharacters => prevCharacters.map((char, index) => {
-      if (index === activeCharacterIndex) {
-        // Update current character
-        return {
-          ...char,
-          turnCount: Math.min((char.turnCount || 0) + 1, round),
-          cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime
-        };
-      } else if (index === nextIndex) {
-        // Reset action, bonus action, and movement for the next character
-        return {
-          ...char,
-          action: false,
-          bonusAction: false,
-          currentMovement: char.maxMovement,
-          conditions: char.conditions.map(condition => ({
-            ...condition,
-            duration: condition.duration === 'P' ? 'P' : 
-              (parseInt(condition.duration) > 1 ? (parseInt(condition.duration) - 1).toString() : '0')
-          })).filter(condition => condition.duration !== '0')
-        };
-      }
-      return char;
-    }));
-
-    setTurnTime(0);
-    setActiveCharacterIndex(nextIndex);
-
-    if (nextIndex === 0) {
-      setRoundStates(prevStates => [...prevStates, characters]);
-
-      setRound((prevRound) => {
-        setShowSparkles(true);
-        setTimeout(() => setShowSparkles(false), 1000);
-        return prevRound + 1;
-      });
-
-      // Reset reactions for all characters at the start of a new round
-      setCharacters(prevCharacters => prevCharacters.map(char => ({
-        ...char,
-        reaction: false
-      })));
-    }
-  }, [characters, activeCharacterIndex, turnTime, round]);
-
-  const handlePreviousTurn = useCallback(() => {
-    if (characters.length === 0) return;
-
-    setTurnTime(0);
-    const prevIndex = (activeCharacterIndex - 1 + characters.length) % characters.length;
-    setActiveCharacterIndex(prevIndex);
-
-    if (prevIndex === characters.length - 1) {
-      setRound((prevRound) => {
-        if (prevRound > 1) {
-          const previousState = roundStates[prevRound - 2];
-          if (previousState) {
-            setCharacters(previousState);
-            setRoundStates(prevStates => prevStates.slice(0, -1));
-          }
-        }
-        return Math.max(1, prevRound - 1);
-      });
-    }
-  }, [characters.length, roundStates, activeCharacterIndex]);
-
-  const toggleEncounter = () => {
-    setIsRunning((prevIsRunning) => !prevIsRunning);
-  };
-
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-        return;
-      }
-
-      if (event.key === 'ArrowUp') {
-        event.preventDefault();
-        handlePreviousTurn();
-      } else if (event.key === 'ArrowDown') {
-        event.preventDefault();
-        handleNextTurn();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [handleNextTurn, handlePreviousTurn]);
-
-  const exportEncounterData = () => {
-    const encounterData = {
-      encounterName,
-      history,
-      roundStates
-    };
-    const dataStr = JSON.stringify(encounterData, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    const exportFileDefaultName = `${encounterName.replace(/\s+/g, '_')}_export.json`;
-
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-  };
+  // ... (keep all other functions and useEffects as they were)
 
   return (
     <div className="flex space-x-6">
       <div className="flex-grow space-y-6">
         <div className="bg-white shadow-md rounded-lg p-6 relative">
+          {/* Row 1: Header */}
           <EncounterHeader
             encounterName={encounterName}
             setEncounterName={setEncounterName}
@@ -168,15 +33,29 @@ const EncounterTracker = () => {
             toggleEncounter={toggleEncounter}
             encounterTime={encounterTime}
           />
+          
+          {/* Row 2: Round */}
           <div className="flex justify-between items-center mb-4">
             <div className="text-xl font-semibold flex items-center">
               Round {round}
               {showSparkles && <Sparkles />}
             </div>
           </div>
+          
+          {/* Row 3: Turn nav, time, and character cards */}
           <div className="flex">
-            <div className="w-8 mr-2"></div>
-            <div className="flex-grow flex flex-col">
+            <div className="w-24 mr-2 flex flex-col items-start justify-start">
+              <div className="text-sm font-semibold mb-2">
+                Turn: {formatTime(turnTime)}
+              </div>
+              <Button onClick={handlePreviousTurn} variant="outline" size="sm" className="mb-2">
+                Previous
+              </Button>
+              <Button onClick={handleNextTurn} variant="outline" size="sm">
+                Next
+              </Button>
+            </div>
+            <div className="flex-grow">
               <CharacterList 
                 characters={characters} 
                 setCharacters={setCharacters} 
@@ -187,7 +66,15 @@ const EncounterTracker = () => {
               />
             </div>
           </div>
+          
+          {/* Row 4: Add Character Button */}
+          <div className="mt-4">
+            <Button onClick={addCharacter} className="w-full bg-black hover:bg-gray-800 text-white">
+              Add Character
+            </Button>
+          </div>
         </div>
+        
         <div className="bg-white shadow-md rounded-lg p-6">
           <CharacterStats characters={characters} round={round} />
         </div>
@@ -202,6 +89,13 @@ const EncounterTracker = () => {
       </div>
     </div>
   );
+};
+
+// Helper function to format time
+const formatTime = (seconds) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 };
 
 export default EncounterTracker;
