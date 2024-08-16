@@ -108,8 +108,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               <div className="w-[100px] text-xs">Type</div>
               <div className="flex-grow text-xs">Name</div>
               <div className="w-[300px] flex text-xs">
-                <div className="w-16">Temp HP</div>
-                <div className="w-32 ml-2">HP</div>
+                <div className="w-16"></div>
+                <div className="w-32 ml-2"></div>
               </div>
               <div className="w-16 text-xs">AC</div>
             </div>
