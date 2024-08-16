@@ -102,24 +102,18 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         ></div>
         <div className="relative z-10 space-y-4">
           {/* First row */}
-          <div className="space-y-1">
-            <div className="flex items-center space-x-4">
-              <div className="w-16 text-xs">Init.</div>
-              <div className="w-[100px] text-xs">Type</div>
-              <div className="flex-grow text-xs">Name</div>
-              <div className="w-[300px] flex text-xs">
-                <div className="w-16"></div>
-                <div className="w-32 ml-2"></div>
-              </div>
-              <div className="w-16 text-xs">AC</div>
-            </div>
-            <div className="flex items-center space-x-4">
+          <div className="flex items-end space-x-4">
+            <div className="flex flex-col">
+              <div className="text-xs mb-1">Init.</div>
               <Input
                 value={character.initiative}
                 onChange={(e) => handleChange('initiative', parseInt(e.target.value) || 0)}
                 className="w-16"
                 type="number"
               />
+            </div>
+            <div className="flex flex-col">
+              <div className="text-xs mb-1">Type</div>
               <Select value={character.type} onValueChange={(value) => handleChange('type', value)}>
                 <SelectTrigger className="w-[100px]">
                   <SelectValue />
@@ -130,40 +124,46 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   <SelectItem value="Enemy">Enemy</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+            <div className="flex flex-col flex-grow">
+              <div className="text-xs mb-1">Name</div>
               <Input
                 value={character.name}
                 onChange={(e) => handleChange('name', e.target.value)}
-                className="flex-grow"
+                className="w-full"
               />
-              <div className="w-[300px] flex items-end space-x-2">
-                <div className="flex flex-col items-start w-16">
-                  <div className="text-xs">Temp HP</div>
+            </div>
+            <div className="flex space-x-2">
+              <div className="flex flex-col">
+                <div className="text-xs mb-1">Temp HP</div>
+                <Input
+                  value={character.tempHp || 0}
+                  onChange={(e) => handleChange('tempHp', parseInt(e.target.value) || 0)}
+                  className="w-16"
+                  type="number"
+                />
+              </div>
+              <div className="flex flex-col">
+                <div className="text-xs mb-1">HP</div>
+                <div className="flex items-center space-x-2">
                   <Input
-                    value={character.tempHp || 0}
-                    onChange={(e) => handleChange('tempHp', parseInt(e.target.value) || 0)}
-                    className="w-full"
+                    value={character.currentHp}
+                    onChange={(e) => handleChange('currentHp', parseInt(e.target.value) || 0)}
+                    className="w-16"
+                    type="number"
+                  />
+                  <span>/</span>
+                  <Input
+                    value={character.maxHp}
+                    onChange={(e) => handleChange('maxHp', parseInt(e.target.value) || 0)}
+                    className="w-16"
                     type="number"
                   />
                 </div>
-                <div className="flex flex-col items-start ml-2 flex-grow">
-                  <div className="text-xs">HP</div>
-                  <div className="flex items-center space-x-2 w-full">
-                    <Input
-                      value={character.currentHp}
-                      onChange={(e) => handleChange('currentHp', parseInt(e.target.value) || 0)}
-                      className="w-16"
-                      type="number"
-                    />
-                    <span>/</span>
-                    <Input
-                      value={character.maxHp}
-                      onChange={(e) => handleChange('maxHp', parseInt(e.target.value) || 0)}
-                      className="w-16"
-                      type="number"
-                    />
-                  </div>
-                </div>
               </div>
+            </div>
+            <div className="flex flex-col">
+              <div className="text-xs mb-1">AC</div>
               <Input
                 value={character.ac}
                 onChange={(e) => handleChange('ac', parseInt(e.target.value) || 0)}
