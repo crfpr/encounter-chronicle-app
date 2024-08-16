@@ -52,7 +52,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             onNextTurn={onNextTurn}
           />
         ) : (
-          <div className="text-sm font-semibold rotate-[-90deg] whitespace-nowrap">
+          <div className="text-sm font-semibold rotate-[-90deg] whitespace-nowrap overflow-hidden text-ellipsis" style={{ maxWidth: '100px' }}>
             {character.name}
           </div>
         )}
