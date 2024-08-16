@@ -80,7 +80,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   return (
     <div className="flex items-stretch space-x-2">
-      <div className="w-12 flex flex-col items-center justify-center">
+      <div className="w-16 flex flex-col items-center justify-center">
         {isActive && (
           <>
             <Button onClick={onPreviousTurn} variant="ghost" size="icon" className="p-0 mb-2">
