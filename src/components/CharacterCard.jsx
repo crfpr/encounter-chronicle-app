@@ -202,40 +202,40 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       <div className={`w-24 ${getTabColor()} flex flex-col items-center justify-between p-2`}>
         <div className="flex flex-col items-center space-y-2">
           <div className="flex flex-col items-center">
+            <label className="text-xs font-semibold mb-1">Temp HP</label>
             <Input
               type="number"
               value={character.tempHp}
               onChange={(e) => handleInputChange('tempHp', Math.max(0, parseInt(e.target.value) || 0))}
               className="w-16 text-center bg-white text-black"
-              placeholder="Temp HP"
             />
           </div>
           <div className="flex flex-col items-center">
+            <label className="text-xs font-semibold mb-1">Current HP</label>
             <Input
               type="number"
               value={character.currentHp}
               onChange={(e) => handleInputChange('currentHp', parseInt(e.target.value) || 0)}
               className="w-16 text-center bg-white text-black"
-              placeholder="Current HP"
             />
           </div>
           <div className="flex flex-col items-center">
+            <label className="text-xs font-semibold mb-1">Max HP</label>
             <Input
               type="number"
               value={character.maxHp}
               onChange={(e) => handleInputChange('maxHp', parseInt(e.target.value) || 0)}
               className="w-16 text-center bg-white text-black"
-              placeholder="Max HP"
             />
           </div>
         </div>
         <div className="flex flex-col items-center mt-2">
+          <label className="text-xs font-semibold mb-1">AC</label>
           <Input
             type="number"
             value={character.ac}
             onChange={(e) => handleInputChange('ac', parseInt(e.target.value))}
             className="w-16 text-center bg-white text-black"
-            placeholder="AC"
           />
         </div>
       </div>
