@@ -6,7 +6,7 @@ import NotesSection from './NotesSection';
 import MobileMenu from './MobileMenu';
 import SwipeHandler from './SwipeHandler';
 
-const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData }) => {
+const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile }) => {
   const [round, setRound] = useState(1);
   const [characters, setCharacters] = useState([]);
   const [activeCharacterIndex, setActiveCharacterIndex] = useState(0);
@@ -15,7 +15,6 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   const [isRunning, setIsRunning] = useState(false);
   const [notes, setNotes] = useState('');
   const [activePage, setActivePage] = useState('tracker');
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const toggleEncounter = useCallback(() => {
     setIsRunning(prevIsRunning => !prevIsRunning);
@@ -33,14 +32,6 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
     }
     return () => clearInterval(interval);
   }, [isRunning]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const handlePreviousTurn = () => {
     setActiveCharacterIndex(prevIndex => 

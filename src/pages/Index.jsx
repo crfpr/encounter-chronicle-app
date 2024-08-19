@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EncounterTracker from '../components/EncounterTracker';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
@@ -7,6 +7,15 @@ import { Upload } from 'lucide-react';
 const Index = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
   const [encounterData, setEncounterData] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const exportEncounterData = () => {
     if (encounterData) {
@@ -41,23 +50,38 @@ const Index = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="flex flex-col h-screen">
-        <header className="bg-black text-white py-4 h-16">
+      {isMobile && (
+        <header className="fixed top-0 left-0 right-0 bg-black text-white py-2 z-50">
           <div className="container mx-auto px-4">
             <Input
               value={encounterName}
               onChange={(e) => setEncounterName(e.target.value)}
-              className="text-2xl font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0"
+              className="text-xl font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0"
               placeholder="Enter encounter name..."
             />
           </div>
         </header>
+      )}
+      <div className={`flex flex-col h-screen ${isMobile ? 'pt-12' : ''}`}>
+        {!isMobile && (
+          <header className="bg-black text-white py-4 h-16">
+            <div className="container mx-auto px-4">
+              <Input
+                value={encounterName}
+                onChange={(e) => setEncounterName(e.target.value)}
+                className="text-2xl font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0"
+                placeholder="Enter encounter name..."
+              />
+            </div>
+          </header>
+        )}
         <main className="flex-grow container mx-auto px-4 py-8 overflow-y-auto">
           <EncounterTracker 
             encounterName={encounterName} 
             setEncounterName={setEncounterName}
             exportEncounterData={exportEncounterData}
             uploadEncounterData={uploadEncounterData}
+            isMobile={isMobile}
           />
         </main>
       </div>
