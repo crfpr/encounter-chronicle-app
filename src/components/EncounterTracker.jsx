@@ -49,9 +49,9 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex flex-col lg:flex-row flex-grow overflow-hidden px-4 sm:px-6 pb-6">
-        <div className="flex-grow w-full lg:w-2/3 overflow-hidden flex flex-col lg:mr-6 mb-6 lg:mb-0">
-          <div className="bg-white border border-black rounded-lg flex flex-col h-full overflow-hidden">
+      <div className="flex flex-col md:flex-row flex-grow overflow-hidden px-4 sm:px-6 pb-6">
+        <div className="flex-grow w-full md:w-full lg:w-2/3 overflow-hidden flex flex-col md:mr-6 mb-6 md:mb-0">
+          <div className="bg-white border border-black rounded-lg flex flex-col h-full overflow-hidden" style={{ height: 'calc(100vh - 4rem - 2rem)' }}>
             <div className="p-4 sm:p-6">
               <EncounterHeader
                 isRunning={isRunning}
@@ -78,7 +78,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
             </div>
           </div>
         </div>
-        <div className="lg:w-1/3 overflow-y-auto pt-0 space-y-6 flex flex-col" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
+        <div className="md:w-full lg:w-1/3 overflow-y-auto pt-0 space-y-6 flex flex-col" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
           <div className="flex-grow overflow-y-auto space-y-6">
             <div className="mb-6">
               <NotesSection notes={notes} setNotes={setNotes} />
