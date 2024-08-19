@@ -7,7 +7,7 @@ const Index = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="flex-grow flex flex-col">
+      <div className="flex flex-col h-screen">
         <header className="bg-black text-white py-4">
           <div className="container mx-auto px-4">
             <Input
@@ -18,7 +18,7 @@ const Index = () => {
             />
           </div>
         </header>
-        <main className="flex-grow container mx-auto px-4 py-8">
+        <main className="flex-grow container mx-auto px-4 py-8 overflow-y-auto">
           <EncounterTracker encounterName={encounterName} setEncounterName={setEncounterName} />
         </main>
       </div>
