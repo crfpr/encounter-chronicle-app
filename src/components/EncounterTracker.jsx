@@ -4,6 +4,7 @@ import CharacterList from './CharacterList';
 import CharacterStats from './CharacterStats';
 import NotesSection from './NotesSection';
 import MobileMenu from './MobileMenu';
+import SwipeHandler from './SwipeHandler';
 
 const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData }) => {
   const [round, setRound] = useState(1);
@@ -58,23 +59,43 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
     }
   };
 
+  const handleSwipeLeft = () => {
+    if (isMobile) {
+      setActivePage(prevPage => {
+        switch (prevPage) {
+          case 'tracker':
+            return 'notes';
+          case 'notes':
+            return 'stats';
+          default:
+            return prevPage;
+        }
+      });
+    }
+  };
+
+  const handleSwipeRight = () => {
+    if (isMobile) {
+      setActivePage(prevPage => {
+        switch (prevPage) {
+          case 'notes':
+            return 'tracker';
+          case 'stats':
+            return 'notes';
+          default:
+            return prevPage;
+        }
+      });
+    }
+  };
+
   const renderContent = () => {
     if (isMobile) {
       switch (activePage) {
         case 'tracker':
           return (
             <div className="flex-grow overflow-hidden flex flex-col h-full">
-              <div className="p-4">
-                <EncounterHeader
-                  isRunning={isRunning}
-                  toggleEncounter={toggleEncounter}
-                  encounterTime={encounterTime}
-                />
-                <div className="text-xl font-semibold mb-4">
-                  Round {round}
-                </div>
-              </div>
-              <div className="flex-grow overflow-y-auto px-4 pb-20">
+              <div className="flex-grow overflow-y-auto pb-20">
                 <CharacterList 
                   characters={characters} 
                   setCharacters={setCharacters} 
@@ -94,7 +115,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
           );
         case 'stats':
           return (
-            <div className="p-4 h-full overflow-y-auto pb-20">
+            <div className="h-full overflow-y-auto pb-20">
               <CharacterStats characters={characters} round={round} />
             </div>
           );
@@ -149,10 +170,25 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex flex-col md:flex-row flex-grow overflow-hidden px-4 sm:px-6 pb-6">
+      {isMobile && (
+        <div className="sticky top-0 z-10 bg-white">
+          <div className="p-4">
+            <EncounterHeader
+              isRunning={isRunning}
+              toggleEncounter={toggleEncounter}
+              encounterTime={encounterTime}
+            />
+            <div className="text-xl font-semibold mb-4">
+              Round {round}
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="flex flex-col md:flex-row flex-grow overflow-hidden">
         {renderContent()}
       </div>
       {isMobile && <MobileMenu activePage={activePage} setActivePage={setActivePage} />}
+      {isMobile && <SwipeHandler onSwipeLeft={handleSwipeLeft} onSwipeRight={handleSwipeRight} />}
     </div>
   );
 };
