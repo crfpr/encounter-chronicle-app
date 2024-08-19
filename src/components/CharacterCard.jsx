@@ -202,7 +202,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       <div className={`w-24 ${getTabColor()} flex flex-col items-center justify-between p-2`}>
         <div className="flex flex-col items-center space-y-2">
           <div className="flex flex-col items-center">
-            <label className="text-xs font-semibold mb-1">Temp HP</label>
+            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white' : ''}`}>Temp HP</label>
             <Input
               type="number"
               value={character.tempHp}
@@ -211,7 +211,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             />
           </div>
           <div className="flex flex-col items-center">
-            <label className="text-xs font-semibold mb-1">Current HP</label>
+            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white' : ''}`}>Current HP</label>
             <Input
               type="number"
               value={character.currentHp}
@@ -220,7 +220,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             />
           </div>
           <div className="flex flex-col items-center">
-            <label className="text-xs font-semibold mb-1">Max HP</label>
+            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white' : ''}`}>Max HP</label>
             <Input
               type="number"
               value={character.maxHp}
@@ -230,7 +230,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           </div>
         </div>
         <div className="flex flex-col items-center mt-2">
-          <label className="text-xs font-semibold mb-1">AC</label>
+          <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white' : ''}`}>AC</label>
           <Input
             type="number"
             value={character.ac}
