@@ -1,5 +1,6 @@
 import React from 'react';
 import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
@@ -90,31 +91,41 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         <div className="relative z-10 space-y-4">
           {/* First row */}
           <div className="flex items-end space-x-4">
-            <Input
-              type="number"
-              value={character.initiative}
-              onChange={(e) => handleInputChange('initiative', parseInt(e.target.value))}
-              className="w-16 text-center"
-              placeholder="Initiative"
-            />
-            <Input
-              value={character.name}
-              onChange={(e) => handleInputChange('name', e.target.value)}
-              className="text-lg font-bold flex-grow"
-            />
-            <Select
-              value={character.type}
-              onValueChange={(value) => handleInputChange('type', value)}
-            >
-              <SelectTrigger className="w-[120px]">
-                <SelectValue placeholder="Character Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="PC">PC</SelectItem>
-                <SelectItem value="Enemy">Enemy</SelectItem>
-                <SelectItem value="Neutral">Neutral</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex flex-col">
+              <Label htmlFor="initiative" className="mb-1 text-xs">Initiative</Label>
+              <Input
+                id="initiative"
+                type="number"
+                value={character.initiative}
+                onChange={(e) => handleInputChange('initiative', parseInt(e.target.value))}
+                className="w-16 text-center"
+              />
+            </div>
+            <div className="flex flex-col flex-grow">
+              <Label htmlFor="name" className="mb-1 text-xs">Name</Label>
+              <Input
+                id="name"
+                value={character.name}
+                onChange={(e) => handleInputChange('name', e.target.value)}
+                className="text-lg font-bold"
+              />
+            </div>
+            <div className="flex flex-col">
+              <Label htmlFor="type" className="mb-1 text-xs">Type</Label>
+              <Select
+                value={character.type}
+                onValueChange={(value) => handleInputChange('type', value)}
+              >
+                <SelectTrigger id="type" className="w-[120px]">
+                  <SelectValue placeholder="Character Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="PC">PC</SelectItem>
+                  <SelectItem value="Enemy">Enemy</SelectItem>
+                  <SelectItem value="Neutral">Neutral</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           {/* Second row */}
@@ -141,32 +152,41 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               Reaction
             </Button>
             <div className="flex items-center space-x-2">
-              <Input
-                type="number"
-                value={character.currentMovement}
-                onChange={(e) => handleInputChange('currentMovement', parseInt(e.target.value))}
-                className="w-16 text-center"
-                placeholder="Current Move"
-              />
+              <div className="flex flex-col">
+                <Label htmlFor="currentMovement" className="mb-1 text-xs">Current Move</Label>
+                <Input
+                  id="currentMovement"
+                  type="number"
+                  value={character.currentMovement}
+                  onChange={(e) => handleInputChange('currentMovement', parseInt(e.target.value))}
+                  className="w-16 text-center"
+                />
+              </div>
               <span>/</span>
-              <Input
-                type="number"
-                value={character.maxMovement}
-                onChange={(e) => handleInputChange('maxMovement', parseInt(e.target.value))}
-                className="w-16 text-center"
-                placeholder="Max Move"
-              />
+              <div className="flex flex-col">
+                <Label htmlFor="maxMovement" className="mb-1 text-xs">Max Move</Label>
+                <Input
+                  id="maxMovement"
+                  type="number"
+                  value={character.maxMovement}
+                  onChange={(e) => handleInputChange('maxMovement', parseInt(e.target.value))}
+                  className="w-16 text-center"
+                />
+              </div>
             </div>
           </div>
 
           {/* Third row - Inline Note and Delete button */}
           <div className="mt-auto pt-2 flex items-center justify-between">
-            <Input
-              value={character.note || ''}
-              onChange={(e) => handleInputChange('note', e.target.value)}
-              placeholder="Add a note..."
-              className="flex-grow mr-2"
-            />
+            <div className="flex flex-col flex-grow mr-2">
+              <Label htmlFor="note" className="mb-1 text-xs">Note</Label>
+              <Input
+                id="note"
+                value={character.note || ''}
+                onChange={(e) => handleInputChange('note', e.target.value)}
+                placeholder="Add a note..."
+              />
+            </div>
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button 
@@ -199,8 +219,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       <div className={`w-24 ${getTabColor()} flex flex-col items-center justify-between p-2`}>
         <div className="flex flex-col items-center space-y-2">
           <div className="flex flex-col items-center">
-            <label className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>Temp HP</label>
+            <Label htmlFor="tempHp" className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>Temp HP</Label>
             <Input
+              id="tempHp"
               type="number"
               value={character.tempHp}
               onChange={(e) => handleInputChange('tempHp', Math.max(0, parseInt(e.target.value) || 0))}
@@ -208,8 +229,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             />
           </div>
           <div className="flex flex-col items-center">
-            <label className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>Current HP</label>
+            <Label htmlFor="currentHp" className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>Current HP</Label>
             <Input
+              id="currentHp"
               type="number"
               value={character.currentHp}
               onChange={(e) => handleInputChange('currentHp', parseInt(e.target.value) || 0)}
@@ -217,8 +239,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             />
           </div>
           <div className="flex flex-col items-center">
-            <label className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>Max HP</label>
+            <Label htmlFor="maxHp" className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>Max HP</Label>
             <Input
+              id="maxHp"
               type="number"
               value={character.maxHp}
               onChange={(e) => handleInputChange('maxHp', parseInt(e.target.value) || 0)}
@@ -227,8 +250,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           </div>
         </div>
         <div className="flex flex-col items-center mt-2">
-          <label className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>AC</label>
+          <Label htmlFor="ac" className={`text-[8px] mb-1 ${isActive ? 'text-white' : 'text-black'}`}>AC</Label>
           <Input
+            id="ac"
             type="number"
             value={character.ac}
             onChange={(e) => handleInputChange('ac', parseInt(e.target.value))}
