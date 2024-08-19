@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import TurnNavigator from './TurnNavigator';
+import Token from './Token';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn }) => {
+  const [tokens, setTokens] = useState([]);
   const getBackgroundColor = () => {
     switch (character.type) {
       case 'PC':
@@ -161,15 +163,27 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             </div>
           </div>
 
-          {/* New row for Add token button */}
+          {/* Token display and Add token button */}
           <div className="mt-2 mb-2">
-            <Button
-              onClick={() => console.log('Add token clicked')}
-              variant="outline"
-              className="btn-sm"
-            >
-              Add token
-            </Button>
+            <div className="flex flex-wrap items-center">
+              {tokens.map((token, index) => (
+                <Token
+                  key={index}
+                  label={token}
+                  onRemove={() => setTokens(tokens.filter((_, i) => i !== index))}
+                />
+              ))}
+              <Button
+                onClick={() => {
+                  const newToken = `Token ${tokens.length + 1}`;
+                  setTokens([...tokens, newToken]);
+                }}
+                variant="outline"
+                className="btn-sm"
+              >
+                Add token
+              </Button>
+            </div>
           </div>
 
           {/* Third row - Inline Note and Delete button */}
