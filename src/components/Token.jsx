@@ -63,7 +63,11 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
   const decrementDuration = () => {
     const newDuration = Math.max(0, editedDuration - 1);
     setEditedDuration(newDuration);
-    onUpdate(editedLabel, newDuration);
+    if (newDuration === 0) {
+      onRemove();
+    } else {
+      onUpdate(editedLabel, newDuration);
+    }
   };
 
   return (
@@ -89,7 +93,11 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
               onChange={(e) => {
                 const newDuration = Math.max(0, Math.min(10, parseInt(e.target.value) || 0));
                 setEditedDuration(newDuration);
-                onUpdate(editedLabel, newDuration);
+                if (newDuration === 0) {
+                  onRemove();
+                } else {
+                  onUpdate(editedLabel, newDuration);
+                }
               }}
               onKeyDown={handleKeyDown}
               className="h-6 w-12 px-1 py-0 text-sm"
