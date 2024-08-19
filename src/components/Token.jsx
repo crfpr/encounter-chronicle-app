@@ -55,7 +55,7 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
   };
 
   const incrementDuration = () => {
-    const newDuration = Math.min(10, editedDuration + 1);
+    const newDuration = Math.min(99, editedDuration + 1);
     setEditedDuration(newDuration);
     onUpdate(editedLabel, newDuration);
   };
@@ -63,11 +63,7 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
   const decrementDuration = () => {
     const newDuration = Math.max(0, editedDuration - 1);
     setEditedDuration(newDuration);
-    if (newDuration === 0) {
-      onRemove();
-    } else {
-      onUpdate(editedLabel, newDuration);
-    }
+    onUpdate(editedLabel, newDuration);
   };
 
   return (
@@ -91,13 +87,9 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
               type="number"
               value={editedDuration}
               onChange={(e) => {
-                const newDuration = Math.max(0, Math.min(10, parseInt(e.target.value) || 0));
+                const newDuration = Math.max(0, Math.min(99, parseInt(e.target.value) || 0));
                 setEditedDuration(newDuration);
-                if (newDuration === 0) {
-                  onRemove();
-                } else {
-                  onUpdate(editedLabel, newDuration);
-                }
+                onUpdate(editedLabel, newDuration);
               }}
               onKeyDown={handleKeyDown}
               className="h-6 w-12 px-1 py-0 text-sm"
@@ -124,11 +116,9 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
         ) : (
           <>
             <span className="flex-grow text-center mr-1">{editedLabel}</span>
-            {editedDuration > 0 && (
-              <span className="bg-gray-200 rounded-full px-2 py-0.5 text-xs font-semibold">
-                {editedDuration}
-              </span>
-            )}
+            <span className="bg-gray-200 rounded-full px-2 py-0.5 text-xs font-semibold">
+              {editedDuration}
+            </span>
           </>
         )}
         <X
