@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '../components/ui/button';
+import { Play, Pause } from 'lucide-react';
 
 const EncounterHeader = ({ isRunning, toggleEncounter, encounterTime }) => {
   const formatTime = (seconds) => {
@@ -9,13 +10,16 @@ const EncounterHeader = ({ isRunning, toggleEncounter, encounterTime }) => {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0 mb-4">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-        <div className="text-lg font-semibold">{formatTime(encounterTime)}</div>
-        <Button onClick={toggleEncounter} variant="outline" className="h-[30px] px-3 text-sm w-full sm:w-auto">
-          {isRunning ? 'Pause Encounter' : 'Start Encounter'}
-        </Button>
-      </div>
+    <div className="flex items-center space-x-4 mb-4">
+      <div className="text-lg font-semibold">{formatTime(encounterTime)}</div>
+      <Button 
+        onClick={toggleEncounter} 
+        variant="outline" 
+        size="icon"
+        className="h-8 w-8"
+      >
+        {isRunning ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+      </Button>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import EncounterHeader from './EncounterHeader';
+import { Play, Pause } from 'lucide-react';
 import CharacterList from './CharacterList';
 import CharacterStats from './CharacterStats';
 import NotesSection from './NotesSection';
@@ -90,13 +91,15 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
             <div className="flex-grow overflow-hidden flex flex-col h-full">
               <h2 className={titleStyle}>Turn Tracker</h2>
               <div className="p-4">
-                <EncounterHeader
-                  isRunning={isRunning}
-                  toggleEncounter={toggleEncounter}
-                  encounterTime={encounterTime}
-                />
-                <div className="text-lg font-medium mb-4">
-                  Round {round}
+                <div className="flex justify-between items-center mb-4">
+                  <EncounterHeader
+                    isRunning={isRunning}
+                    toggleEncounter={toggleEncounter}
+                    encounterTime={encounterTime}
+                  />
+                  <div className="text-lg font-medium">
+                    Round {round}
+                  </div>
                 </div>
               </div>
               <div className="flex-grow overflow-y-auto pb-20">
@@ -138,12 +141,12 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
           <div className="flex-grow w-full md:w-full lg:w-2/3 overflow-hidden flex flex-col md:mr-6 mb-6 md:mb-0">
             <div className="bg-white border border-black rounded-lg flex flex-col h-full overflow-hidden">
               <div className="p-4 sm:p-6">
-                <EncounterHeader
-                  isRunning={isRunning}
-                  toggleEncounter={toggleEncounter}
-                  encounterTime={encounterTime}
-                />
                 <div className="flex justify-between items-center mb-4">
+                  <EncounterHeader
+                    isRunning={isRunning}
+                    toggleEncounter={toggleEncounter}
+                    encounterTime={encounterTime}
+                  />
                   <div className="text-xl font-semibold">
                     Round {round}
                   </div>
