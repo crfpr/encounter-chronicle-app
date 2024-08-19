@@ -36,19 +36,21 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
 
   return (
     <div className="space-y-4 mb-4">
-      {characters.map((character, index) => (
-        <div key={character.id} className={`relative ${index === activeCharacterIndex ? 'z-10' : 'z-0'}`}>
-          <CharacterCard
-            character={character}
-            updateCharacter={updateCharacter}
-            removeCharacter={removeCharacter}
-            isActive={index === activeCharacterIndex}
-            turnTime={turnTime}
-            onPreviousTurn={onPreviousTurn}
-            onNextTurn={onNextTurn}
-          />
-        </div>
-      ))}
+      <div className="space-y-4">
+        {characters.map((character, index) => (
+          <div key={character.id} className={`relative ${index === activeCharacterIndex ? 'z-10' : 'z-0'}`}>
+            <CharacterCard
+              character={character}
+              updateCharacter={updateCharacter}
+              removeCharacter={removeCharacter}
+              isActive={index === activeCharacterIndex}
+              turnTime={turnTime}
+              onPreviousTurn={onPreviousTurn}
+              onNextTurn={onNextTurn}
+            />
+          </div>
+        ))}
+      </div>
       <Button onClick={addCharacter} className="w-full bg-black hover:bg-gray-800 text-white">Add Character</Button>
     </div>
   );
