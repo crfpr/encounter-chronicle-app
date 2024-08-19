@@ -123,10 +123,12 @@ const EncounterTracker = ({ encounterName, setEncounterName }) => {
             </div>
           </div>
         </div>
-        <div className="lg:w-1/3 overflow-y-auto pt-0 px-6 pb-6 space-y-6">
-          <NotesSection notes={notes} setNotes={setNotes} />
-          <div className="bg-white border border-black rounded-lg p-6">
-            <CharacterStats characters={characters} round={round} />
+        <div className="lg:w-1/3 overflow-y-auto pt-0 px-6 pb-6 space-y-6 flex flex-col" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
+          <div className="flex-grow overflow-y-auto space-y-6">
+            <NotesSection notes={notes} setNotes={setNotes} />
+            <div className="bg-white border border-black rounded-lg p-6">
+              <CharacterStats characters={characters} round={round} />
+            </div>
           </div>
         </div>
       </div>
