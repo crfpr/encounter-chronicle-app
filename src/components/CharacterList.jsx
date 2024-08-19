@@ -35,7 +35,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-4 mb-4">
       {characters.map((character, index) => (
         <div key={character.id} className={`relative ${index === activeCharacterIndex ? 'z-10' : 'z-0'}`}>
           <CharacterCard
@@ -49,7 +49,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
           />
         </div>
       ))}
-      <Button onClick={addCharacter} className="w-full bg-black hover:bg-gray-800 text-white mt-2">Add Character</Button>
+      <Button onClick={addCharacter} className="w-full bg-black hover:bg-gray-800 text-white">Add Character</Button>
     </div>
   );
 };
