@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import EncounterHeader from './EncounterHeader';
-import { Play, Pause } from 'lucide-react';
 import CharacterList from './CharacterList';
 import CharacterStats from './CharacterStats';
 import NotesSection from './NotesSection';
@@ -92,14 +91,14 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
               <h2 className={titleStyle}>Turn Tracker</h2>
               <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
+                  <div className="text-lg font-medium">
+                    Round {round}
+                  </div>
                   <EncounterHeader
                     isRunning={isRunning}
                     toggleEncounter={toggleEncounter}
                     encounterTime={encounterTime}
                   />
-                  <div className="text-lg font-medium">
-                    Round {round}
-                  </div>
                 </div>
               </div>
               <div className="flex-grow overflow-y-auto pb-20">
@@ -142,14 +141,14 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
             <div className="bg-white border border-black rounded-lg flex flex-col h-full overflow-hidden">
               <div className="p-4 sm:p-6">
                 <div className="flex justify-between items-center mb-4">
+                  <div className="text-xl font-semibold">
+                    Round {round}
+                  </div>
                   <EncounterHeader
                     isRunning={isRunning}
                     toggleEncounter={toggleEncounter}
                     encounterTime={encounterTime}
                   />
-                  <div className="text-xl font-semibold">
-                    Round {round}
-                  </div>
                 </div>
               </div>
               <div className="flex-grow overflow-hidden">
