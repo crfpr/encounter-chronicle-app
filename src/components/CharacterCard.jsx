@@ -5,6 +5,7 @@ import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import TurnNavigator from './TurnNavigator';
 import Token from './Token';
+import { PlusCircle } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn }) => {
   const [tokens, setTokens] = useState([]);
@@ -179,8 +180,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   setTokens([...tokens, newToken]);
                 }}
                 variant="outline"
-                className="btn-sm"
+                className="h-[30px] px-3 py-1 text-sm"
               >
+                <PlusCircle className="h-4 w-4 mr-1" />
                 Add token
               </Button>
             </div>

@@ -1,14 +1,23 @@
 import React from 'react';
 import { X } from 'lucide-react';
+import { Button } from './ui/button';
 
 const Token = ({ label, onRemove }) => {
   return (
-    <div className="inline-flex items-center bg-gray-200 rounded-full px-3 py-1 text-sm mr-2 mb-2">
+    <Button
+      variant="secondary"
+      className="inline-flex items-center rounded-full px-3 py-1 text-sm mr-2 mb-2 h-[30px]"
+    >
       <span>{label}</span>
-      <button onClick={onRemove} className="ml-2 text-gray-500 hover:text-gray-700">
-        <X size={14} />
-      </button>
-    </div>
+      <X
+        size={14}
+        className="ml-2 cursor-pointer"
+        onClick={(e) => {
+          e.stopPropagation();
+          onRemove();
+        }}
+      />
+    </Button>
   );
 };
 
