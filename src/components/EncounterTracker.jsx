@@ -177,10 +177,10 @@ const EncounterTracker = () => {
   };
 
   return (
-    <div className="flex flex-col space-y-6">
-      <div className="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-6">
-        <div className="flex-grow space-y-6">
-          <div className="bg-white shadow-md rounded-lg p-6 relative">
+    <div className="flex flex-col space-y-6 h-screen">
+      <div className="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-6 flex-grow overflow-hidden">
+        <div className="flex-grow space-y-6 overflow-hidden flex flex-col">
+          <div className="bg-white shadow-md rounded-lg p-6 relative flex flex-col flex-grow overflow-hidden">
             <EncounterHeader
               encounterName={encounterName}
               setEncounterName={setEncounterName}
@@ -193,21 +193,19 @@ const EncounterTracker = () => {
                 Round {round}
               </div>
             </div>
-            <div className="flex relative">
-              <div className="flex-grow">
-                <CharacterList 
-                  characters={characters} 
-                  setCharacters={setCharacters} 
-                  activeCharacterIndex={activeCharacterIndex}
-                  turnTime={turnTime}
-                  onPreviousTurn={handlePreviousTurn}
-                  onNextTurn={handleNextTurn}
-                />
-              </div>
+            <div className="flex-grow overflow-y-auto">
+              <CharacterList 
+                characters={characters} 
+                setCharacters={setCharacters} 
+                activeCharacterIndex={activeCharacterIndex}
+                turnTime={turnTime}
+                onPreviousTurn={handlePreviousTurn}
+                onNextTurn={handleNextTurn}
+              />
             </div>
           </div>
         </div>
-        <div className="lg:w-1/3 space-y-6">
+        <div className="lg:w-1/3 space-y-6 overflow-y-auto">
           <NotesSection notes={notes} setNotes={setNotes} />
           <div className="bg-white shadow-md rounded-lg p-6">
             <CharacterStats characters={characters} round={round} />
