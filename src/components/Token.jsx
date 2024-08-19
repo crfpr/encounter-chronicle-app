@@ -32,6 +32,11 @@ const Token = ({ label, value, onRemove, onUpdate }) => {
     };
   }, [isEditing]);
 
+  useEffect(() => {
+    setEditedLabel(label);
+    setEditedValue(value);
+  }, [label, value]);
+
   const handleClick = () => {
     setIsEditing(true);
   };
@@ -50,11 +55,15 @@ const Token = ({ label, value, onRemove, onUpdate }) => {
   };
 
   const incrementValue = () => {
-    setEditedValue(prev => Math.min(10, prev + 1));
+    const newValue = Math.min(10, editedValue + 1);
+    setEditedValue(newValue);
+    onUpdate(editedLabel, newValue);
   };
 
   const decrementValue = () => {
-    setEditedValue(prev => Math.max(1, prev - 1));
+    const newValue = Math.max(1, editedValue - 1);
+    setEditedValue(newValue);
+    onUpdate(editedLabel, newValue);
   };
 
   return (
@@ -77,7 +86,11 @@ const Token = ({ label, value, onRemove, onUpdate }) => {
             <Input
               type="number"
               value={editedValue}
-              onChange={(e) => setEditedValue(Math.max(1, Math.min(10, parseInt(e.target.value) || 1)))}
+              onChange={(e) => {
+                const newValue = Math.max(1, Math.min(10, parseInt(e.target.value) || 1));
+                setEditedValue(newValue);
+                onUpdate(editedLabel, newValue);
+              }}
               onKeyDown={handleKeyDown}
               className="h-6 w-12 px-1 py-0 text-sm"
             />
@@ -102,10 +115,10 @@ const Token = ({ label, value, onRemove, onUpdate }) => {
           </>
         ) : (
           <>
-            <span className="flex-grow text-center mr-1">{label}</span>
-            {value && (
+            <span className="flex-grow text-center mr-1">{editedLabel}</span>
+            {editedValue && (
               <span className="bg-gray-200 rounded-full px-2 py-0.5 text-xs font-semibold">
-                {value}
+                {editedValue}
               </span>
             )}
           </>
