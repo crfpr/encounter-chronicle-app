@@ -123,7 +123,7 @@ const EncounterTracker = ({ encounterName, setEncounterName }) => {
             </div>
           </div>
         </div>
-        <div className="lg:w-1/3 overflow-y-auto p-6 space-y-6">
+        <div className="lg:w-1/3 overflow-y-auto pt-0 px-6 pb-6 space-y-6">
           <NotesSection notes={notes} setNotes={setNotes} />
           <div className="bg-white border border-black rounded-lg p-6">
             <CharacterStats characters={characters} round={round} />
