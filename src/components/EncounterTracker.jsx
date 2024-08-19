@@ -194,15 +194,17 @@ const EncounterTracker = () => {
               </div>
             </div>
             <div className="flex-grow overflow-hidden">
-              <div className="h-full pr-4 overflow-y-auto">
-                <CharacterList 
-                  characters={characters} 
-                  setCharacters={setCharacters} 
-                  activeCharacterIndex={activeCharacterIndex}
-                  turnTime={turnTime}
-                  onPreviousTurn={handlePreviousTurn}
-                  onNextTurn={handleNextTurn}
-                />
+              <div className="h-full overflow-y-auto pr-2">
+                <div className="pr-2">
+                  <CharacterList 
+                    characters={characters} 
+                    setCharacters={setCharacters} 
+                    activeCharacterIndex={activeCharacterIndex}
+                    turnTime={turnTime}
+                    onPreviousTurn={handlePreviousTurn}
+                    onNextTurn={handleNextTurn}
+                  />
+                </div>
               </div>
             </div>
           </div>
