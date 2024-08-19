@@ -36,18 +36,19 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const getBorderColor = () => {
+    const baseClasses = 'border-[3px]';
     if (isActive) {
-      return 'border-black border-[3px]';
+      return `${baseClasses} border-black`;
     }
     switch (character.type) {
       case 'PC':
-        return 'border-blue-300';
+        return `${baseClasses} border-blue-300`;
       case 'Enemy':
-        return 'border-red-300';
+        return `${baseClasses} border-red-300`;
       case 'Neutral':
-        return 'border-green-300';
+        return `${baseClasses} border-green-300`;
       default:
-        return 'border-gray-200';
+        return `${baseClasses} border-gray-200`;
     }
   };
 
@@ -107,7 +108,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   return (
-    <div className={`flex ${getBackgroundColor()} ${getBorderColor()} relative overflow-hidden rounded-lg ${isActive ? '' : 'border-4'}`}>
+    <div className={`flex ${getBackgroundColor()} ${getBorderColor()} relative overflow-hidden rounded-lg`}>
       {/* Left Tab */}
       <div className={`w-16 ${getTabColor()} ${isActive ? 'text-white' : ''} flex items-stretch`}>
         {isActive ? (
