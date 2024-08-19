@@ -1,13 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import EncounterTracker from '../components/EncounterTracker';
 import { Input } from '../components/ui/input';
 
 const Index = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
+  const [mainHeight, setMainHeight] = useState('100vh');
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    const updateMainHeight = () => {
+      if (headerRef.current) {
+        const headerHeight = headerRef.current.offsetHeight;
+        setMainHeight(`calc(100vh - ${headerHeight}px)`);
+      }
+    };
+
+    updateMainHeight();
+    window.addEventListener('resize', updateMainHeight);
+
+    return () => window.removeEventListener('resize', updateMainHeight);
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="bg-black text-white py-4">
+      <header ref={headerRef} className="bg-black text-white py-4">
         <div className="container mx-auto px-4">
           <Input
             value={encounterName}
@@ -17,7 +33,7 @@ const Index = () => {
           />
         </div>
       </header>
-      <main className="flex-grow container mx-auto px-4 py-8">
+      <main className="flex-grow container mx-auto px-4 overflow-y-auto" style={{ height: mainHeight }}>
         <EncounterTracker encounterName={encounterName} setEncounterName={setEncounterName} />
       </main>
     </div>
