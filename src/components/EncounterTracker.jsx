@@ -193,8 +193,8 @@ const EncounterTracker = () => {
                 Round {round}
               </div>
             </div>
-            <div className="flex-grow overflow-hidden">
-              <div className="h-full overflow-y-auto pr-2">
+            <div className="flex-grow overflow-hidden relative">
+              <div className="h-full overflow-y-auto absolute inset-0 pr-2">
                 <div className="pr-2">
                   <CharacterList 
                     characters={characters} 
