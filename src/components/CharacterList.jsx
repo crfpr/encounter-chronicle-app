@@ -35,21 +35,23 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
   };
 
   return (
-    <div className="space-y-4 mb-4">
-      {characters.map((character, index) => (
-        <div key={character.id} className={`relative ${index === activeCharacterIndex ? 'z-10' : 'z-0'}`}>
-          <CharacterCard
-            character={character}
-            updateCharacter={updateCharacter}
-            removeCharacter={removeCharacter}
-            isActive={index === activeCharacterIndex}
-            turnTime={turnTime}
-            onPreviousTurn={onPreviousTurn}
-            onNextTurn={onNextTurn}
-          />
-        </div>
-      ))}
-      <Button onClick={addCharacter} className="w-full bg-black hover:bg-gray-800 text-white">Add Character</Button>
+    <div className="flex flex-col h-full">
+      <div className="flex-grow overflow-y-auto pr-4" style={{ scrollbarGutter: 'stable' }}>
+        {characters.map((character, index) => (
+          <div key={character.id} className={`relative mb-4 ${index === activeCharacterIndex ? 'z-10' : 'z-0'}`}>
+            <CharacterCard
+              character={character}
+              updateCharacter={updateCharacter}
+              removeCharacter={removeCharacter}
+              isActive={index === activeCharacterIndex}
+              turnTime={turnTime}
+              onPreviousTurn={onPreviousTurn}
+              onNextTurn={onNextTurn}
+            />
+          </div>
+        ))}
+      </div>
+      <Button onClick={addCharacter} className="w-full bg-black hover:bg-gray-800 text-white mt-4">Add Character</Button>
     </div>
   );
 };
