@@ -180,7 +180,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   setTokens([...tokens, newToken]);
                 }}
                 variant="outline"
-                className="h-[30px] px-3 py-1 text-sm flex items-center"
+                className="h-[30px] px-3 py-1.5 text-sm flex items-center"
               >
                 <PlusCircle className="h-4 w-4 mr-1" />
                 Add token
