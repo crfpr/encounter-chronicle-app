@@ -4,6 +4,7 @@ import CharacterList from './CharacterList';
 import CharacterStats from './CharacterStats';
 import NotesSection from './NotesSection';
 import { Button } from '../components/ui/button';
+import { Upload } from 'lucide-react';
 
 const EncounterTracker = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
@@ -146,6 +147,35 @@ const EncounterTracker = () => {
     linkElement.click();
   };
 
+  const uploadEncounterData = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          setEncounterName(data.encounterName);
+          setHistory(data.history);
+          setRoundStates(data.roundStates);
+          
+          // Set the current state to the last item in the history
+          const lastState = data.history[data.history.length - 1];
+          setRound(lastState.round);
+          setCharacters(lastState.characters);
+          setActiveCharacterIndex(lastState.activeCharacterIndex);
+          setEncounterTime(lastState.encounterTime);
+          setTurnTime(lastState.turnTime);
+          setNotes(lastState.notes);
+          
+          console.log('Encounter data uploaded successfully');
+        } catch (error) {
+          console.error('Error parsing uploaded file:', error);
+        }
+      };
+      reader.readAsText(file);
+    }
+  };
+
   return (
     <div className="flex space-x-6">
       <div className="flex-grow space-y-6">
@@ -178,9 +208,22 @@ const EncounterTracker = () => {
         <div className="bg-white shadow-md rounded-lg p-6">
           <CharacterStats characters={characters} round={round} />
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-center space-x-4">
           <Button onClick={exportEncounterData} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             Export Encounter Data
+          </Button>
+          <Button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+            <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center">
+              <Upload className="mr-2 h-4 w-4" />
+              Upload Encounter Data
+            </label>
+            <input
+              id="upload-encounter-data"
+              type="file"
+              accept=".json"
+              onChange={uploadEncounterData}
+              style={{ display: 'none' }}
+            />
           </Button>
         </div>
       </div>
