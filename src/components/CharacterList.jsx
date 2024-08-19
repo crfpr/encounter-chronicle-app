@@ -37,7 +37,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
   return (
     <div className="space-y-4">
       {characters.map((character, index) => (
-        <div key={character.id} className={`relative ${index === activeCharacterIndex ? 'z-10' : 'z-0'}`}>
+        <div key={character.id} className={`relative ${index === activeCharacterIndex ? 'z-10' : 'z-0'}`} data-index={index}>
           <CharacterCard
             character={character}
             updateCharacter={updateCharacter}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import EncounterHeader from './EncounterHeader';
 import CharacterList from './CharacterList';
 import CharacterStats from './CharacterStats';
@@ -15,6 +15,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   const [isRunning, setIsRunning] = useState(false);
   const [notes, setNotes] = useState('');
   const [activePage, setActivePage] = useState('tracker');
+  const characterListRef = useRef(null);
 
   const toggleEncounter = useCallback(() => {
     setIsRunning(prevIsRunning => !prevIsRunning);
@@ -79,6 +80,38 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
       });
     }
   };
+
+  const handleKeyDown = useCallback((e) => {
+    if (!isMobile && characters.length > 1) {
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setActiveCharacterIndex(prevIndex => 
+          prevIndex === 0 ? characters.length - 1 : prevIndex - 1
+        );
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setActiveCharacterIndex(prevIndex => 
+          prevIndex === characters.length - 1 ? 0 : prevIndex + 1
+        );
+      }
+    }
+  }, [isMobile, characters.length]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
+  useEffect(() => {
+    if (!isMobile && characterListRef.current) {
+      const activeCard = characterListRef.current.querySelector(`[data-index="${activeCharacterIndex}"]`);
+      if (activeCard) {
+        activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  }, [activeCharacterIndex, isMobile]);
 
   const renderContent = () => {
     if (isMobile) {
@@ -152,7 +185,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
                 </div>
               </div>
               <div className="flex-grow overflow-hidden">
-                <div className="h-full overflow-y-auto px-4 sm:px-6 pb-6">
+                <div ref={characterListRef} className="h-full overflow-y-auto px-4 sm:px-6 pb-6">
                   <CharacterList 
                     characters={characters} 
                     setCharacters={setCharacters} 
