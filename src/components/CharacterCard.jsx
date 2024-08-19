@@ -11,7 +11,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   const [tokens, setTokens] = useState(character.tokens || []);
 
   useEffect(() => {
-    if (!isActive) {
+    if (isActive) {
       const updatedTokens = tokens.map(token => ({
         ...token,
         duration: Math.max(1, token.duration - 1)
