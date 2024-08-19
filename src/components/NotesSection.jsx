@@ -27,7 +27,8 @@ const NotesSection = ({ notes, setNotes, isMobile }) => {
       const viewportHeight = window.innerHeight;
       const containerTop = containerRef.current.getBoundingClientRect().top;
       const footerHeight = 56; // Assuming the mobile menu height is 56px
-      const maxHeight = viewportHeight - containerTop - footerHeight;
+      const paddingBottom = 20; // Added padding at the bottom
+      const maxHeight = viewportHeight - containerTop - footerHeight - paddingBottom;
       containerRef.current.style.height = `${maxHeight}px`;
     }
   };
@@ -50,7 +51,7 @@ const NotesSection = ({ notes, setNotes, isMobile }) => {
   };
 
   const containerClasses = isMobile
-    ? "flex flex-col relative overflow-hidden"
+    ? "flex flex-col relative overflow-hidden pb-5" // Added pb-5 for bottom padding
     : "bg-white border border-black rounded-lg p-6";
 
   const textareaClasses = isMobile
