@@ -3,19 +3,20 @@ import EncounterHeader from './EncounterHeader';
 import CharacterList from './CharacterList';
 import CharacterStats from './CharacterStats';
 import NotesSection from './NotesSection';
-import { Button } from '../components/ui/button';
-import { Upload } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import EncounterHeader from './EncounterHeader';
+import CharacterList from './CharacterList';
+import CharacterStats from './CharacterStats';
+import NotesSection from './NotesSection';
 
-const EncounterTracker = ({ encounterName, setEncounterName }) => {
+const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData }) => {
   const [round, setRound] = useState(1);
   const [characters, setCharacters] = useState([]);
   const [activeCharacterIndex, setActiveCharacterIndex] = useState(0);
   const [encounterTime, setEncounterTime] = useState(0);
   const [turnTime, setTurnTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [roundStates, setRoundStates] = useState([]);
   const [notes, setNotes] = useState('');
-  const [history, setHistory] = useState([]);
 
   const toggleEncounter = useCallback(() => {
     setIsRunning(prevIsRunning => !prevIsRunning);
@@ -48,47 +49,6 @@ const EncounterTracker = ({ encounterName, setEncounterName }) => {
     setTurnTime(0);
     if (activeCharacterIndex === characters.length - 1) {
       setRound(prevRound => prevRound + 1);
-    }
-  };
-
-  const exportEncounterData = () => {
-    const data = {
-      encounterName,
-      round,
-      characters,
-      encounterTime,
-      notes,
-      history
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${encounterName.replace(/\s+/g, '_')}_data.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  const uploadEncounterData = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const data = JSON.parse(e.target.result);
-          setEncounterName(data.encounterName);
-          setRound(data.round);
-          setCharacters(data.characters);
-          setEncounterTime(data.encounterTime);
-          setNotes(data.notes);
-          setHistory(data.history);
-        } catch (error) {
-          console.error('Error parsing JSON:', error);
-        }
-      };
-      reader.readAsText(file);
     }
   };
 
@@ -130,26 +90,6 @@ const EncounterTracker = ({ encounterName, setEncounterName }) => {
               <CharacterStats characters={characters} round={round} />
             </div>
           </div>
-        </div>
-      </div>
-      <div className="p-4 bg-black text-white">
-        <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-          <Button onClick={exportEncounterData} className="w-full sm:w-auto bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-            Export Encounter Data
-          </Button>
-          <Button className="w-full sm:w-auto bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-            <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center justify-center w-full">
-              <Upload className="mr-2 h-4 w-4" />
-              Upload Encounter Data
-            </label>
-            <input
-              id="upload-encounter-data"
-              type="file"
-              accept=".json"
-              onChange={uploadEncounterData}
-              style={{ display: 'none' }}
-            />
-          </Button>
         </div>
       </div>
     </div>
