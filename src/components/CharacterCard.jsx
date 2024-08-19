@@ -168,7 +168,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           <div className="mt-2 mb-2">
             <div className="flex flex-wrap items-center">
               {tokens.map((token, index) => (
-                <div key={index} className="flex items-center my-1">
+                <div key={index} className="flex items-center">
                   <Token
                     label={token}
                     onRemove={() => setTokens(tokens.filter((_, i) => i !== index))}
@@ -181,7 +181,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   setTokens([...tokens, newToken]);
                 }}
                 variant="outline"
-                className="h-[30px] px-3 py-1 text-sm flex items-center my-1"
+                className="h-[30px] px-3 py-1 text-sm flex items-center"
               >
                 <PlusCircle className="h-4 w-4 mr-1" />
                 Add token
