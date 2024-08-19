@@ -108,7 +108,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
     if (!isMobile && characterListRef.current) {
       const activeCard = characterListRef.current.querySelector(`[data-index="${activeCharacterIndex}"]`);
       if (activeCard) {
-        activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        activeCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
   }, [activeCharacterIndex, isMobile]);
