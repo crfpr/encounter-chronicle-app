@@ -10,6 +10,17 @@ import { PlusCircle } from 'lucide-react';
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
 
+  useEffect(() => {
+    if (!isActive) {
+      const updatedTokens = tokens.map(token => ({
+        ...token,
+        duration: Math.max(1, token.duration - 1)
+      }));
+      setTokens(updatedTokens);
+      updateCharacter({ ...character, tokens: updatedTokens });
+    }
+  }, [isActive]);
+
   const getBackgroundColor = () => {
     switch (character.type) {
       case 'PC':
@@ -74,7 +85,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const handleAddToken = () => {
-    const newToken = { label: `Token ${tokens.length + 1}`, value: 1 };
+    const newToken = { label: `Token ${tokens.length + 1}`, duration: 1 };
     const updatedTokens = [...tokens, newToken];
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
@@ -86,9 +97,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     updateCharacter({ ...character, tokens: updatedTokens });
   };
 
-  const handleUpdateToken = (index, newLabel, newValue) => {
+  const handleUpdateToken = (index, newLabel, newDuration) => {
     const updatedTokens = tokens.map((token, i) => 
-      i === index ? { ...token, label: newLabel, value: newValue } : token
+      i === index ? { ...token, label: newLabel, duration: newDuration } : token
     );
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
@@ -193,9 +204,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 <Token
                   key={index}
                   label={token.label}
-                  value={token.value}
+                  duration={token.duration}
                   onRemove={() => handleRemoveToken(index)}
-                  onUpdate={(newLabel, newValue) => handleUpdateToken(index, newLabel, newValue)}
+                  onUpdate={(newLabel, newDuration) => handleUpdateToken(index, newLabel, newDuration)}
                 />
               ))}
               <Button

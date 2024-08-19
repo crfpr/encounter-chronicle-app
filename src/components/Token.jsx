@@ -3,10 +3,10 @@ import { X, ChevronUp, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 
-const Token = ({ label, value, onRemove, onUpdate }) => {
+const Token = ({ label, duration, onRemove, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedLabel, setEditedLabel] = useState(label);
-  const [editedValue, setEditedValue] = useState(value);
+  const [editedDuration, setEditedDuration] = useState(duration);
   const tokenRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -34,8 +34,8 @@ const Token = ({ label, value, onRemove, onUpdate }) => {
 
   useEffect(() => {
     setEditedLabel(label);
-    setEditedValue(value);
-  }, [label, value]);
+    setEditedDuration(duration);
+  }, [label, duration]);
 
   const handleClick = () => {
     setIsEditing(true);
@@ -43,8 +43,8 @@ const Token = ({ label, value, onRemove, onUpdate }) => {
 
   const handleBlur = () => {
     setIsEditing(false);
-    if (editedLabel.trim() !== label || editedValue !== value) {
-      onUpdate(editedLabel.trim(), editedValue);
+    if (editedLabel.trim() !== label || editedDuration !== duration) {
+      onUpdate(editedLabel.trim(), editedDuration);
     }
   };
 
@@ -54,16 +54,16 @@ const Token = ({ label, value, onRemove, onUpdate }) => {
     }
   };
 
-  const incrementValue = () => {
-    const newValue = Math.min(10, editedValue + 1);
-    setEditedValue(newValue);
-    onUpdate(editedLabel, newValue);
+  const incrementDuration = () => {
+    const newDuration = Math.min(10, editedDuration + 1);
+    setEditedDuration(newDuration);
+    onUpdate(editedLabel, newDuration);
   };
 
-  const decrementValue = () => {
-    const newValue = Math.max(1, editedValue - 1);
-    setEditedValue(newValue);
-    onUpdate(editedLabel, newValue);
+  const decrementDuration = () => {
+    const newDuration = Math.max(1, editedDuration - 1);
+    setEditedDuration(newDuration);
+    onUpdate(editedLabel, newDuration);
   };
 
   return (
@@ -85,11 +85,11 @@ const Token = ({ label, value, onRemove, onUpdate }) => {
             />
             <Input
               type="number"
-              value={editedValue}
+              value={editedDuration}
               onChange={(e) => {
-                const newValue = Math.max(1, Math.min(10, parseInt(e.target.value) || 1));
-                setEditedValue(newValue);
-                onUpdate(editedLabel, newValue);
+                const newDuration = Math.max(1, Math.min(10, parseInt(e.target.value) || 1));
+                setEditedDuration(newDuration);
+                onUpdate(editedLabel, newDuration);
               }}
               onKeyDown={handleKeyDown}
               className="h-6 w-12 px-1 py-0 text-sm"
@@ -100,7 +100,7 @@ const Token = ({ label, value, onRemove, onUpdate }) => {
                 className="cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  incrementValue();
+                  incrementDuration();
                 }}
               />
               <ChevronDown
@@ -108,7 +108,7 @@ const Token = ({ label, value, onRemove, onUpdate }) => {
                 className="cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  decrementValue();
+                  decrementDuration();
                 }}
               />
             </div>
@@ -116,9 +116,9 @@ const Token = ({ label, value, onRemove, onUpdate }) => {
         ) : (
           <>
             <span className="flex-grow text-center mr-1">{editedLabel}</span>
-            {editedValue && (
+            {editedDuration && (
               <span className="bg-gray-200 rounded-full px-2 py-0.5 text-xs font-semibold">
-                {editedValue}
+                {editedDuration}
               </span>
             )}
           </>
