@@ -179,7 +179,7 @@ const EncounterTracker = () => {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex flex-col lg:flex-row flex-grow overflow-hidden">
-        <div className="flex-grow lg:w-2/3 overflow-hidden flex flex-col p-4">
+        <div className="flex-grow lg:w-2/3 overflow-hidden flex flex-col p-4 pr-0">
           <div className="bg-white shadow-md rounded-lg p-6 flex flex-col h-full overflow-hidden">
             <EncounterHeader
               encounterName={encounterName}
@@ -194,15 +194,17 @@ const EncounterTracker = () => {
               </div>
             </div>
             <div className="flex-grow overflow-hidden">
-              <div className="h-full overflow-y-auto pr-4">
-                <CharacterList 
-                  characters={characters} 
-                  setCharacters={setCharacters} 
-                  activeCharacterIndex={activeCharacterIndex}
-                  turnTime={turnTime}
-                  onPreviousTurn={handlePreviousTurn}
-                  onNextTurn={handleNextTurn}
-                />
+              <div className="h-full overflow-y-auto">
+                <div className="pr-4">
+                  <CharacterList 
+                    characters={characters} 
+                    setCharacters={setCharacters} 
+                    activeCharacterIndex={activeCharacterIndex}
+                    turnTime={turnTime}
+                    onPreviousTurn={handlePreviousTurn}
+                    onNextTurn={handleNextTurn}
+                  />
+                </div>
               </div>
             </div>
           </div>
