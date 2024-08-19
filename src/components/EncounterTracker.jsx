@@ -91,40 +91,47 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
 
   const renderContent = () => {
     if (isMobile) {
-      return (
-        <>
-          <div className="fixed top-0 left-0 right-0 bg-white z-10">
-            <div className="p-4">
-              <EncounterHeader
-                isRunning={isRunning}
-                toggleEncounter={toggleEncounter}
-                encounterTime={encounterTime}
-              />
-              <div className="text-xl font-semibold mb-4">
-                Round {round}
+      switch (activePage) {
+        case 'tracker':
+          return (
+            <div className="flex-grow overflow-hidden flex flex-col h-full">
+              <div className="p-4">
+                <EncounterHeader
+                  isRunning={isRunning}
+                  toggleEncounter={toggleEncounter}
+                  encounterTime={encounterTime}
+                />
+                <div className="text-xl font-semibold mb-4">
+                  Round {round}
+                </div>
+              </div>
+              <div className="flex-grow overflow-y-auto pb-20">
+                <CharacterList 
+                  characters={characters} 
+                  setCharacters={setCharacters} 
+                  activeCharacterIndex={activeCharacterIndex}
+                  turnTime={turnTime}
+                  onPreviousTurn={handlePreviousTurn}
+                  onNextTurn={handleNextTurn}
+                />
               </div>
             </div>
-          </div>
-          <div className="pt-28 pb-20 h-full overflow-y-auto">
-            {activePage === 'tracker' && (
-              <CharacterList 
-                characters={characters} 
-                setCharacters={setCharacters} 
-                activeCharacterIndex={activeCharacterIndex}
-                turnTime={turnTime}
-                onPreviousTurn={handlePreviousTurn}
-                onNextTurn={handleNextTurn}
-              />
-            )}
-            {activePage === 'notes' && (
+          );
+        case 'notes':
+          return (
+            <div className="h-full flex flex-col">
               <NotesSection key={`notes-section-${activePage}-${isMobile}`} notes={notes} setNotes={setNotes} isMobile={true} />
-            )}
-            {activePage === 'stats' && (
+            </div>
+          );
+        case 'stats':
+          return (
+            <div className="h-full overflow-y-auto pb-20">
               <CharacterStats characters={characters} round={round} />
-            )}
-          </div>
-        </>
-      );
+            </div>
+          );
+        default:
+          return null;
+      }
     } else {
       return (
         <>
