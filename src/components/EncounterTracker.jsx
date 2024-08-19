@@ -5,6 +5,7 @@ import CharacterStats from './CharacterStats';
 import NotesSection from './NotesSection';
 import MobileMenu from './MobileMenu';
 import SwipeHandler from './SwipeHandler';
+import { Button } from './ui/button';
 
 const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile }) => {
   const [round, setRound] = useState(1);
@@ -15,6 +16,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   const [isRunning, setIsRunning] = useState(false);
   const [notes, setNotes] = useState('');
   const [activePage, setActivePage] = useState('tracker');
+  const [activeCard, setActiveCard] = useState('tracker');
 
   const toggleEncounter = useCallback(() => {
     setIsRunning(prevIsRunning => !prevIsRunning);
@@ -137,18 +139,27 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
     } else {
       return (
         <>
-          <div className="flex-grow w-full md:w-full lg:w-2/3 overflow-hidden flex flex-col md:mr-6 mb-6 md:mb-0">
+          <div className={`flex-grow w-full md:w-full lg:w-2/3 overflow-hidden flex flex-col md:mr-6 mb-6 md:mb-0 ${activeCard === 'tracker' ? 'ring-2 ring-black' : ''}`}>
             <div className="bg-white border border-black rounded-lg flex flex-col h-full overflow-hidden">
               <div className="p-4 sm:p-6">
                 <div className="flex justify-between items-center mb-4">
-                  <div className="text-xl font-semibold">
-                    Round {round}
+                  <Button
+                    variant="ghost"
+                    onClick={() => setActiveCard('tracker')}
+                    className={`text-xl font-semibold ${activeCard === 'tracker' ? 'bg-gray-200' : ''}`}
+                  >
+                    Turn Tracker
+                  </Button>
+                  <div className="flex items-center space-x-4">
+                    <div className="text-lg font-medium">
+                      Round {round}
+                    </div>
+                    <EncounterHeader
+                      isRunning={isRunning}
+                      toggleEncounter={toggleEncounter}
+                      encounterTime={encounterTime}
+                    />
                   </div>
-                  <EncounterHeader
-                    isRunning={isRunning}
-                    toggleEncounter={toggleEncounter}
-                    encounterTime={encounterTime}
-                  />
                 </div>
               </div>
               <div className="flex-grow overflow-hidden">
@@ -166,13 +177,29 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
             </div>
           </div>
           <div className="md:w-full lg:w-1/3 overflow-y-auto pt-0 space-y-6 flex flex-col">
-            <div className="flex-grow overflow-y-auto space-y-6">
+            <div className={`flex-grow overflow-y-auto space-y-6 ${activeCard === 'notes' ? 'ring-2 ring-black' : ''}`}>
               <div className="mb-6">
-                <NotesSection notes={notes} setNotes={setNotes} isMobile={false} />
+                <div className="bg-white border border-black rounded-lg p-4 sm:p-6">
+                  <Button
+                    variant="ghost"
+                    onClick={() => setActiveCard('notes')}
+                    className={`text-xl font-semibold mb-4 ${activeCard === 'notes' ? 'bg-gray-200' : ''}`}
+                  >
+                    Notes
+                  </Button>
+                  <NotesSection notes={notes} setNotes={setNotes} isMobile={false} />
+                </div>
               </div>
-              <div className="bg-white border border-black rounded-lg p-4 sm:p-6">
-                <CharacterStats characters={characters} round={round} />
-              </div>
+            </div>
+            <div className={`bg-white border border-black rounded-lg p-4 sm:p-6 ${activeCard === 'stats' ? 'ring-2 ring-black' : ''}`}>
+              <Button
+                variant="ghost"
+                onClick={() => setActiveCard('stats')}
+                className={`text-xl font-semibold mb-4 ${activeCard === 'stats' ? 'bg-gray-200' : ''}`}
+              >
+                Character Stats
+              </Button>
+              <CharacterStats characters={characters} round={round} />
             </div>
           </div>
         </>
