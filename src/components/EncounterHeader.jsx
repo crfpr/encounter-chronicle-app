@@ -10,15 +10,15 @@ const EncounterHeader = ({ encounterName, setEncounterName, isRunning, toggleEnc
   };
 
   return (
-    <div className="flex items-center justify-between mb-4">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0 mb-4">
       <Input
         value={encounterName}
         onChange={(e) => setEncounterName(e.target.value)}
-        className="text-lg font-bold w-64"
+        className="text-lg font-bold w-full sm:w-64"
       />
-      <div className="flex items-center space-x-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
         <div className="text-lg font-semibold">{formatTime(encounterTime)}</div>
-        <Button onClick={toggleEncounter} variant="outline" className="h-[30px] px-3 text-sm">
+        <Button onClick={toggleEncounter} variant="outline" className="h-[30px] px-3 text-sm w-full sm:w-auto">
           {isRunning ? 'Pause Encounter' : 'Start Encounter'}
         </Button>
       </div>
