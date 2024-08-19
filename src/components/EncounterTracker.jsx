@@ -88,8 +88,8 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
           );
         case 'notes':
           return (
-            <div className="p-4 h-full overflow-y-auto pb-20">
-              <NotesSection notes={notes} setNotes={setNotes} />
+            <div className="h-full flex flex-col">
+              <NotesSection notes={notes} setNotes={setNotes} isMobile={true} />
             </div>
           );
         case 'stats':
@@ -135,7 +135,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
           <div className="md:w-full lg:w-1/3 overflow-y-auto pt-0 space-y-6 flex flex-col">
             <div className="flex-grow overflow-y-auto space-y-6">
               <div className="mb-6">
-                <NotesSection notes={notes} setNotes={setNotes} />
+                <NotesSection notes={notes} setNotes={setNotes} isMobile={false} />
               </div>
               <div className="bg-white border border-black rounded-lg p-4 sm:p-6">
                 <CharacterStats characters={characters} round={round} />
