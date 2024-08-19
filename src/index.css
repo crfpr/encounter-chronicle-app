@@ -83,3 +83,19 @@
     @apply h-[30px] px-2 text-xs;
   }
 }
+
+/* New styles for layout */
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  overflow-y: auto;
+}
+
+footer {
+  margin-top: auto;
+}

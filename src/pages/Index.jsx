@@ -17,9 +17,14 @@ const Index = () => {
           />
         </div>
       </header>
-      <main className="flex-grow container mx-auto px-4 py-8">
+      <main className="flex-grow container mx-auto px-4 py-8 overflow-y-auto">
         <EncounterTracker encounterName={encounterName} setEncounterName={setEncounterName} />
       </main>
+      <footer className="bg-gray-800 text-white py-4 mt-auto">
+        <div className="container mx-auto px-4">
+          <p>&copy; 2023 Encounter Tracker. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 };
