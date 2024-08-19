@@ -49,10 +49,10 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex flex-col lg:flex-row flex-grow overflow-hidden px-6 pb-6">
-        <div className="flex-grow lg:w-2/3 overflow-hidden flex flex-col lg:mr-6 mb-6 lg:mb-0">
+      <div className="flex flex-col lg:flex-row flex-grow overflow-hidden px-4 sm:px-6 pb-6">
+        <div className="flex-grow w-full lg:w-2/3 overflow-hidden flex flex-col lg:mr-6 mb-6 lg:mb-0">
           <div className="bg-white border border-black rounded-lg flex flex-col h-full overflow-hidden">
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <EncounterHeader
                 isRunning={isRunning}
                 toggleEncounter={toggleEncounter}
@@ -65,7 +65,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
               </div>
             </div>
             <div className="flex-grow overflow-hidden">
-              <div className="h-full overflow-y-auto px-6 pb-6">
+              <div className="h-full overflow-y-auto px-4 sm:px-6 pb-6">
                 <CharacterList 
                   characters={characters} 
                   setCharacters={setCharacters} 
@@ -83,7 +83,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
             <div className="mb-6">
               <NotesSection notes={notes} setNotes={setNotes} />
             </div>
-            <div className="bg-white border border-black rounded-lg p-6">
+            <div className="bg-white border border-black rounded-lg p-4 sm:p-6">
               <CharacterStats characters={characters} round={round} />
             </div>
           </div>

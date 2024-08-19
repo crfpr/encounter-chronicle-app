@@ -62,13 +62,13 @@ const Index = () => {
         </main>
       </div>
       <footer className="bg-black text-white py-4">
-        <div className="container mx-auto px-4 flex justify-between items-center">
-          <p>&copy; 2023 Encounter Tracker. All rights reserved.</p>
-          <div className="flex space-x-4">
-            <Button onClick={exportEncounterData} className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200">
+        <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+          <p className="text-center sm:text-left">&copy; 2023 Encounter Tracker. All rights reserved.</p>
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+            <Button onClick={exportEncounterData} className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto">
               Export Encounter Data
             </Button>
-            <Button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200">
+            <Button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto">
               <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center justify-center w-full">
                 <Upload className="mr-2 h-4 w-4" />
                 Upload Encounter Data
