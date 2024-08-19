@@ -81,26 +81,24 @@ const Token = ({ label, value, onRemove, onUpdate }) => {
               onKeyDown={handleKeyDown}
               className="h-6 w-12 px-1 py-0 text-sm"
             />
-            {isEditing && (
-              <div className="flex flex-col ml-1">
-                <ChevronUp
-                  size={14}
-                  className="cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    incrementValue();
-                  }}
-                />
-                <ChevronDown
-                  size={14}
-                  className="cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    decrementValue();
-                  }}
-                />
-              </div>
-            )}
+            <div className="flex flex-col ml-1">
+              <ChevronUp
+                size={14}
+                className="cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  incrementValue();
+                }}
+              />
+              <ChevronDown
+                size={14}
+                className="cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  decrementValue();
+                }}
+              />
+            </div>
           </>
         ) : (
           <>
