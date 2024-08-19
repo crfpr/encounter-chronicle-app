@@ -179,7 +179,7 @@ const EncounterTracker = () => {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex flex-col lg:flex-row flex-grow overflow-hidden">
-        <div className="flex-grow lg:w-2/3 overflow-hidden flex flex-col p-4">
+        <div className="flex-grow lg:w-2/3 overflow-hidden flex flex-col p-4 pr-0">
           <div className="bg-white shadow-md rounded-lg p-6 flex flex-col h-full overflow-hidden">
             <EncounterHeader
               encounterName={encounterName}
