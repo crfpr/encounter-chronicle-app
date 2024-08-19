@@ -74,7 +74,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const handleAddToken = () => {
-    const newToken = `Token ${tokens.length + 1}`;
+    const newToken = { label: `Token ${tokens.length + 1}`, value: 1 };
     const updatedTokens = [...tokens, newToken];
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
@@ -86,8 +86,10 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     updateCharacter({ ...character, tokens: updatedTokens });
   };
 
-  const handleUpdateToken = (index, newLabel) => {
-    const updatedTokens = tokens.map((token, i) => i === index ? newLabel : token);
+  const handleUpdateToken = (index, newLabel, newValue) => {
+    const updatedTokens = tokens.map((token, i) => 
+      i === index ? { ...token, label: newLabel, value: newValue } : token
+    );
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
   };
@@ -190,9 +192,10 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               {tokens.map((token, index) => (
                 <Token
                   key={index}
-                  label={token}
+                  label={token.label}
+                  value={token.value}
                   onRemove={() => handleRemoveToken(index)}
-                  onUpdate={(newLabel) => handleUpdateToken(index, newLabel)}
+                  onUpdate={(newLabel, newValue) => handleUpdateToken(index, newLabel, newValue)}
                 />
               ))}
               <Button
