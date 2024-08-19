@@ -6,12 +6,31 @@ import { Copy } from 'lucide-react';
 const NotesSection = ({ notes, setNotes, isMobile }) => {
   const [isEditing, setIsEditing] = useState(false);
   const textareaRef = useRef(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     if (isMobile) {
       setIsEditing(false);
+      adjustContainerHeight();
     }
   }, [isMobile]);
+
+  useEffect(() => {
+    if (isMobile) {
+      window.addEventListener('resize', adjustContainerHeight);
+      return () => window.removeEventListener('resize', adjustContainerHeight);
+    }
+  }, [isMobile]);
+
+  const adjustContainerHeight = () => {
+    if (containerRef.current) {
+      const viewportHeight = window.innerHeight;
+      const containerTop = containerRef.current.getBoundingClientRect().top;
+      const footerHeight = 56; // Assuming the mobile menu height is 56px
+      const maxHeight = viewportHeight - containerTop - footerHeight;
+      containerRef.current.style.height = `${maxHeight}px`;
+    }
+  };
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(notes).then(() => {
@@ -31,7 +50,7 @@ const NotesSection = ({ notes, setNotes, isMobile }) => {
   };
 
   const containerClasses = isMobile
-    ? "flex flex-col h-full relative"
+    ? "flex flex-col relative overflow-hidden"
     : "bg-white border border-black rounded-lg p-6";
 
   const textareaClasses = isMobile
@@ -39,9 +58,9 @@ const NotesSection = ({ notes, setNotes, isMobile }) => {
     : "w-full h-full min-h-[200px] pr-20";
 
   return (
-    <div className={containerClasses}>
+    <div ref={containerRef} className={containerClasses}>
       <h2 className="text-xl font-semibold mb-4 px-4 pt-4">Notes</h2>
-      <div className="relative flex-grow">
+      <div className="relative flex-grow overflow-hidden">
         <Textarea
           ref={textareaRef}
           value={notes}
