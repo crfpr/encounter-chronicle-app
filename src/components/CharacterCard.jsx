@@ -156,7 +156,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   className="w-16 text-center"
                   placeholder="Max"
                 />
-                <span className="text-sm ml-1 mb-2">ft</span>
+                <span className="text-sm ml-1">ft</span>
               </div>
             </div>
           </div>
