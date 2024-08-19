@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import EncounterTracker from '../components/EncounterTracker';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
-import { Upload } from 'lucide-react';
+import { Upload, Download, Menu, X } from 'lucide-react';
 import MobileMenuButton from '../components/MobileMenuButton';
 
 const Index = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
   const [encounterData, setEncounterData] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -30,6 +32,7 @@ const Index = () => {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }
+    setIsMobileMenuOpen(false);
   };
 
   const uploadEncounterData = (event) => {
@@ -47,12 +50,15 @@ const Index = () => {
       };
       reader.readAsText(file);
     }
+    setIsMobileMenuOpen(false);
   };
-
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
   };
 
   return (
@@ -93,6 +99,35 @@ const Index = () => {
           />
         </main>
       </div>
+      {isMobile && isMobileMenuOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
+          <div className="absolute top-0 right-0 h-full w-64 bg-white shadow-lg">
+            <div className="flex justify-between items-center p-4 border-b">
+              <h2 className="text-lg font-semibold">Menu</h2>
+              <Button variant="ghost" size="sm" onClick={toggleMobileMenu}>
+                <X className="h-6 w-6" />
+              </Button>
+            </div>
+            <div className="p-4 space-y-4">
+              <Button onClick={exportEncounterData} className="w-full flex items-center justify-center">
+                <Download className="mr-2 h-4 w-4" />
+                Export Encounter Data
+              </Button>
+              <Button onClick={handleUploadClick} className="w-full flex items-center justify-center">
+                <Upload className="mr-2 h-4 w-4" />
+                Upload Encounter Data
+              </Button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".json"
+                onChange={uploadEncounterData}
+                style={{ display: 'none' }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
       <footer className="bg-black text-white py-4 hidden md:block">
         <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
           <p className="text-center sm:text-left">&copy; 2023 Encounter Tracker. All rights reserved.</p>
