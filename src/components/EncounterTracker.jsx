@@ -216,7 +216,7 @@ const EncounterTracker = () => {
           </div>
         </div>
       </div>
-      <div className="p-4 bg-gray-100">
+      <div className="p-4 bg-black text-white">
         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
           <Button onClick={exportEncounterData} className="w-full sm:w-auto bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             Export Encounter Data
