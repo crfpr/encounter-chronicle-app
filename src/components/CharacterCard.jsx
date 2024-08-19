@@ -145,6 +145,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 value={character.currentMovement}
                 onChange={(e) => handleInputChange('currentMovement', parseInt(e.target.value))}
                 className="w-16 text-center"
+                placeholder="Current"
               />
               <span>/</span>
               <Input
@@ -152,7 +153,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 value={character.maxMovement}
                 onChange={(e) => handleInputChange('maxMovement', parseInt(e.target.value))}
                 className="w-16 text-center"
+                placeholder="Max"
               />
+              <span className="text-sm">ft</span>
             </div>
           </div>
 
