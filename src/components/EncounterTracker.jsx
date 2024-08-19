@@ -120,7 +120,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
         case 'notes':
           return (
             <div className="h-full flex flex-col">
-              <NotesSection key="notes-section" notes={notes} setNotes={setNotes} isMobile={true} />
+              <NotesSection key={`notes-section-${activePage}`} notes={notes} setNotes={setNotes} isMobile={true} />
             </div>
           );
         case 'stats':

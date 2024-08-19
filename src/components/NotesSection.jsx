@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Textarea } from '../components/ui/textarea';
 import { Button } from '../components/ui/button';
-import { Copy, Edit } from 'lucide-react';
+import { Copy } from 'lucide-react';
 
 const NotesSection = ({ notes, setNotes, isMobile }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -21,10 +21,12 @@ const NotesSection = ({ notes, setNotes, isMobile }) => {
     });
   };
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-    if (textareaRef.current) {
-      textareaRef.current.focus();
+  const handleTextareaClick = () => {
+    if (isMobile && !isEditing) {
+      setIsEditing(true);
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+      }
     }
   };
 
@@ -47,18 +49,8 @@ const NotesSection = ({ notes, setNotes, isMobile }) => {
           placeholder="Enter encounter notes here..."
           className={textareaClasses}
           readOnly={isMobile && !isEditing}
+          onClick={handleTextareaClick}
         />
-        {isMobile && !isEditing && (
-          <div 
-            className="absolute inset-0 bg-gray-100 bg-opacity-50 flex items-center justify-center"
-            onClick={handleEditClick}
-          >
-            <Button variant="outline" size="sm">
-              <Edit className="h-4 w-4 mr-2" />
-              Tap to edit notes
-            </Button>
-          </div>
-        )}
         <Button 
           onClick={copyToClipboard} 
           className="absolute top-2 right-2"
