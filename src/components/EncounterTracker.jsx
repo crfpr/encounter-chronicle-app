@@ -10,13 +10,6 @@ const EncounterTracker = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
   const [round, setRound] = useState(1);
   const [characters, setCharacters] = useState([]);
-
-const updateCharacter = (updatedCharacter) => {
-  setCharacters(prevCharacters => 
-    prevCharacters.map(c => c.id === updatedCharacter.id ? updatedCharacter : c)
-      .sort((a, b) => b.initiative - a.initiative)
-  );
-};
   const [activeCharacterIndex, setActiveCharacterIndex] = useState(0);
   const [encounterTime, setEncounterTime] = useState(0);
   const [turnTime, setTurnTime] = useState(0);
@@ -183,7 +176,6 @@ const updateCharacter = (updatedCharacter) => {
               <CharacterList 
                 characters={characters} 
                 setCharacters={setCharacters} 
-                updateCharacter={updateCharacter}
                 activeCharacterIndex={activeCharacterIndex}
                 turnTime={turnTime}
                 onPreviousTurn={handlePreviousTurn}

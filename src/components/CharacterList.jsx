@@ -2,7 +2,7 @@ import React from 'react';
 import CharacterCard from './CharacterCard';
 import { Button } from '../components/ui/button';
 
-const CharacterList = ({ characters, setCharacters, updateCharacter, activeCharacterIndex, turnTime, onPreviousTurn, onNextTurn }) => {
+const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTime, onPreviousTurn, onNextTurn }) => {
   const addCharacter = () => {
     const newCharacter = {
       id: Date.now(),
@@ -27,7 +27,12 @@ const CharacterList = ({ characters, setCharacters, updateCharacter, activeChara
     setCharacters(prevCharacters => prevCharacters.filter(c => c.id !== id).sort((a, b) => b.initiative - a.initiative));
   };
 
-  // updateCharacter is now passed as a prop
+  const updateCharacter = (updatedCharacter) => {
+    setCharacters(prevCharacters => 
+      prevCharacters.map(c => c.id === updatedCharacter.id ? updatedCharacter : c)
+        .sort((a, b) => b.initiative - a.initiative)
+    );
+  };
 
   return (
     <div className="space-y-4 mb-4">
