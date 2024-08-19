@@ -166,7 +166,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
           {/* Token display and Add token button */}
           <div className="mt-2 mb-2">
-            <div className="flex flex-wrap items-center">
+            <div className="flex flex-wrap items-center justify-center">
               {tokens.map((token, index) => (
                 <Token
                   key={index}
