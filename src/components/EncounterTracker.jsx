@@ -17,7 +17,80 @@ const EncounterTracker = ({ encounterName, setEncounterName }) => {
   const [notes, setNotes] = useState('');
   const [history, setHistory] = useState([]);
 
-  // ... rest of the component code remains unchanged ...
+  const toggleEncounter = useCallback(() => {
+    setIsRunning(prevIsRunning => !prevIsRunning);
+  }, []);
+
+  useEffect(() => {
+    let interval;
+    if (isRunning) {
+      interval = setInterval(() => {
+        setEncounterTime(prevTime => prevTime + 1);
+        setTurnTime(prevTime => prevTime + 1);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [isRunning]);
+
+  const handlePreviousTurn = () => {
+    setActiveCharacterIndex(prevIndex => 
+      prevIndex === 0 ? characters.length - 1 : prevIndex - 1
+    );
+    setTurnTime(0);
+  };
+
+  const handleNextTurn = () => {
+    setActiveCharacterIndex(prevIndex => 
+      prevIndex === characters.length - 1 ? 0 : prevIndex + 1
+    );
+    setTurnTime(0);
+    if (activeCharacterIndex === characters.length - 1) {
+      setRound(prevRound => prevRound + 1);
+    }
+  };
+
+  const exportEncounterData = () => {
+    const data = {
+      encounterName,
+      round,
+      characters,
+      encounterTime,
+      notes,
+      history
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${encounterName.replace(/\s+/g, '_')}_data.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const uploadEncounterData = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          setEncounterName(data.encounterName);
+          setRound(data.round);
+          setCharacters(data.characters);
+          setEncounterTime(data.encounterTime);
+          setNotes(data.notes);
+          setHistory(data.history);
+        } catch (error) {
+          console.error('Error parsing JSON:', error);
+        }
+      };
+      reader.readAsText(file);
+    }
+  };
 
   return (
     <div className="flex flex-col h-screen">
