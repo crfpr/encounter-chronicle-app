@@ -8,7 +8,8 @@ import Token from './Token';
 import { PlusCircle } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn }) => {
-  const [tokens, setTokens] = useState([]);
+  const [tokens, setTokens] = useState(character.tokens || []);
+
   const getBackgroundColor = () => {
     switch (character.type) {
       case 'PC':
@@ -70,6 +71,25 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   const toggleAction = (action) => {
     updateCharacter({ ...character, [action]: !character[action] });
+  };
+
+  const handleAddToken = () => {
+    const newToken = `Token ${tokens.length + 1}`;
+    const updatedTokens = [...tokens, newToken];
+    setTokens(updatedTokens);
+    updateCharacter({ ...character, tokens: updatedTokens });
+  };
+
+  const handleRemoveToken = (index) => {
+    const updatedTokens = tokens.filter((_, i) => i !== index);
+    setTokens(updatedTokens);
+    updateCharacter({ ...character, tokens: updatedTokens });
+  };
+
+  const handleUpdateToken = (index, newLabel) => {
+    const updatedTokens = tokens.map((token, i) => i === index ? newLabel : token);
+    setTokens(updatedTokens);
+    updateCharacter({ ...character, tokens: updatedTokens });
   };
 
   return (
@@ -168,18 +188,15 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           <div className="mt-2 mb-2">
             <div className="flex flex-wrap items-center">
               {tokens.map((token, index) => (
-                <div key={index} className="flex items-center">
-                  <Token
-                    label={token}
-                    onRemove={() => setTokens(tokens.filter((_, i) => i !== index))}
-                  />
-                </div>
+                <Token
+                  key={index}
+                  label={token}
+                  onRemove={() => handleRemoveToken(index)}
+                  onUpdate={(newLabel) => handleUpdateToken(index, newLabel)}
+                />
               ))}
               <Button
-                onClick={() => {
-                  const newToken = `Token ${tokens.length + 1}`;
-                  setTokens([...tokens, newToken]);
-                }}
+                onClick={handleAddToken}
                 variant="outline"
                 className="h-[30px] px-3 py-1 text-sm flex items-center"
               >
