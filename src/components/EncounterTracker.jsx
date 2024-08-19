@@ -214,12 +214,12 @@ const EncounterTracker = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center space-x-4">
-        <Button onClick={exportEncounterData} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+      <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+        <Button onClick={exportEncounterData} className="w-full sm:w-auto bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
           Export Encounter Data
         </Button>
-        <Button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-          <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center">
+        <Button className="w-full sm:w-auto bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+          <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center justify-center w-full">
             <Upload className="mr-2 h-4 w-4" />
             Upload Encounter Data
           </label>
