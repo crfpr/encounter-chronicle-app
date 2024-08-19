@@ -3,11 +3,6 @@ import EncounterHeader from './EncounterHeader';
 import CharacterList from './CharacterList';
 import CharacterStats from './CharacterStats';
 import NotesSection from './NotesSection';
-import React, { useState, useEffect, useCallback } from 'react';
-import EncounterHeader from './EncounterHeader';
-import CharacterList from './CharacterList';
-import CharacterStats from './CharacterStats';
-import NotesSection from './NotesSection';
 
 const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData }) => {
   const [round, setRound] = useState(1);
