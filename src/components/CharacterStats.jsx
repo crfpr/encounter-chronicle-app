@@ -10,7 +10,7 @@ const CharacterStats = ({ characters, round }) => {
 
   return (
     <div>
-      <h2 className="text-lg font-semibold mb-3">Character Statistics</h2>
+      <h2 className="text-xl font-semibold mb-4">Character Statistics</h2>
       <Table>
         <TableHeader>
           <TableRow>

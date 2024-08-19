@@ -97,7 +97,7 @@ const EncounterTracker = ({ encounterName, setEncounterName }) => {
       <div className="flex flex-col lg:flex-row flex-grow overflow-hidden">
         <div className="flex-grow lg:w-2/3 overflow-hidden flex flex-col">
           <div className="bg-white border border-black rounded-lg flex flex-col h-full overflow-hidden">
-            <div className="px-6 pt-6">
+            <div className="p-6">
               <EncounterHeader
                 isRunning={isRunning}
                 toggleEncounter={toggleEncounter}
@@ -123,7 +123,7 @@ const EncounterTracker = ({ encounterName, setEncounterName }) => {
             </div>
           </div>
         </div>
-        <div className="lg:w-1/3 overflow-y-auto p-4 space-y-6">
+        <div className="lg:w-1/3 overflow-y-auto p-6 space-y-6">
           <NotesSection notes={notes} setNotes={setNotes} />
           <div className="bg-white border border-black rounded-lg p-6">
             <CharacterStats characters={characters} round={round} />
