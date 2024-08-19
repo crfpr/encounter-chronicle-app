@@ -10,15 +10,15 @@ const CharacterStats = ({ characters, round }) => {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">Character Statistics</h2>
+      <h2 className="text-lg font-semibold mb-3">Character Statistics</h2>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Turn Count</TableHead>
-            <TableHead>Round Count</TableHead>
-            <TableHead>Cumulative Turn Time</TableHead>
-            <TableHead>Average Turn Time</TableHead>
+            <TableHead className="text-xs font-semibold">Name</TableHead>
+            <TableHead className="text-xs font-semibold">Turn Count</TableHead>
+            <TableHead className="text-xs font-semibold">Round Count</TableHead>
+            <TableHead className="text-xs font-semibold">Cumulative Turn Time</TableHead>
+            <TableHead className="text-xs font-semibold">Average Turn Time</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
