@@ -194,7 +194,7 @@ const EncounterTracker = () => {
               </div>
             </div>
             <div className="flex-grow overflow-hidden">
-              <div className="h-full overflow-y-auto pr-4">
+              <div className="h-full overflow-y-auto">
                 <div className="pr-4">
                   <CharacterList 
                     characters={characters} 
