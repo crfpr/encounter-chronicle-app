@@ -8,10 +8,10 @@ const Token = ({ label, onRemove }) => {
       variant="secondary"
       className="inline-flex items-center rounded-full px-3 py-1 text-sm mr-2 mb-2 h-[30px]"
     >
-      <span>{label}</span>
+      <span className="flex-grow text-center">{label}</span>
       <X
         size={14}
-        className="ml-2 cursor-pointer"
+        className="ml-2 cursor-pointer flex-shrink-0"
         onClick={(e) => {
           e.stopPropagation();
           onRemove();
