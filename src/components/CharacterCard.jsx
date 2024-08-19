@@ -162,6 +162,17 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             </div>
           </div>
 
+          {/* New row - Add token button */}
+          <div className="mt-2 mb-2">
+            <Button 
+              onClick={() => console.log('Add token clicked')} 
+              variant="outline" 
+              className="w-full"
+            >
+              Add token
+            </Button>
+          </div>
+
           {/* Third row - Inline Note and Delete button */}
           <div className="mt-auto pt-2 flex items-center justify-between">
             <div className="flex flex-col flex-grow mr-2">
