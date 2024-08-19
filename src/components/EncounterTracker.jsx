@@ -179,22 +179,24 @@ const EncounterTracker = () => {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex flex-col lg:flex-row flex-grow overflow-hidden">
-        <div className="flex-grow lg:w-2/3 overflow-hidden flex flex-col p-4">
-          <div className="bg-white shadow-md rounded-lg p-6 flex flex-col h-full overflow-hidden">
-            <EncounterHeader
-              encounterName={encounterName}
-              setEncounterName={setEncounterName}
-              isRunning={isRunning}
-              toggleEncounter={toggleEncounter}
-              encounterTime={encounterTime}
-            />
-            <div className="flex justify-between items-center mb-4">
-              <div className="text-xl font-semibold">
-                Round {round}
+        <div className="flex-grow lg:w-2/3 overflow-hidden flex flex-col">
+          <div className="bg-white shadow-md rounded-lg flex flex-col h-full overflow-hidden">
+            <div className="px-6 pt-6">
+              <EncounterHeader
+                encounterName={encounterName}
+                setEncounterName={setEncounterName}
+                isRunning={isRunning}
+                toggleEncounter={toggleEncounter}
+                encounterTime={encounterTime}
+              />
+              <div className="flex justify-between items-center mb-4">
+                <div className="text-xl font-semibold">
+                  Round {round}
+                </div>
               </div>
             </div>
             <div className="flex-grow overflow-hidden">
-              <div className="h-full overflow-y-auto">
+              <div className="h-full overflow-y-auto px-6 pb-6">
                 <CharacterList 
                   characters={characters} 
                   setCharacters={setCharacters} 
