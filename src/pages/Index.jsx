@@ -3,6 +3,7 @@ import EncounterTracker from '../components/EncounterTracker';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Upload } from 'lucide-react';
+import MobileMenuButton from '../components/MobileMenuButton';
 
 const Index = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
@@ -48,17 +49,24 @@ const Index = () => {
     }
   };
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       {isMobile && (
         <header className="fixed top-0 left-0 right-0 bg-black text-white py-2 z-50">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 flex items-center justify-between">
             <Input
               value={encounterName}
               onChange={(e) => setEncounterName(e.target.value)}
-              className="text-xl font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0"
+              className="text-xl font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0 flex-grow mr-2"
               placeholder="Enter encounter name..."
             />
+            <MobileMenuButton onClick={toggleMobileMenu} />
           </div>
         </header>
       )}
