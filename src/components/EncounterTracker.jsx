@@ -177,10 +177,10 @@ const EncounterTracker = () => {
   };
 
   return (
-    <div className="flex flex-col space-y-6 h-screen">
-      <div className="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-6 flex-grow overflow-hidden">
-        <div className="flex-grow space-y-6 overflow-hidden flex flex-col">
-          <div className="bg-white shadow-md rounded-lg p-6 relative flex flex-col flex-grow overflow-hidden">
+    <div className="flex flex-col h-screen">
+      <div className="flex flex-col lg:flex-row flex-grow overflow-hidden">
+        <div className="flex-grow lg:w-2/3 overflow-hidden flex flex-col">
+          <div className="bg-white shadow-md rounded-lg p-6 flex flex-col h-full">
             <EncounterHeader
               encounterName={encounterName}
               setEncounterName={setEncounterName}
@@ -205,30 +205,32 @@ const EncounterTracker = () => {
             </div>
           </div>
         </div>
-        <div className="lg:w-1/3 space-y-6 overflow-y-auto">
+        <div className="lg:w-1/3 overflow-y-auto p-4 space-y-6">
           <NotesSection notes={notes} setNotes={setNotes} />
           <div className="bg-white shadow-md rounded-lg p-6">
             <CharacterStats characters={characters} round={round} />
           </div>
         </div>
       </div>
-      <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-        <Button onClick={exportEncounterData} className="w-full sm:w-auto bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-          Export Encounter Data
-        </Button>
-        <Button className="w-full sm:w-auto bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-          <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center justify-center w-full">
-            <Upload className="mr-2 h-4 w-4" />
-            Upload Encounter Data
-          </label>
-          <input
-            id="upload-encounter-data"
-            type="file"
-            accept=".json"
-            onChange={uploadEncounterData}
-            style={{ display: 'none' }}
-          />
-        </Button>
+      <div className="p-4 bg-gray-100">
+        <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <Button onClick={exportEncounterData} className="w-full sm:w-auto bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Export Encounter Data
+          </Button>
+          <Button className="w-full sm:w-auto bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+            <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center justify-center w-full">
+              <Upload className="mr-2 h-4 w-4" />
+              Upload Encounter Data
+            </label>
+            <input
+              id="upload-encounter-data"
+              type="file"
+              accept=".json"
+              onChange={uploadEncounterData}
+              style={{ display: 'none' }}
+            />
+          </Button>
+        </div>
       </div>
     </div>
   );
