@@ -64,7 +64,7 @@ const Index = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {isMobile && (
-        <header className="fixed top-0 left-0 right-0 bg-black text-white py-2 z-50">
+        <header className="fixed top-0 left-0 right-0 bg-black text-white py-2 z-[9999]">
           <div className="container mx-auto px-4 flex items-center justify-between">
             <Input
               value={encounterName}
@@ -76,7 +76,7 @@ const Index = () => {
           </div>
         </header>
       )}
-      <div className={`flex flex-col h-screen ${isMobile ? 'pt-12' : ''}`}>
+      <div className={`flex flex-col h-screen ${isMobile ? 'pt-14' : ''}`}>
         {!isMobile && (
           <header className="bg-black text-white py-4 h-16">
             <div className="container mx-auto px-4">
@@ -100,8 +100,8 @@ const Index = () => {
         </main>
       </div>
       {isMobile && isMobileMenuOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
-          <div className="absolute top-0 right-0 h-full w-64 bg-white shadow-lg">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000]">
+          <div className="fixed top-0 right-0 h-full w-64 bg-white shadow-lg">
             <div className="flex justify-between items-center p-4 border-b">
               <h2 className="text-lg font-semibold">Menu</h2>
               <Button variant="ghost" size="sm" onClick={toggleMobileMenu}>
