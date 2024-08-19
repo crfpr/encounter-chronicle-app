@@ -179,8 +179,8 @@ const EncounterTracker = () => {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex flex-col lg:flex-row flex-grow overflow-hidden">
-        <div className="flex-grow lg:w-2/3 overflow-hidden flex flex-col p-4">
-          <div className="bg-white shadow-md rounded-lg p-6 flex flex-col h-full overflow-hidden">
+        <div className="flex-grow lg:w-2/3 overflow-hidden flex flex-col">
+          <div className="bg-white shadow-md rounded-lg p-6 pr-0 flex flex-col h-full overflow-hidden">
             <EncounterHeader
               encounterName={encounterName}
               setEncounterName={setEncounterName}
@@ -188,7 +188,7 @@ const EncounterTracker = () => {
               toggleEncounter={toggleEncounter}
               encounterTime={encounterTime}
             />
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex justify-between items-center mb-4 pr-6">
               <div className="text-xl font-semibold">
                 Round {round}
               </div>

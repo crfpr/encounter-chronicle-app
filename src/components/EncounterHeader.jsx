@@ -10,7 +10,7 @@ const EncounterHeader = ({ encounterName, setEncounterName, isRunning, toggleEnc
   };
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0 mb-4">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0 mb-4 pr-6">
       <Input
         value={encounterName}
         onChange={(e) => setEncounterName(e.target.value)}
