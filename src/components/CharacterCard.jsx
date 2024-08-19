@@ -21,7 +21,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   const getBorderColor = () => {
     if (isActive) {
-      return 'border-black';
+      return 'border-black border-[3px]';
     }
     switch (character.type) {
       case 'PC':
@@ -70,7 +70,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   return (
-    <div className={`flex ${getBackgroundColor()} ${getBorderColor()} relative overflow-hidden rounded-lg border-4`}>
+    <div className={`flex ${getBackgroundColor()} ${getBorderColor()} relative overflow-hidden rounded-lg ${isActive ? '' : 'border-4'}`}>
       {/* Left Tab */}
       <div className={`w-16 ${getTabColor()} ${isActive ? 'text-white' : ''} flex items-stretch`}>
         {isActive ? (
