@@ -166,7 +166,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             <Button
               onClick={() => console.log('Add token clicked')}
               variant="outline"
-              className="w-full"
+              className="btn-sm"
             >
               Add token
             </Button>
