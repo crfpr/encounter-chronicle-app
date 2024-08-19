@@ -13,7 +13,7 @@ const NotesSection = ({ notes, setNotes }) => {
   };
 
   return (
-    <div>
+    <div className="bg-white shadow-md rounded-lg p-6">
       <h2 className="text-xl font-semibold mb-2">Notes</h2>
       <div className="relative">
         <Textarea
