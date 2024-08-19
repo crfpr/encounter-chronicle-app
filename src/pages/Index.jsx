@@ -61,7 +61,7 @@ const Index = () => {
           />
         </main>
       </div>
-      <footer className="bg-black text-white py-4">
+      <footer className="bg-black text-white py-4 hidden md:block">
         <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
           <p className="text-center sm:text-left">&copy; 2023 Encounter Tracker. All rights reserved.</p>
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
