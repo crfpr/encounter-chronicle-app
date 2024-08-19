@@ -179,8 +179,8 @@ const EncounterTracker = () => {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex flex-col lg:flex-row flex-grow overflow-hidden">
-        <div className="flex-grow lg:w-2/3 overflow-hidden flex flex-col p-4">
-          <div className="bg-white shadow-md rounded-lg p-6 flex flex-col h-full overflow-hidden">
+        <div className="flex-grow lg:w-2/3 overflow-hidden flex flex-col p-2">
+          <div className="bg-white shadow-md rounded-lg p-2 flex flex-col h-full overflow-hidden">
             <EncounterHeader
               encounterName={encounterName}
               setEncounterName={setEncounterName}
@@ -188,23 +188,21 @@ const EncounterTracker = () => {
               toggleEncounter={toggleEncounter}
               encounterTime={encounterTime}
             />
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex justify-between items-center mb-2">
               <div className="text-xl font-semibold">
                 Round {round}
               </div>
             </div>
-            <div className="flex-grow overflow-hidden relative">
-              <div className="h-full overflow-y-auto absolute inset-0 pr-2">
-                <div className="pr-2">
-                  <CharacterList 
-                    characters={characters} 
-                    setCharacters={setCharacters} 
-                    activeCharacterIndex={activeCharacterIndex}
-                    turnTime={turnTime}
-                    onPreviousTurn={handlePreviousTurn}
-                    onNextTurn={handleNextTurn}
-                  />
-                </div>
+            <div className="flex-grow overflow-hidden">
+              <div className="h-full overflow-y-auto pr-1">
+                <CharacterList 
+                  characters={characters} 
+                  setCharacters={setCharacters} 
+                  activeCharacterIndex={activeCharacterIndex}
+                  turnTime={turnTime}
+                  onPreviousTurn={handlePreviousTurn}
+                  onNextTurn={handleNextTurn}
+                />
               </div>
             </div>
           </div>
