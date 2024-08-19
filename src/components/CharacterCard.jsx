@@ -139,7 +139,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             >
               Reaction
             </Button>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-end space-x-2">
               <Input
                 type="number"
                 value={character.currentMovement}
@@ -147,15 +147,17 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 className="w-16 text-center"
                 placeholder="Current"
               />
-              <span>/</span>
-              <Input
-                type="number"
-                value={character.maxMovement}
-                onChange={(e) => handleInputChange('maxMovement', parseInt(e.target.value))}
-                className="w-16 text-center"
-                placeholder="Max"
-              />
-              <span className="text-sm">ft</span>
+              <span className="mb-2">/</span>
+              <div className="flex items-end">
+                <Input
+                  type="number"
+                  value={character.maxMovement}
+                  onChange={(e) => handleInputChange('maxMovement', parseInt(e.target.value))}
+                  className="w-16 text-center"
+                  placeholder="Max"
+                />
+                <span className="text-sm ml-1 mb-2">ft</span>
+              </div>
             </div>
           </div>
 
