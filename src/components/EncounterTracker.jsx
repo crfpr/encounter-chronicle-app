@@ -14,6 +14,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   const [isRunning, setIsRunning] = useState(false);
   const [notes, setNotes] = useState('');
   const [activePage, setActivePage] = useState('tracker');
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const toggleEncounter = useCallback(() => {
     setIsRunning(prevIsRunning => !prevIsRunning);
@@ -32,6 +33,14 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
     return () => clearInterval(interval);
   }, [isRunning]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handlePreviousTurn = () => {
     setActiveCharacterIndex(prevIndex => 
       prevIndex === 0 ? characters.length - 1 : prevIndex - 1
@@ -49,26 +58,68 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
     }
   };
 
-  return (
-    <div className="flex flex-col h-full">
-      <div className="flex flex-col md:flex-row flex-grow overflow-hidden px-4 sm:px-6 pb-6">
-        <div className="flex-grow w-full md:w-full lg:w-2/3 overflow-hidden flex flex-col md:mr-6 mb-6 md:mb-0">
-          <div className="bg-white border border-black rounded-lg flex flex-col h-full overflow-hidden" style={{ height: 'calc(100vh - 4rem - 2rem)' }}>
-            <div className="p-4 sm:p-6">
-              <EncounterHeader
-                isRunning={isRunning}
-                toggleEncounter={toggleEncounter}
-                encounterTime={encounterTime}
-              />
-              <div className="flex justify-between items-center mb-4">
-                <div className="text-xl font-semibold">
+  const renderContent = () => {
+    if (isMobile) {
+      switch (activePage) {
+        case 'tracker':
+          return (
+            <div className="flex-grow overflow-hidden flex flex-col h-full">
+              <div className="p-4">
+                <EncounterHeader
+                  isRunning={isRunning}
+                  toggleEncounter={toggleEncounter}
+                  encounterTime={encounterTime}
+                />
+                <div className="text-xl font-semibold mb-4">
                   Round {round}
                 </div>
               </div>
+              <div className="flex-grow overflow-y-auto px-4 pb-20">
+                <CharacterList 
+                  characters={characters} 
+                  setCharacters={setCharacters} 
+                  activeCharacterIndex={activeCharacterIndex}
+                  turnTime={turnTime}
+                  onPreviousTurn={handlePreviousTurn}
+                  onNextTurn={handleNextTurn}
+                />
+              </div>
             </div>
-            <div className="flex-grow overflow-hidden">
-              <div className="h-full overflow-y-auto px-4 sm:px-6 pb-6">
-                {(activePage === 'tracker' || window.innerWidth >= 768) && (
+          );
+        case 'notes':
+          return (
+            <div className="p-4 h-full overflow-y-auto pb-20">
+              <NotesSection notes={notes} setNotes={setNotes} />
+            </div>
+          );
+        case 'stats':
+          return (
+            <div className="p-4 h-full overflow-y-auto pb-20">
+              <CharacterStats characters={characters} round={round} />
+            </div>
+          );
+        default:
+          return null;
+      }
+    } else {
+      return (
+        <>
+          <div className="flex-grow w-full md:w-full lg:w-2/3 overflow-hidden flex flex-col md:mr-6 mb-6 md:mb-0">
+            <div className="bg-white border border-black rounded-lg flex flex-col h-full overflow-hidden">
+              <div className="p-4 sm:p-6">
+                <EncounterHeader
+                  isRunning={isRunning}
+                  toggleEncounter={toggleEncounter}
+                  encounterTime={encounterTime}
+                />
+                <div className="flex justify-between items-center mb-4">
+                  <div className="text-xl font-semibold">
+                    Round {round}
+                  </div>
+                </div>
+              </div>
+              <div className="flex-grow overflow-hidden">
+                <div className="h-full overflow-y-auto px-4 sm:px-6 pb-6">
                   <CharacterList 
                     characters={characters} 
                     setCharacters={setCharacters} 
@@ -77,27 +128,31 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
                     onPreviousTurn={handlePreviousTurn}
                     onNextTurn={handleNextTurn}
                   />
-                )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="md:w-full lg:w-1/3 overflow-y-auto pt-0 space-y-6 flex flex-col" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
-          <div className="flex-grow overflow-y-auto space-y-6">
-            {(activePage === 'notes' || window.innerWidth >= 768) && (
+          <div className="md:w-full lg:w-1/3 overflow-y-auto pt-0 space-y-6 flex flex-col">
+            <div className="flex-grow overflow-y-auto space-y-6">
               <div className="mb-6">
                 <NotesSection notes={notes} setNotes={setNotes} />
               </div>
-            )}
-            {(activePage === 'stats' || window.innerWidth >= 768) && (
               <div className="bg-white border border-black rounded-lg p-4 sm:p-6">
                 <CharacterStats characters={characters} round={round} />
               </div>
-            )}
+            </div>
           </div>
-        </div>
+        </>
+      );
+    }
+  };
+
+  return (
+    <div className="flex flex-col h-full">
+      <div className="flex flex-col md:flex-row flex-grow overflow-hidden px-4 sm:px-6 pb-6">
+        {renderContent()}
       </div>
-      <MobileMenu activePage={activePage} setActivePage={setActivePage} />
+      {isMobile && <MobileMenu activePage={activePage} setActivePage={setActivePage} />}
     </div>
   );
 };
