@@ -4,6 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import TurnNavigator from './TurnNavigator';
+import ConditionTracker from './ConditionTracker';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn }) => {
   const getBackgroundColor = () => {
@@ -195,6 +196,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               </AlertDialogContent>
             </AlertDialog>
           </div>
+
+          {/* Fourth row - Condition Tracker */}
+          <ConditionTracker character={character} updateCharacter={updateCharacter} />
         </div>
       </div>
 
