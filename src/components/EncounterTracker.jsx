@@ -95,6 +95,16 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
         case 'tracker':
           return (
             <div className="flex-grow overflow-hidden flex flex-col h-full">
+              <div className="p-4">
+                <EncounterHeader
+                  isRunning={isRunning}
+                  toggleEncounter={toggleEncounter}
+                  encounterTime={encounterTime}
+                />
+                <div className="text-xl font-semibold mb-4">
+                  Round {round}
+                </div>
+              </div>
               <div className="flex-grow overflow-y-auto pb-20">
                 <CharacterList 
                   characters={characters} 
@@ -170,20 +180,6 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
 
   return (
     <div className="flex flex-col h-full">
-      {isMobile && (
-        <div className="sticky top-0 z-10 bg-white">
-          <div className="p-4">
-            <EncounterHeader
-              isRunning={isRunning}
-              toggleEncounter={toggleEncounter}
-              encounterTime={encounterTime}
-            />
-            <div className="text-xl font-semibold mb-4">
-              Round {round}
-            </div>
-          </div>
-        </div>
-      )}
       <div className="flex flex-col md:flex-row flex-grow overflow-hidden">
         {renderContent()}
       </div>
