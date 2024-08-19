@@ -82,7 +82,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
 
   const renderContent = () => {
     if (isMobile) {
-      const titleStyle = "text-xl font-semibold p-6 border-b";
+      const titleStyle = "text-xl font-semibold mb-4 px-4 pt-4";
       
       switch (activePage) {
         case 'tracker':
@@ -170,11 +170,8 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
               <div className="mb-6">
                 <NotesSection notes={notes} setNotes={setNotes} isMobile={false} />
               </div>
-              <div className="bg-white border border-black rounded-lg">
-                <h2 className="text-xl font-semibold p-6 border-b">Character Stats</h2>
-                <div className="p-6">
-                  <CharacterStats characters={characters} round={round} />
-                </div>
+              <div className="bg-white border border-black rounded-lg p-4 sm:p-6">
+                <CharacterStats characters={characters} round={round} />
               </div>
             </div>
           </div>

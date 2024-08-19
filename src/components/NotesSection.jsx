@@ -52,7 +52,7 @@ const NotesSection = ({ notes, setNotes, isMobile }) => {
 
   const containerClasses = isMobile
     ? "flex flex-col relative overflow-hidden pb-5" // Added pb-5 for bottom padding
-    : "bg-white border border-black rounded-lg";
+    : "bg-white border border-black rounded-lg p-6";
 
   const textareaClasses = isMobile
     ? "w-full h-full flex-grow resize-none p-4"
@@ -60,8 +60,8 @@ const NotesSection = ({ notes, setNotes, isMobile }) => {
 
   return (
     <div ref={containerRef} className={containerClasses}>
-      {!isMobile && <h2 className="text-xl font-semibold p-6 border-b">Notes</h2>}
-      <div className="relative flex-grow overflow-hidden p-6">
+      {!isMobile && <h2 className="text-xl font-semibold mb-4">Notes</h2>}
+      <div className="relative flex-grow overflow-hidden">
         <Textarea
           ref={textareaRef}
           value={notes}
@@ -73,7 +73,7 @@ const NotesSection = ({ notes, setNotes, isMobile }) => {
         />
         <Button 
           onClick={copyToClipboard} 
-          className="absolute top-8 right-8"
+          className="absolute top-2 right-2"
           variant="outline"
           size="sm"
         >
