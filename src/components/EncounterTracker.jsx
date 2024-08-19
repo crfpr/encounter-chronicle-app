@@ -50,7 +50,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   return (
     <div className="flex flex-col h-full">
       <div className="flex flex-col lg:flex-row flex-grow overflow-hidden px-6 pb-6">
-        <div className="flex-grow lg:w-2/3 overflow-hidden flex flex-col lg:mr-6">
+        <div className="flex-grow lg:w-2/3 overflow-hidden flex flex-col lg:mr-6 mb-6 lg:mb-0">
           <div className="bg-white border border-black rounded-lg flex flex-col h-full overflow-hidden">
             <div className="p-6">
               <EncounterHeader
@@ -80,7 +80,9 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
         </div>
         <div className="lg:w-1/3 overflow-y-auto pt-0 space-y-6 flex flex-col" style={{ maxHeight: 'calc(100vh - 4rem)' }}>
           <div className="flex-grow overflow-y-auto space-y-6">
-            <NotesSection notes={notes} setNotes={setNotes} />
+            <div className="mb-6">
+              <NotesSection notes={notes} setNotes={setNotes} />
+            </div>
             <div className="bg-white border border-black rounded-lg p-6">
               <CharacterStats characters={characters} round={round} />
             </div>
