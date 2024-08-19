@@ -3,7 +3,6 @@ import EncounterHeader from './EncounterHeader';
 import CharacterList from './CharacterList';
 import CharacterStats from './CharacterStats';
 import NotesSection from './NotesSection';
-import Sparkles from './Sparkles';
 import { Button } from '../components/ui/button';
 
 const EncounterTracker = () => {
@@ -14,7 +13,6 @@ const EncounterTracker = () => {
   const [encounterTime, setEncounterTime] = useState(0);
   const [turnTime, setTurnTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [showSparkles, setShowSparkles] = useState(false);
   const [roundStates, setRoundStates] = useState([]);
   const [notes, setNotes] = useState('');
   const [history, setHistory] = useState([]);
@@ -77,13 +75,7 @@ const EncounterTracker = () => {
 
     if (nextIndex === 0) {
       setRoundStates(prevStates => [...prevStates, characters]);
-
-      setRound((prevRound) => {
-        setShowSparkles(true);
-        setTimeout(() => setShowSparkles(false), 1000);
-        return prevRound + 1;
-      });
-
+      setRound(prevRound => prevRound + 1);
       setCharacters(prevCharacters => prevCharacters.map(char => ({
         ...char,
         reaction: false
@@ -166,9 +158,8 @@ const EncounterTracker = () => {
             encounterTime={encounterTime}
           />
           <div className="flex justify-between items-center mb-4">
-            <div className="text-xl font-semibold flex items-center">
+            <div className="text-xl font-semibold">
               Round {round}
-              {showSparkles && <Sparkles />}
             </div>
           </div>
           <div className="flex relative">
