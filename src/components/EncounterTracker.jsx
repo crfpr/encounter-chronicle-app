@@ -82,17 +82,20 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
 
   const renderContent = () => {
     if (isMobile) {
+      const titleStyle = "text-xl font-semibold mb-4 px-4 pt-4";
+      
       switch (activePage) {
         case 'tracker':
           return (
             <div className="flex-grow overflow-hidden flex flex-col h-full">
+              <h2 className={titleStyle}>Turn Tracker</h2>
               <div className="p-4">
                 <EncounterHeader
                   isRunning={isRunning}
                   toggleEncounter={toggleEncounter}
                   encounterTime={encounterTime}
                 />
-                <div className="text-xl font-semibold mb-4">
+                <div className="text-lg font-medium mb-4">
                   Round {round}
                 </div>
               </div>
@@ -111,13 +114,19 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
         case 'notes':
           return (
             <div className="h-full flex flex-col">
-              <NotesSection key={`notes-section-${activePage}-${isMobile}`} notes={notes} setNotes={setNotes} isMobile={true} />
+              <h2 className={titleStyle}>Notes</h2>
+              <div className="flex-grow overflow-y-auto pb-20">
+                <NotesSection key={`notes-section-${activePage}-${isMobile}`} notes={notes} setNotes={setNotes} isMobile={true} />
+              </div>
             </div>
           );
         case 'stats':
           return (
-            <div className="h-full overflow-y-auto pb-20">
-              <CharacterStats characters={characters} round={round} />
+            <div className="h-full flex flex-col">
+              <h2 className={titleStyle}>Character Stats</h2>
+              <div className="flex-grow overflow-y-auto pb-20">
+                <CharacterStats characters={characters} round={round} />
+              </div>
             </div>
           );
         default:
