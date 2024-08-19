@@ -9,40 +9,7 @@ import { Button } from '../components/ui/button';
 const EncounterTracker = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
   const [round, setRound] = useState(1);
-  const [characters, setCharacters] = useState([
-    {
-      id: 1,
-      name: 'Character 1',
-      initiative: 15,
-      type: 'PC',
-      currentHp: 20,
-      maxHp: 20,
-      tempHp: 0,
-      ac: 15,
-      action: false,
-      bonusAction: false,
-      currentMovement: 30,
-      maxMovement: 30,
-      reaction: false,
-      conditions: []
-    },
-    {
-      id: 2,
-      name: 'Character 2',
-      initiative: 12,
-      type: 'NPC',
-      currentHp: 15,
-      maxHp: 15,
-      tempHp: 0,
-      ac: 13,
-      action: false,
-      bonusAction: false,
-      currentMovement: 25,
-      maxMovement: 25,
-      reaction: false,
-      conditions: []
-    }
-  ]);
+  const [characters, setCharacters] = useState([]);
   const [activeCharacterIndex, setActiveCharacterIndex] = useState(0);
   const [encounterTime, setEncounterTime] = useState(0);
   const [turnTime, setTurnTime] = useState(0);
