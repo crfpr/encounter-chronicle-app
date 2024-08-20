@@ -9,6 +9,7 @@ import { PlusCircle } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
+  const [isNameInputActive, setIsNameInputActive] = useState(false);
 
   useEffect(() => {
     if (isActive) {
@@ -146,25 +147,37 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       <div className="flex-grow p-4 flex flex-col">
         <div className="flex-grow space-y-4">
           {/* First row */}
-          <div className="flex items-end space-x-4">
-            <Input
-              value={character.name}
-              onChange={(e) => handleInputChange('name', e.target.value)}
-              className="text-lg font-bold flex-grow"
-            />
-            <Select
-              value={character.type}
-              onValueChange={(value) => handleInputChange('type', value)}
-            >
-              <SelectTrigger className="w-[120px]">
-                <SelectValue placeholder="Character Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="PC">PC</SelectItem>
-                <SelectItem value="Enemy">Enemy</SelectItem>
-                <SelectItem value="Neutral">Neutral</SelectItem>
-              </SelectContent>
-            </Select>
+          <div className="flex items-end space-x-4 relative">
+            <div className="flex-grow relative">
+              <Input
+                value={character.name}
+                onChange={(e) => handleInputChange('name', e.target.value)}
+                onFocus={() => setIsNameInputActive(true)}
+                onBlur={() => setIsNameInputActive(false)}
+                className="text-lg font-bold w-full pr-20"
+              />
+              {!isNameInputActive && (
+                <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm text-gray-500">
+                  {character.type}
+                </span>
+              )}
+              {isNameInputActive && (
+                <Select
+                  value={character.type}
+                  onValueChange={(value) => handleInputChange('type', value)}
+                  className="absolute right-0 top-0 w-24"
+                >
+                  <SelectTrigger className="h-full">
+                    <SelectValue placeholder="Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="PC">PC</SelectItem>
+                    <SelectItem value="Enemy">Enemy</SelectItem>
+                    <SelectItem value="Neutral">Neutral</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            </div>
           </div>
 
           {/* Second row */}
