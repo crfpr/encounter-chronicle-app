@@ -117,7 +117,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   return (
-    <div className={`flex ${getBackgroundColor()} border border-black relative overflow-hidden rounded-lg`}>
+    <div className={`flex ${getBackgroundColor()} border border-black relative overflow-hidden rounded-lg ${getBorderColor()}`}>
       {/* Left Tab */}
       <div className={`w-16 ${getTabColor()} ${isActive ? 'text-white' : ''} flex items-stretch`}>
         {isActive ? (
