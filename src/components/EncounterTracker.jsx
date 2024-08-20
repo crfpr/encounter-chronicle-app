@@ -6,24 +6,14 @@ import NotesSection from './NotesSection';
 import MobileMenu from './MobileMenu';
 import SwipeHandler from './SwipeHandler';
 
-const EncounterTracker = ({ 
-  encounterName, 
-  setEncounterName, 
-  exportEncounterData, 
-  uploadEncounterData, 
-  isMobile, 
-  contentHeight,
-  characters,
-  setCharacters,
-  round,
-  setRound,
-  notes,
-  setNotes
-}) => {
+const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile, contentHeight }) => {
+  const [round, setRound] = useState(1);
+  const [characters, setCharacters] = useState([]);
   const [activeCharacterIndex, setActiveCharacterIndex] = useState(0);
   const [encounterTime, setEncounterTime] = useState(0);
   const [turnTime, setTurnTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [notes, setNotes] = useState('');
   const [activePage, setActivePage] = useState('tracker');
   const characterListRef = useRef(null);
 
@@ -175,12 +165,12 @@ const EncounterTracker = ({
   };
 
   return (
-    <div className="flex flex-col h-full" style={{ height: isMobile ? '100%' : contentHeight }}>
+    <div className="flex flex-col h-full" style={{ height: contentHeight }}>
       <div className="flex-grow overflow-hidden">
         {renderContent()}
       </div>
-      {isMobile && <MobileMenu activePage={activePage} setActivePage={setActivePage} />}
-      {isMobile && <SwipeHandler onSwipeLeft={handleSwipeLeft} onSwipeRight={handleSwipeRight} />}
+      <MobileMenu activePage={activePage} setActivePage={setActivePage} />
+      <SwipeHandler onSwipeLeft={handleSwipeLeft} onSwipeRight={handleSwipeRight} />
     </div>
   );
 };

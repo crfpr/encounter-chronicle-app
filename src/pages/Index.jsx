@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import EncounterTracker from '../components/EncounterTracker';
-import NotesSection from '../components/NotesSection';
-import CharacterStats from '../components/CharacterStats';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Upload, Download, X } from 'lucide-react';
@@ -15,9 +13,6 @@ const Index = () => {
   const fileInputRef = useRef(null);
   const [contentHeight, setContentHeight] = useState('calc(100vh - 64px)');
   const [headerHeight, setHeaderHeight] = useState(64);
-  const [notes, setNotes] = useState('');
-  const [characters, setCharacters] = useState([]);
-  const [round, setRound] = useState(1);
 
   useEffect(() => {
     const handleResize = () => {
@@ -79,66 +74,33 @@ const Index = () => {
   };
 
   return (
-    <div className={`flex flex-col ${!isLargeScreen ? 'h-screen' : ''}`}>
-      <header className={`bg-black text-white py-2 ${!isLargeScreen ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999]`}>
+    <div className="flex flex-col h-screen">
+      <header className="bg-black text-white py-2 fixed top-0 left-0 right-0 z-[9999]">
         <div className="container mx-auto px-4 flex items-center justify-between">
           <Input
             value={encounterName}
             onChange={(e) => setEncounterName(e.target.value)}
-            className={`font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0 ${!isLargeScreen ? 'text-xl flex-grow mr-2' : 'text-2xl'}`}
+            className="font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0 text-xl flex-grow mr-2"
             placeholder="Enter encounter name..."
           />
-          {!isLargeScreen && <MobileMenuButton onClick={toggleMobileMenu} />}
+          <MobileMenuButton onClick={toggleMobileMenu} />
         </div>
       </header>
-      <main className={`flex-grow overflow-hidden ${!isLargeScreen ? 'pt-16' : ''}`} style={{ height: contentHeight }}>
-        <div className={`${!isLargeScreen ? 'h-full' : `h-[calc(100vh-${headerHeight}px)]`} overflow-y-auto`}>
-          <div className={`container mx-auto px-4 ${!isLargeScreen ? 'py-8' : 'py-4'} h-full`}>
-            {isLargeScreen ? (
-              <div className="flex h-full space-x-4">
-                <div className="w-1/2 overflow-y-auto">
-                  <EncounterTracker 
-                    encounterName={encounterName} 
-                    setEncounterName={setEncounterName}
-                    exportEncounterData={exportEncounterData}
-                    uploadEncounterData={uploadEncounterData}
-                    isMobile={false}
-                    contentHeight={contentHeight}
-                    characters={characters}
-                    setCharacters={setCharacters}
-                    round={round}
-                    setRound={setRound}
-                  />
-                </div>
-                <div className="w-1/2 flex flex-col space-y-4">
-                  <div className="h-1/2 overflow-y-auto">
-                    <NotesSection notes={notes} setNotes={setNotes} isMobile={false} />
-                  </div>
-                  <div className="h-1/2 overflow-y-auto">
-                    <CharacterStats characters={characters} round={round} />
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <EncounterTracker 
-                encounterName={encounterName} 
-                setEncounterName={setEncounterName}
-                exportEncounterData={exportEncounterData}
-                uploadEncounterData={uploadEncounterData}
-                isMobile={true}
-                contentHeight={contentHeight}
-                characters={characters}
-                setCharacters={setCharacters}
-                round={round}
-                setRound={setRound}
-                notes={notes}
-                setNotes={setNotes}
-              />
-            )}
+      <main className="flex-grow overflow-hidden pt-16" style={{ height: contentHeight }}>
+        <div className="h-full overflow-y-auto">
+          <div className="container mx-auto px-4 py-8 h-full">
+            <EncounterTracker 
+              encounterName={encounterName} 
+              setEncounterName={setEncounterName}
+              exportEncounterData={exportEncounterData}
+              uploadEncounterData={uploadEncounterData}
+              isMobile={!isLargeScreen}
+              contentHeight={contentHeight}
+            />
           </div>
         </div>
       </main>
-      {!isLargeScreen && isMobileMenuOpen && (
+      {isMobileMenuOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000]">
           <div className="fixed top-0 right-0 h-full w-64 bg-white shadow-lg">
             <div className="flex justify-between items-center p-4 border-b">
@@ -168,7 +130,7 @@ const Index = () => {
         </div>
       )}
       {isLargeScreen && (
-        <footer className="bg-black text-white py-4 mt-auto">
+        <footer className="bg-black text-white py-4">
           <div className="container mx-auto px-4 flex justify-between items-center">
             <p>&copy; 2023 Encounter Tracker. All rights reserved.</p>
             <div className="flex space-x-4">
