@@ -119,17 +119,27 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   return (
     <div className={`flex ${getBackgroundColor()} border border-black relative overflow-hidden rounded-lg ${getBorderColor()}`}>
       {/* Left Tab */}
-      <div className={`w-16 ${getTabColor()} ${isActive ? 'text-white' : ''} flex items-stretch`}>
-        {isActive ? (
-          <div className="flex-1 flex items-center justify-center">
+      <div className={`w-16 ${getTabColor()} ${isActive ? 'text-white' : ''} flex flex-col items-center justify-between py-2`}>
+        <div className="flex flex-col items-center">
+          <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white' : ''}`}>Initiative</label>
+          <Input
+            type="number"
+            value={character.initiative}
+            onChange={(e) => handleInputChange('initiative', parseInt(e.target.value))}
+            onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
+            onFocus={() => setIsNumericInputActive(true)}
+            onBlur={() => setIsNumericInputActive(false)}
+            className="w-12 text-center bg-white text-black"
+          />
+        </div>
+        {isActive && (
+          <div className="flex-1 flex items-center justify-center mt-2">
             <TurnNavigator
               turnTime={turnTime}
               onPreviousTurn={onPreviousTurn}
               onNextTurn={onNextTurn}
             />
           </div>
-        ) : (
-          <div className="flex-1"></div>
         )}
       </div>
       
@@ -137,15 +147,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         <div className="flex-grow space-y-4">
           {/* First row */}
           <div className="flex items-end space-x-4">
-            <Input
-              type="number"
-              value={character.initiative}
-              onChange={(e) => handleInputChange('initiative', parseInt(e.target.value))}
-              onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
-              onFocus={() => setIsNumericInputActive(true)}
-              onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center"
-            />
             <Input
               value={character.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
