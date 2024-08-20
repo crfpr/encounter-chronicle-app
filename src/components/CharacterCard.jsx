@@ -133,8 +133,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         )}
       </div>
       
-      <div className="flex-grow p-4 relative">
-        <div className="relative z-10 space-y-4">
+      <div className="flex-grow p-4 flex flex-col">
+        <div className="flex-grow space-y-4">
           {/* First row */}
           <div className="flex items-end space-x-4">
             <Input
@@ -239,34 +239,34 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               </Button>
             </div>
           </div>
+        </div>
 
-          {/* Delete button */}
-          <div className="absolute bottom-4 right-4">
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button 
-                  variant="link" 
-                  className="btn-sm text-gray-700 hover:text-red-500 transition-colors duration-200 whitespace-nowrap"
-                >
-                  Delete character
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete the character.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => removeCharacter(character.id)}>
-                    Delete
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
+        {/* Delete button */}
+        <div className="mt-auto self-end">
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button 
+                variant="link" 
+                className="btn-sm text-gray-700 hover:text-red-500 transition-colors duration-200 whitespace-nowrap"
+              >
+                Delete character
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete the character.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => removeCharacter(character.id)}>
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
 
