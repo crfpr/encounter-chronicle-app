@@ -115,15 +115,15 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
 
   const renderContent = () => {
     if (isMobile) {
-      const titleStyle = "text-xl font-semibold mb-4 px-4 pt-4";
+      const titleStyle = "text-xl font-semibold mb-4";
       
       switch (activePage) {
         case 'tracker':
           return (
             <div className="flex-grow overflow-hidden flex flex-col h-full">
               <h2 className={titleStyle}>Turn Tracker</h2>
-              <div className={`p-4 ${isMobile ? '' : 'sm:p-4'}`}>
-                <div className="flex justify-between items-center mb-4">
+              <div className="mb-4">
+                <div className="flex justify-between items-center">
                   <div className="text-lg font-medium">
                     Round {round}
                   </div>
@@ -148,7 +148,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
           );
         case 'notes':
           return (
-            <div className="h-full flex flex-col px-4 pb-20">
+            <div className="h-full flex flex-col pb-20">
               <h2 className={titleStyle}>Notes</h2>
               <div className="flex-grow">
                 <NotesSection key={`notes-section-${activePage}-${isMobile}`} notes={notes} setNotes={setNotes} isMobile={true} />
@@ -172,7 +172,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
         <div className="flex flex-col lg:flex-row w-full h-full space-y-6 lg:space-y-0 lg:space-x-6">
           <div className="lg:w-2/3 h-full flex flex-col">
             <div className="bg-white border border-black rounded-lg flex flex-col overflow-hidden h-full">
-              <div className="p-4 sm:p-6">
+              <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
                   <div className="text-xl font-semibold">
                     Round {round}
@@ -185,7 +185,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
                 </div>
               </div>
               <div className="flex-grow overflow-hidden" style={{ maxHeight: 'calc(100% - 88px)' }}>
-                <div ref={characterListRef} className="h-full overflow-y-auto px-4 sm:px-6 pb-6">
+                <div ref={characterListRef} className="h-full overflow-y-auto px-4 pb-4">
                   <CharacterList 
                     characters={characters} 
                     setCharacters={setCharacters} 
@@ -215,7 +215,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   };
 
   return (
-    <div className="flex flex-col h-full" style={{ height: isMobile ? '100%' : contentHeight }}>
+    <div className="flex flex-col h-full">
       <div className="flex-grow overflow-hidden">
         {renderContent()}
       </div>

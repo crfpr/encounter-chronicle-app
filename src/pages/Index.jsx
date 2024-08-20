@@ -87,8 +87,8 @@ const Index = () => {
         </div>
       </header>
       <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''}`} style={{ height: contentHeight }}>
-        <div className={`${isMobile ? 'h-full' : `h-[calc(100vh-${headerHeight}px)]`} overflow-y-auto`}>
-          <div className={`container mx-auto px-4 ${isMobile ? 'py-8' : 'py-4'} h-full`}>
+        <div className={`h-full overflow-y-auto`}>
+          <div className={`container mx-auto px-4 py-4 h-full`}>
             <EncounterTracker 
               encounterName={encounterName} 
               setEncounterName={setEncounterName}
