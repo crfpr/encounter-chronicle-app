@@ -67,6 +67,11 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
     }
   };
 
+  const handleTypeChange = (value) => {
+    setEditedType(value);
+    onUpdate(editedName, value);
+  };
+
   return (
     <div ref={componentRef}>
       <Button
@@ -75,7 +80,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
         onClick={handleClick}
       >
         {isEditing ? (
-          <div className="flex items-center w-full">
+          <div className="flex items-center w-full" onClick={(e) => e.stopPropagation()}>
             <Input
               ref={inputRef}
               type="text"
@@ -84,13 +89,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
               onKeyDown={handleKeyDown}
               className="flex-grow mr-2"
             />
-            <Select
-              value={editedType}
-              onValueChange={(value) => {
-                setEditedType(value);
-                onUpdate(editedName, value);
-              }}
-            >
+            <Select value={editedType} onValueChange={handleTypeChange}>
               <SelectTrigger className="w-24">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
