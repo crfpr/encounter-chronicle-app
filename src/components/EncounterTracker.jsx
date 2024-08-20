@@ -199,10 +199,11 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
             </div>
           </div>
           <div className="lg:w-1/3 space-y-6">
-            <div className="bg-white border border-black rounded-lg p-4 sm:p-6">
+            <div className="bg-white border border-black rounded-lg p-4 sm:p-6 h-1/2">
               <NotesSection notes={notes} setNotes={setNotes} isMobile={false} />
             </div>
-            <div className="bg-white border border-black rounded-lg p-4 sm:p-6">
+            <div className="bg-white border border-black rounded-lg p-4 sm:p-6 h-1/2">
+              <h2 className="text-xl font-semibold mb-4">Character Stats</h2>
               <CharacterStats characters={characters} round={round} />
             </div>
           </div>

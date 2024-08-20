@@ -51,12 +51,12 @@ const NotesSection = ({ notes, setNotes, isMobile }) => {
   };
 
   const containerClasses = isMobile
-    ? "flex flex-col relative overflow-hidden pb-5" // Added pb-5 for bottom padding
-    : "bg-white border border-black rounded-lg p-6";
+    ? "flex flex-col relative overflow-hidden pb-5"
+    : "h-full flex flex-col";
 
   const textareaClasses = isMobile
     ? "w-full h-full flex-grow resize-none p-4"
-    : "w-full h-full min-h-[200px] pr-20";
+    : "w-full flex-grow resize-none p-4 pr-20";
 
   return (
     <div ref={containerRef} className={containerClasses}>
