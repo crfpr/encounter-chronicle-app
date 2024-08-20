@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Input } from '../components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import TurnNavigator from './TurnNavigator';
 import Token from './Token';
+import CharacterNameType from './CharacterNameType';
 import { PlusCircle } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
-  const [isNameInputActive, setIsNameInputActive] = useState(false);
+  // Removed isNameInputActive state
 
   useEffect(() => {
     if (isActive) {
@@ -148,38 +148,15 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         <div className="flex-grow space-y-4">
           {/* First row */}
           <div className="flex items-center space-x-2 relative">
-            <div className="flex-grow relative">
-              <div className="flex items-center">
-                <div className="relative flex-grow">
-                  <Input
-                    value={character.name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
-                    onFocus={() => setIsNameInputActive(true)}
-                    onBlur={() => setIsNameInputActive(false)}
-                    className="text-lg font-bold w-full pr-24"
-                  />
-                  {isNameInputActive ? (
-                    <Select
-                      value={character.type}
-                      onValueChange={(value) => handleInputChange('type', value)}
-                      className="absolute right-0 top-0 bottom-0"
-                    >
-                      <SelectTrigger className="h-full w-24 border-l">
-                        <SelectValue placeholder="Type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="PC">PC</SelectItem>
-                        <SelectItem value="Enemy">Enemy</SelectItem>
-                        <SelectItem value="Neutral">Neutral</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  ) : (
-                    <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm text-gray-500">
-                      {character.type}
-                    </span>
-                  )}
-                </div>
-              </div>
+            <div className="flex-grow">
+              <CharacterNameType
+                name={character.name}
+                type={character.type}
+                onUpdate={(newName, newType) => {
+                  handleInputChange('name', newName);
+                  handleInputChange('type', newType);
+                }}
+              />
             </div>
           </div>
 
