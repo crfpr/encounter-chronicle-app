@@ -240,15 +240,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             </div>
           </div>
 
-          {/* Third row - Inline Note and Delete button */}
-          <div className="mt-auto pt-2 flex items-center justify-between">
-            <div className="flex flex-col flex-grow mr-2">
-              <Input
-                value={character.note || ''}
-                onChange={(e) => handleInputChange('note', e.target.value)}
-                placeholder="Add a note..."
-              />
-            </div>
+          {/* Delete button */}
+          <div className="mt-auto pt-2 flex items-center justify-end">
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button 
