@@ -150,33 +150,35 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           <div className="flex items-center space-x-2 relative">
             <div className="flex-grow relative">
               <div className="flex items-center">
-                <Input
-                  value={character.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
-                  onFocus={() => setIsNameInputActive(true)}
-                  onBlur={() => setIsNameInputActive(false)}
-                  className="text-lg font-bold w-full pr-20"
-                />
-                {isNameInputActive ? (
-                  <Select
-                    value={character.type}
-                    onValueChange={(value) => handleInputChange('type', value)}
-                    className="ml-2"
-                  >
-                    <SelectTrigger className="h-[30px] w-[100px]">
-                      <SelectValue placeholder="Type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="PC">PC</SelectItem>
-                      <SelectItem value="Enemy">Enemy</SelectItem>
-                      <SelectItem value="Neutral">Neutral</SelectItem>
-                    </SelectContent>
-                  </Select>
-                ) : (
-                  <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm text-gray-500">
-                    {character.type}
-                  </span>
-                )}
+                <div className="relative flex-grow">
+                  <Input
+                    value={character.name}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    onFocus={() => setIsNameInputActive(true)}
+                    onBlur={() => setIsNameInputActive(false)}
+                    className="text-lg font-bold w-full pr-24"
+                  />
+                  {isNameInputActive ? (
+                    <Select
+                      value={character.type}
+                      onValueChange={(value) => handleInputChange('type', value)}
+                      className="absolute right-0 top-0 bottom-0"
+                    >
+                      <SelectTrigger className="h-full w-24 border-l">
+                        <SelectValue placeholder="Type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="PC">PC</SelectItem>
+                        <SelectItem value="Enemy">Enemy</SelectItem>
+                        <SelectItem value="Neutral">Neutral</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  ) : (
+                    <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm text-gray-500">
+                      {character.type}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           </div>
