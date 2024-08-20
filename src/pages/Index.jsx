@@ -12,6 +12,7 @@ const Index = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const fileInputRef = useRef(null);
   const [contentHeight, setContentHeight] = useState('calc(100vh - 64px)');
+const [headerHeight, setHeaderHeight] = useState(64);
 
   useEffect(() => {
     const handleResize = () => {
@@ -24,8 +25,10 @@ const Index = () => {
   }, []);
 
   const updateContentHeight = () => {
-    const headerHeight = document.querySelector('header').offsetHeight;
-    const newHeight = `calc(100vh - ${headerHeight}px)`;
+    const header = document.querySelector('header');
+    const newHeaderHeight = header.offsetHeight;
+    setHeaderHeight(newHeaderHeight);
+    const newHeight = `calc(100vh - ${newHeaderHeight}px)`;
     setContentHeight(newHeight);
   };
 
@@ -72,7 +75,7 @@ const Index = () => {
 
   return (
     <div className={`flex flex-col ${isMobile ? 'h-screen' : ''}`}>
-      <header className={`bg-black text-white py-2 ${isMobile ? 'fixed top-0 left-0 right-0 z-[9999]' : 'py-4'}`}>
+      <header className={`bg-black text-white py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999]`}>
         <div className="container mx-auto px-4 flex items-center justify-between">
           <Input
             value={encounterName}
@@ -83,8 +86,8 @@ const Index = () => {
           {isMobile && <MobileMenuButton onClick={toggleMobileMenu} />}
         </div>
       </header>
-      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''}`} style={{ height: contentHeight }}>
-        <div className={`${isMobile ? 'h-full' : ''} overflow-y-auto`}>
+      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : 'pt-[64px]'}`} style={{ height: contentHeight }}>
+        <div className={`${isMobile ? 'h-full' : `h-[calc(100vh-${headerHeight}px)]`} overflow-y-auto`}>
           <div className="container mx-auto px-4 py-8 h-full">
             <EncounterTracker 
               encounterName={encounterName} 
