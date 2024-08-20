@@ -241,7 +241,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           </div>
 
           {/* Delete button */}
-          <div className="mt-auto pt-2 flex items-center justify-end">
+          <div className="absolute bottom-4 right-4">
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button 
