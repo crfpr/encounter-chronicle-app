@@ -111,11 +111,11 @@ const Index = () => {
             <div className="p-4 space-y-4">
               <Button onClick={exportEncounterData} className="w-full flex items-center justify-center">
                 <Download className="mr-2 h-4 w-4" />
-                Export Encounter Data
+                Save Encounter
               </Button>
               <Button onClick={handleUploadClick} className="w-full flex items-center justify-center">
                 <Upload className="mr-2 h-4 w-4" />
-                Upload Encounter Data
+                Load Encounter
               </Button>
               <input
                 ref={fileInputRef}
@@ -133,12 +133,13 @@ const Index = () => {
           <p className="text-center sm:text-left">&copy; 2023 Encounter Tracker. All rights reserved.</p>
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
             <Button onClick={exportEncounterData} className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto">
-              Export Encounter Data
+              <Download className="mr-2 h-4 w-4" />
+              Save Encounter
             </Button>
             <Button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto">
               <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center justify-center w-full">
                 <Upload className="mr-2 h-4 w-4" />
-                Upload Encounter Data
+                Load Encounter
               </label>
               <input
                 id="upload-encounter-data"
