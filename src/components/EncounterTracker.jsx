@@ -34,32 +34,35 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
     return () => clearInterval(interval);
   }, [isRunning]);
 
+  const resetCharacterActions = (characterIndex) => {
+    setCharacters(prevCharacters => prevCharacters.map((char, index) => {
+      if (index === characterIndex) {
+        return {
+          ...char,
+          action: false,
+          bonusAction: false,
+          reaction: false,
+          currentMovement: char.maxMovement
+        };
+      }
+      return char;
+    }));
+  };
+
   const handlePreviousTurn = () => {
-    setActiveCharacterIndex(prevIndex => 
-      prevIndex === 0 ? characters.length - 1 : prevIndex - 1
-    );
+    setActiveCharacterIndex(prevIndex => {
+      const newIndex = prevIndex === 0 ? characters.length - 1 : prevIndex - 1;
+      resetCharacterActions(newIndex);
+      return newIndex;
+    });
     setTurnTime(0);
   };
 
   const handleNextTurn = () => {
     setActiveCharacterIndex(prevIndex => {
-      const nextIndex = prevIndex === characters.length - 1 ? 0 : prevIndex + 1;
-      
-      // Reset action states for the next character
-      setCharacters(prevCharacters => prevCharacters.map((char, index) => {
-        if (index === nextIndex) {
-          return {
-            ...char,
-            action: false,
-            bonusAction: false,
-            reaction: false,
-            currentMovement: char.maxMovement // Reset movement to max
-          };
-        }
-        return char;
-      }));
-
-      return nextIndex;
+      const newIndex = prevIndex === characters.length - 1 ? 0 : prevIndex + 1;
+      resetCharacterActions(newIndex);
+      return newIndex;
     });
     
     setTurnTime(0);
@@ -103,14 +106,10 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
     if (!isMobile && characters.length > 1) {
       if (e.key === 'ArrowUp') {
         e.preventDefault();
-        setActiveCharacterIndex(prevIndex => 
-          prevIndex === 0 ? characters.length - 1 : prevIndex - 1
-        );
+        handlePreviousTurn();
       } else if (e.key === 'ArrowDown') {
         e.preventDefault();
-        setActiveCharacterIndex(prevIndex => 
-          prevIndex === characters.length - 1 ? 0 : prevIndex + 1
-        );
+        handleNextTurn();
       }
     }
   }, [isMobile, characters.length]);
