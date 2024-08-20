@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import EncounterTracker from '../components/EncounterTracker';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
-import { Upload, Download, Menu, X } from 'lucide-react';
+import { Upload, Download, X } from 'lucide-react';
 import MobileMenuButton from '../components/MobileMenuButton';
 
 const Index = () => {
@@ -62,7 +62,7 @@ const Index = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col h-screen">
       <header className={`bg-black text-white py-2 ${isMobile ? 'fixed top-0 left-0 right-0 z-[9999]' : 'py-4'}`}>
         <div className="container mx-auto px-4 flex items-center justify-between">
           <Input
@@ -74,14 +74,18 @@ const Index = () => {
           {isMobile && <MobileMenuButton onClick={toggleMobileMenu} />}
         </div>
       </header>
-      <main className={`flex-grow container mx-auto px-4 py-8 overflow-y-auto ${isMobile ? 'pt-16' : ''}`}>
-        <EncounterTracker 
-          encounterName={encounterName} 
-          setEncounterName={setEncounterName}
-          exportEncounterData={exportEncounterData}
-          uploadEncounterData={uploadEncounterData}
-          isMobile={isMobile}
-        />
+      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''}`}>
+        <div className="h-full overflow-y-auto">
+          <div className="container mx-auto px-4 py-8">
+            <EncounterTracker 
+              encounterName={encounterName} 
+              setEncounterName={setEncounterName}
+              exportEncounterData={exportEncounterData}
+              uploadEncounterData={uploadEncounterData}
+              isMobile={isMobile}
+            />
+          </div>
+        </div>
       </main>
       {isMobile && isMobileMenuOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000]">
