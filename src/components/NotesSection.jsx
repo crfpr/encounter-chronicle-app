@@ -60,7 +60,7 @@ const NotesSection = ({ notes, setNotes, isMobile }) => {
 
   return (
     <div ref={containerRef} className={containerClasses}>
-      <h2 className="text-xl font-semibold mb-4">Notes</h2>
+      {!isMobile && <h2 className="text-xl font-semibold mb-4">Notes</h2>}
       <div className="relative flex-grow overflow-hidden">
         <Textarea
           ref={textareaRef}
