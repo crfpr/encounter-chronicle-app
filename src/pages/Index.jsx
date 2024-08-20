@@ -12,7 +12,7 @@ const Index = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const fileInputRef = useRef(null);
   const [contentHeight, setContentHeight] = useState('calc(100vh - 64px)');
-const [headerHeight, setHeaderHeight] = useState(64);
+  const [headerHeight, setHeaderHeight] = useState(64);
 
   useEffect(() => {
     const handleResize = () => {
@@ -129,30 +129,32 @@ const [headerHeight, setHeaderHeight] = useState(64);
           </div>
         </div>
       )}
-      <footer className={`bg-black text-white py-4 ${isMobile ? '' : 'mt-auto'}`}>
-        <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-          <p className="text-center sm:text-left">&copy; 2023 Encounter Tracker. All rights reserved.</p>
-          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-            <Button onClick={exportEncounterData} className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto">
-              <Download className="mr-2 h-4 w-4" />
-              Save Encounter
-            </Button>
-            <Button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto">
-              <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center justify-center w-full">
-                <Upload className="mr-2 h-4 w-4" />
-                Load Encounter
-              </label>
-              <input
-                id="upload-encounter-data"
-                type="file"
-                accept=".json"
-                onChange={uploadEncounterData}
-                style={{ display: 'none' }}
-              />
-            </Button>
+      {!isMobile && (
+        <footer className="bg-black text-white py-4 mt-auto">
+          <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+            <p className="text-center sm:text-left">&copy; 2023 Encounter Tracker. All rights reserved.</p>
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+              <Button onClick={exportEncounterData} className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto">
+                <Download className="mr-2 h-4 w-4" />
+                Save Encounter
+              </Button>
+              <Button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto">
+                <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center justify-center w-full">
+                  <Upload className="mr-2 h-4 w-4" />
+                  Load Encounter
+                </label>
+                <input
+                  id="upload-encounter-data"
+                  type="file"
+                  accept=".json"
+                  onChange={uploadEncounterData}
+                  style={{ display: 'none' }}
+                />
+              </Button>
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
+      )}
     </div>
   );
 };
