@@ -54,11 +54,24 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
     }
   };
 
+  const getButtonStyle = () => {
+    switch (editedType) {
+      case 'PC':
+        return 'bg-blue-100 hover:bg-blue-200';
+      case 'Enemy':
+        return 'bg-red-100 hover:bg-red-200';
+      case 'Neutral':
+        return 'bg-green-100 hover:bg-green-200';
+      default:
+        return 'bg-gray-100 hover:bg-gray-200';
+    }
+  };
+
   return (
     <div ref={componentRef}>
       <Button
         variant="secondary"
-        className="w-full h-auto text-left justify-start px-3 py-1"
+        className={`w-full h-auto text-left justify-start px-3 py-1 ${getButtonStyle()}`}
         onClick={handleClick}
       >
         {isEditing ? (

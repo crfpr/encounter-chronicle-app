@@ -24,15 +24,16 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   }, [isActive]);
 
   const getBackgroundColor = () => {
+    if (isActive) return 'bg-white md:bg-white';
     switch (character.type) {
       case 'PC':
-        return 'bg-blue-100 md:bg-blue-100';
+        return 'bg-blue-50 md:bg-blue-50';
       case 'Enemy':
-        return 'bg-red-100 md:bg-red-100';
+        return 'bg-red-50 md:bg-red-50';
       case 'Neutral':
-        return 'bg-green-100 md:bg-green-100';
+        return 'bg-green-50 md:bg-green-50';
       default:
-        return 'bg-white md:bg-white';
+        return 'bg-gray-50 md:bg-gray-50';
     }
   };
 
@@ -49,7 +50,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       case 'Neutral':
         return `${baseClasses} md:border-green-300`;
       default:
-        return `${baseClasses} md:border-gray-200`;
+        return `${baseClasses} md:border-gray-300`;
     }
   };
 
@@ -65,7 +66,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       case 'Neutral':
         return 'bg-green-300';
       default:
-        return 'bg-gray-200';
+        return 'bg-gray-300';
     }
   };
 
