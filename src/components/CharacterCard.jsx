@@ -82,6 +82,15 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     updateCharacter({ ...character, [field]: value });
   };
 
+  const handleNumericInputKeyDown = (e, field, currentValue) => {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      const step = e.key === 'ArrowUp' ? 1 : -1;
+      const newValue = parseInt(currentValue) + step;
+      handleInputChange(field, newValue);
+    }
+  };
+
   const toggleAction = (action) => {
     updateCharacter({ ...character, [action]: !character[action] });
   };
@@ -132,6 +141,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               type="number"
               value={character.initiative}
               onChange={(e) => handleInputChange('initiative', parseInt(e.target.value))}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
               className="w-16 text-center"
             />
             <Input
@@ -182,6 +192,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 type="number"
                 value={character.currentMovement}
                 onChange={(e) => handleInputChange('currentMovement', parseInt(e.target.value))}
+                onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
                 className="w-16 text-center"
                 placeholder="Current"
               />
@@ -191,6 +202,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   type="number"
                   value={character.maxMovement}
                   onChange={(e) => handleInputChange('maxMovement', parseInt(e.target.value))}
+                  onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
                   className="w-16 text-center"
                   placeholder="Max"
                 />
@@ -268,6 +280,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               type="number"
               value={character.tempHp}
               onChange={(e) => handleInputChange('tempHp', Math.max(0, parseInt(e.target.value) || 0))}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'tempHp', character.tempHp)}
               className="w-16 text-center bg-white text-black"
             />
           </div>
@@ -277,6 +290,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               type="number"
               value={character.currentHp}
               onChange={(e) => handleInputChange('currentHp', parseInt(e.target.value) || 0)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
               className="w-16 text-center bg-white text-black"
             />
           </div>
@@ -286,6 +300,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               type="number"
               value={character.maxHp}
               onChange={(e) => handleInputChange('maxHp', parseInt(e.target.value) || 0)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
               className="w-16 text-center bg-white text-black"
             />
           </div>
@@ -296,6 +311,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             type="number"
             value={character.ac}
             onChange={(e) => handleInputChange('ac', parseInt(e.target.value))}
+            onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
             className="w-16 text-center bg-white text-black"
           />
         </div>
