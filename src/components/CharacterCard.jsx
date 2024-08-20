@@ -4,12 +4,11 @@ import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import TurnNavigator from './TurnNavigator';
 import Token from './Token';
-import CharacterNameType from '../components/CharacterNameType';
+import CharacterNameType from './CharacterNameType';
 import { PlusCircle } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
-  // Removed isNameInputActive state
 
   useEffect(() => {
     if (isActive) {
@@ -154,8 +153,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 name={character.name}
                 type={character.type}
                 onUpdate={(newName, newType) => {
-                  handleInputChange('name', newName);
-                  handleInputChange('type', newType);
+                  updateCharacter({ ...character, name: newName, type: newType });
                 }}
               />
             </div>
