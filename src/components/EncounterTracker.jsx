@@ -6,7 +6,7 @@ import NotesSection from './NotesSection';
 import MobileMenu from './MobileMenu';
 import SwipeHandler from './SwipeHandler';
 
-const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile }) => {
+const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile, contentHeight }) => {
   const [round, setRound] = useState(1);
   const [characters, setCharacters] = useState([]);
   const [activeCharacterIndex, setActiveCharacterIndex] = useState(0);
@@ -184,7 +184,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
                   />
                 </div>
               </div>
-              <div className="flex-grow overflow-hidden">
+              <div className="flex-grow overflow-hidden" style={{ maxHeight: 'calc(100% - 88px)' }}>
                 <div ref={characterListRef} className="h-full overflow-y-auto px-4 sm:px-6 pb-6">
                   <CharacterList 
                     characters={characters} 
@@ -218,7 +218,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" style={{ height: isMobile ? '100%' : contentHeight }}>
       <div className="flex-grow overflow-hidden">
         {renderContent()}
       </div>

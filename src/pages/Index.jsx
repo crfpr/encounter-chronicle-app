@@ -11,23 +11,22 @@ const Index = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const fileInputRef = useRef(null);
-  const [scrollableHeight, setScrollableHeight] = useState('100vh');
+  const [contentHeight, setContentHeight] = useState('calc(100vh - 64px)');
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
-      updateScrollableHeight();
+      updateContentHeight();
     };
     window.addEventListener('resize', handleResize);
-    updateScrollableHeight();
+    updateContentHeight();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const updateScrollableHeight = () => {
+  const updateContentHeight = () => {
     const headerHeight = document.querySelector('header').offsetHeight;
-    const footerHeight = document.querySelector('footer').offsetHeight;
-    const newHeight = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
-    setScrollableHeight(newHeight);
+    const newHeight = `calc(100vh - ${headerHeight}px)`;
+    setContentHeight(newHeight);
   };
 
   const exportEncounterData = () => {
@@ -84,7 +83,7 @@ const Index = () => {
           {isMobile && <MobileMenuButton onClick={toggleMobileMenu} />}
         </div>
       </header>
-      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''}`} style={{ height: scrollableHeight }}>
+      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''}`} style={{ height: contentHeight }}>
         <div className="h-full overflow-y-auto">
           <div className="container mx-auto px-4 py-8 h-full">
             <EncounterTracker 
@@ -93,6 +92,7 @@ const Index = () => {
               exportEncounterData={exportEncounterData}
               uploadEncounterData={uploadEncounterData}
               isMobile={isMobile}
+              contentHeight={contentHeight}
             />
           </div>
         </div>
