@@ -169,8 +169,8 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
       }
     } else {
       return (
-        <>
-          <div className="flex-grow w-full md:w-full lg:w-2/3 overflow-hidden flex flex-col md:mr-6 mb-6 md:mb-0">
+        <div className="flex flex-col md:flex-row w-full">
+          <div className="w-full md:w-1/2 lg:w-2/3 overflow-hidden flex flex-col md:mr-6 mb-6 md:mb-0">
             <div className="bg-white border border-black rounded-lg flex flex-col h-full overflow-hidden">
               <div className="p-4 sm:p-6">
                 <div className="flex justify-between items-center mb-4">
@@ -198,7 +198,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
               </div>
             </div>
           </div>
-          <div className="md:w-full lg:w-1/3 overflow-y-auto pt-0 space-y-6 flex flex-col">
+          <div className="w-full md:w-1/2 lg:w-1/3 overflow-y-auto space-y-6 flex flex-col">
             <div className="flex-grow overflow-y-auto space-y-6">
               <div className="mb-6">
                 <NotesSection notes={notes} setNotes={setNotes} isMobile={false} />
@@ -208,7 +208,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
               </div>
             </div>
           </div>
-        </>
+        </div>
       );
     }
   };
