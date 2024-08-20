@@ -169,42 +169,38 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
       }
     } else {
       return (
-        <div className="flex flex-col lg:flex-row w-full space-y-6 lg:space-y-0 lg:space-x-6">
-          <div className="w-full lg:w-2/3 overflow-hidden flex flex-col">
-            <div className="bg-white border border-black rounded-lg flex flex-col h-full overflow-hidden">
-              <div className="p-4 sm:p-6">
-                <div className="flex justify-between items-center mb-4">
-                  <div className="text-xl font-semibold">
-                    Round {round}
-                  </div>
-                  <EncounterHeader
-                    isRunning={isRunning}
-                    toggleEncounter={toggleEncounter}
-                    encounterTime={encounterTime}
-                  />
+        <div className="flex flex-col w-full space-y-6">
+          <div className="bg-white border border-black rounded-lg flex flex-col overflow-hidden">
+            <div className="p-4 sm:p-6">
+              <div className="flex justify-between items-center mb-4">
+                <div className="text-xl font-semibold">
+                  Round {round}
                 </div>
+                <EncounterHeader
+                  isRunning={isRunning}
+                  toggleEncounter={toggleEncounter}
+                  encounterTime={encounterTime}
+                />
               </div>
-              <div className="flex-grow overflow-hidden">
-                <div ref={characterListRef} className="h-full overflow-y-auto px-4 sm:px-6 pb-6">
-                  <CharacterList 
-                    characters={characters} 
-                    setCharacters={setCharacters} 
-                    activeCharacterIndex={activeCharacterIndex}
-                    turnTime={turnTime}
-                    onPreviousTurn={handlePreviousTurn}
-                    onNextTurn={handleNextTurn}
-                  />
-                </div>
+            </div>
+            <div className="flex-grow overflow-hidden">
+              <div ref={characterListRef} className="h-full overflow-y-auto px-4 sm:px-6 pb-6">
+                <CharacterList 
+                  characters={characters} 
+                  setCharacters={setCharacters} 
+                  activeCharacterIndex={activeCharacterIndex}
+                  turnTime={turnTime}
+                  onPreviousTurn={handlePreviousTurn}
+                  onNextTurn={handleNextTurn}
+                />
               </div>
             </div>
           </div>
-          <div className="w-full lg:w-1/3 space-y-6 flex flex-col">
-            <div className="bg-white border border-black rounded-lg p-4 sm:p-6">
-              <NotesSection notes={notes} setNotes={setNotes} isMobile={false} />
-            </div>
-            <div className="bg-white border border-black rounded-lg p-4 sm:p-6">
-              <CharacterStats characters={characters} round={round} />
-            </div>
+          <div className="bg-white border border-black rounded-lg p-4 sm:p-6">
+            <NotesSection notes={notes} setNotes={setNotes} isMobile={false} />
+          </div>
+          <div className="bg-white border border-black rounded-lg p-4 sm:p-6">
+            <CharacterStats characters={characters} round={round} />
           </div>
         </div>
       );
@@ -213,7 +209,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex flex-col lg:flex-row flex-grow overflow-hidden">
+      <div className="flex-grow overflow-y-auto">
         {renderContent()}
       </div>
       {isMobile && <MobileMenu activePage={activePage} setActivePage={setActivePage} />}

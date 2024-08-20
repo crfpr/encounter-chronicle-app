@@ -14,7 +14,7 @@ const Index = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
+      setIsMobile(window.innerWidth < 768);
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -63,42 +63,26 @@ const Index = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {isMobile && (
-        <header className="fixed top-0 left-0 right-0 bg-black text-white py-2 z-[9999]">
-          <div className="container mx-auto px-4 flex items-center justify-between">
-            <Input
-              value={encounterName}
-              onChange={(e) => setEncounterName(e.target.value)}
-              className="text-xl font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0 flex-grow mr-2"
-              placeholder="Enter encounter name..."
-            />
-            <MobileMenuButton onClick={toggleMobileMenu} />
-          </div>
-        </header>
-      )}
-      <div className={`flex flex-col h-screen ${isMobile ? 'pt-14' : ''}`}>
-        {!isMobile && (
-          <header className="bg-black text-white py-4 h-16">
-            <div className="container mx-auto px-4">
-              <Input
-                value={encounterName}
-                onChange={(e) => setEncounterName(e.target.value)}
-                className="text-2xl font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0"
-                placeholder="Enter encounter name..."
-              />
-            </div>
-          </header>
-        )}
-        <main className="flex-grow container mx-auto px-4 py-8 overflow-y-auto">
-          <EncounterTracker 
-            encounterName={encounterName} 
-            setEncounterName={setEncounterName}
-            exportEncounterData={exportEncounterData}
-            uploadEncounterData={uploadEncounterData}
-            isMobile={isMobile}
+      <header className={`bg-black text-white py-2 ${isMobile ? 'fixed top-0 left-0 right-0 z-[9999]' : 'py-4'}`}>
+        <div className="container mx-auto px-4 flex items-center justify-between">
+          <Input
+            value={encounterName}
+            onChange={(e) => setEncounterName(e.target.value)}
+            className={`font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0 ${isMobile ? 'text-xl flex-grow mr-2' : 'text-2xl'}`}
+            placeholder="Enter encounter name..."
           />
-        </main>
-      </div>
+          {isMobile && <MobileMenuButton onClick={toggleMobileMenu} />}
+        </div>
+      </header>
+      <main className={`flex-grow container mx-auto px-4 py-8 overflow-y-auto ${isMobile ? 'pt-16' : ''}`}>
+        <EncounterTracker 
+          encounterName={encounterName} 
+          setEncounterName={setEncounterName}
+          exportEncounterData={exportEncounterData}
+          uploadEncounterData={uploadEncounterData}
+          isMobile={isMobile}
+        />
+      </main>
       {isMobile && isMobileMenuOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000]">
           <div className="fixed top-0 right-0 h-full w-64 bg-white shadow-lg">
@@ -128,7 +112,7 @@ const Index = () => {
           </div>
         </div>
       )}
-      <footer className="bg-black text-white py-4 hidden lg:block">
+      <footer className="bg-black text-white py-4">
         <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
           <p className="text-center sm:text-left">&copy; 2023 Encounter Tracker. All rights reserved.</p>
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
