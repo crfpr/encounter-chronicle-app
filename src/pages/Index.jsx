@@ -11,14 +11,24 @@ const Index = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const fileInputRef = useRef(null);
+  const [scrollableHeight, setScrollableHeight] = useState('100vh');
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
+      updateScrollableHeight();
     };
     window.addEventListener('resize', handleResize);
+    updateScrollableHeight();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const updateScrollableHeight = () => {
+    const headerHeight = document.querySelector('header').offsetHeight;
+    const footerHeight = document.querySelector('footer').offsetHeight;
+    const newHeight = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
+    setScrollableHeight(newHeight);
+  };
 
   const exportEncounterData = () => {
     if (encounterData) {
@@ -74,9 +84,9 @@ const Index = () => {
           {isMobile && <MobileMenuButton onClick={toggleMobileMenu} />}
         </div>
       </header>
-      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''}`}>
+      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''}`} style={{ height: scrollableHeight }}>
         <div className="h-full overflow-y-auto">
-          <div className="container mx-auto px-4 py-8">
+          <div className="container mx-auto px-4 py-8 h-full">
             <EncounterTracker 
               encounterName={encounterName} 
               setEncounterName={setEncounterName}
