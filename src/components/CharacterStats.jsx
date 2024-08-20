@@ -14,10 +14,10 @@ const CharacterStats = ({ characters, round }) => {
         <TableHeader>
           <TableRow>
             <TableHead className="text-xs font-semibold">Name</TableHead>
-            <TableHead className="text-xs font-semibold">Turn Count</TableHead>
-            <TableHead className="text-xs font-semibold">Round Count</TableHead>
-            <TableHead className="text-xs font-semibold">Cumulative Turn Time</TableHead>
-            <TableHead className="text-xs font-semibold">Average Turn Time</TableHead>
+            <TableHead className="text-xs font-semibold">Turns</TableHead>
+            <TableHead className="text-xs font-semibold">Rounds</TableHead>
+            <TableHead className="text-xs font-semibold">Turn avg.</TableHead>
+            <TableHead className="text-xs font-semibold">Turn total</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -26,12 +26,12 @@ const CharacterStats = ({ characters, round }) => {
               <TableCell>{character.name}</TableCell>
               <TableCell>{character.turnCount || 0}</TableCell>
               <TableCell>{round}</TableCell>
-              <TableCell>{formatTime(character.cumulativeTurnTime || 0)}</TableCell>
               <TableCell>
                 {character.turnCount > 0
                   ? formatTime(Math.floor((character.cumulativeTurnTime || 0) / character.turnCount))
                   : '0:00'}
               </TableCell>
+              <TableCell>{formatTime(character.cumulativeTurnTime || 0)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
