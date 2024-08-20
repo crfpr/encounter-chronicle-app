@@ -2,7 +2,7 @@ import React from 'react';
 import CharacterCard from './CharacterCard';
 import { Button } from '../components/ui/button';
 
-const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTime, onPreviousTurn, onNextTurn }) => {
+const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive }) => {
   const addCharacter = () => {
     const newCharacter = {
       id: Date.now(),
@@ -46,6 +46,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
             turnTime={turnTime}
             onPreviousTurn={onPreviousTurn}
             onNextTurn={onNextTurn}
+            setIsNumericInputActive={setIsNumericInputActive}
           />
         </div>
       ))}

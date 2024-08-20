@@ -16,6 +16,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   const [notes, setNotes] = useState('');
   const [activePage, setActivePage] = useState('tracker');
   const characterListRef = useRef(null);
+  const [isNumericInputActive, setIsNumericInputActive] = useState(false);
 
   const toggleEncounter = useCallback(() => {
     setIsRunning(prevIsRunning => !prevIsRunning);
@@ -103,7 +104,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   };
 
   const handleKeyDown = useCallback((e) => {
-    if (!isMobile && characters.length > 1) {
+    if (!isMobile && characters.length > 1 && !isNumericInputActive) {
       if (e.key === 'ArrowUp') {
         e.preventDefault();
         handlePreviousTurn();
@@ -112,7 +113,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
         handleNextTurn();
       }
     }
-  }, [isMobile, characters.length]);
+  }, [isMobile, characters.length, isNumericInputActive]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -159,6 +160,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
                   turnTime={turnTime}
                   onPreviousTurn={handlePreviousTurn}
                   onNextTurn={handleNextTurn}
+                  setIsNumericInputActive={setIsNumericInputActive}
                 />
               </div>
             </div>
@@ -210,6 +212,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
                     turnTime={turnTime}
                     onPreviousTurn={handlePreviousTurn}
                     onNextTurn={handleNextTurn}
+                    setIsNumericInputActive={setIsNumericInputActive}
                   />
                 </div>
               </div>

@@ -7,7 +7,7 @@ import TurnNavigator from './TurnNavigator';
 import Token from './Token';
 import { PlusCircle } from 'lucide-react';
 
-const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn }) => {
+const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
 
   useEffect(() => {
@@ -142,6 +142,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               value={character.initiative}
               onChange={(e) => handleInputChange('initiative', parseInt(e.target.value))}
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
+              onFocus={() => setIsNumericInputActive(true)}
+              onBlur={() => setIsNumericInputActive(false)}
               className="w-16 text-center"
             />
             <Input
@@ -193,6 +195,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 value={character.currentMovement}
                 onChange={(e) => handleInputChange('currentMovement', parseInt(e.target.value))}
                 onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
+                onFocus={() => setIsNumericInputActive(true)}
+                onBlur={() => setIsNumericInputActive(false)}
                 className="w-16 text-center"
                 placeholder="Current"
               />
@@ -203,6 +207,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   value={character.maxMovement}
                   onChange={(e) => handleInputChange('maxMovement', parseInt(e.target.value))}
                   onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
+                  onFocus={() => setIsNumericInputActive(true)}
+                  onBlur={() => setIsNumericInputActive(false)}
                   className="w-16 text-center"
                   placeholder="Max"
                 />
@@ -281,6 +287,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               value={character.tempHp}
               onChange={(e) => handleInputChange('tempHp', Math.max(0, parseInt(e.target.value) || 0))}
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'tempHp', character.tempHp)}
+              onFocus={() => setIsNumericInputActive(true)}
+              onBlur={() => setIsNumericInputActive(false)}
               className="w-16 text-center bg-white text-black"
             />
           </div>
@@ -291,6 +299,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               value={character.currentHp}
               onChange={(e) => handleInputChange('currentHp', parseInt(e.target.value) || 0)}
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
+              onFocus={() => setIsNumericInputActive(true)}
+              onBlur={() => setIsNumericInputActive(false)}
               className="w-16 text-center bg-white text-black"
             />
           </div>
@@ -301,6 +311,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               value={character.maxHp}
               onChange={(e) => handleInputChange('maxHp', parseInt(e.target.value) || 0)}
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
+              onFocus={() => setIsNumericInputActive(true)}
+              onBlur={() => setIsNumericInputActive(false)}
               className="w-16 text-center bg-white text-black"
             />
           </div>
@@ -312,6 +324,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             value={character.ac}
             onChange={(e) => handleInputChange('ac', parseInt(e.target.value))}
             onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
+            onFocus={() => setIsNumericInputActive(true)}
+            onBlur={() => setIsNumericInputActive(false)}
             className="w-16 text-center bg-white text-black"
           />
         </div>
