@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import EncounterTracker from '../components/EncounterTracker';
+import NotesSection from '../components/NotesSection';
+import CharacterStats from '../components/CharacterStats';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Upload, Download, X } from 'lucide-react';
@@ -13,6 +15,9 @@ const Index = () => {
   const fileInputRef = useRef(null);
   const [contentHeight, setContentHeight] = useState('calc(100vh - 64px)');
   const [headerHeight, setHeaderHeight] = useState(64);
+  const [notes, setNotes] = useState('');
+  const [characters, setCharacters] = useState([]);
+  const [round, setRound] = useState(1);
 
   useEffect(() => {
     const handleResize = () => {
@@ -89,14 +94,47 @@ const Index = () => {
       <main className={`flex-grow overflow-hidden ${!isLargeScreen ? 'pt-16' : ''}`} style={{ height: contentHeight }}>
         <div className={`${!isLargeScreen ? 'h-full' : `h-[calc(100vh-${headerHeight}px)]`} overflow-y-auto`}>
           <div className={`container mx-auto px-4 ${!isLargeScreen ? 'py-8' : 'py-4'} h-full`}>
-            <EncounterTracker 
-              encounterName={encounterName} 
-              setEncounterName={setEncounterName}
-              exportEncounterData={exportEncounterData}
-              uploadEncounterData={uploadEncounterData}
-              isMobile={!isLargeScreen}
-              contentHeight={contentHeight}
-            />
+            {isLargeScreen ? (
+              <div className="flex h-full space-x-4">
+                <div className="w-1/2 overflow-y-auto">
+                  <EncounterTracker 
+                    encounterName={encounterName} 
+                    setEncounterName={setEncounterName}
+                    exportEncounterData={exportEncounterData}
+                    uploadEncounterData={uploadEncounterData}
+                    isMobile={false}
+                    contentHeight={contentHeight}
+                    characters={characters}
+                    setCharacters={setCharacters}
+                    round={round}
+                    setRound={setRound}
+                  />
+                </div>
+                <div className="w-1/2 flex flex-col space-y-4">
+                  <div className="h-1/2 overflow-y-auto">
+                    <NotesSection notes={notes} setNotes={setNotes} isMobile={false} />
+                  </div>
+                  <div className="h-1/2 overflow-y-auto">
+                    <CharacterStats characters={characters} round={round} />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <EncounterTracker 
+                encounterName={encounterName} 
+                setEncounterName={setEncounterName}
+                exportEncounterData={exportEncounterData}
+                uploadEncounterData={uploadEncounterData}
+                isMobile={true}
+                contentHeight={contentHeight}
+                characters={characters}
+                setCharacters={setCharacters}
+                round={round}
+                setRound={setRound}
+                notes={notes}
+                setNotes={setNotes}
+              />
+            )}
           </div>
         </div>
       </main>
