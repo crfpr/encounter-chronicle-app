@@ -8,7 +8,7 @@ import MobileMenuButton from '../components/MobileMenuButton';
 const Index = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
   const [encounterData, setEncounterData] = useState(null);
-  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const fileInputRef = useRef(null);
   const [contentHeight, setContentHeight] = useState('calc(100vh - 64px)');
@@ -16,7 +16,7 @@ const Index = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsLargeScreen(window.innerWidth >= 1024);
+      setIsMobile(window.innerWidth < 768);
       updateContentHeight();
     };
     window.addEventListener('resize', handleResize);
@@ -74,33 +74,33 @@ const Index = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      <header className="bg-black text-white py-2 fixed top-0 left-0 right-0 z-[9999]">
+    <div className={`flex flex-col ${isMobile ? 'h-screen' : ''}`}>
+      <header className={`bg-black text-white py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999]`}>
         <div className="container mx-auto px-4 flex items-center justify-between">
           <Input
             value={encounterName}
             onChange={(e) => setEncounterName(e.target.value)}
-            className="font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0 text-xl flex-grow mr-2"
+            className={`font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0 ${isMobile ? 'text-xl flex-grow mr-2' : 'text-2xl'}`}
             placeholder="Enter encounter name..."
           />
-          <MobileMenuButton onClick={toggleMobileMenu} />
+          {isMobile && <MobileMenuButton onClick={toggleMobileMenu} />}
         </div>
       </header>
-      <main className="flex-grow overflow-hidden pt-16" style={{ height: contentHeight }}>
-        <div className="h-full overflow-y-auto">
-          <div className="container mx-auto px-4 py-8 h-full">
+      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''}`} style={{ height: contentHeight }}>
+        <div className={`${isMobile ? 'h-full' : `h-[calc(100vh-${headerHeight}px)]`} overflow-y-auto`}>
+          <div className={`container mx-auto px-4 ${isMobile ? 'py-8' : 'py-4'} h-full`}>
             <EncounterTracker 
               encounterName={encounterName} 
               setEncounterName={setEncounterName}
               exportEncounterData={exportEncounterData}
               uploadEncounterData={uploadEncounterData}
-              isMobile={!isLargeScreen}
+              isMobile={isMobile}
               contentHeight={contentHeight}
             />
           </div>
         </div>
       </main>
-      {isMobileMenuOpen && (
+      {isMobile && isMobileMenuOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000]">
           <div className="fixed top-0 right-0 h-full w-64 bg-white shadow-lg">
             <div className="flex justify-between items-center p-4 border-b">
@@ -129,17 +129,17 @@ const Index = () => {
           </div>
         </div>
       )}
-      {isLargeScreen && (
-        <footer className="bg-black text-white py-4">
-          <div className="container mx-auto px-4 flex justify-between items-center">
-            <p>&copy; 2023 Encounter Tracker. All rights reserved.</p>
-            <div className="flex space-x-4">
-              <Button onClick={exportEncounterData} className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200">
+      {!isMobile && (
+        <footer className="bg-black text-white py-4 mt-auto">
+          <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+            <p className="text-center sm:text-left">&copy; 2023 Encounter Tracker. All rights reserved.</p>
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+              <Button onClick={exportEncounterData} className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto">
                 <Download className="mr-2 h-4 w-4" />
                 Save Encounter
               </Button>
-              <Button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200">
-                <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center">
+              <Button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto">
+                <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center justify-center w-full">
                   <Upload className="mr-2 h-4 w-4" />
                   Load Encounter
                 </label>
