@@ -42,10 +42,28 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   };
 
   const handleNextTurn = () => {
-    setActiveCharacterIndex(prevIndex => 
-      prevIndex === characters.length - 1 ? 0 : prevIndex + 1
-    );
+    setActiveCharacterIndex(prevIndex => {
+      const nextIndex = prevIndex === characters.length - 1 ? 0 : prevIndex + 1;
+      
+      // Reset action states for the next character
+      setCharacters(prevCharacters => prevCharacters.map((char, index) => {
+        if (index === nextIndex) {
+          return {
+            ...char,
+            action: false,
+            bonusAction: false,
+            reaction: false,
+            currentMovement: char.maxMovement // Reset movement to max
+          };
+        }
+        return char;
+      }));
+
+      return nextIndex;
+    });
+    
     setTurnTime(0);
+    
     if (activeCharacterIndex === characters.length - 1) {
       setRound(prevRound => prevRound + 1);
     }
