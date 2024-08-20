@@ -1,38 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { Textarea } from '../components/ui/textarea';
 import { Button } from '../components/ui/button';
 import { Copy } from 'lucide-react';
 
 const NotesSection = ({ notes, setNotes, isMobile }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const textareaRef = useRef(null);
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    if (isMobile) {
-      setIsEditing(false);
-      adjustContainerHeight();
-    }
-  }, [isMobile]);
-
-  useEffect(() => {
-    if (isMobile) {
-      window.addEventListener('resize', adjustContainerHeight);
-      return () => window.removeEventListener('resize', adjustContainerHeight);
-    }
-  }, [isMobile]);
-
-  const adjustContainerHeight = () => {
-    if (containerRef.current) {
-      const viewportHeight = window.innerHeight;
-      const containerTop = containerRef.current.getBoundingClientRect().top;
-      const footerHeight = 56; // Assuming the mobile menu height is 56px
-      const paddingBottom = 20; // Added padding at the bottom
-      const maxHeight = viewportHeight - containerTop - footerHeight - paddingBottom;
-      containerRef.current.style.height = `${maxHeight}px`;
-    }
-  };
-
   const copyToClipboard = () => {
     navigator.clipboard.writeText(notes).then(() => {
       console.log('Notes copied to clipboard');
@@ -41,35 +12,15 @@ const NotesSection = ({ notes, setNotes, isMobile }) => {
     });
   };
 
-  const handleTextareaClick = () => {
-    if (isMobile && !isEditing) {
-      setIsEditing(true);
-      if (textareaRef.current) {
-        textareaRef.current.focus();
-      }
-    }
-  };
-
-  const containerClasses = isMobile
-    ? "flex flex-col relative overflow-hidden pb-5"
-    : "h-full flex flex-col";
-
-  const textareaClasses = isMobile
-    ? "w-full h-full flex-grow resize-none p-4"
-    : "w-full flex-grow resize-none p-4 pr-20";
-
   return (
-    <div ref={containerRef} className={containerClasses}>
-      {!isMobile && <h2 className="text-xl font-semibold mb-4">Notes</h2>}
-      <div className="relative flex-grow overflow-hidden">
+    <div className="flex flex-col h-full">
+      <h2 className="text-xl font-semibold mb-2">Notes</h2>
+      <div className="relative flex-grow">
         <Textarea
-          ref={textareaRef}
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Enter encounter notes here..."
-          className={textareaClasses}
-          readOnly={isMobile && !isEditing}
-          onClick={handleTextareaClick}
+          className="w-full h-full resize-none p-4 pr-20"
         />
         <Button 
           onClick={copyToClipboard} 
