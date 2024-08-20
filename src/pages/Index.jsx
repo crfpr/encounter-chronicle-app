@@ -71,7 +71,7 @@ const Index = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className={`flex flex-col ${isMobile ? 'h-screen' : ''}`}>
       <header className={`bg-black text-white py-2 ${isMobile ? 'fixed top-0 left-0 right-0 z-[9999]' : 'py-4'}`}>
         <div className="container mx-auto px-4 flex items-center justify-between">
           <Input
@@ -84,7 +84,7 @@ const Index = () => {
         </div>
       </header>
       <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''}`} style={{ height: contentHeight }}>
-        <div className="h-full overflow-y-auto">
+        <div className={`${isMobile ? 'h-full' : ''} overflow-y-auto`}>
           <div className="container mx-auto px-4 py-8 h-full">
             <EncounterTracker 
               encounterName={encounterName} 
@@ -126,7 +126,7 @@ const Index = () => {
           </div>
         </div>
       )}
-      <footer className="bg-black text-white py-4">
+      <footer className={`bg-black text-white py-4 ${isMobile ? '' : 'mt-auto'}`}>
         <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
           <p className="text-center sm:text-left">&copy; 2023 Encounter Tracker. All rights reserved.</p>
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
