@@ -137,6 +137,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             onFocus={() => setIsNumericInputActive(true)}
             onBlur={() => setIsNumericInputActive(false)}
             className="w-12 text-center bg-white text-black"
+            placeholder=""
           />
         </div>
         {isActive && (
