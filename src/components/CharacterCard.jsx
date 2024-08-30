@@ -93,8 +93,13 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   const handleNumericInputKeyDown = (e, field, currentValue) => {
     if (field === 'initiative') {
       // Prevent non-numeric input for initiative
-      if (!/[0-9]/.test(e.key) && !['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.key)) {
+      if (!/[0-9]/.test(e.key) && !['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'].includes(e.key)) {
         e.preventDefault();
+      }
+      // Handle enter key press for initiative
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleInitiativeSubmit();
       }
     } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       e.preventDefault();
@@ -105,6 +110,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const handleInitiativeBlur = () => {
+    onInitiativeBlur(character.id, character.initiative);
+  };
+
+  const handleInitiativeSubmit = () => {
+    setIsNumericInputActive(false);
     onInitiativeBlur(character.id, character.initiative);
   };
 
@@ -145,10 +155,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             onChange={(e) => handleInputChange('initiative', e.target.value)}
             onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
             onFocus={() => setIsNumericInputActive(true)}
-            onBlur={() => {
-              setIsNumericInputActive(false);
-              handleInitiativeBlur();
-            }}
+            onBlur={handleInitiativeSubmit}
             className="w-12 text-center bg-white text-black"
             maxLength={2}
           />
