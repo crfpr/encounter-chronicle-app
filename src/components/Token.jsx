@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, ChevronUp, ChevronDown } from 'lucide-react';
+import { X, ChevronUp, ChevronDown, Clock } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 
@@ -7,6 +7,7 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedLabel, setEditedLabel] = useState(label);
   const [editedDuration, setEditedDuration] = useState(duration);
+  const [isTimed, setIsTimed] = useState(duration !== null);
   const tokenRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -35,6 +36,7 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
   useEffect(() => {
     setEditedLabel(label);
     setEditedDuration(duration);
+    setIsTimed(duration !== null);
   }, [label, duration]);
 
   const handleClick = () => {
@@ -44,7 +46,7 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
   const handleBlur = () => {
     setIsEditing(false);
     if (editedLabel.trim() !== label || editedDuration !== duration) {
-      onUpdate(editedLabel.trim(), editedDuration);
+      onUpdate(editedLabel.trim(), isTimed ? editedDuration : null);
     }
   };
 
@@ -56,15 +58,25 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
   };
 
   const incrementDuration = () => {
-    const newDuration = Math.min(99, editedDuration + 1);
+    const newDuration = Math.min(99, (editedDuration || 0) + 1);
     setEditedDuration(newDuration);
     onUpdate(editedLabel, newDuration);
   };
 
   const decrementDuration = () => {
-    const newDuration = Math.max(0, editedDuration - 1);
+    const newDuration = Math.max(0, (editedDuration || 0) - 1);
     setEditedDuration(newDuration);
     onUpdate(editedLabel, newDuration);
+  };
+
+  const toggleTimed = () => {
+    setIsTimed(!isTimed);
+    if (!isTimed) {
+      setEditedDuration(1);
+      onUpdate(editedLabel, 1);
+    } else {
+      onUpdate(editedLabel, null);
+    }
   };
 
   return (
@@ -84,42 +96,59 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
               onKeyDown={handleKeyDown}
               className="h-6 px-1 py-0 text-sm mr-1"
             />
-            <Input
-              type="number"
-              value={editedDuration}
-              onChange={(e) => {
-                const newDuration = Math.max(0, Math.min(99, parseInt(e.target.value) || 0));
-                setEditedDuration(newDuration);
-                onUpdate(editedLabel, newDuration);
-              }}
-              onKeyDown={handleKeyDown}
-              className="h-6 w-12 px-1 py-0 text-sm"
-            />
-            <div className="flex flex-col ml-1">
-              <ChevronUp
+            {isTimed ? (
+              <>
+                <Input
+                  type="number"
+                  value={editedDuration}
+                  onChange={(e) => {
+                    const newDuration = Math.max(0, Math.min(99, parseInt(e.target.value) || 0));
+                    setEditedDuration(newDuration);
+                    onUpdate(editedLabel, newDuration);
+                  }}
+                  onKeyDown={handleKeyDown}
+                  className="h-6 w-12 px-1 py-0 text-sm"
+                />
+                <div className="flex flex-col ml-1">
+                  <ChevronUp
+                    size={14}
+                    className="cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      incrementDuration();
+                    }}
+                  />
+                  <ChevronDown
+                    size={14}
+                    className="cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      decrementDuration();
+                    }}
+                  />
+                </div>
+              </>
+            ) : (
+              <Clock
                 size={14}
-                className="cursor-pointer"
+                className="ml-1 cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  incrementDuration();
+                  toggleTimed();
                 }}
               />
-              <ChevronDown
-                size={14}
-                className="cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  decrementDuration();
-                }}
-              />
-            </div>
+            )}
           </>
         ) : (
           <>
             <span className="flex-grow text-center mr-1">{editedLabel}</span>
-            <span className="bg-gray-200 rounded-full px-2 py-0.5 text-xs font-semibold">
-              {editedDuration}
-            </span>
+            {isTimed ? (
+              <span className="bg-gray-200 rounded-full px-2 py-0.5 text-xs font-semibold">
+                {editedDuration}
+              </span>
+            ) : (
+              <Clock size={14} className="ml-1" />
+            )}
           </>
         )}
         <X

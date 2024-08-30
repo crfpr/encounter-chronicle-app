@@ -71,10 +71,21 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
     setCharacters(prevCharacters => {
       const updatedCharacters = prevCharacters.map((char, index) => {
         if (index === activeCharacterIndex) {
+          const updatedTokens = char.tokens.map(token => {
+            if (token.duration !== null) {
+              return {
+                ...token,
+                duration: Math.max(0, token.duration - 1)
+              };
+            }
+            return token;
+          });
+          const filteredTokens = updatedTokens.filter(token => token.duration === null || token.duration > 0);
           return {
             ...char,
             turnCount: (char.turnCount || 0) + 1,
-            cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime
+            cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime,
+            tokens: filteredTokens
           };
         }
         return char;

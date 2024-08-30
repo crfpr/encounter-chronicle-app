@@ -93,7 +93,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const handleAddToken = () => {
-    const newToken = { label: `Token ${tokens.length + 1}`, duration: 1 };
+    const newToken = { label: `Token ${tokens.length + 1}`, duration: null };
     const updatedTokens = [...tokens, newToken];
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
