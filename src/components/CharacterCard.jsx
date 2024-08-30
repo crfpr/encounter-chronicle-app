@@ -9,6 +9,8 @@ import { PlusCircle } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
+  console.log('Character prop:', character); // Debug log
+  console.log('Initiative value:', character.initiative); // Debug log
 
   useEffect(() => {
     if (isActive) {
@@ -82,8 +84,10 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     }
     if (field === 'initiative') {
       value = value === undefined ? value : Math.max(0, value);
+      console.log('Initiative value updated:', value); // Debug log
     }
     updateCharacter({ ...character, [field]: value });
+    console.log('Character after update:', { ...character, [field]: value }); // Debug log
   };
 
   const handleNumericInputKeyDown = (e, field, currentValue) => {
@@ -131,6 +135,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             value={character.initiative !== undefined ? character.initiative : ''}
             onChange={(e) => {
               const value = e.target.value === '' ? undefined : parseInt(e.target.value);
+              console.log('Initiative input change:', e.target.value, 'Parsed value:', value); // Debug log
               handleInputChange('initiative', value);
             }}
             onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
@@ -138,6 +143,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             onBlur={() => setIsNumericInputActive(false)}
             className="w-12 text-center bg-white text-black"
           />
+          {console.log('Initiative render value:', character.initiative)} {/* Debug log */}
         </div>
         {isActive && (
           <div className="flex-1 flex items-center justify-center mt-2">
