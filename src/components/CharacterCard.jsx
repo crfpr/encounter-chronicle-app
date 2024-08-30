@@ -30,6 +30,10 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     return isActive ? 'bg-black' : 'bg-white';
   };
 
+  const getTabTextColor = () => {
+    return isActive ? 'text-white' : 'text-black';
+  };
+
   const handleInputChange = (field, value) => {
     if (field === 'currentHp') {
       value = Math.min(Math.max(0, value), character.maxHp);
@@ -112,9 +116,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   return (
     <div className={`flex bg-white border border-black relative overflow-hidden rounded-lg ${getBorderColor()}`}>
       {/* Left Tab */}
-      <div className={`w-16 ${getTabColor()} ${isActive ? 'text-white' : ''} flex flex-col items-center justify-between py-2`}>
+      <div className={`w-16 ${getTabColor()} ${isActive ? 'text-white' : 'border-r border-black'} flex flex-col items-center justify-between py-2`}>
         <div className="flex flex-col items-center">
-          <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white' : ''}`}>Initiative</label>
+          <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>Initiative</label>
           <Input
             type="text"
             value={character.initiative}
@@ -257,10 +261,10 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       </div>
 
       {/* Right Tab */}
-      <div className={`w-24 ${getTabColor()} flex flex-col items-center justify-between p-2`}>
+      <div className={`w-24 ${getTabColor()} ${isActive ? '' : 'border-l border-black'} flex flex-col items-center justify-between p-2`}>
         <div className="flex flex-col items-center space-y-2">
           <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white' : ''}`}>Temp HP</label>
+            <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>Temp HP</label>
             <Input
               type="number"
               value={character.tempHp}
@@ -272,7 +276,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             />
           </div>
           <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white' : ''}`}>Current HP</label>
+            <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>Current HP</label>
             <Input
               type="number"
               value={character.currentHp}
@@ -284,7 +288,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             />
           </div>
           <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white' : ''}`}>Max HP</label>
+            <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>Max HP</label>
             <Input
               type="number"
               value={character.maxHp}
@@ -297,7 +301,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           </div>
         </div>
         <div className="flex flex-col items-center mt-2">
-          <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white' : ''}`}>AC</label>
+          <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>AC</label>
           <Input
             type="number"
             value={character.ac}
