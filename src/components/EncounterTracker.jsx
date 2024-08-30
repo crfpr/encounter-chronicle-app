@@ -145,7 +145,14 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
         handleNextTurn();
       }
     }
-  }, [isMobile, characters.length, isNumericInputActive]);
+  }, [isMobile, characters.length, isNumericInputActive, handlePreviousTurn, handleNextTurn]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
