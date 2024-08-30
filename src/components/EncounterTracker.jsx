@@ -65,9 +65,20 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
       resetCharacterActions(newIndex);
       return newIndex;
     });
-    
+  
     setTurnTime(0);
-    
+  
+    setCharacters(prevCharacters => prevCharacters.map((char, index) => {
+      if (index === activeCharacterIndex) {
+        return {
+          ...char,
+          turnCount: (char.turnCount || 0) + 1,
+          cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime
+        };
+      }
+      return char;
+    }));
+
     if (activeCharacterIndex === characters.length - 1) {
       setRound(prevRound => prevRound + 1);
     }
@@ -179,7 +190,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
             <div className="h-full flex flex-col">
               <h2 className={titleStyle}>Character Stats</h2>
               <div className="flex-grow overflow-y-auto pb-20">
-                <CharacterStats characters={characters} round={round} />
+                <CharacterStats characters={characters} round={round} key={round} />
               </div>
             </div>
           );

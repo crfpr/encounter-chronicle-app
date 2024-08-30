@@ -2,6 +2,11 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
 
 const CharacterStats = ({ characters, round }) => {
+  const [currentRound, setCurrentRound] = useState(round);
+
+  useEffect(() => {
+    setCurrentRound(round);
+  }, [round]);
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -29,7 +34,7 @@ const CharacterStats = ({ characters, round }) => {
                 </div>
               </TableCell>
               <TableCell className="text-right">{character.turnCount || 0}</TableCell>
-              <TableCell className="text-right">{round}</TableCell>
+              <TableCell className="text-right">{currentRound}</TableCell>
               <TableCell className="text-right">
                 {character.turnCount > 0
                   ? formatTime(Math.floor((character.cumulativeTurnTime || 0) / character.turnCount))
