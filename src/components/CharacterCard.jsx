@@ -22,12 +22,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     }
   }, [isActive]);
 
-  const getBackgroundColor = () => {
-    return isActive ? 'bg-white md:bg-white' : 'bg-gray-700 md:bg-gray-700';
-  };
-
   const getBorderColor = () => {
-    return 'md:border-[3px] md:border-black';
+    return 'border-[3px] border-black';
   };
 
   const getTabColor = () => {
@@ -114,7 +110,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   return (
-    <div className={`flex ${getBackgroundColor()} border border-black relative overflow-hidden rounded-lg ${getBorderColor()}`}>
+    <div className={`flex bg-white border border-black relative overflow-hidden rounded-lg ${getBorderColor()}`}>
       {/* Left Tab */}
       <div className={`w-16 ${getTabColor()} ${isActive ? 'text-white' : ''} flex flex-col items-center justify-between py-2`}>
         <div className="flex flex-col items-center">
@@ -187,7 +183,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
                 onFocus={() => setIsNumericInputActive(true)}
                 onBlur={() => setIsNumericInputActive(false)}
-                className="w-16 text-center"
+                className="w-16 text-center bg-white text-black"
                 placeholder="Current"
               />
               <span className="mb-2">/</span>
