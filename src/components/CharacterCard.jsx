@@ -23,50 +23,16 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   }, [isActive]);
 
   const getBackgroundColor = () => {
-    if (isActive) return 'bg-white md:bg-white';
-    switch (character.type) {
-      case 'PC':
-        return 'bg-blue-50 md:bg-blue-50';
-      case 'Enemy':
-        return 'bg-red-50 md:bg-red-50';
-      case 'Neutral':
-        return 'bg-green-50 md:bg-green-50';
-      default:
-        return 'bg-gray-50 md:bg-gray-50';
-    }
+    return isActive ? 'bg-white md:bg-white' : 'bg-gray-200 md:bg-gray-200';
   };
 
   const getBorderColor = () => {
     const baseClasses = 'md:border-[3px]';
-    if (isActive) {
-      return `${baseClasses} md:border-black`;
-    }
-    switch (character.type) {
-      case 'PC':
-        return `${baseClasses} md:border-blue-300`;
-      case 'Enemy':
-        return `${baseClasses} md:border-red-300`;
-      case 'Neutral':
-        return `${baseClasses} md:border-green-300`;
-      default:
-        return `${baseClasses} md:border-gray-300`;
-    }
+    return isActive ? `${baseClasses} md:border-black` : `${baseClasses} md:border-gray-400`;
   };
 
   const getTabColor = () => {
-    if (isActive) {
-      return 'bg-black';
-    }
-    switch (character.type) {
-      case 'PC':
-        return 'bg-blue-300';
-      case 'Enemy':
-        return 'bg-red-300';
-      case 'Neutral':
-        return 'bg-green-300';
-      default:
-        return 'bg-gray-300';
-    }
+    return isActive ? 'bg-black' : 'bg-gray-400';
   };
 
   const handleInputChange = (field, value) => {
