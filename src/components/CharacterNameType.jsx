@@ -9,6 +9,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
   const [editedType, setEditedType] = useState(type);
   const componentRef = useRef(null);
   const inputRef = useRef(null);
+  const selectRef = useRef(null);
 
   useEffect(() => {
     if (isEditing) {
@@ -53,6 +54,9 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       handleBlur();
+    } else if (e.key === 'Tab' && !e.shiftKey) {
+      e.preventDefault();
+      selectRef.current?.focus();
     }
   };
 
@@ -92,8 +96,16 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
               className="flex-grow mr-2 h-[30px]"
               placeholder="New Character"
             />
-            <Select value={editedType} onValueChange={handleTypeChange}>
-              <SelectTrigger className="w-24 h-[30px]">
+            <Select 
+              value={editedType} 
+              onValueChange={handleTypeChange}
+              onOpenChange={(open) => {
+                if (!open) {
+                  handleBlur();
+                }
+              }}
+            >
+              <SelectTrigger className="w-24 h-[30px]" ref={selectRef}>
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
