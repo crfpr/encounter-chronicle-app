@@ -92,8 +92,12 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
               className="flex-grow mr-2 h-[30px]"
               placeholder="New Character"
             />
-            <Select value={editedType} onValueChange={handleTypeChange}>
-              <SelectTrigger className="w-24 h-[30px]">
+            <Select 
+              value={editedType} 
+              onValueChange={handleTypeChange}
+              open={isEditing}
+            >
+              <SelectTrigger className="w-24 h-[30px]" onClick={(e) => e.stopPropagation()}>
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
