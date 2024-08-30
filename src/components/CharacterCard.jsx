@@ -160,7 +160,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             onChange={(e) => handleInputChange('initiative', e.target.value)}
             onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
             onFocus={() => setIsNumericInputActive(true)}
-            onBlur={handleInitiativeSubmit}
+            onBlur={handleInitiativeBlur}
             className="w-12 text-center bg-white text-black"
             maxLength={2}
           />

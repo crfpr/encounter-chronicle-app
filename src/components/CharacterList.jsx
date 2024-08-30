@@ -52,6 +52,11 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
     sortCharacters();
   };
 
+  const handleInitiativeSubmit = (id, initiative) => {
+    updateCharacter({ id, initiative });
+    sortCharacters();
+  };
+
   return (
     <div className="space-y-4">
       {characters.map((character, index) => (
@@ -66,6 +71,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
             onNextTurn={onNextTurn}
             setIsNumericInputActive={setIsNumericInputActive}
             onInitiativeBlur={handleInitiativeBlur}
+            onInitiativeSubmit={handleInitiativeSubmit}
           />
         </div>
       ))}
