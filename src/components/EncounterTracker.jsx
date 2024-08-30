@@ -83,7 +83,6 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
           const filteredTokens = updatedTokens.filter(token => token.duration === null || token.duration > 0);
           return {
             ...char,
-            turnCount: (char.turnCount || 0) + 1,
             cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime,
             tokens: filteredTokens
           };
@@ -109,6 +108,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
         return {
           ...char,
           turnCount: (char.turnCount || 0) + 1,
+          roundCount: round,
           hasActedThisRound: true
         };
       }
