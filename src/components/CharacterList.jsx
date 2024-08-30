@@ -24,14 +24,29 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
   };
 
   const removeCharacter = (id) => {
-    setCharacters(prevCharacters => prevCharacters.filter(c => c.id !== id).sort((a, b) => b.initiative - a.initiative));
+    setCharacters(prevCharacters => prevCharacters.filter(c => c.id !== id));
   };
 
   const updateCharacter = (updatedCharacter) => {
     setCharacters(prevCharacters => 
       prevCharacters.map(c => c.id === updatedCharacter.id ? updatedCharacter : c)
-        .sort((a, b) => b.initiative - a.initiative)
     );
+  };
+
+  const sortCharacters = () => {
+    setCharacters(prevCharacters => 
+      [...prevCharacters].sort((a, b) => {
+        if (a.initiative === '' && b.initiative === '') return 0;
+        if (a.initiative === '') return 1;
+        if (b.initiative === '') return -1;
+        return Number(b.initiative) - Number(a.initiative);
+      })
+    );
+  };
+
+  const handleInitiativeBlur = (id, initiative) => {
+    updateCharacter({ id, initiative });
+    sortCharacters();
   };
 
   return (
@@ -47,8 +62,8 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
             onPreviousTurn={onPreviousTurn}
             onNextTurn={onNextTurn}
             setIsNumericInputActive={setIsNumericInputActive}
+            onInitiativeBlur={handleInitiativeBlur}
           />
-          {console.log('Character passed to CharacterCard:', character)} {/* Debug log */}
         </div>
       ))}
       <div className="pb-6">

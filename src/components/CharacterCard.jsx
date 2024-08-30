@@ -7,10 +7,8 @@ import Token from './Token';
 import CharacterNameType from './CharacterNameType';
 import { PlusCircle } from 'lucide-react';
 
-const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive }) => {
+const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
-  console.log('Character prop:', character); // Debug log
-  console.log('Initiative value:', character.initiative); // Debug log
 
   useEffect(() => {
     if (isActive) {
@@ -106,6 +104,10 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     }
   };
 
+  const handleInitiativeBlur = () => {
+    onInitiativeBlur(character.id, character.initiative);
+  };
+
   const toggleAction = (action) => {
     updateCharacter({ ...character, [action]: !character[action] });
   };
@@ -143,7 +145,10 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             onChange={(e) => handleInputChange('initiative', e.target.value)}
             onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
             onFocus={() => setIsNumericInputActive(true)}
-            onBlur={() => setIsNumericInputActive(false)}
+            onBlur={() => {
+              setIsNumericInputActive(false);
+              handleInitiativeBlur();
+            }}
             className="w-12 text-center bg-white text-black"
             maxLength={2}
           />
