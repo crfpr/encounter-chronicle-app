@@ -80,6 +80,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         return;
       }
     }
+    if (field === 'initiative') {
+      value = value === undefined ? value : Math.max(0, value);
+    }
     updateCharacter({ ...character, [field]: value });
   };
 
@@ -125,8 +128,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white' : ''}`}>Initiative</label>
           <Input
             type="number"
-            value={character.initiative}
-            onChange={(e) => handleInputChange('initiative', parseInt(e.target.value))}
+            value={character.initiative !== undefined ? character.initiative : ''}
+            onChange={(e) => {
+              const value = e.target.value === '' ? undefined : parseInt(e.target.value);
+              handleInputChange('initiative', value);
+            }}
             onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
             onFocus={() => setIsNumericInputActive(true)}
             onBlur={() => setIsNumericInputActive(false)}
