@@ -98,11 +98,9 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
             />
             <Select 
               value={editedType} 
-              onValueChange={handleTypeChange}
-              onOpenChange={(open) => {
-                if (!open) {
-                  handleBlur();
-                }
+              onValueChange={(value) => {
+                handleTypeChange(value);
+                setIsEditing(false);
               }}
             >
               <SelectTrigger className="w-24 h-[30px]" ref={selectRef}>
