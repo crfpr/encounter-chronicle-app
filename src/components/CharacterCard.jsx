@@ -132,10 +132,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white' : ''}`}>Initiative</label>
           <Input
             type="number"
-            value={character.initiative !== undefined ? character.initiative : ''}
+            value={character.initiative}
             onChange={(e) => {
-              const value = e.target.value === '' ? undefined : parseInt(e.target.value);
-              console.log('Initiative input change:', e.target.value, 'Parsed value:', value); // Debug log
+              const value = e.target.value === '' ? 0 : parseInt(e.target.value);
               handleInputChange('initiative', value);
             }}
             onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
@@ -143,7 +142,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             onBlur={() => setIsNumericInputActive(false)}
             className="w-12 text-center bg-white text-black"
           />
-          {console.log('Initiative render value:', character.initiative)} {/* Debug log */}
         </div>
         {isActive && (
           <div className="flex-1 flex items-center justify-center mt-2">

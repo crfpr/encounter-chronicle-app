@@ -20,10 +20,8 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
       reaction: false,
       conditions: []
     };
-    console.log('New character initiative type:', typeof newCharacter.initiative); // Debug log
     setCharacters(prevCharacters => {
       const updatedCharacters = [...prevCharacters, newCharacter].sort((a, b) => b.initiative - a.initiative);
-      console.log('Characters after adding:', updatedCharacters); // Debug log
       return updatedCharacters;
     });
   };
