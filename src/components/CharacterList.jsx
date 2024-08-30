@@ -18,7 +18,10 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
       currentMovement: 30,
       maxMovement: 30,
       reaction: false,
-      conditions: []
+      conditions: [],
+      turnCount: 0,
+      roundCount: 0,
+      cumulativeTurnTime: 0
     };
     setCharacters(prevCharacters => [...prevCharacters, newCharacter]);
   };

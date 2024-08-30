@@ -177,10 +177,10 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           <div className="flex items-center space-x-2 relative">
             <div className="flex-grow">
               <CharacterNameType
-                name={character.name}
+                name={character.name || 'New Character'}
                 type={character.type}
                 onUpdate={(newName, newType) => {
-                  updateCharacter({ ...character, name: newName, type: newType });
+                  updateCharacter({ ...character, name: newName || 'New Character', type: newType });
                 }}
               />
             </div>

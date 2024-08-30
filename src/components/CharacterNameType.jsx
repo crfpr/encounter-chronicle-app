@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 
 const CharacterNameType = ({ name, type, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [editedName, setEditedName] = useState(name);
+  const [editedName, setEditedName] = useState(name || 'New Character');
   const [editedType, setEditedType] = useState(type);
   const componentRef = useRef(null);
   const inputRef = useRef(null);
@@ -33,7 +33,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
   }, [isEditing]);
 
   useEffect(() => {
-    setEditedName(name);
+    setEditedName(name || 'New Character');
     setEditedType(type);
   }, [name, type]);
 
@@ -43,8 +43,9 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
 
   const handleBlur = () => {
     setIsEditing(false);
-    if (editedName.trim() !== name || editedType !== type) {
-      onUpdate(editedName.trim(), editedType);
+    const finalName = editedName.trim() || 'New Character';
+    if (finalName !== name || editedType !== type) {
+      onUpdate(finalName, editedType);
     }
   };
 
@@ -69,14 +70,14 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
 
   const handleTypeChange = (value) => {
     setEditedType(value);
-    onUpdate(editedName, value);
+    onUpdate(editedName || 'New Character', value);
   };
 
   return (
     <div ref={componentRef}>
       <Button
         variant="secondary"
-        className={`w-full h-auto text-left justify-start px-3 py-1 ${getButtonStyle()}`}
+        className={`w-full h-[40px] text-left justify-start px-3 ${getButtonStyle()}`}
         onClick={handleClick}
       >
         {isEditing ? (
@@ -87,10 +88,11 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
               value={editedName}
               onChange={(e) => setEditedName(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-grow mr-2"
+              className="flex-grow mr-2 h-[30px]"
+              placeholder="New Character"
             />
             <Select value={editedType} onValueChange={handleTypeChange}>
-              <SelectTrigger className="w-24">
+              <SelectTrigger className="w-24 h-[30px]">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
