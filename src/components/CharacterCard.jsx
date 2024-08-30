@@ -161,21 +161,21 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             <Button
               onClick={() => toggleAction('action')}
               variant={character.action ? 'default' : 'outline'}
-              className="btn-sm"
+              className="h-[30px] px-2 text-xs"
             >
               Action
             </Button>
             <Button
               onClick={() => toggleAction('bonusAction')}
               variant={character.bonusAction ? 'default' : 'outline'}
-              className="btn-sm"
+              className="h-[30px] px-2 text-xs"
             >
-              Bonus Action
+              Bonus
             </Button>
             <Button
               onClick={() => toggleAction('reaction')}
               variant={character.reaction ? 'default' : 'outline'}
-              className="btn-sm"
+              className="h-[30px] px-2 text-xs"
             >
               Reaction
             </Button>
