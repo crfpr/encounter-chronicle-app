@@ -51,6 +51,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       handleBlur();
     }
   };

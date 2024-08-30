@@ -50,6 +50,7 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       handleBlur();
     }
   };

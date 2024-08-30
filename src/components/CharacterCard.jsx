@@ -91,21 +91,26 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const handleNumericInputKeyDown = (e, field, currentValue) => {
-    if (field === 'initiative') {
-      // Prevent non-numeric input for initiative
-      if (!/[0-9]/.test(e.key) && !['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'].includes(e.key)) {
-        e.preventDefault();
-      }
-      // Handle enter key press for initiative
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        handleInitiativeSubmit();
-      }
+    if (!/[0-9]/.test(e.key) && !['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'].includes(e.key)) {
+      e.preventDefault();
+    }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleInputSubmit(field, currentValue);
     } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       e.preventDefault();
       const step = e.key === 'ArrowUp' ? 1 : -1;
       const newValue = parseInt(currentValue) + step;
       handleInputChange(field, newValue);
+    }
+  };
+
+  const handleInputSubmit = (field, value) => {
+    setIsNumericInputActive(false);
+    if (field === 'initiative') {
+      onInitiativeBlur(character.id, value);
+    } else {
+      handleInputChange(field, value);
     }
   };
 
@@ -301,7 +306,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onChange={(e) => handleInputChange('tempHp', Math.max(0, parseInt(e.target.value) || 0))}
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'tempHp', character.tempHp)}
               onFocus={() => setIsNumericInputActive(true)}
-              onBlur={() => setIsNumericInputActive(false)}
+              onBlur={() => handleInputSubmit('tempHp', character.tempHp)}
               className="w-16 text-center bg-white text-black"
             />
           </div>
