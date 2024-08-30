@@ -22,8 +22,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     }
   }, [isActive]);
 
-  const getBorderColor = () => {
-    return 'border-[3px] border-black';
+  const getBorderStyle = () => {
+    return isActive ? 'border-[3px] border-black' : 'border border-black';
   };
 
   const getTabColor = () => {
@@ -114,7 +114,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   return (
-    <div className={`flex bg-white border border-black relative overflow-hidden rounded-lg ${getBorderColor()}`}>
+    <div className={`flex bg-white relative overflow-hidden rounded-lg ${getBorderStyle()}`}>
       {/* Left Tab */}
       <div className={`w-16 ${getTabColor()} ${isActive ? 'text-white' : 'border-r border-black'} flex flex-col items-center justify-between py-2`}>
         <div className="flex flex-col items-center">
