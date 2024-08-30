@@ -7,6 +7,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(name || 'New Character');
   const [editedType, setEditedType] = useState(type);
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
   const componentRef = useRef(null);
   const inputRef = useRef(null);
   const selectRef = useRef(null);
@@ -19,7 +20,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (componentRef.current && !componentRef.current.contains(event.target)) {
+      if (componentRef.current && !componentRef.current.contains(event.target) && !isSelectOpen) {
         handleBlur();
       }
     };
@@ -31,7 +32,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isEditing]);
+  }, [isEditing, isSelectOpen]);
 
   useEffect(() => {
     setEditedName(name || 'New Character');
@@ -43,10 +44,12 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
   };
 
   const handleBlur = () => {
-    setIsEditing(false);
-    const finalName = editedName.trim() || 'New Character';
-    if (finalName !== name || editedType !== type) {
-      onUpdate(finalName, editedType);
+    if (!isSelectOpen) {
+      setIsEditing(false);
+      const finalName = editedName.trim() || 'New Character';
+      if (finalName !== name || editedType !== type) {
+        onUpdate(finalName, editedType);
+      }
     }
   };
 
@@ -76,6 +79,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
   const handleTypeChange = (value) => {
     setEditedType(value);
     onUpdate(editedName || 'New Character', value);
+    setIsSelectOpen(false);
   };
 
   return (
@@ -98,10 +102,9 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
             />
             <Select 
               value={editedType} 
-              onValueChange={(value) => {
-                handleTypeChange(value);
-                setIsEditing(false);
-              }}
+              onValueChange={handleTypeChange}
+              onOpenChange={setIsSelectOpen}
+              open={isSelectOpen}
             >
               <SelectTrigger className="w-24 h-[30px]" ref={selectRef}>
                 <SelectValue placeholder="Type" />
