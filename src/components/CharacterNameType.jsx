@@ -97,7 +97,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
               value={editedName}
               onChange={(e) => setEditedName(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-grow mr-2 h-[30px]"
+              className="flex-grow mr-2 h-[30px] bg-white text-black"
               placeholder="New Character"
             />
             <Select 

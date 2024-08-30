@@ -23,16 +23,15 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   }, [isActive]);
 
   const getBackgroundColor = () => {
-    return isActive ? 'bg-white md:bg-white' : 'bg-gray-200 md:bg-gray-200';
+    return isActive ? 'bg-white md:bg-white' : 'bg-gray-700 md:bg-gray-700';
   };
 
   const getBorderColor = () => {
-    const baseClasses = 'md:border-[3px]';
-    return isActive ? `${baseClasses} md:border-black` : `${baseClasses} md:border-gray-400`;
+    return 'md:border-[3px] md:border-black';
   };
 
   const getTabColor = () => {
-    return isActive ? 'bg-black' : 'bg-gray-400';
+    return isActive ? 'bg-black' : 'bg-white';
   };
 
   const handleInputChange = (field, value) => {
