@@ -68,30 +68,42 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
 
     setTurnTime(0);
 
+    setCharacters(prevCharacters => {
+      const updatedCharacters = prevCharacters.map((char, index) => {
+        if (index === activeCharacterIndex) {
+          return {
+            ...char,
+            turnCount: (char.turnCount || 0) + 1,
+            cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime
+          };
+        }
+        return char;
+      });
+
+      if (activeCharacterIndex === characters.length - 1) {
+        setRound(prevRound => prevRound + 1);
+        return updatedCharacters.map(char => ({
+          ...char,
+          hasActedThisRound: false
+        }));
+      }
+
+      return updatedCharacters;
+    });
+  };
+
+  useEffect(() => {
     setCharacters(prevCharacters => prevCharacters.map((char, index) => {
-      if (index === activeCharacterIndex) {
+      if (index === activeCharacterIndex && !char.hasActedThisRound) {
         return {
           ...char,
           turnCount: (char.turnCount || 0) + 1,
-          cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime
+          hasActedThisRound: true
         };
       }
       return char;
     }));
-
-    if (activeCharacterIndex === characters.length - 1) {
-      setRound(prevRound => prevRound + 1);
-    }
-  };
-
-  useEffect(() => {
-    if (activeCharacterIndex === 0) {
-      setCharacters(prevCharacters => prevCharacters.map(char => ({
-        ...char,
-        roundCount: (char.roundCount || 0) + 1
-      })));
-    }
-  }, [round]);
+  }, [activeCharacterIndex, round]);
 
   const handleSwipeLeft = () => {
     if (isMobile) {
