@@ -65,9 +65,9 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
       resetCharacterActions(newIndex);
       return newIndex;
     });
-  
+
     setTurnTime(0);
-  
+
     setCharacters(prevCharacters => prevCharacters.map((char, index) => {
       if (index === activeCharacterIndex) {
         return {
@@ -83,6 +83,15 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
       setRound(prevRound => prevRound + 1);
     }
   };
+
+  useEffect(() => {
+    if (activeCharacterIndex === 0) {
+      setCharacters(prevCharacters => prevCharacters.map(char => ({
+        ...char,
+        roundCount: (char.roundCount || 0) + 1
+      })));
+    }
+  }, [round]);
 
   const handleSwipeLeft = () => {
     if (isMobile) {
