@@ -83,15 +83,22 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       }
     }
     if (field === 'initiative') {
-      value = value === undefined ? value : Math.max(0, value);
-      console.log('Initiative value updated:', value); // Debug log
+      // Allow empty string or numbers up to 99
+      if (value === '' || (Number.isInteger(Number(value)) && Number(value) >= 0 && Number(value) <= 99)) {
+        updateCharacter({ ...character, [field]: value });
+      }
+      return;
     }
     updateCharacter({ ...character, [field]: value });
-    console.log('Character after update:', { ...character, [field]: value }); // Debug log
   };
 
   const handleNumericInputKeyDown = (e, field, currentValue) => {
-    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    if (field === 'initiative') {
+      // Prevent non-numeric input for initiative
+      if (!/[0-9]/.test(e.key) && !['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.key)) {
+        e.preventDefault();
+      }
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       e.preventDefault();
       const step = e.key === 'ArrowUp' ? 1 : -1;
       const newValue = parseInt(currentValue) + step;
@@ -131,16 +138,14 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         <div className="flex flex-col items-center">
           <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white' : ''}`}>Initiative</label>
           <Input
-            type="number"
+            type="text"
             value={character.initiative}
-            onChange={(e) => {
-              const value = e.target.value === '' ? 0 : parseInt(e.target.value);
-              handleInputChange('initiative', value);
-            }}
+            onChange={(e) => handleInputChange('initiative', e.target.value)}
             onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
             onFocus={() => setIsNumericInputActive(true)}
             onBlur={() => setIsNumericInputActive(false)}
             className="w-12 text-center bg-white text-black"
+            maxLength={2}
           />
         </div>
         {isActive && (

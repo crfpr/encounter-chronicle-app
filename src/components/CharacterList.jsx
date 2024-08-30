@@ -6,7 +6,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
   const addCharacter = () => {
     const newCharacter = {
       id: Date.now(),
-      initiative: 10,
+      initiative: '',
       name: 'New Character',
       type: 'PC',
       currentHp: 0,
@@ -20,10 +20,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
       reaction: false,
       conditions: []
     };
-    setCharacters(prevCharacters => {
-      const updatedCharacters = [...prevCharacters, newCharacter].sort((a, b) => b.initiative - a.initiative);
-      return updatedCharacters;
-    });
+    setCharacters(prevCharacters => [...prevCharacters, newCharacter]);
   };
 
   const removeCharacter = (id) => {
