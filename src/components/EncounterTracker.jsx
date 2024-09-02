@@ -16,6 +16,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   const [notes, setNotes] = useState('');
   const [activePage, setActivePage] = useState('tracker');
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
+  const [lastResetIndex, setLastResetIndex] = useState(-1);
 
   const toggleEncounter = useCallback(() => {
     setIsRunning(prevIsRunning => !prevIsRunning);
@@ -52,7 +53,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   const handlePreviousTurn = () => {
     setActiveCharacterIndex(prevIndex => {
       const newIndex = prevIndex === 0 ? characters.length - 1 : prevIndex - 1;
-      resetCharacterActions(newIndex);
+      // Do not reset character actions when moving backwards
       return newIndex;
     });
     setTurnTime(0);
@@ -61,7 +62,11 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   const handleNextTurn = () => {
     setActiveCharacterIndex(prevIndex => {
       const newIndex = prevIndex === characters.length - 1 ? 0 : prevIndex + 1;
-      resetCharacterActions(newIndex);
+      // Only reset if we haven't reset this character in the current round
+      if (newIndex > lastResetIndex || (lastResetIndex === characters.length - 1 && newIndex === 0)) {
+        resetCharacterActions(newIndex);
+        setLastResetIndex(newIndex);
+      }
       return newIndex;
     });
 
@@ -91,6 +96,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
 
       if (activeCharacterIndex === characters.length - 1) {
         setRound(prevRound => prevRound + 1);
+        setLastResetIndex(-1); // Reset the lastResetIndex at the start of a new round
         return updatedCharacters.map(char => ({
           ...char,
           hasActedThisRound: false
