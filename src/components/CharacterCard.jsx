@@ -10,7 +10,6 @@ import { PlusCircle } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
-  const [pressedButtons, setPressedButtons] = useState({});
 
   useEffect(() => {
     if (isActive) {
@@ -116,10 +115,12 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     updateCharacter({ ...character, tokens: updatedTokens });
   };
 
-  const getToggleGroupItemStyle = (isActive) => {
+  const getToggleGroupItemStyle = (isActive, isToggled) => {
     return `h-[30px] px-2 text-xs border transition-colors ${
-      isActive
-        ? 'bg-zinc-800 text-white dark:bg-zinc-600 dark:text-zinc-100'
+      isToggled
+        ? isActive
+          ? 'bg-zinc-800 text-white dark:bg-zinc-700 dark:text-zinc-100'
+          : 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-zinc-100'
         : 'bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800'
     } border-zinc-300 dark:border-zinc-800`;
   };
@@ -183,13 +184,22 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onValueChange={handleToggleAction}
               className="flex"
             >
-              <ToggleGroupItem value="action" className={getToggleGroupItemStyle(character.action)}>
+              <ToggleGroupItem 
+                value="action" 
+                className={getToggleGroupItemStyle(isActive, character.action)}
+              >
                 {isMobile ? 'A' : 'Action'}
               </ToggleGroupItem>
-              <ToggleGroupItem value="bonusAction" className={getToggleGroupItemStyle(character.bonusAction)}>
+              <ToggleGroupItem 
+                value="bonusAction" 
+                className={getToggleGroupItemStyle(isActive, character.bonusAction)}
+              >
                 {isMobile ? 'B' : 'Bonus'}
               </ToggleGroupItem>
-              <ToggleGroupItem value="reaction" className={getToggleGroupItemStyle(character.reaction)}>
+              <ToggleGroupItem 
+                value="reaction" 
+                className={getToggleGroupItemStyle(isActive, character.reaction)}
+              >
                 {isMobile ? 'R' : 'Reaction'}
               </ToggleGroupItem>
             </ToggleGroup>
