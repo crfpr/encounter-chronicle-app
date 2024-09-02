@@ -15,7 +15,6 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   const [isRunning, setIsRunning] = useState(false);
   const [notes, setNotes] = useState('');
   const [activePage, setActivePage] = useState('tracker');
-  const characterListRef = useRef(null);
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
 
   const toggleEncounter = useCallback(() => {
@@ -165,22 +164,6 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
     };
   }, [handleKeyDown]);
 
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [handleKeyDown]);
-
-  useEffect(() => {
-    if (!isMobile && characterListRef.current) {
-      const activeCard = characterListRef.current.querySelector(`[data-index="${activeCharacterIndex}"]`);
-      if (activeCard) {
-        activeCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-  }, [activeCharacterIndex, isMobile]);
-
   const renderContent = () => {
     if (isMobile) {
       const titleStyle = "text-xl font-semibold mb-4";
@@ -254,7 +237,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
                 </div>
               </div>
               <div className="flex-grow overflow-hidden" style={{ maxHeight: 'calc(100% - 88px)' }}>
-                <div ref={characterListRef} className="h-full overflow-y-auto px-4 pb-4">
+                <div className="h-full overflow-y-auto px-4 pb-4">
                   <CharacterList 
                     characters={characters} 
                     setCharacters={setCharacters} 
