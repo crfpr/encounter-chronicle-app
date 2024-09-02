@@ -35,12 +35,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const handleInputChange = (field, value) => {
-    if (field === 'maxHp') {
-      value = Math.max(0, value);
-    }
-    if (field === 'initiative') {
-      // Allow empty string or numbers up to 99
-      if (value === '' || (Number.isInteger(Number(value)) && Number(value) >= 0 && Number(value) <= 99)) {
+    if (field === 'initiative' || field === 'ac' || field === 'currentHp' || field === 'maxHp') {
+      // Allow empty string or numbers up to 999
+      if (value === '' || (Number.isInteger(Number(value)) && Number(value) >= 0 && Number(value) <= 999)) {
         updateCharacter({ ...character, [field]: value });
       }
       return;
@@ -115,7 +112,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             onFocus={() => setIsNumericInputActive(true)}
             onBlur={handleInitiativeBlur}
             className="w-12 text-center bg-white text-black h-[30px]"
-            maxLength={2}
+            maxLength={3}
           />
         </div>
         {isActive && (
@@ -254,37 +251,40 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           <div className="flex flex-col items-center">
             <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>AC</label>
             <Input
-              type="number"
+              type="text"
               value={character.ac}
-              onChange={(e) => handleInputChange('ac', parseInt(e.target.value))}
+              onChange={(e) => handleInputChange('ac', e.target.value)}
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
               className="w-16 text-center bg-white text-black h-[30px]"
+              maxLength={3}
             />
           </div>
           <div className="flex flex-col items-center">
             <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>Current HP</label>
             <Input
-              type="number"
+              type="text"
               value={character.currentHp}
-              onChange={(e) => handleInputChange('currentHp', parseInt(e.target.value) || 0)}
+              onChange={(e) => handleInputChange('currentHp', e.target.value)}
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
               className="w-16 text-center bg-white text-black h-[30px]"
+              maxLength={3}
             />
           </div>
           <div className="flex flex-col items-center">
             <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>Max HP</label>
             <Input
-              type="number"
+              type="text"
               value={character.maxHp}
-              onChange={(e) => handleInputChange('maxHp', parseInt(e.target.value) || 0)}
+              onChange={(e) => handleInputChange('maxHp', e.target.value)}
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
               className="w-16 text-center bg-white text-black h-[30px]"
+              maxLength={3}
             />
           </div>
         </div>
