@@ -10,19 +10,21 @@ const EncounterHeader = ({ isRunning, toggleEncounter, encounterTime, round }) =
   };
 
   return (
-    <div className="flex items-center space-x-4">
+    <div className="flex items-center justify-between w-full">
       <div className="flex items-center space-x-2">
         <div className="text-lg font-semibold">Round {round}</div>
-        <div className="text-lg font-semibold">{formatTime(encounterTime)}</div>
       </div>
-      <Button 
-        onClick={toggleEncounter} 
-        variant="outline" 
-        size="icon"
-        className="h-8 w-8"
-      >
-        {isRunning ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-      </Button>
+      <div className="flex items-center space-x-2">
+        <div className="text-lg font-semibold">{formatTime(encounterTime)}</div>
+        <Button 
+          onClick={toggleEncounter} 
+          variant="outline" 
+          size="icon"
+          className="h-8 w-8"
+        >
+          {isRunning ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+        </Button>
+      </div>
     </div>
   );
 };
