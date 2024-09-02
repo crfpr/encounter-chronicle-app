@@ -55,11 +55,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     if (e.key === 'Enter') {
       e.preventDefault();
       handleInputSubmit(field, currentValue);
-    } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-      e.preventDefault();
-      const step = e.key === 'ArrowUp' ? 1 : -1;
-      const newValue = parseInt(currentValue) + step;
-      handleInputChange(field, newValue);
     }
   };
 
