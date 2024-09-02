@@ -73,7 +73,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
     <div ref={componentRef}>
       <Button
         variant="secondary"
-        className="w-full h-[40px] text-left justify-start px-3 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-200"
+        className="w-full h-[40px] text-left justify-start px-3 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900 dark:text-zinc-200 border-zinc-300 dark:border-zinc-800"
         onClick={handleClick}
       >
         {isEditing ? (
@@ -84,7 +84,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
               value={editedName}
               onChange={(e) => setEditedName(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-grow mr-2 h-[30px] bg-white text-black dark:bg-zinc-700 dark:text-zinc-100"
+              className="flex-grow mr-2 h-[30px] bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800"
               placeholder="New Character"
             />
             <Select 

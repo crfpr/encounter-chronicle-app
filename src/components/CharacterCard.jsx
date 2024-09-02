@@ -105,7 +105,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const getToggleButtonStyle = (isActive) => {
-    return `h-[30px] px-2 text-xs border ${isActive ? 'bg-black text-white dark:bg-zinc-800 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800' : 'bg-white text-black dark:bg-zinc-800 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800'} transition-colors`;
+    return `h-[30px] px-2 text-xs border ${isActive ? 'bg-black text-white dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800'} transition-colors`;
   };
 
   return (
@@ -125,7 +125,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               setIsNumericInputActive(false);
               handleInitiativeBlur();
             }}
-            className="w-12 text-center bg-white dark:bg-zinc-800 text-black dark:text-zinc-100 h-[30px]"
+            className="w-12 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800"
             maxLength={3}
           />
         </div>
@@ -184,7 +184,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
                 onFocus={() => setIsNumericInputActive(true)}
                 onBlur={() => setIsNumericInputActive(false)}
-                className="w-16 text-center bg-white dark:bg-zinc-800 text-black dark:text-zinc-100 h-[30px]"
+                className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800"
                 placeholder="Current"
                 maxLength={3}
               />
@@ -198,7 +198,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
                   onFocus={() => setIsNumericInputActive(true)}
                   onBlur={() => setIsNumericInputActive(false)}
-                  className="w-16 text-center h-[30px] bg-white dark:bg-zinc-800 text-black dark:text-zinc-100"
+                  className="w-16 text-center h-[30px] bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 border-zinc-300 dark:border-zinc-800"
                   placeholder="Max"
                   maxLength={3}
                 />
@@ -222,7 +222,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               <Button
                 onClick={handleAddToken}
                 variant="outline"
-                className="h-[30px] px-3 py-1 text-sm flex items-center bg-white hover:bg-zinc-100 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+                className="h-[30px] px-3 py-1 text-sm flex items-center bg-white hover:bg-zinc-100 dark:bg-zinc-950 dark:hover:bg-zinc-900 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800"
               >
                 <PlusCircle className="h-4 w-4 mr-1" />
                 Add token
@@ -273,7 +273,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white dark:bg-zinc-800 text-black dark:text-zinc-100 h-[30px]"
+              className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800"
               maxLength={3}
             />
           </div>
@@ -287,7 +287,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white dark:bg-zinc-800 text-black dark:text-zinc-100 h-[30px]"
+              className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800"
               maxLength={3}
             />
           </div>
@@ -301,7 +301,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white dark:bg-zinc-800 text-black dark:text-zinc-100 h-[30px]"
+              className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800"
               maxLength={3}
             />
           </div>

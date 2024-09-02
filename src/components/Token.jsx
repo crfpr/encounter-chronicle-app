@@ -111,7 +111,7 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
               value={editedLabel}
               onChange={(e) => setEditedLabel(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="h-6 px-1 py-0 text-sm mr-1"
+              className="h-6 px-1 py-0 text-sm mr-1 bg-white dark:bg-zinc-950 border-zinc-300 dark:border-zinc-800"
             />
             {isTimed ? (
               <Input
@@ -125,7 +125,7 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
                   onUpdate(editedLabel, newDuration);
                 }}
                 onKeyDown={handleDurationKeyDown}
-                className="h-6 w-12 px-1 py-0 text-sm"
+                className="h-6 w-12 px-1 py-0 text-sm bg-white dark:bg-zinc-950 border-zinc-300 dark:border-zinc-800"
                 min="0"
                 max="99"
               />
