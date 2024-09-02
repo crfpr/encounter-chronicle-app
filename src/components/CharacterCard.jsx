@@ -187,7 +187,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
                 onFocus={() => setIsNumericInputActive(true)}
                 onBlur={() => setIsNumericInputActive(false)}
-                className="w-16 text-center bg-white text-black"
+                className="w-16 text-center bg-white text-black h-[30px]"
                 placeholder="Current"
               />
               <span className="mb-2">/</span>
@@ -199,7 +199,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
                   onFocus={() => setIsNumericInputActive(true)}
                   onBlur={() => setIsNumericInputActive(false)}
-                  className="w-16 text-center"
+                  className="w-16 text-center h-[30px]"
                   placeholder="Max"
                 />
                 <span className="text-sm ml-1">ft</span>
@@ -272,7 +272,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'tempHp', character.tempHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => handleInputSubmit('tempHp', character.tempHp)}
-              className="w-16 text-center bg-white text-black"
+              className="w-16 text-center bg-white text-black h-[30px]"
             />
           </div>
           <div className="flex flex-col items-center">
@@ -284,7 +284,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white text-black"
+              className="w-16 text-center bg-white text-black h-[30px]"
             />
           </div>
           <div className="flex flex-col items-center">
@@ -296,7 +296,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white text-black"
+              className="w-16 text-center bg-white text-black h-[30px]"
             />
           </div>
         </div>
@@ -309,7 +309,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
             onFocus={() => setIsNumericInputActive(true)}
             onBlur={() => setIsNumericInputActive(false)}
-            className="w-16 text-center bg-white text-black"
+            className="w-16 text-center bg-white text-black h-[30px]"
           />
         </div>
       </div>
