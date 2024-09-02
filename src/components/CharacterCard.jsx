@@ -7,7 +7,7 @@ import Token from './Token';
 import CharacterNameType from './CharacterNameType';
 import { PlusCircle } from 'lucide-react';
 
-const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit }) => {
+const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
 
   useEffect(() => {
@@ -161,19 +161,19 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onClick={() => toggleAction('action')}
               className={getToggleButtonStyle(character.action)}
             >
-              Action
+              {isMobile ? 'A' : 'Action'}
             </Button>
             <Button
               onClick={() => toggleAction('bonusAction')}
               className={getToggleButtonStyle(character.bonusAction)}
             >
-              Bonus
+              {isMobile ? 'B' : 'Bonus'}
             </Button>
             <Button
               onClick={() => toggleAction('reaction')}
               className={getToggleButtonStyle(character.reaction)}
             >
-              Reaction
+              {isMobile ? 'R' : 'Reaction'}
             </Button>
             <div className="flex items-center space-x-2">
               <Input

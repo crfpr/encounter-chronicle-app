@@ -125,7 +125,12 @@ const Index = () => {
                 <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
               </>
             )}
-            {isMobile && <MobileMenuButton onClick={toggleMobileMenu} />}
+            {isMobile && (
+              <>
+                <div className="w-4" />
+                <MobileMenuButton onClick={toggleMobileMenu} />
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -166,7 +171,9 @@ const Index = () => {
                 <Upload className="mr-2 h-4 w-4" />
                 Load Encounter
               </Button>
-              <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+              <Button onClick={toggleTheme} className="w-full flex items-center justify-center">
+                {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+              </Button>
               <input
                 ref={fileInputRef}
                 type="file"
