@@ -23,11 +23,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   }, [isActive]);
 
   const getBorderStyle = () => {
-    return isActive ? 'border-black dark:border-zinc-600' : 'border-black dark:border-zinc-700';
+    return isActive ? 'border-zinc-300 dark:border-zinc-600' : 'border-zinc-300 dark:border-zinc-700';
   };
 
   const getTabColor = () => {
-    return isActive ? 'bg-black text-white dark:bg-zinc-600 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
+    return isActive ? 'bg-zinc-300 text-black dark:bg-zinc-600 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
   };
 
   const handleInputChange = (field, value) => {
@@ -105,7 +105,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const getToggleButtonStyle = (isActive) => {
-    return `h-[30px] px-2 text-xs border ${isActive ? 'bg-black text-white dark:bg-zinc-200 dark:text-zinc-900 border-black dark:border-zinc-300' : 'bg-white text-black dark:bg-zinc-900 dark:text-zinc-100 border-black dark:border-zinc-300'} transition-colors`;
+    return `h-[30px] px-2 text-xs border ${isActive ? 'bg-black text-white dark:bg-zinc-200 dark:text-zinc-900 border-zinc-300 dark:border-zinc-300' : 'bg-white text-black dark:bg-zinc-900 dark:text-zinc-100 border-zinc-300 dark:border-zinc-300'} transition-colors`;
   };
 
   return (

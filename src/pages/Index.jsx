@@ -108,7 +108,7 @@ const Index = () => {
 
   return (
     <div className={`flex flex-col ${isMobile ? 'h-screen' : ''} ${isDarkMode ? 'dark' : ''}`}>
-      <header className={`bg-white dark:bg-black text-black dark:text-white py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999]`}>
+      <header className={`bg-white text-black dark:bg-black dark:text-white py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999] border-b border-zinc-300 dark:border-zinc-700`}>
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center flex-grow">
             <Input
@@ -148,7 +148,7 @@ const Index = () => {
       {isMobile && isMobileMenuOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000] dark:bg-opacity-70">
           <div className="fixed top-0 right-0 h-full w-64 bg-white shadow-lg dark:bg-zinc-800 dark:text-white">
-            <div className="flex justify-between items-center p-4 border-b dark:border-zinc-700">
+            <div className="flex justify-between items-center p-4 border-b border-zinc-300 dark:border-zinc-700">
               <h2 className="text-lg font-semibold">Menu</h2>
               <Button variant="ghost" size="sm" onClick={toggleMobileMenu}>
                 <X className="h-6 w-6" />
