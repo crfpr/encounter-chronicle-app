@@ -114,14 +114,14 @@ const Index = () => {
             <Input
               value={encounterName}
               onChange={(e) => setEncounterName(e.target.value)}
-              className={`font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0 ${isMobile ? 'text-xl flex-grow' : 'text-2xl'}`}
+              className={`font-bold bg-transparent border-none text-white placeholder-zinc-400 focus:outline-none focus:ring-0 ${isMobile ? 'text-xl flex-grow' : 'text-2xl'}`}
               placeholder="Enter encounter name..."
             />
           </div>
           <div className="flex items-center">
             {!isMobile && (
               <>
-                <div className="w-4" /> {/* This adds space between the encounter name and the toggle */}
+                <div className="w-4" />
                 <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
               </>
             )}
@@ -129,7 +129,7 @@ const Index = () => {
           </div>
         </div>
       </header>
-      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''} bg-white dark:bg-gray-900`} style={{ height: contentHeight }}>
+      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''} bg-white dark:bg-zinc-900`} style={{ height: contentHeight }}>
         <div className={`h-full overflow-y-auto`}>
           <div className={`container mx-auto px-4 py-4 h-full`}>
             <EncounterTracker 
@@ -147,8 +147,8 @@ const Index = () => {
       </main>
       {isMobile && isMobileMenuOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000] dark:bg-opacity-70">
-          <div className="fixed top-0 right-0 h-full w-64 bg-white shadow-lg dark:bg-gray-800 dark:text-white">
-            <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
+          <div className="fixed top-0 right-0 h-full w-64 bg-white shadow-lg dark:bg-zinc-800 dark:text-white">
+            <div className="flex justify-between items-center p-4 border-b dark:border-zinc-700">
               <h2 className="text-lg font-semibold">Menu</h2>
               <Button variant="ghost" size="sm" onClick={toggleMobileMenu}>
                 <X className="h-6 w-6" />
@@ -186,11 +186,11 @@ const Index = () => {
               <Button onClick={() => {
                 console.log('Save Encounter clicked');
                 exportEncounterData();
-              }} className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
+              }} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
                 <Download className="mr-2 h-4 w-4" />
                 Save Encounter
               </Button>
-              <Button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
+              <Button className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
                 <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center justify-center w-full">
                   <Upload className="mr-2 h-4 w-4" />
                   Load Encounter
