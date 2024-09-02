@@ -117,7 +117,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       {/* Left Tab */}
       <div className={`w-18 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
         <div className="flex flex-col items-center">
-          <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>Initiative</label>
+          <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>Init.</label>
           <Input
             type="text"
             inputMode="numeric"
