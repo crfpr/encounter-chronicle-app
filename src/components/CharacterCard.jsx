@@ -14,9 +14,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     if (isActive) {
       const updatedTokens = tokens.map(token => ({
         ...token,
-        duration: Math.max(0, token.duration - 1)
+        duration: token.duration !== null ? Math.max(0, token.duration - 1) : null
       }));
-      const filteredTokens = updatedTokens.filter(token => token.duration > 0);
+      const filteredTokens = updatedTokens.filter(token => token.duration === null || token.duration > 0);
       setTokens(filteredTokens);
       updateCharacter({ ...character, tokens: filteredTokens });
     }
