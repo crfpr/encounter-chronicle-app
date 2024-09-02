@@ -6,7 +6,7 @@ import NotesSection from './NotesSection';
 import MobileMenu from './MobileMenu';
 import SwipeHandler from './SwipeHandler';
 
-const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile, contentHeight }, ref) => {
+const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile, contentHeight, loadedEncounterData }, ref) => {
   const [round, setRound] = useState(1);
   const [characters, setCharacters] = useState([]);
   const [activeCharacterIndex, setActiveCharacterIndex] = useState(0);
@@ -26,9 +26,25 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       round,
       encounterTime,
       notes,
-      log: encounterLog
+      log: encounterLog,
+      activeCharacterIndex,
+      isRunning
     })
   }));
+
+  useEffect(() => {
+    if (loadedEncounterData) {
+      setRound(loadedEncounterData.round || 1);
+      setCharacters(loadedEncounterData.characters || []);
+      setActiveCharacterIndex(loadedEncounterData.activeCharacterIndex || 0);
+      setEncounterTime(loadedEncounterData.encounterTime || 0);
+      setNotes(loadedEncounterData.notes || '');
+      setEncounterLog(loadedEncounterData.log || []);
+      setEncounterName(loadedEncounterData.encounterName || 'New Encounter');
+      setIsRunning(loadedEncounterData.isRunning || false);
+      logEvent('Encounter data loaded');
+    }
+  }, [loadedEncounterData, setEncounterName]);
 
   const toggleEncounter = useCallback(() => {
     setIsRunning(prevIsRunning => !prevIsRunning);

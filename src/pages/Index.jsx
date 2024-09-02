@@ -112,6 +112,7 @@ const Index = () => {
               uploadEncounterData={uploadEncounterData}
               isMobile={isMobile}
               contentHeight={contentHeight}
+              loadedEncounterData={encounterData}
             />
           </div>
         </div>
