@@ -109,7 +109,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   return (
-    <div className={`flex bg-white dark:bg-black relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out`} style={{ height: '240px' }}>
+    <div className={`flex bg-white dark:bg-black relative overflow-hidden rounded-lg ${getBorderStyle()} box-content transition-all duration-200 ease-in-out`} style={{ height: '240px' }}>
       {/* Left Tab */}
       <div className={`w-16 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 transition-colors duration-200`}>
         <div className="flex flex-col items-center">
@@ -232,12 +232,12 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         </div>
 
         {/* Delete button */}
-        <div className="mt-auto self-end">
+        <div className="mt-2">
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button 
                 variant="link" 
-                className="btn-sm text-gray-700 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 whitespace-nowrap"
+                className="btn-sm text-gray-700 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 whitespace-nowrap p-0"
               >
                 Delete character
               </Button>
