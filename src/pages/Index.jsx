@@ -119,7 +119,12 @@ const Index = () => {
             />
           </div>
           <div className="flex items-center">
-            {!isMobile && <div className="mr-4"><ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} /></div>}
+            {!isMobile && (
+              <>
+                <div className="w-4" /> {/* This adds space between the encounter name and the toggle */}
+                <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+              </>
+            )}
             {isMobile && <MobileMenuButton onClick={toggleMobileMenu} />}
           </div>
         </div>
