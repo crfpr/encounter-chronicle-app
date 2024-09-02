@@ -125,12 +125,7 @@ const Index = () => {
                 <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
               </>
             )}
-            {isMobile && (
-              <>
-                <div className="w-4" />
-                <MobileMenuButton onClick={toggleMobileMenu} />
-              </>
-            )}
+            {isMobile && <MobileMenuButton onClick={toggleMobileMenu} />}
           </div>
         </div>
       </header>
@@ -163,11 +158,11 @@ const Index = () => {
               <Button onClick={() => {
                 console.log('Save Encounter clicked');
                 exportEncounterData();
-              }} className="w-full flex items-center justify-center bg-white hover:bg-zinc-100 text-black dark:bg-zinc-950 dark:hover:bg-zinc-900 dark:text-white border border-zinc-300 dark:border-zinc-800">
+              }} className="w-full flex items-center justify-center">
                 <Download className="mr-2 h-4 w-4" />
                 Save Encounter
               </Button>
-              <Button onClick={handleUploadClick} className="w-full flex items-center justify-center bg-white hover:bg-zinc-100 text-black dark:bg-zinc-950 dark:hover:bg-zinc-900 dark:text-white border border-zinc-300 dark:border-zinc-800">
+              <Button onClick={handleUploadClick} className="w-full flex items-center justify-center">
                 <Upload className="mr-2 h-4 w-4" />
                 Load Encounter
               </Button>

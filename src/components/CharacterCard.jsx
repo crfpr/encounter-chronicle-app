@@ -161,19 +161,19 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onClick={() => toggleAction('action')}
               className={getToggleButtonStyle(character.action)}
             >
-              A
+              Action
             </Button>
             <Button
               onClick={() => toggleAction('bonusAction')}
               className={getToggleButtonStyle(character.bonusAction)}
             >
-              B
+              Bonus
             </Button>
             <Button
               onClick={() => toggleAction('reaction')}
               className={getToggleButtonStyle(character.reaction)}
             >
-              R
+              Reaction
             </Button>
             <div className="flex items-center space-x-2">
               <Input
