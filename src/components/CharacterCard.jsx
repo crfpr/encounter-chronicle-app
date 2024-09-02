@@ -105,7 +105,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const getToggleButtonStyle = (isActive) => {
-    return `h-[30px] px-2 text-xs border ${isActive ? 'bg-black text-white dark:bg-zinc-200 dark:text-zinc-900 border-zinc-300 dark:border-zinc-300' : 'bg-white text-black dark:bg-zinc-900 dark:text-zinc-100 border-zinc-300 dark:border-zinc-300'} transition-colors`;
+    return `h-[30px] px-2 text-xs border ${isActive ? 'bg-black text-white dark:bg-zinc-800 dark:text-zinc-100 border-zinc-300 dark:border-zinc-300' : 'bg-white text-black dark:bg-zinc-800 dark:text-zinc-100 border-zinc-300 dark:border-zinc-300'} transition-colors`;
   };
 
   return (
@@ -222,7 +222,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               <Button
                 onClick={handleAddToken}
                 variant="outline"
-                className="h-[30px] px-3 py-1 text-sm flex items-center"
+                className="h-[30px] px-3 py-1 text-sm flex items-center bg-white hover:bg-zinc-100 dark:bg-zinc-800 dark:hover:bg-zinc-700"
               >
                 <PlusCircle className="h-4 w-4 mr-1" />
                 Add token
@@ -237,7 +237,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             <AlertDialogTrigger asChild>
               <Button 
                 variant="link" 
-                className="btn-sm text-zinc-700 dark:text-zinc-300 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 whitespace-nowrap"
+                className="btn-sm text-zinc-700 dark:text-zinc-300 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 whitespace-nowrap bg-transparent dark:bg-transparent"
               >
                 Delete character
               </Button>
