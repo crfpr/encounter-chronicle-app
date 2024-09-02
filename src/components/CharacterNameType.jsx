@@ -66,13 +66,13 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
   const getButtonStyle = () => {
     switch (editedType) {
       case 'PC':
-        return 'bg-blue-100 hover:bg-blue-200';
+        return 'bg-blue-100 hover:bg-blue-200 text-blue-800';
       case 'Enemy':
-        return 'bg-red-100 hover:bg-red-200';
+        return 'bg-red-100 hover:bg-red-200 text-red-800';
       case 'Neutral':
-        return 'bg-green-100 hover:bg-green-200';
+        return 'bg-gray-100 hover:bg-gray-200 text-gray-800';
       default:
-        return 'bg-gray-100 hover:bg-gray-200';
+        return 'bg-gray-100 hover:bg-gray-200 text-gray-800';
     }
   };
 
@@ -119,7 +119,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
         ) : (
           <div className="flex items-center justify-between w-full">
             <span className="text-lg font-bold truncate">{editedName}</span>
-            <span className="text-sm text-gray-500">{editedType}</span>
+            <span className="text-sm">{editedType}</span>
           </div>
         )}
       </Button>
