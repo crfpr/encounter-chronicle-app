@@ -17,9 +17,11 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   const [activePage, setActivePage] = useState('tracker');
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
   const [lastResetIndex, setLastResetIndex] = useState(-1);
+  const [encounterLog, setEncounterLog] = useState([]);
 
   const toggleEncounter = useCallback(() => {
     setIsRunning(prevIsRunning => !prevIsRunning);
+    logEvent(prevIsRunning ? 'Encounter paused' : 'Encounter started');
   }, []);
 
   useEffect(() => {
@@ -38,13 +40,15 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   const resetCharacterActions = (characterIndex) => {
     setCharacters(prevCharacters => prevCharacters.map((char, index) => {
       if (index === characterIndex) {
-        return {
+        const updatedChar = {
           ...char,
           action: false,
           bonusAction: false,
           reaction: false,
           currentMovement: char.maxMovement
         };
+        logEvent(`Reset actions for ${char.name}`);
+        return updatedChar;
       }
       return char;
     }));
@@ -53,7 +57,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   const handlePreviousTurn = () => {
     setActiveCharacterIndex(prevIndex => {
       const newIndex = prevIndex === 0 ? characters.length - 1 : prevIndex - 1;
-      // Do not reset character actions when moving backwards
+      logEvent(`Turn changed to ${characters[newIndex].name}`);
       return newIndex;
     });
     setTurnTime(0);
@@ -62,11 +66,11 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   const handleNextTurn = () => {
     setActiveCharacterIndex(prevIndex => {
       const newIndex = prevIndex === characters.length - 1 ? 0 : prevIndex + 1;
-      // Only reset if we haven't reset this character in the current round
       if (newIndex > lastResetIndex || (lastResetIndex === characters.length - 1 && newIndex === 0)) {
         resetCharacterActions(newIndex);
         setLastResetIndex(newIndex);
       }
+      logEvent(`Turn changed to ${characters[newIndex].name}`);
       return newIndex;
     });
 
@@ -95,8 +99,11 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
       });
 
       if (activeCharacterIndex === characters.length - 1) {
-        setRound(prevRound => prevRound + 1);
-        setLastResetIndex(-1); // Reset the lastResetIndex at the start of a new round
+        setRound(prevRound => {
+          logEvent(`Round ${prevRound + 1} started`);
+          return prevRound + 1;
+        });
+        setLastResetIndex(-1);
         return updatedCharacters.map(char => ({
           ...char,
           hasActedThisRound: false
@@ -170,6 +177,53 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
     };
   }, [handleKeyDown]);
 
+  const logEvent = (event) => {
+    setEncounterLog(prevLog => [
+      ...prevLog,
+      {
+        timestamp: new Date().toISOString(),
+        event: event,
+        encounterTime: encounterTime,
+        round: round
+      }
+    ]);
+  };
+
+  const updateCharacter = (updatedCharacter) => {
+    setCharacters(prevCharacters => 
+      prevCharacters.map(c => {
+        if (c.id === updatedCharacter.id) {
+          logEvent(`Updated ${c.name}: ${JSON.stringify(updatedCharacter)}`);
+          return { ...c, ...updatedCharacter };
+        }
+        return c;
+      })
+    );
+  };
+
+  const addCharacter = (newCharacter) => {
+    setCharacters(prevCharacters => [...prevCharacters, newCharacter]);
+    logEvent(`Added new character: ${newCharacter.name}`);
+  };
+
+  const removeCharacter = (id) => {
+    const characterToRemove = characters.find(c => c.id === id);
+    setCharacters(prevCharacters => prevCharacters.filter(c => c.id !== id));
+    logEvent(`Removed character: ${characterToRemove.name}`);
+  };
+
+  const handleExport = () => {
+    const encounterData = {
+      encounterName,
+      characters,
+      round,
+      encounterTime,
+      notes,
+      log: encounterLog
+    };
+    exportEncounterData(encounterData);
+  };
+
   const renderContent = () => {
     if (isMobile) {
       const titleStyle = "text-xl font-semibold mb-4";
@@ -200,6 +254,9 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
                   onPreviousTurn={handlePreviousTurn}
                   onNextTurn={handleNextTurn}
                   setIsNumericInputActive={setIsNumericInputActive}
+                  updateCharacter={updateCharacter}
+                  addCharacter={addCharacter}
+                  removeCharacter={removeCharacter}
                 />
               </div>
             </div>
@@ -209,7 +266,10 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
             <div className="h-full flex flex-col pb-20">
               <h2 className={titleStyle}>Notes</h2>
               <div className="flex-grow">
-                <NotesSection key={`notes-section-${activePage}-${isMobile}`} notes={notes} setNotes={setNotes} isMobile={true} />
+                <NotesSection key={`notes-section-${activePage}-${isMobile}`} notes={notes} setNotes={(newNotes) => {
+                  setNotes(newNotes);
+                  logEvent(`Notes updated`);
+                }} isMobile={true} />
               </div>
             </div>
           );
@@ -252,6 +312,9 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
                     onPreviousTurn={handlePreviousTurn}
                     onNextTurn={handleNextTurn}
                     setIsNumericInputActive={setIsNumericInputActive}
+                    updateCharacter={updateCharacter}
+                    addCharacter={addCharacter}
+                    removeCharacter={removeCharacter}
                   />
                 </div>
               </div>
@@ -259,7 +322,10 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
           </div>
           <div className="lg:w-1/3 h-full flex flex-col space-y-6">
             <div className="bg-white border border-black rounded-lg p-4 flex-1 overflow-hidden flex flex-col">
-              <NotesSection notes={notes} setNotes={setNotes} isMobile={false} />
+              <NotesSection notes={notes} setNotes={(newNotes) => {
+                setNotes(newNotes);
+                logEvent(`Notes updated`);
+              }} isMobile={false} />
             </div>
             <div className="bg-white border border-black rounded-lg p-4 flex-1 overflow-hidden flex flex-col">
               <h2 className="text-xl font-semibold mb-2">Character Stats</h2>
@@ -278,7 +344,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
       <div className="flex-grow overflow-hidden">
         {renderContent()}
       </div>
-      {isMobile && <MobileMenu activePage={activePage} setActivePage={setActivePage} />}
+      {isMobile && <MobileMenu activePage={activePage} setActivePage={setActivePage} onExport={handleExport} />}
       {isMobile && <SwipeHandler onSwipeLeft={handleSwipeLeft} onSwipeRight={handleSwipeRight} />}
     </div>
   );

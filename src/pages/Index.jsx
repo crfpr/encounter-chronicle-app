@@ -32,18 +32,16 @@ const Index = () => {
     setContentHeight(newHeight);
   };
 
-  const exportEncounterData = () => {
-    if (encounterData) {
-      const blob = new Blob([JSON.stringify(encounterData, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${encounterName.replace(/\s+/g, '_')}_data.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
+  const exportEncounterData = (data) => {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${data.encounterName.replace(/\s+/g, '_')}_data.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
     setIsMobileMenuOpen(false);
   };
 
@@ -110,7 +108,7 @@ const Index = () => {
               </Button>
             </div>
             <div className="p-4 space-y-4">
-              <Button onClick={exportEncounterData} className="w-full flex items-center justify-center">
+              <Button onClick={() => exportEncounterData(encounterData)} className="w-full flex items-center justify-center">
                 <Download className="mr-2 h-4 w-4" />
                 Save Encounter
               </Button>
@@ -134,7 +132,7 @@ const Index = () => {
           <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
             <p className="text-center sm:text-left">&copy; 2023 Encounter Tracker. All rights reserved.</p>
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-              <Button onClick={exportEncounterData} className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto">
+              <Button onClick={() => exportEncounterData(encounterData)} className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto">
                 <Download className="mr-2 h-4 w-4" />
                 Save Encounter
               </Button>
