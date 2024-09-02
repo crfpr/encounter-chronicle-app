@@ -27,11 +27,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const getTabColor = () => {
-    return isActive ? 'bg-white' : 'bg-black';
+    return isActive ? 'bg-gray-700' : 'bg-black';
   };
 
   const getTabTextColor = () => {
-    return isActive ? 'text-black' : 'text-white';
+    return isActive ? 'text-white' : 'text-white';
   };
 
   const handleInputChange = (field, value) => {
