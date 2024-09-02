@@ -23,7 +23,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   }, [isActive]);
 
   const getBorderStyle = () => {
-    return 'border border-black dark:border-white';
+    return 'border-black dark:border-white';
   };
 
   const getTabColor = () => {
@@ -109,9 +109,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   return (
-    <div className={`flex bg-white dark:bg-black relative overflow-hidden rounded-lg ${getBorderStyle()} box-content transition-all duration-200 ease-in-out`} style={{ height: '240px' }}>
+    <div className={`flex bg-white dark:bg-black relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out`} style={{ height: '240px' }}>
       {/* Left Tab */}
-      <div className={`w-16 flex-shrink-0 ${getTabColor()} ${getBorderStyle()} flex flex-col items-center justify-between py-2 transition-colors duration-200`}>
+      <div className={`w-16 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 transition-colors duration-200`}>
         <div className="flex flex-col items-center">
           <label className={`text-xs font-semibold mb-1`}>Initiative</label>
           <Input
@@ -261,7 +261,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       </div>
 
       {/* Right Tab */}
-      <div className={`w-24 flex-shrink-0 ${getTabColor()} ${getBorderStyle()} flex flex-col items-center justify-between p-2 transition-colors duration-200`}>
+      <div className={`w-24 flex-shrink-0 ${getTabColor()} border-l ${getBorderStyle()} flex flex-col items-center justify-between p-2 transition-colors duration-200`}>
         <div className="flex flex-col items-center space-y-2">
           <div className="flex flex-col items-center">
             <label className={`text-xs font-semibold mb-1`}>AC</label>
