@@ -36,13 +36,13 @@
   }
  
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 0 0% 0%;
     --foreground: 210 40% 98%;
  
-    --card: 222.2 84% 4.9%;
+    --card: 0 0% 0%;
     --card-foreground: 210 40% 98%;
  
-    --popover: 222.2 84% 4.9%;
+    --popover: 0 0% 0%;
     --popover-foreground: 210 40% 98%;
  
     --primary: 210 40% 98%;
@@ -86,21 +86,21 @@
 
 /* Dark mode styles */
 .dark {
-  @apply bg-gray-900 text-white;
+  @apply bg-black text-white;
 }
 
 .dark input,
 .dark select,
 .dark textarea {
-  @apply bg-gray-800 text-white border-gray-700;
+  @apply bg-black text-white border-gray-700;
 }
 
 .dark button {
-  @apply bg-gray-700 text-white hover:bg-gray-600;
+  @apply bg-gray-800 text-white hover:bg-gray-700;
 }
 
 .dark .bg-white {
-  @apply bg-gray-800;
+  @apply bg-black;
 }
 
 .dark .text-black {
@@ -108,9 +108,25 @@
 }
 
 .dark .border-black {
-  @apply border-gray-600;
+  @apply border-gray-700;
 }
 
 .dark .hover\:bg-gray-200:hover {
-  @apply hover:bg-gray-700;
+  @apply hover:bg-gray-800;
+}
+
+.dark .text-gray-600 {
+  @apply text-gray-400;
+}
+
+.dark .text-gray-700 {
+  @apply text-gray-300;
+}
+
+.dark .text-gray-800 {
+  @apply text-gray-200;
+}
+
+.dark .text-gray-900 {
+  @apply text-gray-100;
 }
