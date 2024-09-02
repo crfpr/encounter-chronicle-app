@@ -63,6 +63,10 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       const newValue = Math.max(0, parseInt(currentValue || 0) - 1);
       handleInputChange(field, newValue.toString());
     }
+    // Block navigation keys when numeric input is active
+    if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
+      e.stopPropagation();
+    }
   };
 
   const handleInputSubmit = (field, value) => {
@@ -120,7 +124,10 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             onChange={(e) => handleInputChange('initiative', e.target.value)}
             onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
             onFocus={() => setIsNumericInputActive(true)}
-            onBlur={handleInitiativeBlur}
+            onBlur={() => {
+              setIsNumericInputActive(false);
+              handleInitiativeBlur();
+            }}
             className="w-12 text-center bg-white text-black h-[30px]"
             maxLength={3}
           />
