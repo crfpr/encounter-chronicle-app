@@ -36,13 +36,13 @@
   }
  
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 0 0% 0%;
     --foreground: 210 40% 98%;
  
-    --card: 222.2 84% 4.9%;
+    --card: 0 0% 0%;
     --card-foreground: 210 40% 98%;
  
-    --popover: 222.2 84% 4.9%;
+    --popover: 0 0% 0%;
     --popover-foreground: 210 40% 98%;
  
     --primary: 210 40% 98%;
@@ -61,7 +61,7 @@
     --destructive-foreground: 210 40% 98%;
  
     --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
+    --input: 0 0% 0%;
     --ring: 212.7 26.8% 83.9%;
   }
 }
@@ -86,21 +86,21 @@
 
 /* Dark mode styles */
 .dark {
-  @apply bg-gray-900 text-white;
+  @apply bg-black text-white;
 }
 
 .dark input,
 .dark select,
 .dark textarea {
-  @apply bg-gray-800 text-white border-gray-700;
+  @apply bg-black text-white border-gray-700;
 }
 
 .dark button {
-  @apply bg-gray-700 text-white hover:bg-gray-600;
+  @apply bg-black text-white hover:bg-gray-800;
 }
 
 .dark .bg-white {
-  @apply bg-gray-800;
+  @apply bg-black;
 }
 
 .dark .text-black {
@@ -108,9 +108,47 @@
 }
 
 .dark .border-black {
-  @apply border-gray-600;
+  @apply border-gray-700;
 }
 
 .dark .hover\:bg-gray-200:hover {
-  @apply hover:bg-gray-700;
+  @apply hover:bg-gray-800;
+}
+
+/* Active character card styles for dark mode */
+.dark [data-index].relative.z-10 > div {
+  @apply border-gray-700;
+}
+
+.dark [data-index].relative.z-10 > div > div:first-child {
+  @apply bg-gray-800;
+}
+
+/* Secondary text color for dark mode */
+.dark .text-gray-600 {
+  @apply text-gray-400;
+}
+
+/* Ensure all card backgrounds are black in dark mode */
+.dark .bg-white {
+  @apply bg-black;
+}
+
+/* Adjust hover states for dark mode */
+.dark .hover\:bg-gray-100:hover {
+  @apply hover:bg-gray-800;
+}
+
+/* Ensure input and button backgrounds are black in dark mode */
+.dark input,
+.dark select,
+.dark button {
+  @apply bg-black border-gray-700;
+}
+
+/* Adjust focus states for dark mode */
+.dark input:focus,
+.dark select:focus,
+.dark button:focus {
+  @apply border-gray-500 ring-gray-500;
 }
