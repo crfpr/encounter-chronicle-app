@@ -7,7 +7,7 @@ const MobileMenuButton = ({ onClick }) => {
     <Button
       variant="ghost"
       size="icon"
-      className="text-white"
+      className="text-black dark:text-white"
       onClick={onClick}
     >
       <Menu className="h-6 w-6" />

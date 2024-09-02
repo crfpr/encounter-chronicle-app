@@ -108,13 +108,13 @@ const Index = () => {
 
   return (
     <div className={`flex flex-col ${isMobile ? 'h-screen' : ''} ${isDarkMode ? 'dark' : ''}`}>
-      <header className={`bg-black text-white py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999]`}>
+      <header className={`bg-white dark:bg-black text-black dark:text-white py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999]`}>
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center flex-grow">
             <Input
               value={encounterName}
               onChange={(e) => setEncounterName(e.target.value)}
-              className={`font-bold bg-transparent border-none text-white placeholder-zinc-400 focus:outline-none focus:ring-0 ${isMobile ? 'text-xl flex-grow' : 'text-2xl'}`}
+              className={`font-bold bg-transparent border-none text-black dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-0 ${isMobile ? 'text-xl flex-grow' : 'text-2xl'}`}
               placeholder="Enter encounter name..."
             />
           </div>

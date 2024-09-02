@@ -8,7 +8,7 @@ const ThemeToggle = ({ isDarkMode, toggleTheme }) => {
       variant="ghost"
       size="icon"
       onClick={toggleTheme}
-      className="text-white"
+      className="text-black dark:text-white"
     >
       {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
     </Button>
