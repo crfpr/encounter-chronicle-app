@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
@@ -7,7 +7,7 @@ import Token from './Token';
 import CharacterNameType from './CharacterNameType';
 import { PlusCircle } from 'lucide-react';
 
-const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur }) => {
+const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   const handleInputSubmit = (field, value) => {
     setIsNumericInputActive(false);
     if (field === 'initiative') {
-      onInitiativeBlur(character.id, value);
+      onInitiativeSubmit(character.id, value);
     } else {
       handleInputChange(field, value);
     }

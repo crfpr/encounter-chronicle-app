@@ -32,7 +32,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
 
   const updateCharacter = (updatedCharacter) => {
     setCharacters(prevCharacters => 
-      prevCharacters.map(c => c.id === updatedCharacter.id ? updatedCharacter : c)
+      prevCharacters.map(c => c.id === updatedCharacter.id ? { ...c, ...updatedCharacter } : c)
     );
   };
 
