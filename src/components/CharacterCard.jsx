@@ -25,7 +25,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   const getBorderStyle = () => {
     return isActive
-      ? 'light:border-zinc-800 dark:border-zinc-800'
+      ? 'light:border-zinc-700 dark:border-zinc-800'
       : 'light:border-zinc-300 dark:border-zinc-800';
   };
 
