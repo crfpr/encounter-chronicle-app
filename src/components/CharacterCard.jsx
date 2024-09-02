@@ -9,6 +9,7 @@ import { PlusCircle } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
+  const [pressedButtons, setPressedButtons] = useState({});
 
   useEffect(() => {
     if (isActive) {
@@ -85,6 +86,10 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   const toggleAction = (action) => {
     updateCharacter({ ...character, [action]: !character[action] });
+    // Reset the pressed state after a short delay
+    setTimeout(() => {
+      setPressedButtons(prev => ({ ...prev, [action]: false }));
+    }, 200);
   };
 
   const handleAddToken = () => {
@@ -108,7 +113,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     updateCharacter({ ...character, tokens: updatedTokens });
   };
 
-  const getToggleButtonStyle = (isActive, isToggled) => {
+  const getToggleButtonStyle = (isActive, isToggled, action) => {
     const baseClasses = "h-[30px] px-2 text-xs border transition-colors";
     const activeClasses = isActive
       ? "border-zinc-300 dark:border-zinc-800"
@@ -126,10 +131,21 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     }
     
     const hoverClasses = isMobile
-      ? "active:bg-zinc-200 dark:active:bg-zinc-600"
-      : "hover:bg-zinc-100 dark:hover:bg-zinc-700 active:bg-zinc-200 dark:active:bg-zinc-600";
+      ? ""
+      : "hover:bg-zinc-100 dark:hover:bg-zinc-700";
 
-    return `${baseClasses} ${activeClasses} ${toggledClasses} ${hoverClasses}`;
+    const pressedClasses = pressedButtons[action] ? "opacity-70" : "";
+
+    return `${baseClasses} ${activeClasses} ${toggledClasses} ${hoverClasses} ${pressedClasses}`;
+  };
+
+  const handleTouchStart = (action) => {
+    setPressedButtons(prev => ({ ...prev, [action]: true }));
+  };
+
+  const handleTouchEnd = (action) => {
+    setPressedButtons(prev => ({ ...prev, [action]: false }));
+    toggleAction(action);
   };
 
   return (
@@ -183,19 +199,25 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           <div className="flex flex-wrap items-center gap-2">
             <Button
               onClick={() => toggleAction('action')}
-              className={getToggleButtonStyle(isActive, character.action)}
+              onTouchStart={() => handleTouchStart('action')}
+              onTouchEnd={() => handleTouchEnd('action')}
+              className={getToggleButtonStyle(isActive, character.action, 'action')}
             >
               {isMobile ? 'A' : 'Action'}
             </Button>
             <Button
               onClick={() => toggleAction('bonusAction')}
-              className={getToggleButtonStyle(isActive, character.bonusAction)}
+              onTouchStart={() => handleTouchStart('bonusAction')}
+              onTouchEnd={() => handleTouchEnd('bonusAction')}
+              className={getToggleButtonStyle(isActive, character.bonusAction, 'bonusAction')}
             >
               {isMobile ? 'B' : 'Bonus'}
             </Button>
             <Button
               onClick={() => toggleAction('reaction')}
-              className={getToggleButtonStyle(isActive, character.reaction)}
+              onTouchStart={() => handleTouchStart('reaction')}
+              onTouchEnd={() => handleTouchEnd('reaction')}
+              className={getToggleButtonStyle(isActive, character.reaction, 'reaction')}
             >
               {isMobile ? 'R' : 'Reaction'}
             </Button>
