@@ -304,7 +304,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       return (
         <div className="flex flex-col lg:flex-row w-full h-full space-y-6 lg:space-y-0 lg:space-x-6">
           <div className="lg:w-2/3 h-full flex flex-col">
-            <div className="bg-white border border-black rounded-lg flex flex-col overflow-hidden h-full">
+            <div className="bg-white border border-zinc-300 dark:border-zinc-700 rounded-lg flex flex-col overflow-hidden h-full">
               <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
                   <div className="text-xl font-semibold">
@@ -336,13 +336,13 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
             </div>
           </div>
           <div className="lg:w-1/3 h-full flex flex-col space-y-6">
-            <div className="bg-white border border-black rounded-lg p-4 flex-1 overflow-hidden flex flex-col">
+            <div className="bg-white border border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex-1 overflow-hidden flex flex-col">
               <NotesSection notes={notes} setNotes={(newNotes) => {
                 setNotes(newNotes);
                 logEvent(`Notes updated`);
               }} isMobile={false} />
             </div>
-            <div className="bg-white border border-black rounded-lg p-4 flex-1 overflow-hidden flex flex-col">
+            <div className="bg-white border border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex-1 overflow-hidden flex flex-col">
               <h2 className="text-xl font-semibold mb-2">Character Stats</h2>
               <div className="flex-grow overflow-y-auto">
                 <CharacterStats characters={characters} round={round} />
