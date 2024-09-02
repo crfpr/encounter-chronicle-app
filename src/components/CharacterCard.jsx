@@ -23,7 +23,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   }, [isActive]);
 
   const getBorderStyle = () => {
-    return isActive ? 'border-[3px] border-white' : 'border border-gray-700';
+    return isActive ? 'border-[3px] border-white' : 'border-[3px] border-transparent';
   };
 
   const getTabColor = () => {
