@@ -23,11 +23,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   }, [isActive]);
 
   const getBorderStyle = () => {
-    return 'border-black dark:border-white';
+    return 'border-black dark:border-zinc-300';
   };
 
   const getTabColor = () => {
-    return isActive ? 'bg-black text-white dark:bg-white dark:text-black' : 'bg-white text-black dark:bg-black dark:text-white';
+    return isActive ? 'bg-black text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-900 dark:text-zinc-100';
   };
 
   const handleInputChange = (field, value) => {
@@ -105,11 +105,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const getToggleButtonStyle = (isActive) => {
-    return `h-[30px] px-2 text-xs border ${isActive ? 'bg-black text-white dark:bg-white dark:text-black border-black dark:border-white' : 'bg-white text-black dark:bg-black dark:text-white border-black dark:border-white'} transition-colors`;
+    return `h-[30px] px-2 text-xs border ${isActive ? 'bg-black text-white dark:bg-zinc-800 dark:text-zinc-100 border-black dark:border-zinc-300' : 'bg-white text-black dark:bg-zinc-900 dark:text-zinc-100 border-black dark:border-zinc-300'} transition-colors`;
   };
 
   return (
-    <div className={`flex bg-white dark:bg-black relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out min-h-[200px]`}>
+    <div className={`flex bg-white dark:bg-zinc-900 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out min-h-[200px]`}>
       {/* Left Tab */}
       <div className={`w-16 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 transition-colors duration-200`}>
         <div className="flex flex-col items-center">
@@ -125,7 +125,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               setIsNumericInputActive(false);
               handleInitiativeBlur();
             }}
-            className="w-12 text-center bg-white dark:bg-black text-black dark:text-white h-[30px]"
+            className="w-12 text-center bg-white dark:bg-zinc-800 text-black dark:text-zinc-100 h-[30px]"
             maxLength={3}
           />
         </div>
@@ -184,7 +184,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
                 onFocus={() => setIsNumericInputActive(true)}
                 onBlur={() => setIsNumericInputActive(false)}
-                className="w-16 text-center bg-white dark:bg-black text-black dark:text-white h-[30px]"
+                className="w-16 text-center bg-white dark:bg-zinc-800 text-black dark:text-zinc-100 h-[30px]"
                 placeholder="Current"
                 maxLength={3}
               />
@@ -198,7 +198,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
                   onFocus={() => setIsNumericInputActive(true)}
                   onBlur={() => setIsNumericInputActive(false)}
-                  className="w-16 text-center h-[30px] bg-white dark:bg-black text-black dark:text-white"
+                  className="w-16 text-center h-[30px] bg-white dark:bg-zinc-800 text-black dark:text-zinc-100"
                   placeholder="Max"
                   maxLength={3}
                 />
@@ -237,7 +237,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             <AlertDialogTrigger asChild>
               <Button 
                 variant="link" 
-                className="btn-sm text-gray-700 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 whitespace-nowrap"
+                className="btn-sm text-zinc-700 dark:text-zinc-300 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 whitespace-nowrap"
               >
                 Delete character
               </Button>
@@ -273,7 +273,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white dark:bg-black text-black dark:text-white h-[30px]"
+              className="w-16 text-center bg-white dark:bg-zinc-800 text-black dark:text-zinc-100 h-[30px]"
               maxLength={3}
             />
           </div>
@@ -287,7 +287,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white dark:bg-black text-black dark:text-white h-[30px]"
+              className="w-16 text-center bg-white dark:bg-zinc-800 text-black dark:text-zinc-100 h-[30px]"
               maxLength={3}
             />
           </div>
@@ -301,7 +301,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white dark:bg-black text-black dark:text-white h-[30px]"
+              className="w-16 text-center bg-white dark:bg-zinc-800 text-black dark:text-zinc-100 h-[30px]"
               maxLength={3}
             />
           </div>
