@@ -23,15 +23,15 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   }, [isActive]);
 
   const getBorderStyle = () => {
-    return isActive ? 'border-[3px] border-black' : 'border border-black';
+    return isActive ? 'border-[3px] border-white' : 'border border-gray-700';
   };
 
   const getTabColor = () => {
-    return isActive ? 'bg-black' : 'bg-white';
+    return isActive ? 'bg-white' : 'bg-black';
   };
 
   const getTabTextColor = () => {
-    return isActive ? 'text-white' : 'text-black';
+    return isActive ? 'text-black' : 'text-white';
   };
 
   const handleInputChange = (field, value) => {
@@ -109,13 +109,13 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const getToggleButtonStyle = (isActive) => {
-    return `h-[30px] px-2 text-xs border ${isActive ? 'bg-black text-white border-black' : 'bg-white text-black border-black'} transition-colors`;
+    return `h-[30px] px-2 text-xs border ${isActive ? 'bg-white text-black border-black' : 'bg-black text-white border-white'} transition-colors`;
   };
 
   return (
-    <div className={`flex bg-white relative overflow-hidden rounded-lg ${getBorderStyle()}`}>
+    <div className={`flex bg-black relative overflow-hidden rounded-lg ${getBorderStyle()}`}>
       {/* Left Tab */}
-      <div className={`w-16 flex-shrink-0 ${getTabColor()} ${isActive ? 'text-white' : 'border-r border-black'} flex flex-col items-center justify-between py-2`}>
+      <div className={`w-16 flex-shrink-0 ${getTabColor()} ${isActive ? 'text-black' : 'border-r border-gray-700'} flex flex-col items-center justify-between py-2`}>
         <div className="flex flex-col items-center">
           <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>Initiative</label>
           <Input
@@ -226,7 +226,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               <Button
                 onClick={handleAddToken}
                 variant="outline"
-                className="h-[30px] px-3 py-1 text-sm flex items-center"
+                className="h-[30px] px-3 py-1 text-sm flex items-center border-white text-white hover:bg-gray-800"
               >
                 <PlusCircle className="h-4 w-4 mr-1" />
                 Add token
@@ -241,7 +241,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             <AlertDialogTrigger asChild>
               <Button 
                 variant="link" 
-                className="btn-sm text-gray-700 hover:text-red-500 transition-colors duration-200 whitespace-nowrap"
+                className="btn-sm text-gray-400 hover:text-red-500 transition-colors duration-200 whitespace-nowrap"
               >
                 Delete character
               </Button>
@@ -265,7 +265,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       </div>
 
       {/* Right Tab */}
-      <div className={`w-24 flex-shrink-0 ${getTabColor()} ${isActive ? '' : 'border-l border-black'} flex flex-col items-center justify-between p-2`}>
+      <div className={`w-24 flex-shrink-0 ${getTabColor()} ${isActive ? '' : 'border-l border-gray-700'} flex flex-col items-center justify-between p-2`}>
         <div className="flex flex-col items-center space-y-2">
           <div className="flex flex-col items-center">
             <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>AC</label>
