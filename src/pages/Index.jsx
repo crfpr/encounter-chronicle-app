@@ -4,6 +4,7 @@ import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Upload, Download, X } from 'lucide-react';
 import MobileMenuButton from '../components/MobileMenuButton';
+import ThemeToggle from '../components/ThemeToggle';
 
 const Index = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
@@ -14,6 +15,7 @@ const Index = () => {
   const [contentHeight, setContentHeight] = useState('calc(100vh - 64px)');
   const [headerHeight, setHeaderHeight] = useState(64);
   const encounterTrackerRef = useRef(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -22,8 +24,24 @@ const Index = () => {
     };
     window.addEventListener('resize', handleResize);
     updateContentHeight();
+
+    // Load theme preference from localStorage
+    const savedTheme = localStorage.getItem('theme');
+    setIsDarkMode(savedTheme === 'dark');
+
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    // Apply dark mode class to body
+    document.body.classList.toggle('dark', isDarkMode);
+    // Save theme preference to localStorage
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   const updateContentHeight = () => {
     const header = document.querySelector('header');
@@ -89,7 +107,7 @@ const Index = () => {
   };
 
   return (
-    <div className={`flex flex-col ${isMobile ? 'h-screen' : ''}`}>
+    <div className={`flex flex-col ${isMobile ? 'h-screen' : ''} ${isDarkMode ? 'dark' : ''}`}>
       <header className={`bg-black text-white py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999]`}>
         <div className="container mx-auto px-4 flex items-center justify-between">
           <Input
@@ -98,10 +116,11 @@ const Index = () => {
             className={`font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0 ${isMobile ? 'text-xl flex-grow mr-2' : 'text-2xl'}`}
             placeholder="Enter encounter name..."
           />
+          {!isMobile && <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />}
           {isMobile && <MobileMenuButton onClick={toggleMobileMenu} />}
         </div>
       </header>
-      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''}`} style={{ height: contentHeight }}>
+      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''} bg-white dark:bg-gray-900`} style={{ height: contentHeight }}>
         <div className={`h-full overflow-y-auto`}>
           <div className={`container mx-auto px-4 py-4 h-full`}>
             <EncounterTracker 
@@ -118,9 +137,9 @@ const Index = () => {
         </div>
       </main>
       {isMobile && isMobileMenuOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000]">
-          <div className="fixed top-0 right-0 h-full w-64 bg-white shadow-lg">
-            <div className="flex justify-between items-center p-4 border-b">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000] dark:bg-opacity-70">
+          <div className="fixed top-0 right-0 h-full w-64 bg-white shadow-lg dark:bg-gray-800 dark:text-white">
+            <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
               <h2 className="text-lg font-semibold">Menu</h2>
               <Button variant="ghost" size="sm" onClick={toggleMobileMenu}>
                 <X className="h-6 w-6" />
@@ -138,6 +157,7 @@ const Index = () => {
                 <Upload className="mr-2 h-4 w-4" />
                 Load Encounter
               </Button>
+              <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
               <input
                 ref={fileInputRef}
                 type="file"
@@ -157,11 +177,11 @@ const Index = () => {
               <Button onClick={() => {
                 console.log('Save Encounter clicked');
                 exportEncounterData();
-              }} className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto">
+              }} className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
                 <Download className="mr-2 h-4 w-4" />
                 Save Encounter
               </Button>
-              <Button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto">
+              <Button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
                 <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center justify-center w-full">
                   <Upload className="mr-2 h-4 w-4" />
                   Load Encounter

@@ -83,3 +83,34 @@
     @apply h-[30px] px-2 text-xs;
   }
 }
+
+/* Dark mode styles */
+.dark {
+  @apply bg-gray-900 text-white;
+}
+
+.dark input,
+.dark select,
+.dark textarea {
+  @apply bg-gray-800 text-white border-gray-700;
+}
+
+.dark button {
+  @apply bg-gray-700 text-white hover:bg-gray-600;
+}
+
+.dark .bg-white {
+  @apply bg-gray-800;
+}
+
+.dark .text-black {
+  @apply text-white;
+}
+
+.dark .border-black {
+  @apply border-gray-600;
+}
+
+.dark .hover\:bg-gray-200:hover {
+  @apply hover:bg-gray-700;
+}
