@@ -250,11 +250,13 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
               <h2 className={titleStyle}>Turn Tracker</h2>
               <div className="mb-4">
                 <div className="flex justify-between items-center">
+                  <div className="text-lg font-medium">
+                    Round {round}
+                  </div>
                   <EncounterHeader
                     isRunning={isRunning}
                     toggleEncounter={toggleEncounter}
                     encounterTime={encounterTime}
-                    round={round}
                   />
                 </div>
               </div>
@@ -305,11 +307,13 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
             <div className="bg-white border border-zinc-300 dark:border-zinc-700 rounded-lg flex flex-col overflow-hidden h-full shadow-md dark:shadow-none">
               <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
+                  <div className="text-xl font-semibold">
+                    Round {round}
+                  </div>
                   <EncounterHeader
                     isRunning={isRunning}
                     toggleEncounter={toggleEncounter}
                     encounterTime={encounterTime}
-                    round={round}
                   />
                 </div>
               </div>
