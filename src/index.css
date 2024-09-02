@@ -36,7 +36,7 @@
   }
  
   .dark {
-    --background: 240 10% 3.9%;
+    --background: 0 0% 0%;
     --foreground: 0 0% 98%;
  
     --card: 240 10% 3.9%;
@@ -86,7 +86,7 @@
 
 /* Dark mode styles */
 .dark {
-  @apply bg-zinc-900 text-zinc-100;
+  @apply bg-black text-zinc-100;
 }
 
 .dark input,
