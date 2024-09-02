@@ -111,7 +111,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   const getToggleButtonStyle = (isActive) => {
     return `h-[30px] px-2 text-xs border ${
       isActive
-        ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800'
+        ? `bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 ${!isActive ? 'bg-zinc-600' : ''}`
         : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800'
     } ${isMobile ? '' : 'hover:bg-zinc-100 dark:hover:bg-zinc-700'} transition-colors active:bg-zinc-200 dark:active:bg-zinc-600`;
   };
@@ -225,6 +225,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   duration={token.duration}
                   onRemove={() => handleRemoveToken(index)}
                   onUpdate={(newLabel, newDuration) => handleUpdateToken(index, newLabel, newDuration)}
+                  isActive={isActive}
                 />
               ))}
               <Button

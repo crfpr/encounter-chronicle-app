@@ -3,7 +3,7 @@ import { X, ChevronUp, ChevronDown, Clock } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 
-const Token = ({ label, duration, onRemove, onUpdate }) => {
+const Token = ({ label, duration, onRemove, onUpdate, isActive }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedLabel, setEditedLabel] = useState(label);
   const [editedDuration, setEditedDuration] = useState(duration);
@@ -100,7 +100,11 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
     <div ref={tokenRef}>
       <Button
         variant="secondary"
-        className="inline-flex items-center justify-center rounded-full px-3 py-1 text-xs mr-2 h-[30px] bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white hover:bg-zinc-700 dark:hover:bg-zinc-700"
+        className={`inline-flex items-center justify-center rounded-full px-3 py-1 text-xs mr-2 h-[30px] ${
+          isActive
+            ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white hover:bg-zinc-700 dark:hover:bg-zinc-700'
+            : 'bg-zinc-600 text-white dark:bg-zinc-800 dark:text-white hover:bg-zinc-500 dark:hover:bg-zinc-700'
+        }`}
         onClick={handleClick}
       >
         {isEditing ? (
