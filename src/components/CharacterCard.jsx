@@ -88,9 +88,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   const handleToggleAction = (value) => {
     const updatedCharacter = {
       ...character,
-      action: value === 'action',
-      bonusAction: value === 'bonusAction',
-      reaction: value === 'reaction'
+      action: value.includes('action'),
+      bonusAction: value.includes('bonusAction'),
+      reaction: value.includes('reaction')
     };
     updateCharacter(updatedCharacter);
   };
@@ -119,8 +119,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   const getToggleGroupItemStyle = (isActive) => {
     return `h-[30px] px-2 text-xs border transition-colors ${
       isActive
-        ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'
-        : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'
+        ? 'bg-zinc-800 text-white dark:bg-zinc-600 dark:text-zinc-100'
+        : 'bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800'
     } border-zinc-300 dark:border-zinc-800`;
   };
 
@@ -173,7 +173,16 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
           {/* Second row */}
           <div className="flex flex-wrap items-center gap-2">
-            <ToggleGroup type="multiple" value={[character.action && 'action', character.bonusAction && 'bonusAction', character.reaction && 'reaction'].filter(Boolean)} onValueChange={handleToggleAction}>
+            <ToggleGroup 
+              type="multiple" 
+              value={[
+                character.action && 'action',
+                character.bonusAction && 'bonusAction',
+                character.reaction && 'reaction'
+              ].filter(Boolean)}
+              onValueChange={handleToggleAction}
+              className="flex"
+            >
               <ToggleGroupItem value="action" className={getToggleGroupItemStyle(character.action)}>
                 {isMobile ? 'A' : 'Action'}
               </ToggleGroupItem>
