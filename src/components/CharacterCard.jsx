@@ -23,11 +23,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   }, [isActive]);
 
   const getBorderStyle = () => {
-    return 'border-black dark:border-zinc-300';
+    return isActive ? 'border-black dark:border-zinc-600' : 'border-black dark:border-zinc-700';
   };
 
   const getTabColor = () => {
-    return isActive ? 'bg-black text-white dark:bg-zinc-600 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-900 dark:text-zinc-100';
+    return isActive ? 'bg-black text-white dark:bg-zinc-600 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
   };
 
   const handleInputChange = (field, value) => {
@@ -109,7 +109,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   return (
-    <div className={`flex bg-white dark:bg-zinc-900 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out min-h-[200px]`}>
+    <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out min-h-[200px]`}>
       {/* Left Tab */}
       <div className={`w-16 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 transition-colors duration-200`}>
         <div className="flex flex-col items-center">
