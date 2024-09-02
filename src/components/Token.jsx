@@ -103,7 +103,7 @@ const Token = ({ label, duration, onRemove, onUpdate, isActive }) => {
         className={`inline-flex items-center justify-center rounded-full px-3 py-1 text-xs mr-2 h-[30px] ${
           isActive
             ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white hover:bg-zinc-700 dark:hover:bg-zinc-700'
-            : 'bg-zinc-600 text-white dark:bg-zinc-800 dark:text-white hover:bg-zinc-500 dark:hover:bg-zinc-700'
+            : 'bg-zinc-500 text-white dark:bg-zinc-800 dark:text-white hover:bg-zinc-400 dark:hover:bg-zinc-700'
         }`}
         onClick={handleClick}
       >

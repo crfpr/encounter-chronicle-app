@@ -108,11 +108,13 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     updateCharacter({ ...character, tokens: updatedTokens });
   };
 
-  const getToggleButtonStyle = (isActive) => {
+  const getToggleButtonStyle = (isActive, isToggled) => {
     return `h-[30px] px-2 text-xs border ${
       isActive
-        ? `bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 ${!isActive ? 'bg-zinc-600' : ''}`
-        : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800'
+        ? `bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 ${!isToggled ? 'bg-zinc-600' : ''}`
+        : isToggled
+          ? 'bg-zinc-500 text-white dark:bg-zinc-800 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800'
+          : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800'
     } ${isMobile ? '' : 'hover:bg-zinc-100 dark:hover:bg-zinc-700'} transition-colors active:bg-zinc-200 dark:active:bg-zinc-600`;
   };
 
@@ -167,19 +169,19 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           <div className="flex flex-wrap items-center gap-2">
             <Button
               onClick={() => toggleAction('action')}
-              className={getToggleButtonStyle(character.action)}
+              className={getToggleButtonStyle(isActive, character.action)}
             >
               {isMobile ? 'A' : 'Action'}
             </Button>
             <Button
               onClick={() => toggleAction('bonusAction')}
-              className={getToggleButtonStyle(character.bonusAction)}
+              className={getToggleButtonStyle(isActive, character.bonusAction)}
             >
               {isMobile ? 'B' : 'Bonus'}
             </Button>
             <Button
               onClick={() => toggleAction('reaction')}
-              className={getToggleButtonStyle(character.reaction)}
+              className={getToggleButtonStyle(isActive, character.reaction)}
             >
               {isMobile ? 'R' : 'Reaction'}
             </Button>
