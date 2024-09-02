@@ -109,13 +109,20 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const getToggleButtonStyle = (isActive, isToggled) => {
-    return `h-[30px] px-2 text-xs border ${
-      isActive
-        ? `bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 ${!isToggled ? 'bg-zinc-600' : ''}`
-        : isToggled
-          ? 'bg-zinc-500 text-white dark:bg-zinc-800 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800'
-          : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800'
-    } ${isMobile ? '' : 'hover:bg-zinc-100 dark:hover:bg-zinc-700'} transition-colors active:bg-zinc-200 dark:active:bg-zinc-600`;
+    const baseClasses = "h-[30px] px-2 text-xs border transition-colors";
+    const activeClasses = isActive
+      ? "bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800"
+      : "border-zinc-300 dark:border-zinc-800";
+    
+    const toggledClasses = isToggled
+      ? (isActive ? "bg-zinc-700" : "bg-zinc-500 text-white dark:bg-zinc-800 dark:text-zinc-100")
+      : (isActive ? "bg-zinc-800" : "bg-white text-black dark:bg-zinc-950 dark:text-zinc-100");
+    
+    const hoverClasses = isMobile
+      ? "active:bg-zinc-200 dark:active:bg-zinc-600"
+      : "hover:bg-zinc-100 dark:hover:bg-zinc-700 active:bg-zinc-200 dark:active:bg-zinc-600";
+
+    return `${baseClasses} ${activeClasses} ${toggledClasses} ${hoverClasses}`;
   };
 
   return (

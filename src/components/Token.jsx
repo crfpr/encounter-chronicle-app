@@ -96,15 +96,17 @@ const Token = ({ label, duration, onRemove, onUpdate, isActive }) => {
     }
   };
 
+  const getTokenStyle = () => {
+    return isActive
+      ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white hover:bg-zinc-700 dark:hover:bg-zinc-700'
+      : 'bg-zinc-500 text-white dark:bg-zinc-800 dark:text-white hover:bg-zinc-400 dark:hover:bg-zinc-700';
+  };
+
   return (
     <div ref={tokenRef}>
       <Button
         variant="secondary"
-        className={`inline-flex items-center justify-center rounded-full px-3 py-1 text-xs mr-2 h-[30px] ${
-          isActive
-            ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white hover:bg-zinc-700 dark:hover:bg-zinc-700'
-            : 'bg-zinc-500 text-white dark:bg-zinc-800 dark:text-white hover:bg-zinc-400 dark:hover:bg-zinc-700'
-        }`}
+        className={`inline-flex items-center justify-center rounded-full px-3 py-1 text-xs mr-2 h-[30px] ${getTokenStyle()}`}
         onClick={handleClick}
       >
         {isEditing ? (
