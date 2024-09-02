@@ -121,7 +121,7 @@ const Index = () => {
           <div className="flex items-center">
             {!isMobile && (
               <>
-                <div className="w-4" /> {/* This adds space between the encounter name and the toggle */}
+                <div className="w-4" />
                 <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
               </>
             )}
@@ -129,7 +129,7 @@ const Index = () => {
           </div>
         </div>
       </header>
-      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''} bg-white dark:bg-gray-900`} style={{ height: contentHeight }}>
+      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''} bg-black dark:bg-black`} style={{ height: contentHeight }}>
         <div className={`h-full overflow-y-auto`}>
           <div className={`container mx-auto px-4 py-4 h-full`}>
             <EncounterTracker 
