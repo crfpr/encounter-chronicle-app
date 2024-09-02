@@ -52,6 +52,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     if (e.key === 'Enter') {
       e.preventDefault();
       handleInputSubmit(field, currentValue);
+      e.target.blur(); // Remove focus from the input
     }
     if (e.key === 'ArrowUp') {
       e.preventDefault();
@@ -76,16 +77,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     } else {
       handleInputChange(field, value);
     }
-    // Ensure we're not modifying the character type
-    updateCharacter({ ...character, [field]: value });
   };
 
   const handleInitiativeBlur = () => {
-    onInitiativeBlur(character.id, character.initiative);
-  };
-
-  const handleInitiativeSubmit = () => {
-    setIsNumericInputActive(false);
     onInitiativeBlur(character.id, character.initiative);
   };
 
