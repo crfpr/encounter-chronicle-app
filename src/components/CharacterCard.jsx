@@ -108,10 +108,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     updateCharacter({ ...character, tokens: updatedTokens });
   };
 
-  const handleNameTypeUpdate = (newName, newType) => {
-    updateCharacter({ ...character, name: newName || 'New Character', type: newType });
-  };
-
   return (
     <div className={`flex bg-white relative overflow-hidden rounded-lg ${getBorderStyle()}`}>
       {/* Left Tab */}
@@ -124,8 +120,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             onChange={(e) => handleInputChange('initiative', e.target.value)}
             onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
             onFocus={() => setIsNumericInputActive(true)}
-            onBlur={() => setIsNumericInputActive(false)}
-            className="w-16 text-center bg-white text-black h-[30px]"
+            onBlur={() => {
+              setIsNumericInputActive(false);
+              handleInitiativeBlur();
+            }}
+            className="w-12 text-center bg-white text-black h-[30px]"
             maxLength={3}
           />
         </div>
@@ -148,7 +147,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               <CharacterNameType
                 name={character.name || 'New Character'}
                 type={character.type}
-                onUpdate={handleNameTypeUpdate}
+                onUpdate={(newName, newType) => {
+                  updateCharacter({ ...character, name: newName || 'New Character', type: newType });
+                }}
               />
             </div>
           </div>
