@@ -76,7 +76,12 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
         </div>
       ))}
       <div className="pb-6">
-        <Button onClick={addCharacter} className="w-full bg-black hover:bg-gray-800 text-white dark:bg-white dark:hover:bg-gray-200 dark:text-black">Add Character</Button>
+        <Button 
+          onClick={addCharacter} 
+          className="w-full bg-black hover:bg-gray-800 text-white dark:bg-zinc-950 dark:hover:bg-zinc-800 dark:text-zinc-300 dark:hover:text-zinc-100 transition-colors duration-200"
+        >
+          Add Character
+        </Button>
       </div>
     </div>
   );
