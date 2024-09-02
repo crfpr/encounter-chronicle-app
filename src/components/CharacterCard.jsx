@@ -25,14 +25,14 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   const getBorderStyle = () => {
     return isActive
-      ? 'light:border-zinc-700 dark:border-zinc-800'
-      : 'light:border-zinc-300 dark:border-zinc-800';
+      ? 'border-zinc-800 dark:border-zinc-800'
+      : 'border-zinc-300 dark:border-zinc-800';
   };
 
   const getTabColor = () => {
     return isActive
-      ? 'light:bg-zinc-700 light:text-white dark:bg-zinc-800 dark:text-zinc-100'
-      : 'light:bg-white light:text-black dark:bg-zinc-950 dark:text-zinc-100';
+      ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'
+      : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
   };
 
   const handleInputChange = (field, value) => {
@@ -119,18 +119,18 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     return `h-[30px] px-2 text-xs border transition-colors ${
       isToggled
         ? isActive
-          ? 'light:bg-zinc-700 light:text-white dark:bg-zinc-800 dark:text-zinc-100'
-          : 'light:bg-zinc-700 light:text-white dark:bg-zinc-800 dark:text-zinc-100'
-        : 'light:bg-zinc-500 light:text-white light:hover:bg-zinc-600 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800'
-    } light:border-zinc-300 dark:border-zinc-800`;
+          ? 'bg-zinc-800 text-white dark:bg-red-500 dark:text-white'
+          : 'bg-red-500 text-white dark:bg-red-500 dark:text-white'
+        : 'bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800'
+    } border-zinc-300 dark:border-zinc-800`;
   };
 
   return (
-    <div className={`flex light:bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out min-h-[200px]`}>
+    <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out min-h-[200px]`}>
       {/* Left Tab */}
       <div className={`w-18 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
         <div className="flex flex-col items-center">
-          <label className={`text-xs font-semibold mb-1 ${isActive ? 'light:text-white dark:text-zinc-100' : 'light:text-black dark:text-zinc-100'}`}>Init.</label>
+          <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>Init.</label>
           <Input
             type="text"
             inputMode="numeric"
@@ -142,7 +142,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               setIsNumericInputActive(false);
               handleInitiativeBlur();
             }}
-            className={`w-11 text-center ${isActive ? 'light:bg-zinc-600 light:text-white dark:bg-zinc-700 dark:text-white' : 'light:bg-white light:text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] light:border-zinc-300 dark:border-zinc-800`}
+            className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800`}
             maxLength={3}
           />
         </div>
@@ -212,7 +212,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
                 onFocus={() => setIsNumericInputActive(true)}
                 onBlur={() => setIsNumericInputActive(false)}
-                className="w-16 text-center light:bg-white dark:bg-zinc-950 light:text-black dark:text-zinc-100 h-[30px] light:border-zinc-300 dark:border-zinc-800"
+                className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800"
                 placeholder="Current"
                 maxLength={3}
               />
@@ -226,7 +226,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
                   onFocus={() => setIsNumericInputActive(true)}
                   onBlur={() => setIsNumericInputActive(false)}
-                  className="w-16 text-center h-[30px] light:bg-white dark:bg-zinc-950 light:text-black dark:text-zinc-100 light:border-zinc-300 dark:border-zinc-800"
+                  className="w-16 text-center h-[30px] bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 border-zinc-300 dark:border-zinc-800"
                   placeholder="Max"
                   maxLength={3}
                 />
@@ -251,7 +251,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               <Button
                 onClick={handleAddToken}
                 variant="outline"
-                className="h-[30px] px-3 py-1 text-xs flex items-center light:bg-white light:hover:bg-zinc-100 dark:bg-zinc-950 dark:hover:bg-zinc-900 dark:text-zinc-100 light:border-zinc-300 dark:border-zinc-800"
+                className="h-[30px] px-3 py-1 text-xs flex items-center bg-white hover:bg-zinc-100 dark:bg-zinc-950 dark:hover:bg-zinc-900 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800"
               >
                 <PlusCircle className="h-4 w-4 mr-1" />
                 Add token
@@ -266,7 +266,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             <AlertDialogTrigger asChild>
               <Button 
                 variant="link" 
-                className="btn-sm text-xs light:text-zinc-700 dark:text-zinc-300 light:hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 whitespace-nowrap light:bg-transparent dark:bg-transparent"
+                className="btn-sm text-xs text-zinc-700 dark:text-zinc-300 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 whitespace-nowrap bg-transparent dark:bg-transparent"
               >
                 Delete character
               </Button>
@@ -293,7 +293,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       <div className={`w-18 flex-shrink-0 ${getTabColor()} border-l ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
         <div className="flex flex-col items-center space-y-2">
           <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1 ${isActive ? 'light:text-white dark:text-zinc-100' : 'light:text-black dark:text-zinc-100'}`}>AC</label>
+            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>AC</label>
             <Input
               type="text"
               inputMode="numeric"
@@ -302,12 +302,12 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className={`w-11 text-center ${isActive ? 'light:bg-zinc-600 light:text-white dark:bg-zinc-700 dark:text-white' : 'light:bg-white light:text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] light:border-zinc-300 dark:border-zinc-800`}
+              className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800`}
               maxLength={3}
             />
           </div>
           <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1 ${isActive ? 'light:text-white dark:text-zinc-100' : 'light:text-black dark:text-zinc-100'}`}>HP</label>
+            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>HP</label>
             <Input
               type="text"
               inputMode="numeric"
@@ -316,12 +316,12 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className={`w-11 text-center ${isActive ? 'light:bg-zinc-600 light:text-white dark:bg-zinc-700 dark:text-white' : 'light:bg-white light:text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] light:border-zinc-300 dark:border-zinc-800`}
+              className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800`}
               maxLength={3}
             />
           </div>
           <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1 ${isActive ? 'light:text-white dark:text-zinc-100' : 'light:text-black dark:text-zinc-100'}`}>Max HP</label>
+            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>Max HP</label>
             <Input
               type="text"
               inputMode="numeric"
@@ -330,7 +330,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className={`w-11 text-center ${isActive ? 'light:bg-zinc-600 light:text-white dark:bg-zinc-700 dark:text-white' : 'light:bg-white light:text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] light:border-zinc-300 dark:border-zinc-800`}
+              className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800`}
               maxLength={3}
             />
           </div>
