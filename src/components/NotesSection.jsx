@@ -20,7 +20,7 @@ const NotesSection = ({ notes, setNotes, isMobile }) => {
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Enter encounter notes here..."
-          className="w-full h-full resize-none p-2"
+          className="w-full h-full resize-none p-2 bg-white dark:bg-zinc-950"
         />
         <Button 
           onClick={copyToClipboard} 
