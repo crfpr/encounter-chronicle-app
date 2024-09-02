@@ -35,15 +35,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const handleInputChange = (field, value) => {
-    if (field === 'currentHp') {
-      value = Math.min(Math.max(0, value), character.maxHp);
-    }
     if (field === 'maxHp') {
       value = Math.max(0, value);
-      if (character.currentHp > value) {
-        updateCharacter({ ...character, [field]: value, currentHp: value });
-        return;
-      }
     }
     if (field === 'initiative') {
       // Allow empty string or numbers up to 99
@@ -264,14 +257,14 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       <div className={`w-24 flex-shrink-0 ${getTabColor()} ${isActive ? '' : 'border-l border-black'} flex flex-col items-center justify-between p-2`}>
         <div className="flex flex-col items-center space-y-2">
           <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>Temp HP</label>
+            <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>AC</label>
             <Input
               type="number"
-              value={character.tempHp}
-              onChange={(e) => handleInputChange('tempHp', Math.max(0, parseInt(e.target.value) || 0))}
-              onKeyDown={(e) => handleNumericInputKeyDown(e, 'tempHp', character.tempHp)}
+              value={character.ac}
+              onChange={(e) => handleInputChange('ac', parseInt(e.target.value))}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
               onFocus={() => setIsNumericInputActive(true)}
-              onBlur={() => handleInputSubmit('tempHp', character.tempHp)}
+              onBlur={() => setIsNumericInputActive(false)}
               className="w-16 text-center bg-white text-black h-[30px]"
             />
           </div>
@@ -299,18 +292,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               className="w-16 text-center bg-white text-black h-[30px]"
             />
           </div>
-        </div>
-        <div className="flex flex-col items-center mt-2">
-          <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>AC</label>
-          <Input
-            type="number"
-            value={character.ac}
-            onChange={(e) => handleInputChange('ac', parseInt(e.target.value))}
-            onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
-            onFocus={() => setIsNumericInputActive(true)}
-            onBlur={() => setIsNumericInputActive(false)}
-            className="w-16 text-center bg-white text-black h-[30px]"
-          />
         </div>
       </div>
     </div>
