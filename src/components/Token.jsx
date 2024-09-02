@@ -100,7 +100,7 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
     <div ref={tokenRef}>
       <Button
         variant="secondary"
-        className="inline-flex items-center justify-center rounded-full px-3 py-1 text-sm mr-2 h-[30px]"
+        className="inline-flex items-center justify-center rounded-full px-3 py-1 text-sm mr-2 h-[30px] bg-zinc-300 dark:bg-zinc-700 hover:bg-zinc-400 dark:hover:bg-zinc-600"
         onClick={handleClick}
       >
         {isEditing ? (
@@ -144,7 +144,7 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
           <>
             <span className="flex-grow text-center mr-1">{editedLabel}</span>
             {isTimed ? (
-              <span className="bg-gray-200 rounded-full px-2 py-0.5 text-xs font-semibold">
+              <span className="bg-zinc-200 dark:bg-zinc-600 rounded-full px-2 py-0.5 text-xs font-semibold">
                 {editedDuration}
               </span>
             ) : (
