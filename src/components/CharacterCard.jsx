@@ -120,7 +120,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       isToggled
         ? isActive
           ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'
-          : 'bg-zinc-700 text-white dark:bg-zinc-800 dark:text-zinc-100'
+          : 'bg-red-500 text-white dark:bg-zinc-800 dark:text-zinc-100'
         : 'bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800'
     } border-zinc-300 dark:border-zinc-800`;
   };
