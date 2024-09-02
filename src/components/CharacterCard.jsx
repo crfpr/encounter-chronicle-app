@@ -108,6 +108,10 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     updateCharacter({ ...character, tokens: updatedTokens });
   };
 
+  const getToggleButtonStyle = (isActive) => {
+    return `h-[30px] px-2 text-xs border ${isActive ? 'bg-black text-white border-black' : 'bg-white text-black border-black'} hover:bg-gray-200 hover:text-black transition-colors`;
+  };
+
   return (
     <div className={`flex bg-white relative overflow-hidden rounded-lg ${getBorderStyle()}`}>
       {/* Left Tab */}
@@ -158,22 +162,19 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           <div className="flex flex-wrap items-center gap-2">
             <Button
               onClick={() => toggleAction('action')}
-              variant={character.action ? 'default' : 'outline'}
-              className="h-[30px] px-2 text-xs"
+              className={getToggleButtonStyle(character.action)}
             >
               Action
             </Button>
             <Button
               onClick={() => toggleAction('bonusAction')}
-              variant={character.bonusAction ? 'default' : 'outline'}
-              className="h-[30px] px-2 text-xs"
+              className={getToggleButtonStyle(character.bonusAction)}
             >
               Bonus
             </Button>
             <Button
               onClick={() => toggleAction('reaction')}
-              variant={character.reaction ? 'default' : 'outline'}
-              className="h-[30px] px-2 text-xs"
+              className={getToggleButtonStyle(character.reaction)}
             >
               Reaction
             </Button>
