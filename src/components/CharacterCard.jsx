@@ -120,6 +120,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>Initiative</label>
           <Input
             type="text"
+            inputMode="numeric"
             value={character.initiative}
             onChange={(e) => handleInputChange('initiative', e.target.value)}
             onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
@@ -181,6 +182,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             <div className="flex items-center space-x-2">
               <Input
                 type="text"
+                inputMode="numeric"
                 value={character.currentMovement}
                 onChange={(e) => handleInputChange('currentMovement', e.target.value)}
                 onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
@@ -194,6 +196,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               <div className="flex items-center">
                 <Input
                   type="text"
+                  inputMode="numeric"
                   value={character.maxMovement}
                   onChange={(e) => handleInputChange('maxMovement', e.target.value)}
                   onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
@@ -268,6 +271,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>AC</label>
             <Input
               type="text"
+              inputMode="numeric"
               value={character.ac}
               onChange={(e) => handleInputChange('ac', e.target.value)}
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
@@ -281,6 +285,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>Current HP</label>
             <Input
               type="text"
+              inputMode="numeric"
               value={character.currentHp}
               onChange={(e) => handleInputChange('currentHp', e.target.value)}
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
@@ -294,6 +299,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>Max HP</label>
             <Input
               type="text"
+              inputMode="numeric"
               value={character.maxHp}
               onChange={(e) => handleInputChange('maxHp', e.target.value)}
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}

@@ -116,7 +116,8 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
             {isTimed ? (
               <Input
                 ref={durationInputRef}
-                type="number"
+                type="text"
+                inputMode="numeric"
                 value={editedDuration}
                 onChange={(e) => {
                   const newDuration = Math.max(0, Math.min(99, parseInt(e.target.value) || 0));
