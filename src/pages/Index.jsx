@@ -13,6 +13,7 @@ const Index = () => {
   const fileInputRef = useRef(null);
   const [contentHeight, setContentHeight] = useState('calc(100vh - 64px)');
   const [headerHeight, setHeaderHeight] = useState(64);
+  const encounterTrackerRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -32,8 +33,14 @@ const Index = () => {
     setContentHeight(newHeight);
   };
 
-  const exportEncounterData = (data) => {
-    console.log('Exporting encounter data:', data); // Debug log
+  const exportEncounterData = () => {
+    console.log('Exporting encounter data');
+    if (!encounterTrackerRef.current) {
+      console.error('EncounterTracker ref is not available');
+      return;
+    }
+    const data = encounterTrackerRef.current.getEncounterData();
+    console.log('Encounter data:', data);
     if (!data) {
       console.error('No encounter data to export');
       return;
@@ -48,7 +55,7 @@ const Index = () => {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      console.log('Download triggered'); // Debug log
+      console.log('Download triggered');
     } catch (error) {
       console.error('Error exporting encounter data:', error);
     }
@@ -98,6 +105,7 @@ const Index = () => {
         <div className={`h-full overflow-y-auto`}>
           <div className={`container mx-auto px-4 py-4 h-full`}>
             <EncounterTracker 
+              ref={encounterTrackerRef}
               encounterName={encounterName} 
               setEncounterName={setEncounterName}
               exportEncounterData={exportEncounterData}
@@ -119,8 +127,8 @@ const Index = () => {
             </div>
             <div className="p-4 space-y-4">
               <Button onClick={() => {
-                console.log('Save Encounter clicked'); // Debug log
-                exportEncounterData(encounterData);
+                console.log('Save Encounter clicked');
+                exportEncounterData();
               }} className="w-full flex items-center justify-center">
                 <Download className="mr-2 h-4 w-4" />
                 Save Encounter
@@ -146,8 +154,8 @@ const Index = () => {
             <p className="text-center sm:text-left">&copy; 2023 Encounter Tracker. All rights reserved.</p>
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
               <Button onClick={() => {
-                console.log('Save Encounter clicked'); // Debug log
-                exportEncounterData(encounterData);
+                console.log('Save Encounter clicked');
+                exportEncounterData();
               }} className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 w-full sm:w-auto">
                 <Download className="mr-2 h-4 w-4" />
                 Save Encounter

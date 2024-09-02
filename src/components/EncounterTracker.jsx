@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, forwardRef, useImperativeHandle } from 'react';
 import EncounterHeader from './EncounterHeader';
 import CharacterList from './CharacterList';
 import CharacterStats from './CharacterStats';
@@ -6,7 +6,7 @@ import NotesSection from './NotesSection';
 import MobileMenu from './MobileMenu';
 import SwipeHandler from './SwipeHandler';
 
-const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile, contentHeight }) => {
+const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile, contentHeight }, ref) => {
   const [round, setRound] = useState(1);
   const [characters, setCharacters] = useState([]);
   const [activeCharacterIndex, setActiveCharacterIndex] = useState(0);
@@ -18,6 +18,17 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
   const [lastResetIndex, setLastResetIndex] = useState(-1);
   const [encounterLog, setEncounterLog] = useState([]);
+
+  useImperativeHandle(ref, () => ({
+    getEncounterData: () => ({
+      encounterName,
+      characters,
+      round,
+      encounterTime,
+      notes,
+      log: encounterLog
+    })
+  }));
 
   const toggleEncounter = useCallback(() => {
     setIsRunning(prevIsRunning => !prevIsRunning);
@@ -212,20 +223,6 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
     logEvent(`Removed character: ${characterToRemove.name}`);
   };
 
-  const handleExport = () => {
-    console.log('Preparing encounter data for export'); // Debug log
-    const encounterData = {
-      encounterName,
-      characters,
-      round,
-      encounterTime,
-      notes,
-      log: encounterLog
-    };
-    console.log('Encounter data:', encounterData); // Debug log
-    exportEncounterData(encounterData);
-  };
-
   const renderContent = () => {
     if (isMobile) {
       const titleStyle = "text-xl font-semibold mb-4";
@@ -346,10 +343,10 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
       <div className="flex-grow overflow-hidden">
         {renderContent()}
       </div>
-      {isMobile && <MobileMenu activePage={activePage} setActivePage={setActivePage} onExport={handleExport} />}
+      {isMobile && <MobileMenu activePage={activePage} setActivePage={setActivePage} onExport={exportEncounterData} />}
       {isMobile && <SwipeHandler onSwipeLeft={handleSwipeLeft} onSwipeRight={handleSwipeRight} />}
     </div>
   );
-};
+});
 
 export default EncounterTracker;
