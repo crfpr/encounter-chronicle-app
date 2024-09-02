@@ -213,6 +213,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
   };
 
   const handleExport = () => {
+    console.log('Preparing encounter data for export'); // Debug log
     const encounterData = {
       encounterName,
       characters,
@@ -221,6 +222,7 @@ const EncounterTracker = ({ encounterName, setEncounterName, exportEncounterData
       notes,
       log: encounterLog
     };
+    console.log('Encounter data:', encounterData); // Debug log
     exportEncounterData(encounterData);
   };
 
