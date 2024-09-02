@@ -32,6 +32,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   const handleInputChange = (field, value) => {
     if (field === 'initiative' || field === 'ac' || field === 'currentHp' || field === 'maxHp' || field === 'currentMovement' || field === 'maxMovement') {
+      // Allow empty string or numbers up to 999
       if (value === '' || (Number.isInteger(Number(value)) && Number(value) >= 0 && Number(value) <= 999)) {
         updateCharacter({ ...character, [field]: value });
       }
@@ -47,7 +48,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     if (e.key === 'Enter') {
       e.preventDefault();
       handleInputSubmit(field, currentValue);
-      e.target.blur();
+      e.target.blur(); // Remove focus from the input
     }
     if (e.key === 'ArrowUp') {
       e.preventDefault();
@@ -59,6 +60,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       const newValue = Math.max(0, parseInt(currentValue || 0) - 1);
       handleInputChange(field, newValue.toString());
     }
+    // Block navigation keys when numeric input is active
     if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
       e.stopPropagation();
     }
@@ -103,11 +105,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const getToggleButtonStyle = (isActive) => {
-    return `h-[26px] px-2 text-xs border ${isActive ? 'bg-black text-white dark:bg-white dark:text-black border-black dark:border-white' : 'bg-white text-black dark:bg-black dark:text-white border-black dark:border-white'} transition-colors`;
+    return `h-[30px] px-2 text-xs border ${isActive ? 'bg-black text-white dark:bg-white dark:text-black border-black dark:border-white' : 'bg-white text-black dark:bg-black dark:text-white border-black dark:border-white'} transition-colors`;
   };
 
   return (
-    <div className={`flex bg-white dark:bg-black relative overflow-hidden rounded-lg ${getBorderStyle()} box-content transition-all duration-200 ease-in-out`} style={{ height: '220px' }}>
+    <div className={`flex bg-white dark:bg-black relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out`} style={{ height: '240px' }}>
       {/* Left Tab */}
       <div className={`w-16 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 transition-colors duration-200`}>
         <div className="flex flex-col items-center">
@@ -123,7 +125,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               setIsNumericInputActive(false);
               handleInitiativeBlur();
             }}
-            className="w-12 text-center bg-white dark:bg-black text-black dark:text-white h-[26px]"
+            className="w-12 text-center bg-white dark:bg-black text-black dark:text-white h-[30px]"
             maxLength={3}
           />
         </div>
@@ -141,7 +143,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       <div className="flex-grow p-2 flex flex-col">
         <div className="flex-grow space-y-2">
           {/* First row */}
-          <div className="flex items-center space-x-2 relative mb-1">
+          <div className="flex items-center space-x-2 relative">
             <div className="flex-grow">
               <CharacterNameType
                 name={character.name || 'New Character'}
@@ -154,7 +156,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           </div>
 
           {/* Second row */}
-          <div className="flex flex-wrap items-center gap-1 mb-1">
+          <div className="flex flex-wrap items-center gap-2">
             <Button
               onClick={() => toggleAction('action')}
               className={getToggleButtonStyle(character.action)}
@@ -173,42 +175,41 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             >
               Reaction
             </Button>
-          </div>
-
-          {/* Movement row */}
-          <div className="flex items-center space-x-2 mb-1">
-            <span className="text-xs font-semibold">Movement:</span>
-            <Input
-              type="text"
-              inputMode="numeric"
-              value={character.currentMovement}
-              onChange={(e) => handleInputChange('currentMovement', e.target.value)}
-              onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
-              onFocus={() => setIsNumericInputActive(true)}
-              onBlur={() => setIsNumericInputActive(false)}
-              className="w-12 text-center bg-white dark:bg-black text-black dark:text-white h-[26px]"
-              placeholder="Current"
-              maxLength={3}
-            />
-            <span className="self-center">/</span>
-            <Input
-              type="text"
-              inputMode="numeric"
-              value={character.maxMovement}
-              onChange={(e) => handleInputChange('maxMovement', e.target.value)}
-              onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
-              onFocus={() => setIsNumericInputActive(true)}
-              onBlur={() => setIsNumericInputActive(false)}
-              className="w-12 text-center h-[26px] bg-white dark:bg-black text-black dark:text-white"
-              placeholder="Max"
-              maxLength={3}
-            />
-            <span className="text-xs">ft</span>
+            <div className="flex items-center space-x-2">
+              <Input
+                type="text"
+                inputMode="numeric"
+                value={character.currentMovement}
+                onChange={(e) => handleInputChange('currentMovement', e.target.value)}
+                onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
+                onFocus={() => setIsNumericInputActive(true)}
+                onBlur={() => setIsNumericInputActive(false)}
+                className="w-16 text-center bg-white dark:bg-black text-black dark:text-white h-[30px]"
+                placeholder="Current"
+                maxLength={3}
+              />
+              <span className="self-center">/</span>
+              <div className="flex items-center">
+                <Input
+                  type="text"
+                  inputMode="numeric"
+                  value={character.maxMovement}
+                  onChange={(e) => handleInputChange('maxMovement', e.target.value)}
+                  onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
+                  onFocus={() => setIsNumericInputActive(true)}
+                  onBlur={() => setIsNumericInputActive(false)}
+                  className="w-16 text-center h-[30px] bg-white dark:bg-black text-black dark:text-white"
+                  placeholder="Max"
+                  maxLength={3}
+                />
+                <span className="text-sm ml-1">ft</span>
+              </div>
+            </div>
           </div>
 
           {/* Token display and Add token button */}
-          <div className="mb-1">
-            <div className="flex flex-wrap items-center gap-1">
+          <div className="mt-2">
+            <div className="flex flex-wrap items-center gap-2">
               {tokens.map((token, index) => (
                 <Token
                   key={index}
@@ -221,9 +222,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               <Button
                 onClick={handleAddToken}
                 variant="outline"
-                className="h-[26px] px-2 py-0 text-xs flex items-center"
+                className="h-[30px] px-3 py-1 text-sm flex items-center"
               >
-                <PlusCircle className="h-3 w-3 mr-1" />
+                <PlusCircle className="h-4 w-4 mr-1" />
                 Add token
               </Button>
             </div>
@@ -236,7 +237,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             <AlertDialogTrigger asChild>
               <Button 
                 variant="link" 
-                className="h-[26px] px-2 py-0 text-xs text-gray-700 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 whitespace-nowrap"
+                className="btn-sm text-gray-700 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 whitespace-nowrap"
               >
                 Delete character
               </Button>
@@ -272,7 +273,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white dark:bg-black text-black dark:text-white h-[26px]"
+              className="w-16 text-center bg-white dark:bg-black text-black dark:text-white h-[30px]"
               maxLength={3}
             />
           </div>
@@ -286,7 +287,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white dark:bg-black text-black dark:text-white h-[26px]"
+              className="w-16 text-center bg-white dark:bg-black text-black dark:text-white h-[30px]"
               maxLength={3}
             />
           </div>
@@ -300,7 +301,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white dark:bg-black text-black dark:text-white h-[26px]"
+              className="w-16 text-center bg-white dark:bg-black text-black dark:text-white h-[30px]"
               maxLength={3}
             />
           </div>
