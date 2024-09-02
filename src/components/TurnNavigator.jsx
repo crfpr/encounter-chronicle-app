@@ -10,15 +10,15 @@ const TurnNavigator = ({ turnTime, onPreviousTurn, onNextTurn }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between h-full w-full py-2">
-      <Button onClick={onPreviousTurn} variant="ghost" size="icon" className="p-1">
-        <ChevronUp className="h-8 w-8" />
+    <div className="flex flex-col items-center justify-between h-full w-full py-1">
+      <Button onClick={onPreviousTurn} variant="ghost" size="sm" className="p-0 h-6">
+        <ChevronUp className="h-5 w-5" />
       </Button>
-      <div className="text-sm font-semibold">
+      <div className="text-sm font-semibold my-1">
         {formatTime(turnTime)}
       </div>
-      <Button onClick={onNextTurn} variant="ghost" size="icon" className="p-1">
-        <ChevronDown className="h-8 w-8" />
+      <Button onClick={onNextTurn} variant="ghost" size="sm" className="p-0 h-6">
+        <ChevronDown className="h-5 w-5" />
       </Button>
     </div>
   );
