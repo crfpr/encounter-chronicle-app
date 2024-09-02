@@ -110,14 +110,23 @@ const Index = () => {
     <div className={`flex flex-col ${isMobile ? 'h-screen' : ''} ${isDarkMode ? 'dark' : ''}`}>
       <header className={`bg-black text-white py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999]`}>
         <div className="container mx-auto px-4 flex items-center justify-between">
-          <Input
-            value={encounterName}
-            onChange={(e) => setEncounterName(e.target.value)}
-            className={`font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0 ${isMobile ? 'text-xl flex-grow mr-2' : 'text-2xl'}`}
-            placeholder="Enter encounter name..."
-          />
-          {!isMobile && <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />}
-          {isMobile && <MobileMenuButton onClick={toggleMobileMenu} />}
+          <div className="flex items-center flex-grow">
+            <Input
+              value={encounterName}
+              onChange={(e) => setEncounterName(e.target.value)}
+              className={`font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0 ${isMobile ? 'text-xl flex-grow' : 'text-2xl'}`}
+              placeholder="Enter encounter name..."
+            />
+          </div>
+          <div className="flex items-center">
+            {!isMobile && (
+              <>
+                <div className="w-4" /> {/* This adds space between the encounter name and the toggle */}
+                <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+              </>
+            )}
+            {isMobile && <MobileMenuButton onClick={toggleMobileMenu} />}
+          </div>
         </div>
       </header>
       <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''} bg-white dark:bg-gray-900`} style={{ height: contentHeight }}>
