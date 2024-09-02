@@ -35,7 +35,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const handleInputChange = (field, value) => {
-    if (field === 'initiative' || field === 'ac' || field === 'currentHp' || field === 'maxHp') {
+    if (field === 'initiative' || field === 'ac' || field === 'currentHp' || field === 'maxHp' || field === 'currentMovement' || field === 'maxMovement') {
       // Allow empty string or numbers up to 999
       if (value === '' || (Number.isInteger(Number(value)) && Number(value) >= 0 && Number(value) <= 999)) {
         updateCharacter({ ...character, [field]: value });
@@ -166,26 +166,28 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             </Button>
             <div className="flex items-center space-x-2">
               <Input
-                type="number"
+                type="text"
                 value={character.currentMovement}
-                onChange={(e) => handleInputChange('currentMovement', parseInt(e.target.value))}
+                onChange={(e) => handleInputChange('currentMovement', e.target.value)}
                 onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
                 onFocus={() => setIsNumericInputActive(true)}
                 onBlur={() => setIsNumericInputActive(false)}
                 className="w-16 text-center bg-white text-black h-[30px]"
                 placeholder="Current"
+                maxLength={3}
               />
               <span className="self-center">/</span>
               <div className="flex items-center">
                 <Input
-                  type="number"
+                  type="text"
                   value={character.maxMovement}
-                  onChange={(e) => handleInputChange('maxMovement', parseInt(e.target.value))}
+                  onChange={(e) => handleInputChange('maxMovement', e.target.value)}
                   onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
                   onFocus={() => setIsNumericInputActive(true)}
                   onBlur={() => setIsNumericInputActive(false)}
                   className="w-16 text-center h-[30px]"
                   placeholder="Max"
+                  maxLength={3}
                 />
                 <span className="text-sm ml-1">ft</span>
               </div>
