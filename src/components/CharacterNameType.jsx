@@ -63,19 +63,6 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
     }
   };
 
-  const getButtonStyle = () => {
-    switch (editedType) {
-      case 'PC':
-        return 'bg-blue-100 hover:bg-blue-200 text-blue-800';
-      case 'Enemy':
-        return 'bg-red-100 hover:bg-red-200 text-red-800';
-      case 'Neutral':
-        return 'bg-gray-100 hover:bg-gray-200 text-gray-800';
-      default:
-        return 'bg-gray-100 hover:bg-gray-200 text-gray-800';
-    }
-  };
-
   const handleTypeChange = (value) => {
     setEditedType(value);
     onUpdate(editedName || 'New Character', value);
@@ -86,7 +73,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
     <div ref={componentRef}>
       <Button
         variant="secondary"
-        className={`w-full h-[40px] text-left justify-start px-3 ${getButtonStyle()}`}
+        className="w-full h-[40px] text-left justify-start px-3 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-200"
         onClick={handleClick}
       >
         {isEditing ? (
@@ -97,7 +84,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
               value={editedName}
               onChange={(e) => setEditedName(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-grow mr-2 h-[30px] bg-white text-black"
+              className="flex-grow mr-2 h-[30px] bg-white text-black dark:bg-zinc-700 dark:text-zinc-100"
               placeholder="New Character"
             />
             <Select 
