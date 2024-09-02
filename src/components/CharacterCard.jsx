@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
+import { ToggleGroup, ToggleGroupItem } from "../components/ui/toggle-group";
 import TurnNavigator from './TurnNavigator';
 import Token from './Token';
 import CharacterNameType from './CharacterNameType';
@@ -84,8 +85,13 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     onInitiativeBlur(character.id, character.initiative);
   };
 
-  const toggleAction = (action) => {
-    const updatedCharacter = { ...character, [action]: !character[action] };
+  const handleToggleAction = (value) => {
+    const updatedCharacter = {
+      ...character,
+      action: value === 'action',
+      bonusAction: value === 'bonusAction',
+      reaction: value === 'reaction'
+    };
     updateCharacter(updatedCharacter);
   };
 
@@ -110,45 +116,12 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     updateCharacter({ ...character, tokens: updatedTokens });
   };
 
-  const getToggleButtonStyle = (isActive, isToggled, action) => {
-    const baseClasses = "h-[30px] px-2 text-xs border transition-colors";
-    const activeClasses = isActive
-      ? "border-zinc-300 dark:border-zinc-800"
-      : "border-zinc-300 dark:border-zinc-800";
-    
-    let toggledClasses;
-    if (isActive) {
-      toggledClasses = isToggled
-        ? "bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100"
-        : "bg-white text-black dark:bg-zinc-950 dark:text-zinc-100";
-    } else {
-      toggledClasses = isToggled
-        ? "bg-zinc-500 text-white dark:bg-zinc-800 dark:text-zinc-100"
-        : "bg-white text-black dark:bg-zinc-950 dark:text-zinc-100";
-    }
-    
-    const hoverClasses = isMobile
-      ? ""
-      : "hover:bg-zinc-100 dark:hover:bg-zinc-700";
-
-    const pressedClasses = pressedButtons[action] ? "opacity-70" : "";
-
-    return `${baseClasses} ${activeClasses} ${toggledClasses} ${hoverClasses} ${pressedClasses}`;
-  };
-
-  const handleTouchStart = (action) => {
-    setPressedButtons(prev => ({ ...prev, [action]: true }));
-  };
-
-  const handleTouchEnd = (action) => {
-    setPressedButtons(prev => ({ ...prev, [action]: false }));
-    toggleAction(action);
-  };
-
-  const handleToggleClick = (action) => {
-    if (!isMobile) {
-      toggleAction(action);
-    }
+  const getToggleGroupItemStyle = (isActive) => {
+    return `h-[30px] px-2 text-xs border transition-colors ${
+      isActive
+        ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'
+        : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'
+    } border-zinc-300 dark:border-zinc-800`;
   };
 
   return (
@@ -200,30 +173,17 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
           {/* Second row */}
           <div className="flex flex-wrap items-center gap-2">
-            <Button
-              onClick={() => handleToggleClick('action')}
-              onTouchStart={() => handleTouchStart('action')}
-              onTouchEnd={() => handleTouchEnd('action')}
-              className={getToggleButtonStyle(isActive, character.action, 'action')}
-            >
-              {isMobile ? 'A' : 'Action'}
-            </Button>
-            <Button
-              onClick={() => handleToggleClick('bonusAction')}
-              onTouchStart={() => handleTouchStart('bonusAction')}
-              onTouchEnd={() => handleTouchEnd('bonusAction')}
-              className={getToggleButtonStyle(isActive, character.bonusAction, 'bonusAction')}
-            >
-              {isMobile ? 'B' : 'Bonus'}
-            </Button>
-            <Button
-              onClick={() => handleToggleClick('reaction')}
-              onTouchStart={() => handleTouchStart('reaction')}
-              onTouchEnd={() => handleTouchEnd('reaction')}
-              className={getToggleButtonStyle(isActive, character.reaction, 'reaction')}
-            >
-              {isMobile ? 'R' : 'Reaction'}
-            </Button>
+            <ToggleGroup type="multiple" value={[character.action && 'action', character.bonusAction && 'bonusAction', character.reaction && 'reaction'].filter(Boolean)} onValueChange={handleToggleAction}>
+              <ToggleGroupItem value="action" className={getToggleGroupItemStyle(character.action)}>
+                {isMobile ? 'A' : 'Action'}
+              </ToggleGroupItem>
+              <ToggleGroupItem value="bonusAction" className={getToggleGroupItemStyle(character.bonusAction)}>
+                {isMobile ? 'B' : 'Bonus'}
+              </ToggleGroupItem>
+              <ToggleGroupItem value="reaction" className={getToggleGroupItemStyle(character.reaction)}>
+                {isMobile ? 'R' : 'Reaction'}
+              </ToggleGroupItem>
+            </ToggleGroup>
             <div className="flex items-center space-x-2">
               <Input
                 type="text"
