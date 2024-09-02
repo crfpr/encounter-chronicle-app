@@ -23,15 +23,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   }, [isActive]);
 
   const getBorderStyle = () => {
-    return isActive ? 'border-[3px] border-black' : 'border border-black';
+    return isActive ? 'border-[3px] border-black dark:border-white' : 'border border-black dark:border-white';
   };
 
   const getTabColor = () => {
-    return isActive ? 'bg-black' : 'bg-white';
-  };
-
-  const getTabTextColor = () => {
-    return isActive ? 'text-white' : 'text-black';
+    return isActive ? 'bg-black text-white dark:bg-white dark:text-black' : 'bg-white text-black dark:bg-black dark:text-white';
   };
 
   const handleInputChange = (field, value) => {
@@ -109,15 +105,15 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const getToggleButtonStyle = (isActive) => {
-    return `h-[30px] px-2 text-xs border ${isActive ? 'bg-black text-white border-black' : 'bg-white text-black border-black'} transition-colors`;
+    return `h-[30px] px-2 text-xs border ${isActive ? 'bg-black text-white dark:bg-white dark:text-black border-black dark:border-white' : 'bg-white text-black dark:bg-black dark:text-white border-black dark:border-white'} transition-colors`;
   };
 
   return (
-    <div className={`flex bg-white relative overflow-hidden rounded-lg ${getBorderStyle()}`}>
+    <div className={`flex bg-white dark:bg-black relative overflow-hidden rounded-lg ${getBorderStyle()} box-content`}>
       {/* Left Tab */}
-      <div className={`w-16 flex-shrink-0 ${getTabColor()} ${isActive ? 'text-white' : 'border-r border-black'} flex flex-col items-center justify-between py-2`}>
+      <div className={`w-16 flex-shrink-0 ${getTabColor()} ${isActive ? '' : 'border-r border-black dark:border-white'} flex flex-col items-center justify-between py-2`}>
         <div className="flex flex-col items-center">
-          <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>Initiative</label>
+          <label className={`text-xs font-semibold mb-1`}>Initiative</label>
           <Input
             type="text"
             inputMode="numeric"
@@ -129,7 +125,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               setIsNumericInputActive(false);
               handleInitiativeBlur();
             }}
-            className="w-12 text-center bg-white text-black h-[30px]"
+            className="w-12 text-center bg-white dark:bg-black text-black dark:text-white h-[30px]"
             maxLength={3}
           />
         </div>
@@ -188,7 +184,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
                 onFocus={() => setIsNumericInputActive(true)}
                 onBlur={() => setIsNumericInputActive(false)}
-                className="w-16 text-center bg-white text-black h-[30px]"
+                className="w-16 text-center bg-white dark:bg-black text-black dark:text-white h-[30px]"
                 placeholder="Current"
                 maxLength={3}
               />
@@ -202,7 +198,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
                   onFocus={() => setIsNumericInputActive(true)}
                   onBlur={() => setIsNumericInputActive(false)}
-                  className="w-16 text-center h-[30px]"
+                  className="w-16 text-center h-[30px] bg-white dark:bg-black text-black dark:text-white"
                   placeholder="Max"
                   maxLength={3}
                 />
@@ -241,7 +237,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             <AlertDialogTrigger asChild>
               <Button 
                 variant="link" 
-                className="btn-sm text-gray-700 hover:text-red-500 transition-colors duration-200 whitespace-nowrap"
+                className="btn-sm text-gray-700 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 whitespace-nowrap"
               >
                 Delete character
               </Button>
@@ -265,10 +261,10 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       </div>
 
       {/* Right Tab */}
-      <div className={`w-24 flex-shrink-0 ${getTabColor()} ${isActive ? '' : 'border-l border-black'} flex flex-col items-center justify-between p-2`}>
+      <div className={`w-24 flex-shrink-0 ${getTabColor()} ${isActive ? '' : 'border-l border-black dark:border-white'} flex flex-col items-center justify-between p-2`}>
         <div className="flex flex-col items-center space-y-2">
           <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>AC</label>
+            <label className={`text-xs font-semibold mb-1`}>AC</label>
             <Input
               type="text"
               inputMode="numeric"
@@ -277,12 +273,12 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white text-black h-[30px]"
+              className="w-16 text-center bg-white dark:bg-black text-black dark:text-white h-[30px]"
               maxLength={3}
             />
           </div>
           <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>Current HP</label>
+            <label className={`text-xs font-semibold mb-1`}>Current HP</label>
             <Input
               type="text"
               inputMode="numeric"
@@ -291,12 +287,12 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white text-black h-[30px]"
+              className="w-16 text-center bg-white dark:bg-black text-black dark:text-white h-[30px]"
               maxLength={3}
             />
           </div>
           <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>Max HP</label>
+            <label className={`text-xs font-semibold mb-1`}>Max HP</label>
             <Input
               type="text"
               inputMode="numeric"
@@ -305,7 +301,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white text-black h-[30px]"
+              className="w-16 text-center bg-white dark:bg-black text-black dark:text-white h-[30px]"
               maxLength={3}
             />
           </div>
