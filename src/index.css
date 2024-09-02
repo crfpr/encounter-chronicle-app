@@ -134,3 +134,25 @@
 .dark .text-gray-900 {
   @apply text-zinc-50;
 }
+
+/* Smooth scrolling for the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Smooth transitions for character cards */
+.character-card {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Active character card styles */
+.character-card.active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Inactive character card styles */
+.character-card:not(.active) {
+  transform: translateY(10px);
+  opacity: 0.8;
+}

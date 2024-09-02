@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import CharacterCard from './CharacterCard';
 import { Button } from '../components/ui/button';
 
 const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive }) => {
+  const activeCharacterRef = useRef(null);
+
+  useEffect(() => {
+    if (activeCharacterRef.current) {
+      activeCharacterRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [activeCharacterIndex]);
+
   const addCharacter = () => {
     const newCharacter = {
       id: Date.now(),
@@ -60,7 +71,12 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
   return (
     <div className="space-y-4">
       {characters.map((character, index) => (
-        <div key={character.id} className={`relative ${index === activeCharacterIndex ? 'z-10' : 'z-0'}`} data-index={index}>
+        <div 
+          key={character.id} 
+          className={`relative transition-all duration-300 ease-in-out ${index === activeCharacterIndex ? 'z-10' : 'z-0'}`} 
+          data-index={index}
+          ref={index === activeCharacterIndex ? activeCharacterRef : null}
+        >
           <CharacterCard
             character={character}
             updateCharacter={updateCharacter}
