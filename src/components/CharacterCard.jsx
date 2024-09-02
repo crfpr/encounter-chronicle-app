@@ -31,7 +31,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   const getTabColor = () => {
     return isActive
-      ? 'light:bg-zinc-800 light:text-white dark:bg-zinc-800 dark:text-zinc-100'
+      ? 'light:bg-zinc-700 light:text-white dark:bg-zinc-800 dark:text-zinc-100'
       : 'light:bg-white light:text-black dark:bg-zinc-950 dark:text-zinc-100';
   };
 
@@ -119,9 +119,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     return `h-[30px] px-2 text-xs border transition-colors ${
       isToggled
         ? isActive
-          ? 'light:bg-zinc-800 light:text-white dark:bg-zinc-800 dark:text-zinc-100'
-          : 'light:bg-red-500 light:text-white dark:bg-red-500 dark:text-zinc-100'
-        : 'light:bg-white light:text-black light:hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800'
+          ? 'light:bg-zinc-700 light:text-white dark:bg-zinc-800 dark:text-zinc-100'
+          : 'light:bg-zinc-700 light:text-white dark:bg-zinc-800 dark:text-zinc-100'
+        : 'light:bg-zinc-500 light:text-white light:hover:bg-zinc-600 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800'
     } light:border-zinc-300 dark:border-zinc-800`;
   };
 
@@ -142,7 +142,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               setIsNumericInputActive(false);
               handleInitiativeBlur();
             }}
-            className={`w-11 text-center ${isActive ? 'light:bg-zinc-700 light:text-white dark:bg-zinc-700 dark:text-white' : 'light:bg-white light:text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] light:border-zinc-300 dark:border-zinc-800`}
+            className={`w-11 text-center ${isActive ? 'light:bg-zinc-600 light:text-white dark:bg-zinc-700 dark:text-white' : 'light:bg-white light:text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] light:border-zinc-300 dark:border-zinc-800`}
             maxLength={3}
           />
         </div>
@@ -302,7 +302,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className={`w-11 text-center ${isActive ? 'light:bg-zinc-700 light:text-white dark:bg-zinc-700 dark:text-white' : 'light:bg-white light:text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] light:border-zinc-300 dark:border-zinc-800`}
+              className={`w-11 text-center ${isActive ? 'light:bg-zinc-600 light:text-white dark:bg-zinc-700 dark:text-white' : 'light:bg-white light:text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] light:border-zinc-300 dark:border-zinc-800`}
               maxLength={3}
             />
           </div>
@@ -316,7 +316,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className={`w-11 text-center ${isActive ? 'light:bg-zinc-700 light:text-white dark:bg-zinc-700 dark:text-white' : 'light:bg-white light:text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] light:border-zinc-300 dark:border-zinc-800`}
+              className={`w-11 text-center ${isActive ? 'light:bg-zinc-600 light:text-white dark:bg-zinc-700 dark:text-white' : 'light:bg-white light:text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] light:border-zinc-300 dark:border-zinc-800`}
               maxLength={3}
             />
           </div>
@@ -330,7 +330,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className={`w-11 text-center ${isActive ? 'light:bg-zinc-700 light:text-white dark:bg-zinc-700 dark:text-white' : 'light:bg-white light:text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] light:border-zinc-300 dark:border-zinc-800`}
+              className={`w-11 text-center ${isActive ? 'light:bg-zinc-600 light:text-white dark:bg-zinc-700 dark:text-white' : 'light:bg-white light:text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] light:border-zinc-300 dark:border-zinc-800`}
               maxLength={3}
             />
           </div>
