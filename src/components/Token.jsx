@@ -100,7 +100,7 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
     <div ref={tokenRef}>
       <Button
         variant="secondary"
-        className="inline-flex items-center justify-center rounded-full px-3 py-1 text-sm mr-2 h-[30px] bg-zinc-300 dark:bg-zinc-800 hover:bg-zinc-400 dark:hover:bg-zinc-700"
+        className="inline-flex items-center justify-center rounded-full px-3 py-1 text-sm mr-2 h-[30px] bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white hover:bg-zinc-700 dark:hover:bg-zinc-700"
         onClick={handleClick}
       >
         {isEditing ? (
@@ -111,7 +111,7 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
               value={editedLabel}
               onChange={(e) => setEditedLabel(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="h-6 px-1 py-0 text-sm mr-1 bg-white dark:bg-zinc-950 border-zinc-300 dark:border-zinc-800"
+              className="h-6 px-1 py-0 text-sm mr-1 bg-white dark:bg-zinc-950 text-black dark:text-white border-zinc-300 dark:border-zinc-800"
             />
             {isTimed ? (
               <Input
@@ -125,14 +125,14 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
                   onUpdate(editedLabel, newDuration);
                 }}
                 onKeyDown={handleDurationKeyDown}
-                className="h-6 w-12 px-1 py-0 text-sm bg-white dark:bg-zinc-950 border-zinc-300 dark:border-zinc-800"
+                className="h-6 w-12 px-1 py-0 text-sm bg-white dark:bg-zinc-950 text-black dark:text-white border-zinc-300 dark:border-zinc-800"
                 min="0"
                 max="99"
               />
             ) : (
               <Clock
                 size={14}
-                className="ml-1 cursor-pointer"
+                className="ml-1 cursor-pointer text-white"
                 onClick={(e) => {
                   e.stopPropagation();
                   toggleTimed();
@@ -144,17 +144,17 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
           <>
             <span className="flex-grow text-center mr-1">{editedLabel}</span>
             {isTimed ? (
-              <span className="bg-zinc-200 dark:bg-zinc-700 rounded-full px-2 py-0.5 text-xs font-semibold">
+              <span className="bg-zinc-700 rounded-full px-2 py-0.5 text-xs font-semibold text-white">
                 {editedDuration}
               </span>
             ) : (
-              <Clock size={14} className="ml-1" />
+              <Clock size={14} className="ml-1 text-white" />
             )}
           </>
         )}
         <X
           size={14}
-          className="ml-1 cursor-pointer flex-shrink-0"
+          className="ml-1 cursor-pointer flex-shrink-0 text-white"
           onClick={(e) => {
             e.stopPropagation();
             onRemove();
