@@ -116,7 +116,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   return (
     <div className={`flex bg-white relative overflow-hidden rounded-lg ${getBorderStyle()}`}>
       {/* Left Tab */}
-      <div className={`w-16 ${getTabColor()} ${isActive ? 'text-white' : 'border-r border-black'} flex flex-col items-center justify-between py-2`}>
+      <div className={`w-16 flex-shrink-0 ${getTabColor()} ${isActive ? 'text-white' : 'border-r border-black'} flex flex-col items-center justify-between py-2`}>
         <div className="flex flex-col items-center">
           <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>Initiative</label>
           <Input
@@ -126,7 +126,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
             onFocus={() => setIsNumericInputActive(true)}
             onBlur={handleInitiativeBlur}
-            className="w-12 text-center bg-white text-black"
+            className="w-12 text-center bg-white text-black h-[30px]"
             maxLength={2}
           />
         </div>
@@ -261,7 +261,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       </div>
 
       {/* Right Tab */}
-      <div className={`w-24 ${getTabColor()} ${isActive ? '' : 'border-l border-black'} flex flex-col items-center justify-between p-2`}>
+      <div className={`w-24 flex-shrink-0 ${getTabColor()} ${isActive ? '' : 'border-l border-black'} flex flex-col items-center justify-between p-2`}>
         <div className="flex flex-col items-center space-y-2">
           <div className="flex flex-col items-center">
             <label className={`text-xs font-semibold mb-1 ${getTabTextColor()}`}>Temp HP</label>
