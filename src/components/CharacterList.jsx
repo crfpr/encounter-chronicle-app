@@ -76,7 +76,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
         </div>
       ))}
       <div className="pb-6">
-        <Button onClick={addCharacter} className="w-full bg-black hover:bg-gray-800 text-white border border-white">Add Character</Button>
+        <Button onClick={addCharacter} className="w-full bg-black hover:bg-gray-800 text-white">Add Character</Button>
       </div>
     </div>
   );
