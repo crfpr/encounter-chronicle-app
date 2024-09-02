@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import EncounterTracker from '../components/EncounterTracker';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
-import { Upload, Download, X } from 'lucide-react';
+import { Upload, Download, X, Sun, Moon } from 'lucide-react';
 import MobileMenuButton from '../components/MobileMenuButton';
 import ThemeToggle from '../components/ThemeToggle';
 
@@ -172,6 +172,7 @@ const Index = () => {
                 Load Encounter
               </Button>
               <Button onClick={toggleTheme} className="w-full flex items-center justify-center">
+                {isDarkMode ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
                 {isDarkMode ? 'Light Mode' : 'Dark Mode'}
               </Button>
               <input
