@@ -27,7 +27,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const getTabColor = () => {
-    return isActive ? 'bg-black text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-900 dark:text-zinc-100';
+    return isActive ? 'bg-black text-white dark:bg-zinc-600 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-900 dark:text-zinc-100';
   };
 
   const handleInputChange = (field, value) => {
