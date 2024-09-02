@@ -196,7 +196,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 placeholder="Current"
                 maxLength={3}
               />
-              <span className="self-center">/</span>
+              <span className="self-center text-xs">/</span>
               <div className="flex items-center">
                 <Input
                   type="text"
@@ -210,7 +210,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   placeholder="Max"
                   maxLength={3}
                 />
-                <span className="text-sm ml-1">ft</span>
+                <span className="text-xs ml-1">ft</span>
               </div>
             </div>
           </div>
@@ -230,7 +230,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               <Button
                 onClick={handleAddToken}
                 variant="outline"
-                className="h-[30px] px-3 py-1 text-sm flex items-center bg-white hover:bg-zinc-100 dark:bg-zinc-950 dark:hover:bg-zinc-900 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800"
+                className="h-[30px] px-3 py-1 text-xs flex items-center bg-white hover:bg-zinc-100 dark:bg-zinc-950 dark:hover:bg-zinc-900 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800"
               >
                 <PlusCircle className="h-4 w-4 mr-1" />
                 Add token
@@ -245,7 +245,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             <AlertDialogTrigger asChild>
               <Button 
                 variant="link" 
-                className="btn-sm text-zinc-700 dark:text-zinc-300 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 whitespace-nowrap bg-transparent dark:bg-transparent"
+                className="btn-sm text-xs text-zinc-700 dark:text-zinc-300 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 whitespace-nowrap bg-transparent dark:bg-transparent"
               >
                 Delete character
               </Button>

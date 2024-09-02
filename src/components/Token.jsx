@@ -100,7 +100,7 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
     <div ref={tokenRef}>
       <Button
         variant="secondary"
-        className="inline-flex items-center justify-center rounded-full px-3 py-1 text-sm mr-2 h-[30px] bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white hover:bg-zinc-700 dark:hover:bg-zinc-700"
+        className="inline-flex items-center justify-center rounded-full px-3 py-1 text-xs mr-2 h-[30px] bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white hover:bg-zinc-700 dark:hover:bg-zinc-700"
         onClick={handleClick}
       >
         {isEditing ? (
@@ -111,7 +111,7 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
               value={editedLabel}
               onChange={(e) => setEditedLabel(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="h-6 px-1 py-0 text-sm mr-1 bg-white dark:bg-zinc-950 text-black dark:text-white border-zinc-300 dark:border-zinc-800"
+              className="h-6 px-1 py-0 text-xs mr-1 bg-white dark:bg-zinc-950 text-black dark:text-white border-zinc-300 dark:border-zinc-800"
             />
             {isTimed ? (
               <Input
@@ -125,7 +125,7 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
                   onUpdate(editedLabel, newDuration);
                 }}
                 onKeyDown={handleDurationKeyDown}
-                className="h-6 w-12 px-1 py-0 text-sm bg-white dark:bg-zinc-950 text-black dark:text-white border-zinc-300 dark:border-zinc-800"
+                className="h-6 w-12 px-1 py-0 text-xs bg-white dark:bg-zinc-950 text-black dark:text-white border-zinc-300 dark:border-zinc-800"
                 min="0"
                 max="99"
               />
