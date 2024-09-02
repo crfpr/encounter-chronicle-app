@@ -86,10 +86,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   const toggleAction = (action) => {
     updateCharacter({ ...character, [action]: !character[action] });
-    // Reset the pressed state after a short delay
-    setTimeout(() => {
-      setPressedButtons(prev => ({ ...prev, [action]: false }));
-    }, 200);
   };
 
   const handleAddToken = () => {
