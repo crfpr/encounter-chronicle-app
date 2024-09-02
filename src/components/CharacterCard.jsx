@@ -85,7 +85,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const toggleAction = (action) => {
-    updateCharacter({ ...character, [action]: !character[action] });
+    const updatedCharacter = { ...character, [action]: !character[action] };
+    updateCharacter(updatedCharacter);
   };
 
   const handleAddToken = () => {
@@ -144,6 +145,12 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     toggleAction(action);
   };
 
+  const handleToggleClick = (action) => {
+    if (!isMobile) {
+      toggleAction(action);
+    }
+  };
+
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out min-h-[200px]`}>
       {/* Left Tab */}
@@ -194,7 +201,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           {/* Second row */}
           <div className="flex flex-wrap items-center gap-2">
             <Button
-              onClick={() => toggleAction('action')}
+              onClick={() => handleToggleClick('action')}
               onTouchStart={() => handleTouchStart('action')}
               onTouchEnd={() => handleTouchEnd('action')}
               className={getToggleButtonStyle(isActive, character.action, 'action')}
@@ -202,7 +209,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               {isMobile ? 'A' : 'Action'}
             </Button>
             <Button
-              onClick={() => toggleAction('bonusAction')}
+              onClick={() => handleToggleClick('bonusAction')}
               onTouchStart={() => handleTouchStart('bonusAction')}
               onTouchEnd={() => handleTouchEnd('bonusAction')}
               className={getToggleButtonStyle(isActive, character.bonusAction, 'bonusAction')}
@@ -210,7 +217,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               {isMobile ? 'B' : 'Bonus'}
             </Button>
             <Button
-              onClick={() => toggleAction('reaction')}
+              onClick={() => handleToggleClick('reaction')}
               onTouchStart={() => handleTouchStart('reaction')}
               onTouchEnd={() => handleTouchEnd('reaction')}
               className={getToggleButtonStyle(isActive, character.reaction, 'reaction')}
