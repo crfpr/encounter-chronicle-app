@@ -46,12 +46,22 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const handleNumericInputKeyDown = (e, field, currentValue) => {
-    if (!/[0-9]/.test(e.key) && !['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'].includes(e.key)) {
+    if (!/[0-9]/.test(e.key) && !['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
       e.preventDefault();
     }
     if (e.key === 'Enter') {
       e.preventDefault();
       handleInputSubmit(field, currentValue);
+    }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const newValue = Math.min(999, parseInt(currentValue || 0) + 1);
+      handleInputChange(field, newValue.toString());
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const newValue = Math.max(0, parseInt(currentValue || 0) - 1);
+      handleInputChange(field, newValue.toString());
     }
   };
 
