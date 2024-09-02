@@ -23,11 +23,15 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   }, [isActive]);
 
   const getBorderStyle = () => {
-    return isActive ? 'border-zinc-800 dark:border-zinc-800' : 'border-zinc-300 dark:border-zinc-800';
+    return isActive
+      ? 'border-zinc-800 dark:border-zinc-800'
+      : 'border-zinc-300 dark:border-zinc-800';
   };
 
   const getTabColor = () => {
-    return isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
+    return isActive
+      ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'
+      : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
   };
 
   const handleInputChange = (field, value) => {
@@ -278,7 +282,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             />
           </div>
           <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>Current HP</label>
+            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>HP</label>
             <Input
               type="text"
               inputMode="numeric"
