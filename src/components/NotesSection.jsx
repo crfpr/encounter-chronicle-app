@@ -14,7 +14,7 @@ const NotesSection = ({ notes, setNotes, isMobile }) => {
 
   return (
     <div className="flex flex-col h-full">
-      <h2 className="text-xl font-semibold mb-2">Notes</h2>
+      {!isMobile && <h2 className="text-xl font-semibold mb-2">Notes</h2>}
       <div className="relative flex-grow">
         <Textarea
           value={notes}
