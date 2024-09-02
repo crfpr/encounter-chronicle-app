@@ -116,7 +116,13 @@ const Index = () => {
             className={`font-bold bg-transparent border-none text-white placeholder-gray-400 focus:outline-none focus:ring-0 ${isMobile ? 'text-xl flex-grow mr-2' : 'text-2xl'}`}
             placeholder="Enter encounter name..."
           />
-          {!isMobile && <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />}
+          {!isMobile && (
+            <div className="flex items-center">
+              <div className="mr-4">
+                <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+              </div>
+            </div>
+          )}
           {isMobile && <MobileMenuButton onClick={toggleMobileMenu} />}
         </div>
       </header>
