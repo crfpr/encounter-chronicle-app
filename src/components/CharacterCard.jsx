@@ -141,8 +141,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         )}
       </div>
       
-      <div className="flex-grow p-4 flex flex-col">
-        <div className="flex-grow space-y-4">
+      <div className="flex-grow p-2 flex flex-col">
+        <div className="flex-grow space-y-2">
           {/* First row */}
           <div className="flex items-center space-x-2 relative">
             <div className="flex-grow">
@@ -208,8 +208,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           </div>
 
           {/* Token display and Add token button */}
-          <div className="mt-2 mb-2">
-            <div className="flex flex-wrap items-center">
+          <div className="mt-2">
+            <div className="flex flex-wrap items-center gap-2">
               {tokens.map((token, index) => (
                 <Token
                   key={index}
