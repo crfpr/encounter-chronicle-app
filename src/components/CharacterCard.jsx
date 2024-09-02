@@ -232,7 +232,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         </div>
 
         {/* Delete button */}
-        <div className="absolute bottom-2 right-2">
+        <div className="mt-auto self-end">
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button 
