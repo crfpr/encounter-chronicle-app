@@ -23,11 +23,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   }, [isActive]);
 
   const getBorderStyle = () => {
-    return isActive ? 'border-zinc-300 dark:border-zinc-800' : 'border-zinc-300 dark:border-zinc-800';
+    return isActive ? 'border-zinc-800 dark:border-zinc-800' : 'border-zinc-300 dark:border-zinc-800';
   };
 
   const getTabColor = () => {
-    return isActive ? 'bg-zinc-300 text-black dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
+    return isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
   };
 
   const handleInputChange = (field, value) => {
@@ -113,7 +113,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       {/* Left Tab */}
       <div className={`w-16 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 transition-colors duration-200`}>
         <div className="flex flex-col items-center">
-          <label className={`text-xs font-semibold mb-1`}>Initiative</label>
+          <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>Initiative</label>
           <Input
             type="text"
             inputMode="numeric"
@@ -125,7 +125,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               setIsNumericInputActive(false);
               handleInitiativeBlur();
             }}
-            className="w-12 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800"
+            className={`w-12 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800`}
             maxLength={3}
           />
         </div>
@@ -264,7 +264,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       <div className={`w-24 flex-shrink-0 ${getTabColor()} border-l ${getBorderStyle()} flex flex-col items-center justify-between p-2 transition-colors duration-200`}>
         <div className="flex flex-col items-center space-y-2">
           <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1`}>AC</label>
+            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>AC</label>
             <Input
               type="text"
               inputMode="numeric"
@@ -273,12 +273,12 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800"
+              className={`w-16 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800`}
               maxLength={3}
             />
           </div>
           <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1`}>Current HP</label>
+            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>Current HP</label>
             <Input
               type="text"
               inputMode="numeric"
@@ -287,12 +287,12 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800"
+              className={`w-16 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800`}
               maxLength={3}
             />
           </div>
           <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1`}>Max HP</label>
+            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>Max HP</label>
             <Input
               type="text"
               inputMode="numeric"
@@ -301,7 +301,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800"
+              className={`w-16 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800`}
               maxLength={3}
             />
           </div>
