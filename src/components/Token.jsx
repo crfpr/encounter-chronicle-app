@@ -10,6 +10,7 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
   const [isTimed, setIsTimed] = useState(duration !== null);
   const tokenRef = useRef(null);
   const inputRef = useRef(null);
+  const durationInputRef = useRef(null);
 
   useEffect(() => {
     if (isEditing) {
@@ -54,19 +55,35 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       handleBlur();
+    } else if (e.key === 'Tab' && !e.shiftKey) {
+      e.preventDefault();
+      if (isTimed) {
+        durationInputRef.current?.focus();
+      } else {
+        handleBlur();
+      }
     }
   };
 
-  const incrementDuration = () => {
-    const newDuration = Math.min(99, (editedDuration || 0) + 1);
-    setEditedDuration(newDuration);
-    onUpdate(editedLabel, newDuration);
-  };
-
-  const decrementDuration = () => {
-    const newDuration = Math.max(0, (editedDuration || 0) - 1);
-    setEditedDuration(newDuration);
-    onUpdate(editedLabel, newDuration);
+  const handleDurationKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleBlur();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const newDuration = Math.min(99, (editedDuration || 0) + 1);
+      setEditedDuration(newDuration);
+      onUpdate(editedLabel, newDuration);
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const newDuration = Math.max(0, (editedDuration || 0) - 1);
+      setEditedDuration(newDuration);
+      onUpdate(editedLabel, newDuration);
+    }
+    // Block navigation keys
+    if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
+      e.stopPropagation();
+    }
   };
 
   const toggleTimed = () => {
@@ -97,37 +114,20 @@ const Token = ({ label, duration, onRemove, onUpdate }) => {
               className="h-6 px-1 py-0 text-sm mr-1"
             />
             {isTimed ? (
-              <>
-                <Input
-                  type="number"
-                  value={editedDuration}
-                  onChange={(e) => {
-                    const newDuration = Math.max(0, Math.min(99, parseInt(e.target.value) || 0));
-                    setEditedDuration(newDuration);
-                    onUpdate(editedLabel, newDuration);
-                  }}
-                  onKeyDown={handleKeyDown}
-                  className="h-6 w-12 px-1 py-0 text-sm"
-                />
-                <div className="flex flex-col ml-1">
-                  <ChevronUp
-                    size={14}
-                    className="cursor-pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      incrementDuration();
-                    }}
-                  />
-                  <ChevronDown
-                    size={14}
-                    className="cursor-pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      decrementDuration();
-                    }}
-                  />
-                </div>
-              </>
+              <Input
+                ref={durationInputRef}
+                type="number"
+                value={editedDuration}
+                onChange={(e) => {
+                  const newDuration = Math.max(0, Math.min(99, parseInt(e.target.value) || 0));
+                  setEditedDuration(newDuration);
+                  onUpdate(editedLabel, newDuration);
+                }}
+                onKeyDown={handleDurationKeyDown}
+                className="h-6 w-12 px-1 py-0 text-sm"
+                min="0"
+                max="99"
+              />
             ) : (
               <Clock
                 size={14}
