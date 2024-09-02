@@ -76,6 +76,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     } else {
       handleInputChange(field, value);
     }
+    // Ensure we're not modifying the character type
+    updateCharacter({ ...character, [field]: value });
   };
 
   const handleInitiativeBlur = () => {
