@@ -167,9 +167,16 @@ const Index = () => {
                 <Download className="mr-2 h-4 w-4" />
                 Save Encounter
               </Button>
+              <Button onClick={() => {
+                console.log('Save Party clicked');
+                exportEncounterData();
+              }} className="w-full flex items-center justify-center">
+                <Download className="mr-2 h-4 w-4" />
+                Save Party
+              </Button>
               <Button onClick={handleUploadClick} className="w-full flex items-center justify-center">
                 <Upload className="mr-2 h-4 w-4" />
-                Load Encounter
+                Load File
               </Button>
               <Button onClick={toggleTheme} className="w-full flex items-center justify-center">
                 {isDarkMode ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
@@ -200,7 +207,7 @@ const Index = () => {
               </Button>
               <Button onClick={() => {
                 console.log('Save Party clicked');
-                // Functionality to be added later
+                exportEncounterData();
               }} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
                 <Download className="mr-2 h-4 w-4" />
                 Save Party
@@ -208,7 +215,7 @@ const Index = () => {
               <Button className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
                 <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center justify-center w-full">
                   <Upload className="mr-2 h-4 w-4" />
-                  Load Encounter
+                  Load File
                 </label>
                 <input
                   id="upload-encounter-data"
