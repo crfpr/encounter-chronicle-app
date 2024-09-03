@@ -8,8 +8,8 @@ import TurnNavigator from './TurnNavigator';
 import CharacterNameType from './CharacterNameType';
 import { PlusCircle, X } from 'lucide-react';
 
-const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile }) => {
-  const [tokens, setTokens] = useState([]);
+const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
+  const [tokens, setTokens] = useState(character.tokens || []);
 
   const getBorderStyle = () => {
     return isActive
@@ -35,27 +35,13 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const handleNumericInputKeyDown = (e, field, currentValue) => {
-    if (!/[0-9]/.test(e.key) && !['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+    if (!/[0-9]/.test(e.key) && !['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'].includes(e.key)) {
       e.preventDefault();
     }
     if (e.key === 'Enter') {
       e.preventDefault();
       handleInputSubmit(field, currentValue);
       e.target.blur(); // Remove focus from the input
-    }
-    if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      const newValue = Math.min(999, parseInt(currentValue || 0) + 1);
-      handleInputChange(field, newValue.toString());
-    }
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      const newValue = Math.max(0, parseInt(currentValue || 0) - 1);
-      handleInputChange(field, newValue.toString());
-    }
-    // Block navigation keys when numeric input is active
-    if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
-      e.stopPropagation();
     }
   };
 
@@ -93,25 +79,50 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const handleAddToken = () => {
-    const newToken = { id: Date.now(), label: 'Token', value: 1 };
+    const newToken = { id: Date.now(), label: 'Token', tokenDuration: 1 };
     setTokens([...tokens, newToken]);
+    updateCharacter({ ...character, tokens: [...tokens, newToken] });
   };
 
   const handleRemoveToken = (tokenId) => {
-    setTokens(tokens.filter(token => token.id !== tokenId));
+    const updatedTokens = tokens.filter(token => token.id !== tokenId);
+    setTokens(updatedTokens);
+    updateCharacter({ ...character, tokens: updatedTokens });
   };
 
-  const handleTokenValueChange = (tokenId, newValue) => {
-    setTokens(tokens.map(token => 
-      token.id === tokenId ? { ...token, value: newValue } : token
-    ));
+  const handleTokenDurationChange = (tokenId, newDuration) => {
+    const updatedTokens = tokens.map(token => 
+      token.id === tokenId ? { ...token, tokenDuration: newDuration } : token
+    );
+    setTokens(updatedTokens);
+    updateCharacter({ ...character, tokens: updatedTokens });
   };
 
   const handleTokenLabelChange = (tokenId, newLabel) => {
-    setTokens(tokens.map(token => 
+    const updatedTokens = tokens.map(token => 
       token.id === tokenId ? { ...token, label: newLabel } : token
-    ));
+    );
+    setTokens(updatedTokens);
+    updateCharacter({ ...character, tokens: updatedTokens });
   };
+
+  useEffect(() => {
+    if (!isActive && character.lastActiveRound !== round) {
+      const updatedTokens = tokens.map(token => {
+        if (token.tokenDuration > 0) {
+          return { ...token, tokenDuration: token.tokenDuration - 1 };
+        }
+        return token;
+      }).filter(token => token.tokenDuration > 0);
+
+      setTokens(updatedTokens);
+      updateCharacter({ 
+        ...character, 
+        tokens: updatedTokens,
+        lastActiveRound: round
+      });
+    }
+  }, [isActive, round, character.lastActiveRound]);
 
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out min-h-[200px]`}>
@@ -225,7 +236,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
           {/* New row for tokens and Add Token button */}
           <div className="flex items-center flex-wrap gap-2">
-            {tokens.map((token, index) => (
+            {tokens.map((token) => (
               <Badge
                 key={token.id}
                 className={`h-[30px] px-1 flex items-center space-x-1 ${
@@ -242,8 +253,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 />
                 <Input
                   type="number"
-                  value={token.value}
-                  onChange={(e) => handleTokenValueChange(token.id, parseInt(e.target.value) || 0)}
+                  value={token.tokenDuration}
+                  onChange={(e) => handleTokenDurationChange(token.id, parseInt(e.target.value) || 0)}
                   className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0 no-spinners"
                   min="0"
                 />

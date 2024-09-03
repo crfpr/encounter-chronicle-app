@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import CharacterCard from './CharacterCard';
 import { Button } from '../components/ui/button';
 
-const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive }) => {
+const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, round }) => {
   const activeCharacterRef = useRef(null);
 
   useEffect(() => {
@@ -32,7 +32,8 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
       conditions: [],
       turnCount: 0,
       roundCount: 0,
-      cumulativeTurnTime: 0
+      cumulativeTurnTime: 0,
+      tokens: []
     };
     setCharacters(prevCharacters => [...prevCharacters, newCharacter]);
   };
@@ -88,6 +89,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
             setIsNumericInputActive={setIsNumericInputActive}
             onInitiativeBlur={handleInitiativeBlur}
             onInitiativeSubmit={handleInitiativeSubmit}
+            round={round}
           />
         </div>
       ))}

@@ -258,6 +258,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
                   updateCharacter={updateCharacter}
                   addCharacter={addCharacter}
                   removeCharacter={removeCharacter}
+                  round={round}
                 />
               </div>
             </div>
@@ -310,6 +311,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
                     updateCharacter={updateCharacter}
                     addCharacter={addCharacter}
                     removeCharacter={removeCharacter}
+                    round={round}
                   />
                 </div>
               </div>
