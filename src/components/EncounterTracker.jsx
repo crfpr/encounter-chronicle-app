@@ -19,6 +19,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   const [activePage, setActivePage] = useState('tracker');
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
   const [encounterLog, setEncounterLog] = useState([]);
+  const [lastResetRound, setLastResetRound] = useState(0);
 
   useImperativeHandle(ref, () => ({
     getEncounterData: () => ({
@@ -110,9 +111,21 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       const currentIndex = prevIndex;
       const newIndex = (prevIndex + 1) % characters.length;
 
-      // Update token durations and reset actions for the character whose turn is ending
-      updateTokenDurations(currentIndex);
-      resetCharacterActions(currentIndex);
+      // Check if we're starting a new round
+      if (newIndex === 0) {
+        setRound(prevRound => {
+          const newRound = prevRound + 1;
+          logEvent(`Round ${newRound} started`);
+          setLastResetRound(newRound);
+          return newRound;
+        });
+      }
+
+      // Reset actions and update tokens for the new active character
+      if (round !== lastResetRound) {
+        resetCharacterActions(newIndex);
+        updateTokenDurations(newIndex);
+      }
 
       // Update character stats
       updateCharacterData(currentIndex, {
@@ -121,19 +134,12 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
         cumulativeTurnTime: (characters[currentIndex].cumulativeTurnTime || 0) + turnTime,
       });
 
-      if (newIndex === 0) {
-        setRound(prevRound => {
-          logEvent(`Round ${prevRound + 1} started`);
-          return prevRound + 1;
-        });
-      }
-
       logEvent(`Turn changed to ${characters[newIndex].name}`);
       return newIndex;
     });
 
     setTurnTime(0);
-  }, [characters, round, turnTime, updateTokenDurations, resetCharacterActions, updateCharacterData]);
+  }, [characters, round, turnTime, resetCharacterActions, updateTokenDurations, updateCharacterData, lastResetRound]);
 
   const handleSwipeLeft = useCallback(() => {
     if (isMobile) {
