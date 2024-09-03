@@ -3,6 +3,7 @@ import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import { ToggleGroup, ToggleGroupItem } from "../components/ui/toggle-group";
+import { Badge } from "../components/ui/badge";
 import TurnNavigator from './TurnNavigator';
 import CharacterNameType from './CharacterNameType';
 import { PlusCircle, X } from 'lucide-react';
@@ -92,7 +93,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const handleAddToken = () => {
-    const newToken = { id: Date.now(), value: 1 };
+    const newToken = { id: Date.now(), label: 'Token', value: 1 };
     setTokens([...tokens, newToken]);
   };
 
@@ -103,6 +104,12 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   const handleTokenValueChange = (tokenId, newValue) => {
     setTokens(tokens.map(token => 
       token.id === tokenId ? { ...token, value: newValue } : token
+    ));
+  };
+
+  const handleTokenLabelChange = (tokenId, newLabel) => {
+    setTokens(tokens.map(token => 
+      token.id === tokenId ? { ...token, label: newLabel } : token
     ));
   };
 
@@ -219,30 +226,39 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
           {/* New row for tokens and Add Token button */}
           <div className="flex items-center flex-wrap gap-2">
             {tokens.map((token, index) => (
-              <div key={token.id} className="flex items-center bg-zinc-100 dark:bg-zinc-800 rounded-full px-2 py-1">
+              <Badge
+                key={token.id}
+                className="h-[30px] px-2 flex items-center space-x-1 bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100"
+              >
+                <Input
+                  type="text"
+                  value={token.label}
+                  onChange={(e) => handleTokenLabelChange(token.id, e.target.value)}
+                  className="w-16 h-5 px-1 text-xs bg-transparent border-none focus:outline-none focus:ring-0"
+                />
                 <Input
                   type="number"
                   value={token.value}
                   onChange={(e) => handleTokenValueChange(token.id, parseInt(e.target.value) || 0)}
-                  className="w-12 text-center bg-transparent border-none"
+                  className="w-10 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0"
                   min="0"
                 />
                 <Button
                   onClick={() => handleRemoveToken(token.id)}
                   variant="ghost"
                   size="sm"
-                  className="ml-1 p-0 h-6 w-6"
+                  className="h-5 w-5 p-0 hover:bg-zinc-200 dark:hover:bg-zinc-700"
                 >
-                  <X className="h-4 w-4" />
+                  <X className="h-3 w-3" />
                 </Button>
-              </div>
+              </Badge>
             ))}
             <Button
               onClick={handleAddToken}
-              className={`h-[30px] px-2 text-xs border transition-colors bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-800`}
+              className="h-[30px] px-2 text-xs border transition-colors bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-800"
             >
-              <PlusCircle className="mr-1 h-4 w-4" />
-              Add token
+              <PlusCircle className="h-4 w-4" />
+              <span className="sr-only">Add token</span>
             </Button>
           </div>
         </div>
