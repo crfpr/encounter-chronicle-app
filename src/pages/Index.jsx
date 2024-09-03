@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import EncounterTracker from '../components/EncounterTracker';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
-import { Upload, Download, X, Sun, Moon } from 'lucide-react';
+import { Upload, Download, X, Sun, Moon, Users } from 'lucide-react';
 import MobileMenuButton from '../components/MobileMenuButton';
 import ThemeToggle from '../components/ThemeToggle';
 
@@ -25,7 +25,6 @@ const Index = () => {
     window.addEventListener('resize', handleResize);
     updateContentHeight();
 
-    // Load theme preference from localStorage
     const savedTheme = localStorage.getItem('theme');
     setIsDarkMode(savedTheme === 'dark');
 
@@ -33,9 +32,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    // Apply dark mode class to body
     document.body.classList.toggle('dark', isDarkMode);
-    // Save theme preference to localStorage
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
@@ -45,20 +42,20 @@ const Index = () => {
 
   const updateContentHeight = () => {
     const header = document.querySelector('header');
-    const newHeaderHeight = header.offsetHeight;
-    setHeaderHeight(newHeaderHeight);
-    const newHeight = `calc(100vh - ${newHeaderHeight}px)`;
-    setContentHeight(newHeight);
+    if (header) {
+      const newHeaderHeight = header.offsetHeight;
+      setHeaderHeight(newHeaderHeight);
+      const newHeight = `calc(100vh - ${newHeaderHeight}px)`;
+      setContentHeight(newHeight);
+    }
   };
 
   const exportEncounterData = () => {
-    console.log('Exporting encounter data');
     if (!encounterTrackerRef.current) {
       console.error('EncounterTracker ref is not available');
       return;
     }
     const data = encounterTrackerRef.current.getEncounterData();
-    console.log('Encounter data:', data);
     if (!data) {
       console.error('No encounter data to export');
       return;
@@ -73,9 +70,41 @@ const Index = () => {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      console.log('Download triggered');
     } catch (error) {
       console.error('Error exporting encounter data:', error);
+    }
+    setIsMobileMenuOpen(false);
+  };
+
+  const exportPartyData = () => {
+    if (!encounterTrackerRef.current) {
+      console.error('EncounterTracker ref is not available');
+      return;
+    }
+    const data = encounterTrackerRef.current.getPartyData();
+    if (!data || data.length === 0) {
+      console.error('No party data to export');
+      return;
+    }
+    try {
+      const partyData = data.map(character => ({
+        name: character.name,
+        type: character.type,
+        movement: character.maxMovement,
+        ac: character.ac,
+        maxHp: character.maxHp,
+      }));
+      const blob = new Blob([JSON.stringify(partyData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `party_data.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error exporting party data:', error);
     }
     setIsMobileMenuOpen(false);
   };
@@ -160,12 +189,13 @@ const Index = () => {
               </Button>
             </div>
             <div className="p-4 space-y-4">
-              <Button onClick={() => {
-                console.log('Save Encounter clicked');
-                exportEncounterData();
-              }} className="w-full flex items-center justify-center">
+              <Button onClick={exportEncounterData} className="w-full flex items-center justify-center">
                 <Download className="mr-2 h-4 w-4" />
                 Save Encounter
+              </Button>
+              <Button onClick={exportPartyData} className="w-full flex items-center justify-center">
+                <Users className="mr-2 h-4 w-4" />
+                Save Party
               </Button>
               <Button onClick={handleUploadClick} className="w-full flex items-center justify-center">
                 <Upload className="mr-2 h-4 w-4" />
@@ -191,12 +221,13 @@ const Index = () => {
           <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
             <p className="text-center sm:text-left">&copy; 2023 Encounter Tracker. All rights reserved.</p>
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-              <Button onClick={() => {
-                console.log('Save Encounter clicked');
-                exportEncounterData();
-              }} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
+              <Button onClick={exportEncounterData} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
                 <Download className="mr-2 h-4 w-4" />
                 Save Encounter
+              </Button>
+              <Button onClick={exportPartyData} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
+                <Users className="mr-2 h-4 w-4" />
+                Save Party
               </Button>
               <Button className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
                 <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center justify-center w-full">
