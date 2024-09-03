@@ -111,24 +111,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     updateCharacter({ ...character, tokens: updatedTokens });
   };
 
-  useEffect(() => {
-    if (!isActive && character.lastActiveRound !== round) {
-      const updatedTokens = tokens.map(token => {
-        if (token.tokenDuration > 0) {
-          return { ...token, tokenDuration: token.tokenDuration - 1 };
-        }
-        return token;
-      }).filter(token => token.tokenDuration > 0);
-
-      setTokens(updatedTokens);
-      updateCharacter({ 
-        ...character, 
-        tokens: updatedTokens,
-        lastActiveRound: round
-      });
-    }
-  }, [isActive, round, character.lastActiveRound]);
-
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out min-h-[200px]`}>
       {/* Left Tab */}
