@@ -105,8 +105,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
           return {
             ...char,
             cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime,
-            tokens: updatedTokens,
-            lastActiveRound: round
+            tokens: updatedTokens
           };
         }
         return char;
@@ -120,10 +119,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
           return prevRound + 1;
         });
         setLastResetIndex(-1);
-        return updatedCharacters.map(char => ({
-          ...char,
-          hasActedThisRound: false
-        }));
       }
 
       return updatedCharacters;
