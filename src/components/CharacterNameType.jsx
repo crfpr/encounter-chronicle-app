@@ -63,9 +63,15 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
     }
   };
 
+  const handleNameChange = (e) => {
+    const newName = e.target.value;
+    setEditedName(newName);
+    onUpdate(newName, editedType);
+  };
+
   const handleTypeChange = (value) => {
     setEditedType(value);
-    onUpdate(editedName || 'New Character', value);
+    onUpdate(editedName, value);
     setIsSelectOpen(false);
   };
 
@@ -82,7 +88,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
               ref={inputRef}
               type="text"
               value={editedName}
-              onChange={(e) => setEditedName(e.target.value)}
+              onChange={handleNameChange}
               onKeyDown={handleKeyDown}
               className="flex-grow mr-2 h-[30px] bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800"
               placeholder="New Character"

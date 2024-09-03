@@ -96,11 +96,11 @@ const Index = () => {
     const filteredPartyData = {
       encounterName: data.encounterName,
       characters: data.characters.filter(char => char.type === 'PC').map(char => ({
-        name: char.name,
-        type: char.type,
-        maxMovement: char.maxMovement,
-        ac: char.ac,
-        maxHp: char.maxHp
+        characterName: char.name,
+        characterType: char.type,
+        characterMaxMovement: char.maxMovement,
+        characterAC: char.ac,
+        characterMaxHP: char.maxHp
       }))
     };
 
