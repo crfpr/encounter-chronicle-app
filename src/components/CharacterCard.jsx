@@ -11,6 +11,10 @@ import { PlusCircle, X } from 'lucide-react';
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
 
+  useEffect(() => {
+    setTokens(character.tokens || []);
+  }, [character.tokens]);
+
   const getBorderStyle = () => {
     return isActive
       ? 'border-zinc-800 dark:border-zinc-800'
@@ -80,8 +84,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   const handleAddToken = () => {
     const newToken = { id: Date.now(), label: 'Token', tokenDuration: 1 };
-    setTokens([...tokens, newToken]);
-    updateCharacter({ ...character, tokens: [...tokens, newToken] });
+    const updatedTokens = [...tokens, newToken];
+    setTokens(updatedTokens);
+    updateCharacter({ ...character, tokens: updatedTokens });
   };
 
   const handleRemoveToken = (tokenId) => {
