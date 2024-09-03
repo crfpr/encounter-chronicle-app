@@ -228,7 +228,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             {tokens.map((token, index) => (
               <Badge
                 key={token.id}
-                className={`h-[30px] px-2 flex items-center space-x-1 ${
+                className={`h-[30px] px-1 flex items-center space-x-1 ${
                   isActive
                     ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'
                     : 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100'
@@ -238,13 +238,13 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   type="text"
                   value={token.label}
                   onChange={(e) => handleTokenLabelChange(token.id, e.target.value)}
-                  className="w-16 h-5 px-1 text-xs bg-transparent border-none focus:outline-none focus:ring-0"
+                  className="w-14 h-5 px-1 text-xs bg-transparent border-none focus:outline-none focus:ring-0"
                 />
                 <Input
                   type="number"
                   value={token.value}
                   onChange={(e) => handleTokenValueChange(token.id, parseInt(e.target.value) || 0)}
-                  className="w-10 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0"
+                  className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0"
                   min="0"
                 />
                 <Button
@@ -261,8 +261,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               onClick={handleAddToken}
               className="h-[30px] px-2 text-xs border transition-colors bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-800"
             >
-              <PlusCircle className="h-4 w-4" />
-              <span className="sr-only">Add token</span>
+              <PlusCircle className="h-4 w-4 mr-1" />
+              Add token
             </Button>
           </div>
         </div>
