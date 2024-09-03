@@ -4,25 +4,10 @@ import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import { ToggleGroup, ToggleGroupItem } from "../components/ui/toggle-group";
 import TurnNavigator from './TurnNavigator';
-import Token from './Token';
 import CharacterNameType from './CharacterNameType';
 import { PlusCircle } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile }) => {
-  const [tokens, setTokens] = useState(character.tokens || []);
-
-  useEffect(() => {
-    if (isActive) {
-      const updatedTokens = tokens.map(token => ({
-        ...token,
-        duration: token.duration !== null ? Math.max(0, token.duration - 1) : null
-      }));
-      const filteredTokens = updatedTokens.filter(token => token.duration === null || token.duration > 0);
-      setTokens(filteredTokens);
-      updateCharacter({ ...character, tokens: filteredTokens });
-    }
-  }, [isActive]);
-
   const getBorderStyle = () => {
     return isActive
       ? 'border-zinc-800 dark:border-zinc-800'
@@ -92,27 +77,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       reaction: value.includes('reaction')
     };
     updateCharacter(updatedCharacter);
-  };
-
-  const handleAddToken = () => {
-    const newToken = { label: `Token ${tokens.length + 1}`, duration: null };
-    const updatedTokens = [...tokens, newToken];
-    setTokens(updatedTokens);
-    updateCharacter({ ...character, tokens: updatedTokens });
-  };
-
-  const handleRemoveToken = (index) => {
-    const updatedTokens = tokens.filter((_, i) => i !== index);
-    setTokens(updatedTokens);
-    updateCharacter({ ...character, tokens: updatedTokens });
-  };
-
-  const handleUpdateToken = (index, newLabel, newDuration) => {
-    const updatedTokens = tokens.map((token, i) => 
-      i === index ? { ...token, label: newLabel, duration: newDuration } : token
-    );
-    setTokens(updatedTokens);
-    updateCharacter({ ...character, tokens: updatedTokens });
   };
 
   const getToggleGroupItemStyle = (isActive, isToggled) => {
@@ -232,30 +196,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 />
                 <span className="text-xs ml-1">ft</span>
               </div>
-            </div>
-          </div>
-
-          {/* Token display and Add token button */}
-          <div className="mt-2">
-            <div className="flex flex-wrap items-center gap-2">
-              {tokens.map((token, index) => (
-                <Token
-                  key={index}
-                  label={token.label}
-                  duration={token.duration}
-                  onRemove={() => handleRemoveToken(index)}
-                  onUpdate={(newLabel, newDuration) => handleUpdateToken(index, newLabel, newDuration)}
-                  isActive={isActive}
-                />
-              ))}
-              <Button
-                onClick={handleAddToken}
-                variant="outline"
-                className="h-[30px] px-3 py-1 text-xs flex items-center bg-white hover:bg-zinc-100 dark:bg-zinc-950 dark:hover:bg-zinc-900 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800"
-              >
-                <PlusCircle className="h-4 w-4 mr-1" />
-                Add token
-              </Button>
             </div>
           </div>
         </div>
