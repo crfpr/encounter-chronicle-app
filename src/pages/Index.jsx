@@ -17,7 +17,37 @@ const Index = () => {
   const encounterTrackerRef = useRef(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // ... (existing useEffect and other functions remain unchanged)
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      updateContentHeight();
+    };
+
+    window.addEventListener('resize', handleResize);
+    updateContentHeight();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const updateContentHeight = () => {
+    const header = document.querySelector('header');
+    if (header) {
+      const height = header.offsetHeight;
+      setHeaderHeight(height);
+      setContentHeight(`calc(100vh - ${height}px)`);
+    }
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle('dark');
+  };
 
   const exportEncounterData = () => {
     if (!encounterTrackerRef.current) {
@@ -112,11 +142,29 @@ const Index = () => {
     setIsMobileMenuOpen(false);
   };
 
-  // ... (rest of the component code remains unchanged)
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
+  };
 
   return (
     <div className={`flex flex-col ${isMobile ? 'h-screen' : ''} ${isDarkMode ? 'dark' : ''}`}>
-      {/* ... (header remains unchanged) */}
+      <header className="bg-white dark:bg-zinc-950 border-b border-zinc-300 dark:border-zinc-800 fixed top-0 left-0 right-0 z-10">
+        <div className="container mx-auto px-4 py-2 flex justify-between items-center">
+          <Input
+            type="text"
+            value={encounterName}
+            onChange={(e) => setEncounterName(e.target.value)}
+            className="text-lg font-bold bg-transparent border-none focus:outline-none focus:ring-0 p-0 h-auto"
+          />
+          <div className="flex items-center space-x-2">
+            {isMobile ? (
+              <MobileMenuButton onClick={toggleMobileMenu} />
+            ) : (
+              <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+            )}
+          </div>
+        </div>
+      </header>
       <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''} bg-white dark:bg-zinc-950`} style={{ height: contentHeight }}>
         <div className={`h-full overflow-y-auto`}>
           <div className={`container mx-auto px-4 py-4 h-full`}>
