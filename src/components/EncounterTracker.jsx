@@ -324,7 +324,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
           </div>
           <div className="lg:w-1/3 h-full flex flex-col space-y-6">
             <div className="bg-white border border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex-1 overflow-hidden flex flex-col shadow-md dark:shadow-none">
-              <h2 className="text-xl font-semibold mb-2">Notes</h2>
               <NotesSection notes={notes} setNotes={(newNotes) => {
                 setNotes(newNotes);
                 logEvent(`Notes updated`);
