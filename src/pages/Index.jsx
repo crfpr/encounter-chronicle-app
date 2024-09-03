@@ -68,7 +68,7 @@ const Index = () => {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${data.encounterName.replace(/\s+/g, '_')}_data.json`;
+      a.download = `${data.encounterName.replace(/\s+/g, '_')}_encounter.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -80,6 +80,47 @@ const Index = () => {
     setIsMobileMenuOpen(false);
   };
 
+  const exportPartyData = () => {
+    console.log('Exporting party data');
+    if (!encounterTrackerRef.current) {
+      console.error('EncounterTracker ref is not available');
+      return;
+    }
+    const data = encounterTrackerRef.current.getEncounterData();
+    console.log('Full encounter data:', data);
+    if (!data || !data.characters) {
+      console.error('No character data to export');
+      return;
+    }
+
+    const filteredPartyData = {
+      encounterName: data.encounterName,
+      characters: data.characters.filter(char => char.type === 'PC').map(char => ({
+        name: char.name,
+        type: char.type,
+        maxMovement: char.maxMovement,
+        ac: char.ac,
+        maxHp: char.maxHp
+      }))
+    };
+
+    try {
+      const blob = new Blob([JSON.stringify(filteredPartyData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${data.encounterName.replace(/\s+/g, '_')}_party.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      console.log('Party data download triggered');
+    } catch (error) {
+      console.error('Error exporting party data:', error);
+    }
+    setIsMobileMenuOpen(false);
+  };
+
   const uploadEncounterData = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -87,8 +128,13 @@ const Index = () => {
       reader.onload = (e) => {
         try {
           const data = JSON.parse(e.target.result);
-          setEncounterData(data);
-          setEncounterName(data.encounterName);
+          if (data.characters && Array.isArray(data.characters)) {
+            // This is likely a full encounter or party data
+            setEncounterData(data);
+            setEncounterName(data.encounterName);
+          } else {
+            console.error('Invalid data format');
+          }
         } catch (error) {
           console.error('Error parsing JSON:', error);
         }
@@ -169,7 +215,7 @@ const Index = () => {
               </Button>
               <Button onClick={() => {
                 console.log('Save Party clicked');
-                exportEncounterData();
+                exportPartyData();
               }} className="w-full flex items-center justify-center">
                 <Download className="mr-2 h-4 w-4" />
                 Save Party
@@ -207,7 +253,7 @@ const Index = () => {
               </Button>
               <Button onClick={() => {
                 console.log('Save Party clicked');
-                exportEncounterData();
+                exportPartyData();
               }} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
                 <Download className="mr-2 h-4 w-4" />
                 Save Party
