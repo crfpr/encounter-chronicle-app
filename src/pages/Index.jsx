@@ -16,6 +16,7 @@ const Index = () => {
   const [headerHeight, setHeaderHeight] = useState(64);
   const encounterTrackerRef = useRef(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -25,7 +26,6 @@ const Index = () => {
     window.addEventListener('resize', handleResize);
     updateContentHeight();
 
-    // Load theme preference from localStorage
     const savedTheme = localStorage.getItem('theme');
     setIsDarkMode(savedTheme === 'dark');
 
@@ -33,9 +33,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    // Apply dark mode class to body
     document.body.classList.toggle('dark', isDarkMode);
-    // Save theme preference to localStorage
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
@@ -52,13 +50,11 @@ const Index = () => {
   };
 
   const exportEncounterData = () => {
-    console.log('Exporting encounter data');
     if (!encounterTrackerRef.current) {
       console.error('EncounterTracker ref is not available');
       return;
     }
     const data = encounterTrackerRef.current.getEncounterData();
-    console.log('Encounter data:', data);
     if (!data) {
       console.error('No encounter data to export');
       return;
@@ -73,21 +69,19 @@ const Index = () => {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      console.log('Download triggered');
     } catch (error) {
       console.error('Error exporting encounter data:', error);
+      setError('Failed to export encounter data. Please try again.');
     }
     setIsMobileMenuOpen(false);
   };
 
   const exportPartyData = () => {
-    console.log('Exporting party data');
     if (!encounterTrackerRef.current) {
       console.error('EncounterTracker ref is not available');
       return;
     }
     const data = encounterTrackerRef.current.getEncounterData();
-    console.log('Full encounter data:', data);
     if (!data || !data.characters) {
       console.error('No character data to export');
       return;
@@ -114,9 +108,9 @@ const Index = () => {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      console.log('Party data download triggered');
     } catch (error) {
       console.error('Error exporting party data:', error);
+      setError('Failed to export party data. Please try again.');
     }
     setIsMobileMenuOpen(false);
   };
@@ -130,18 +124,16 @@ const Index = () => {
           const data = JSON.parse(e.target.result);
           console.log('Parsed data:', data);
           if (data.characters && Array.isArray(data.characters)) {
-            // Check if it's party data or full encounter data
             const isPartyData = data.characters.every(char => 
               'characterName' in char && 'characterType' in char
             );
 
             let processedData;
             if (isPartyData) {
-              // Convert party data to full character data
               processedData = {
                 encounterName: data.encounterName || 'Imported Party',
                 characters: data.characters.map(char => ({
-                  id: Date.now() + Math.random(), // Generate a unique ID
+                  id: Date.now() + Math.random(),
                   name: char.characterName,
                   type: char.characterType,
                   maxMovement: char.characterMaxMovement,
@@ -158,18 +150,20 @@ const Index = () => {
                 }))
               };
             } else {
-              // It's full encounter data, use as is
               processedData = data;
             }
 
             console.log('Processed data:', processedData);
             setEncounterData(processedData);
             setEncounterName(processedData.encounterName);
+            setError(null);
           } else {
-            console.error('Invalid data format');
+            throw new Error('Invalid data format');
           }
         } catch (error) {
           console.error('Error parsing JSON:', error);
+          setError('Failed to load encounter data. Please check the file format and try again.');
+          setEncounterData(null);
         }
       };
       reader.readAsText(file);
@@ -216,6 +210,12 @@ const Index = () => {
       <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''} bg-white dark:bg-zinc-950`} style={{ height: contentHeight }}>
         <div className={`h-full overflow-y-auto`}>
           <div className={`container mx-auto px-4 py-4 h-full`}>
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <strong className="font-bold">Error: </strong>
+                <span className="block sm:inline">{error}</span>
+              </div>
+            )}
             <EncounterTracker 
               ref={encounterTrackerRef}
               encounterName={encounterName} 
@@ -239,17 +239,11 @@ const Index = () => {
               </Button>
             </div>
             <div className="p-4 space-y-4">
-              <Button onClick={() => {
-                console.log('Save Encounter clicked');
-                exportEncounterData();
-              }} className="w-full flex items-center justify-center">
+              <Button onClick={exportEncounterData} className="w-full flex items-center justify-center">
                 <Download className="mr-2 h-4 w-4" />
                 Save Encounter
               </Button>
-              <Button onClick={() => {
-                console.log('Save Party clicked');
-                exportPartyData();
-              }} className="w-full flex items-center justify-center">
+              <Button onClick={exportPartyData} className="w-full flex items-center justify-center">
                 <Download className="mr-2 h-4 w-4" />
                 Save Party
               </Button>
@@ -277,17 +271,11 @@ const Index = () => {
           <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
             <p className="text-center sm:text-left">&copy; 2023 Encounter Tracker. All rights reserved.</p>
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-              <Button onClick={() => {
-                console.log('Save Encounter clicked');
-                exportEncounterData();
-              }} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
+              <Button onClick={exportEncounterData} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
                 <Download className="mr-2 h-4 w-4" />
                 Save Encounter
               </Button>
-              <Button onClick={() => {
-                console.log('Save Party clicked');
-                exportPartyData();
-              }} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
+              <Button onClick={exportPartyData} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
                 <Download className="mr-2 h-4 w-4" />
                 Save Party
               </Button>
