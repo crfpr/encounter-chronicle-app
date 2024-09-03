@@ -128,10 +128,43 @@ const Index = () => {
       reader.onload = (e) => {
         try {
           const data = JSON.parse(e.target.result);
+          console.log('Parsed data:', data);
           if (data.characters && Array.isArray(data.characters)) {
-            // This is likely a full encounter or party data
-            setEncounterData(data);
-            setEncounterName(data.encounterName);
+            // Check if it's party data or full encounter data
+            const isPartyData = data.characters.every(char => 
+              'characterName' in char && 'characterType' in char
+            );
+
+            let processedData;
+            if (isPartyData) {
+              // Convert party data to full character data
+              processedData = {
+                encounterName: data.encounterName || 'Imported Party',
+                characters: data.characters.map(char => ({
+                  id: Date.now() + Math.random(), // Generate a unique ID
+                  name: char.characterName,
+                  type: char.characterType,
+                  maxMovement: char.characterMaxMovement,
+                  currentMovement: char.characterMaxMovement,
+                  ac: char.characterAC,
+                  maxHp: char.characterMaxHP,
+                  currentHp: char.characterMaxHP,
+                  initiative: '',
+                  action: false,
+                  bonusAction: false,
+                  reaction: false,
+                  conditions: [],
+                  tokens: []
+                }))
+              };
+            } else {
+              // It's full encounter data, use as is
+              processedData = data;
+            }
+
+            console.log('Processed data:', processedData);
+            setEncounterData(processedData);
+            setEncounterName(processedData.encounterName);
           } else {
             console.error('Invalid data format');
           }
