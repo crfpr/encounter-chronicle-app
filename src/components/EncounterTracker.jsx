@@ -31,12 +31,81 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       setEncounterLog(loadedEncounterData.log || []);
       setEncounterName(loadedEncounterData.encounterName || 'New Encounter');
       setIsRunning(loadedEncounterData.isRunning || false);
-      logEvent('Encounter data loaded');
     }
   }, [loadedEncounterData, setEncounterName]);
 
-  // ... rest of the component code ...
+  useImperativeHandle(ref, () => ({
+    getEncounterData: () => ({
+      encounterName,
+      round,
+      characters,
+      activeCharacterIndex,
+      encounterTime,
+      notes,
+      log: encounterLog,
+      isRunning
+    })
+  }));
 
-};
+  const logEvent = useCallback((event) => {
+    setEncounterLog(prevLog => [...prevLog, { time: new Date().toISOString(), event }]);
+  }, []);
+
+  // Placeholder for other necessary functions
+  const toggleEncounter = () => setIsRunning(!isRunning);
+  const nextTurn = () => {
+    // Implement next turn logic
+  };
+  const previousTurn = () => {
+    // Implement previous turn logic
+  };
+
+  return (
+    <div className="h-full flex flex-col">
+      <EncounterHeader
+        isRunning={isRunning}
+        toggleEncounter={toggleEncounter}
+        encounterTime={encounterTime}
+        round={round}
+      />
+      <div className="flex-grow overflow-hidden">
+        {activePage === 'tracker' && (
+          <CharacterList
+            characters={characters}
+            setCharacters={setCharacters}
+            activeCharacterIndex={activeCharacterIndex}
+            turnTime={turnTime}
+            onPreviousTurn={previousTurn}
+            onNextTurn={nextTurn}
+            setIsNumericInputActive={setIsNumericInputActive}
+          />
+        )}
+        {activePage === 'notes' && (
+          <NotesSection
+            notes={notes}
+            setNotes={setNotes}
+            isMobile={isMobile}
+          />
+        )}
+        {activePage === 'stats' && (
+          <CharacterStats
+            characters={characters}
+            round={round}
+          />
+        )}
+      </div>
+      {isMobile && (
+        <MobileMenu
+          activePage={activePage}
+          setActivePage={setActivePage}
+        />
+      )}
+      <SwipeHandler
+        onSwipeLeft={nextTurn}
+        onSwipeRight={previousTurn}
+      />
+    </div>
+  );
+});
 
 export default EncounterTracker;
