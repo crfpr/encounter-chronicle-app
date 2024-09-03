@@ -241,13 +241,10 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
 
   const renderContent = () => {
     if (isMobile) {
-      const titleStyle = "text-xl font-semibold mb-4";
-      
       switch (activePage) {
         case 'tracker':
           return (
             <div className="flex-grow overflow-hidden flex flex-col h-full">
-              <h2 className={titleStyle}>Turn Tracker</h2>
               <div className="mb-4">
                 <EncounterHeader
                   isRunning={isRunning}
@@ -275,7 +272,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
         case 'notes':
           return (
             <div className="h-full flex flex-col pb-20">
-              <h2 className={titleStyle}>Notes</h2>
               <div className="flex-grow">
                 <NotesSection key={`notes-section-${activePage}-${isMobile}`} notes={notes} setNotes={(newNotes) => {
                   setNotes(newNotes);
@@ -287,7 +283,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
         case 'stats':
           return (
             <div className="h-full flex flex-col">
-              <h2 className={titleStyle}>Character Stats</h2>
               <div className="flex-grow overflow-y-auto pb-20">
                 <CharacterStats characters={characters} round={round} key={round} />
               </div>
@@ -329,6 +324,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
           </div>
           <div className="lg:w-1/3 h-full flex flex-col space-y-6">
             <div className="bg-white border border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex-1 overflow-hidden flex flex-col shadow-md dark:shadow-none">
+              <h2 className="text-xl font-semibold mb-2">Notes</h2>
               <NotesSection notes={notes} setNotes={(newNotes) => {
                 setNotes(newNotes);
                 logEvent(`Notes updated`);
