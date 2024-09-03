@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, ChevronUp, ChevronDown, Clock } from 'lucide-react';
+import { X, Clock } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 
@@ -69,20 +69,6 @@ const Token = ({ label, duration, onRemove, onUpdate, isActive }) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       handleBlur();
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      const newDuration = Math.min(99, (editedDuration || 0) + 1);
-      setEditedDuration(newDuration);
-      onUpdate(editedLabel, newDuration);
-    } else if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      const newDuration = Math.max(0, (editedDuration || 0) - 1);
-      setEditedDuration(newDuration);
-      onUpdate(editedLabel, newDuration);
-    }
-    // Block navigation keys
-    if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
-      e.stopPropagation();
     }
   };
 
