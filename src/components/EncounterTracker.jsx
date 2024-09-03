@@ -20,6 +20,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
   const [encounterLog, setEncounterLog] = useState([]);
   const [lastResetRound, setLastResetRound] = useState(0);
+  const [lastTurnCountRound, setLastTurnCountRound] = useState(0);
 
   useImperativeHandle(ref, () => ({
     getEncounterData: () => ({
@@ -117,6 +118,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
           const newRound = prevRound + 1;
           logEvent(`Round ${newRound} started`);
           setLastResetRound(newRound);
+          setLastTurnCountRound(newRound);
           return newRound;
         });
       }
@@ -127,19 +129,22 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
         updateTokenDurations(newIndex);
       }
 
-      // Update character stats
-      updateCharacterData(currentIndex, {
-        turnCount: (characters[currentIndex].turnCount || 0) + 1,
-        roundCount: round,
-        cumulativeTurnTime: (characters[currentIndex].cumulativeTurnTime || 0) + turnTime,
-      });
+      // Update character stats (turn count) only once per round
+      if (round !== lastTurnCountRound) {
+        updateCharacterData(currentIndex, {
+          turnCount: (characters[currentIndex].turnCount || 0) + 1,
+          roundCount: round,
+          cumulativeTurnTime: (characters[currentIndex].cumulativeTurnTime || 0) + turnTime,
+        });
+        setLastTurnCountRound(round);
+      }
 
       logEvent(`Turn changed to ${characters[newIndex].name}`);
       return newIndex;
     });
 
     setTurnTime(0);
-  }, [characters, round, turnTime, resetCharacterActions, updateTokenDurations, updateCharacterData, lastResetRound]);
+  }, [characters, round, turnTime, resetCharacterActions, updateTokenDurations, updateCharacterData, lastResetRound, lastTurnCountRound]);
 
   const handleSwipeLeft = useCallback(() => {
     if (isMobile) {
