@@ -241,14 +241,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     logEvent(`Removed character: ${characterToRemove.name}`);
   };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(notes).then(() => {
-      console.log('Notes copied to clipboard');
-    }).catch(err => {
-      console.error('Failed to copy notes: ', err);
-    });
-  };
-
   const renderContent = () => {
     if (isMobile) {
       switch (activePage) {
@@ -334,22 +326,12 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
           </div>
           <div className="lg:w-1/3 h-full flex flex-col space-y-6">
             <div className="bg-white border border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex-1 overflow-hidden flex flex-col shadow-md dark:shadow-none">
-              <div className="flex justify-between items-center mb-2">
-                <h2 className="text-xl font-semibold">Notes</h2>
-                <Button 
-                  onClick={copyToClipboard} 
-                  variant="outline"
-                  size="sm"
-                  className="flex items-center"
-                >
-                  <Copy className="h-4 w-4 mr-2" />
-                  Copy
-                </Button>
+              <div className="flex-grow">
+                <NotesSection notes={notes} setNotes={(newNotes) => {
+                  setNotes(newNotes);
+                  logEvent(`Notes updated`);
+                }} isMobile={false} />
               </div>
-              <NotesSection notes={notes} setNotes={(newNotes) => {
-                setNotes(newNotes);
-                logEvent(`Notes updated`);
-              }} isMobile={false} />
             </div>
             <div className="bg-white border border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex-1 overflow-hidden flex flex-col shadow-md dark:shadow-none">
               <h2 className="text-xl font-semibold mb-2">Character Stats</h2>
