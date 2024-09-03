@@ -20,7 +20,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
   const [lastResetIndex, setLastResetIndex] = useState(-1);
   const [encounterLog, setEncounterLog] = useState([]);
-  const [lastTokenUpdateRound, setLastTokenUpdateRound] = useState(0);
 
   useImperativeHandle(ref, () => ({
     getEncounterData: () => ({
@@ -97,9 +96,16 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     setCharacters(prevCharacters => {
       const updatedCharacters = prevCharacters.map((char, index) => {
         if (index === activeCharacterIndex) {
+          // Update tokens for the current active character
+          const updatedTokens = char.tokens.map(token => ({
+            ...token,
+            tokenDuration: token.tokenDuration > 0 ? token.tokenDuration - 1 : 0
+          })).filter(token => token.tokenDuration > 0);
+
           return {
             ...char,
             cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime,
+            tokens: updatedTokens
           };
         }
         return char;
@@ -109,22 +115,8 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
 
       if (newActiveIndex === 0) {
         setRound(prevRound => {
-          const newRound = prevRound + 1;
-          logEvent(`Round ${newRound} started`);
-
-          // Update tokens only if we've moved to a new round
-          if (newRound > lastTokenUpdateRound) {
-            setLastTokenUpdateRound(newRound);
-            return updatedCharacters.map(char => ({
-              ...char,
-              tokens: char.tokens.map(token => ({
-                ...token,
-                tokenDuration: token.tokenDuration > 0 ? token.tokenDuration - 1 : 0
-              })).filter(token => token.tokenDuration > 0)
-            }));
-          }
-
-          return updatedCharacters;
+          logEvent(`Round ${prevRound + 1} started`);
+          return prevRound + 1;
         });
         setLastResetIndex(-1);
       }
