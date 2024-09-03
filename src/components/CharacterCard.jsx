@@ -228,7 +228,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
             {tokens.map((token, index) => (
               <Badge
                 key={token.id}
-                className="h-[30px] px-2 flex items-center space-x-1 bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100"
+                className={`h-[30px] px-2 flex items-center space-x-1 ${
+                  isActive
+                    ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'
+                    : 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100'
+                }`}
               >
                 <Input
                   type="text"
@@ -247,7 +251,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   onClick={() => handleRemoveToken(token.id)}
                   variant="ghost"
                   size="sm"
-                  className="h-5 w-5 p-0 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                  className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700"
                 >
                   <X className="h-3 w-3" />
                 </Button>
