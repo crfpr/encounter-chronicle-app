@@ -18,8 +18,9 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   const [notes, setNotes] = useState('');
   const [activePage, setActivePage] = useState('tracker');
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
-  const [lastResetRound, setLastResetRound] = useState(0);
   const [encounterLog, setEncounterLog] = useState([]);
+  const [lastResetRound, setLastResetRound] = useState(0);
+  const [lastTurnCountRound, setLastTurnCountRound] = useState(0);
 
   useImperativeHandle(ref, () => ({
     getEncounterData: () => ({
@@ -66,118 +67,108 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     return () => clearInterval(interval);
   }, [isRunning]);
 
-  const resetCharacterActions = (characterIndex) => {
+  const updateCharacterData = useCallback((characterIndex, updates) => {
     setCharacters(prevCharacters => prevCharacters.map((char, index) => {
       if (index === characterIndex) {
-        const updatedChar = {
-          ...char,
-          action: false,
-          bonusAction: false,
-          reaction: false,
-          currentMovement: char.maxMovement,
-          tokens: char.tokens.map(token => ({
-            ...token,
-            duration: token.duration !== null ? Math.max(0, token.duration - 1) : null
-          })).filter(token => token.duration === null || token.duration > 0)
-        };
-        logEvent(`Reset actions and updated tokens for ${char.name}`);
+        const updatedChar = { ...char, ...updates };
+        logEvent(`Updated ${char.name}: ${JSON.stringify(updates)}`);
         return updatedChar;
       }
       return char;
     }));
-  };
+  }, []);
 
-  const handlePreviousTurn = () => {
+  const resetCharacterActions = useCallback((characterIndex) => {
+    updateCharacterData(characterIndex, {
+      action: false,
+      bonusAction: false,
+      reaction: false,
+      currentMovement: characters[characterIndex].maxMovement
+    });
+    logEvent(`Reset actions for ${characters[characterIndex].name}`);
+  }, [characters, updateCharacterData]);
+
+  const updateTokenDurations = useCallback((characterIndex) => {
+    updateCharacterData(characterIndex, {
+      tokens: characters[characterIndex].tokens.map(token => ({
+        ...token,
+        duration: token.duration !== null ? Math.max(0, token.duration - 1) : null
+      })).filter(token => token.duration === null || token.duration > 0)
+    });
+    logEvent(`Updated token durations for ${characters[characterIndex].name}`);
+  }, [characters, updateCharacterData]);
+
+  const handlePreviousTurn = useCallback(() => {
     setActiveCharacterIndex(prevIndex => {
       const newIndex = prevIndex === 0 ? characters.length - 1 : prevIndex - 1;
       logEvent(`Turn changed to ${characters[newIndex].name}`);
       return newIndex;
     });
     setTurnTime(0);
-  };
+  }, [characters]);
 
-  const handleNextTurn = () => {
+  const handleNextTurn = useCallback(() => {
     setActiveCharacterIndex(prevIndex => {
-      const newIndex = prevIndex === characters.length - 1 ? 0 : prevIndex + 1;
+      const currentIndex = prevIndex;
+      const newIndex = (prevIndex + 1) % characters.length;
+
+      // Check if we're starting a new round
+      if (newIndex === 0) {
+        setRound(prevRound => {
+          const newRound = prevRound + 1;
+          logEvent(`Round ${newRound} started`);
+          setLastResetRound(newRound);
+          setLastTurnCountRound(newRound);
+          return newRound;
+        });
+      }
+
+      // Reset actions and update tokens for the new active character
       if (round !== lastResetRound) {
         resetCharacterActions(newIndex);
-        setLastResetRound(round);
+        updateTokenDurations(newIndex);
       }
+
+      // Update character stats (turn count) only once per round
+      if (round !== lastTurnCountRound) {
+        updateCharacterData(currentIndex, {
+          turnCount: (characters[currentIndex].turnCount || 0) + 1,
+          roundCount: round,
+          cumulativeTurnTime: (characters[currentIndex].cumulativeTurnTime || 0) + turnTime,
+        });
+        setLastTurnCountRound(round);
+      }
+
       logEvent(`Turn changed to ${characters[newIndex].name}`);
       return newIndex;
     });
 
     setTurnTime(0);
+  }, [characters, round, turnTime, resetCharacterActions, updateTokenDurations, updateCharacterData, lastResetRound, lastTurnCountRound]);
 
-    setCharacters(prevCharacters => {
-      const updatedCharacters = prevCharacters.map((char, index) => {
-        if (index === activeCharacterIndex) {
-          return {
-            ...char,
-            cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime,
-          };
-        }
-        return char;
-      });
-
-      if (activeCharacterIndex === characters.length - 1) {
-        setRound(prevRound => {
-          logEvent(`Round ${prevRound + 1} started`);
-          return prevRound + 1;
-        });
-        return updatedCharacters.map(char => ({
-          ...char,
-          hasActedThisRound: false
-        }));
-      }
-
-      return updatedCharacters;
-    });
-  };
-
-  useEffect(() => {
-    setCharacters(prevCharacters => prevCharacters.map((char, index) => {
-      if (index === activeCharacterIndex && !char.hasActedThisRound) {
-        return {
-          ...char,
-          turnCount: (char.turnCount || 0) + 1,
-          roundCount: round,
-          hasActedThisRound: true
-        };
-      }
-      return char;
-    }));
-  }, [activeCharacterIndex, round]);
-
-  const handleSwipeLeft = () => {
+  const handleSwipeLeft = useCallback(() => {
     if (isMobile) {
       setActivePage(prevPage => {
         switch (prevPage) {
-          case 'tracker':
-            return 'notes';
-          case 'notes':
-            return 'stats';
-          default:
-            return prevPage;
+          case 'tracker': return 'notes';
+          case 'notes': return 'stats';
+          default: return prevPage;
         }
       });
     }
-  };
+  }, [isMobile]);
 
-  const handleSwipeRight = () => {
+  const handleSwipeRight = useCallback(() => {
     if (isMobile) {
       setActivePage(prevPage => {
         switch (prevPage) {
-          case 'notes':
-            return 'tracker';
-          case 'stats':
-            return 'notes';
-          default:
-            return prevPage;
+          case 'notes': return 'tracker';
+          case 'stats': return 'notes';
+          default: return prevPage;
         }
       });
     }
-  };
+  }, [isMobile]);
 
   const handleKeyDown = useCallback((e) => {
     if (!isMobile && characters.length > 1 && !isNumericInputActive) {
@@ -198,7 +189,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     };
   }, [handleKeyDown]);
 
-  const logEvent = (event) => {
+  const logEvent = useCallback((event) => {
     setEncounterLog(prevLog => [
       ...prevLog,
       {
@@ -208,30 +199,18 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
         round: round
       }
     ]);
-  };
+  }, [encounterTime, round]);
 
-  const updateCharacter = (updatedCharacter) => {
-    setCharacters(prevCharacters => 
-      prevCharacters.map(c => {
-        if (c.id === updatedCharacter.id) {
-          logEvent(`Updated ${c.name}: ${JSON.stringify(updatedCharacter)}`);
-          return { ...c, ...updatedCharacter };
-        }
-        return c;
-      })
-    );
-  };
-
-  const addCharacter = (newCharacter) => {
+  const addCharacter = useCallback((newCharacter) => {
     setCharacters(prevCharacters => [...prevCharacters, newCharacter]);
     logEvent(`Added new character: ${newCharacter.name}`);
-  };
+  }, [logEvent]);
 
-  const removeCharacter = (id) => {
+  const removeCharacter = useCallback((id) => {
     const characterToRemove = characters.find(c => c.id === id);
     setCharacters(prevCharacters => prevCharacters.filter(c => c.id !== id));
     logEvent(`Removed character: ${characterToRemove.name}`);
-  };
+  }, [characters, logEvent]);
 
   const renderContent = () => {
     if (isMobile) {
@@ -256,7 +235,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
                   onPreviousTurn={handlePreviousTurn}
                   onNextTurn={handleNextTurn}
                   setIsNumericInputActive={setIsNumericInputActive}
-                  updateCharacter={updateCharacter}
+                  updateCharacter={updateCharacterData}
                   addCharacter={addCharacter}
                   removeCharacter={removeCharacter}
                 />
@@ -308,7 +287,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
                     onPreviousTurn={handlePreviousTurn}
                     onNextTurn={handleNextTurn}
                     setIsNumericInputActive={setIsNumericInputActive}
-                    updateCharacter={updateCharacter}
+                    updateCharacter={updateCharacterData}
                     addCharacter={addCharacter}
                     removeCharacter={removeCharacter}
                   />
