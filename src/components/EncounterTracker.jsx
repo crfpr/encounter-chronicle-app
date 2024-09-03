@@ -20,6 +20,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
   const [lastResetIndex, setLastResetIndex] = useState(-1);
   const [encounterLog, setEncounterLog] = useState([]);
+  const [lastTokenUpdateRound, setLastTokenUpdateRound] = useState(0);
 
   useImperativeHandle(ref, () => ({
     getEncounterData: () => ({
@@ -83,6 +84,29 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     }));
   };
 
+  const updateTokenDurations = (characterIndex) => {
+    if (lastTokenUpdateRound !== round) {
+      setCharacters(prevCharacters => prevCharacters.map((char, index) => {
+        if (index === characterIndex) {
+          const updatedTokens = char.tokens.map(token => {
+            if (token.duration !== null) {
+              return {
+                ...token,
+                duration: Math.max(0, token.duration - 1)
+              };
+            }
+            return token;
+          });
+          const filteredTokens = updatedTokens.filter(token => token.duration === null || token.duration > 0);
+          return { ...char, tokens: filteredTokens };
+        }
+        return char;
+      }));
+      setLastTokenUpdateRound(round);
+      logEvent(`Updated token durations for ${characters[characterIndex].name}`);
+    }
+  };
+
   const handlePreviousTurn = () => {
     setActiveCharacterIndex(prevIndex => {
       const newIndex = prevIndex === 0 ? characters.length - 1 : prevIndex - 1;
@@ -94,11 +118,17 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
 
   const handleNextTurn = () => {
     setActiveCharacterIndex(prevIndex => {
+      const currentIndex = prevIndex;
       const newIndex = prevIndex === characters.length - 1 ? 0 : prevIndex + 1;
+      
+      // Update token durations for the character whose turn is ending
+      updateTokenDurations(currentIndex);
+
       if (newIndex > lastResetIndex || (lastResetIndex === characters.length - 1 && newIndex === 0)) {
         resetCharacterActions(newIndex);
         setLastResetIndex(newIndex);
       }
+      
       logEvent(`Turn changed to ${characters[newIndex].name}`);
       return newIndex;
     });
@@ -108,20 +138,9 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     setCharacters(prevCharacters => {
       const updatedCharacters = prevCharacters.map((char, index) => {
         if (index === activeCharacterIndex) {
-          const updatedTokens = char.tokens.map(token => {
-            if (token.duration !== null) {
-              return {
-                ...token,
-                duration: Math.max(0, token.duration - 1)
-              };
-            }
-            return token;
-          });
-          const filteredTokens = updatedTokens.filter(token => token.duration === null || token.duration > 0);
           return {
             ...char,
             cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime,
-            tokens: filteredTokens
           };
         }
         return char;
