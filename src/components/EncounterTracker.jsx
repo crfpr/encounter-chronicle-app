@@ -37,13 +37,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   useEffect(() => {
     if (loadedEncounterData) {
       setRound(loadedEncounterData.round || 1);
-      setCharacters(loadedEncounterData.characters.map(char => ({
-        ...char,
-        tokens: char.tokens ? char.tokens.map(token => ({
-          ...token,
-          duration: token.duration !== null ? parseInt(token.duration) : null
-        })) : []
-      })));
+      setCharacters(loadedEncounterData.characters || []);
       setActiveCharacterIndex(loadedEncounterData.activeCharacterIndex || 0);
       setEncounterTime(loadedEncounterData.encounterTime || 0);
       setNotes(loadedEncounterData.notes || '');
