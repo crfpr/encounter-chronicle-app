@@ -18,7 +18,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   const [notes, setNotes] = useState('');
   const [activePage, setActivePage] = useState('tracker');
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
-  const [lastResetIndex, setLastResetIndex] = useState(-1);
   const [encounterLog, setEncounterLog] = useState([]);
 
   useImperativeHandle(ref, () => ({
@@ -37,7 +36,10 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   useEffect(() => {
     if (loadedEncounterData) {
       setRound(loadedEncounterData.round || 1);
-      setCharacters(loadedEncounterData.characters || []);
+      setCharacters(loadedEncounterData.characters.map(char => ({
+        ...char,
+        startedTurn: false
+      })) || []);
       setActiveCharacterIndex(loadedEncounterData.activeCharacterIndex || 0);
       setEncounterTime(loadedEncounterData.encounterTime || 0);
       setNotes(loadedEncounterData.notes || '');
@@ -113,25 +115,28 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
 
       const newActiveIndex = (activeCharacterIndex + 1) % characters.length;
 
-      if (newActiveIndex === 0) {
+      // Check if all characters have started their turn
+      const allStartedTurn = updatedCharacters.every(char => char.startedTurn);
+
+      if (allStartedTurn) {
+        // Start a new round
         setRound(prevRound => {
           logEvent(`Round ${prevRound + 1} started`);
           return prevRound + 1;
         });
-        setLastResetIndex(-1);
+        // Reset startedTurn for all characters
+        return updatedCharacters.map(char => ({ ...char, startedTurn: false }));
       }
 
-      return updatedCharacters;
+      // Set startedTurn to true for the new active character
+      return updatedCharacters.map((char, index) => 
+        index === newActiveIndex ? { ...char, startedTurn: true } : char
+      );
     });
 
     setActiveCharacterIndex(prevIndex => {
       const newIndex = (prevIndex + 1) % characters.length;
-      
-      if (newIndex > lastResetIndex || (lastResetIndex === characters.length - 1 && newIndex === 0)) {
-        resetCharacterActions(newIndex);
-        setLastResetIndex(newIndex);
-      }
-      
+      resetCharacterActions(newIndex);
       logEvent(`Turn changed to ${characters[newIndex].name}`);
       return newIndex;
     });
@@ -141,12 +146,12 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
 
   useEffect(() => {
     setCharacters(prevCharacters => prevCharacters.map((char, index) => {
-      if (index === activeCharacterIndex && !char.hasActedThisRound) {
+      if (index === activeCharacterIndex && !char.startedTurn) {
         return {
           ...char,
           turnCount: (char.turnCount || 0) + 1,
           roundCount: round,
-          hasActedThisRound: true
+          startedTurn: true
         };
       }
       return char;
@@ -227,7 +232,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   };
 
   const addCharacter = (newCharacter) => {
-    setCharacters(prevCharacters => [...prevCharacters, newCharacter]);
+    setCharacters(prevCharacters => [...prevCharacters, { ...newCharacter, startedTurn: false }]);
     logEvent(`Added new character: ${newCharacter.name}`);
   };
 
