@@ -89,6 +89,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     } border-zinc-300 dark:border-zinc-800`;
   };
 
+  const handleAddToken = () => {
+    // This function will be implemented later to add tokens
+    console.log('Add token clicked');
+  };
+
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out min-h-[200px]`}>
       {/* Left Tab */}
@@ -197,6 +202,17 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 <span className="text-xs ml-1">ft</span>
               </div>
             </div>
+          </div>
+
+          {/* New row for Add Token button */}
+          <div className="flex items-center">
+            <Button
+              onClick={handleAddToken}
+              className={`h-[30px] px-2 text-xs border transition-colors bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-800`}
+            >
+              <PlusCircle className="mr-1 h-4 w-4" />
+              Add token +
+            </Button>
           </div>
         </div>
 
