@@ -93,32 +93,28 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   };
 
   const handleNextTurn = () => {
-    setActiveCharacterIndex(prevIndex => {
-      const newIndex = prevIndex === characters.length - 1 ? 0 : prevIndex + 1;
-      
-      if (newIndex > lastResetIndex || (lastResetIndex === characters.length - 1 && newIndex === 0)) {
-        resetCharacterActions(newIndex);
-        setLastResetIndex(newIndex);
-      }
-      
-      logEvent(`Turn changed to ${characters[newIndex].name}`);
-      return newIndex;
-    });
-
-    setTurnTime(0);
-
     setCharacters(prevCharacters => {
       const updatedCharacters = prevCharacters.map((char, index) => {
         if (index === activeCharacterIndex) {
+          // Update tokens for the current active character
+          const updatedTokens = char.tokens.map(token => ({
+            ...token,
+            tokenDuration: token.tokenDuration > 0 ? token.tokenDuration - 1 : 0
+          })).filter(token => token.tokenDuration > 0);
+
           return {
             ...char,
             cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime,
+            tokens: updatedTokens,
+            lastActiveRound: round
           };
         }
         return char;
       });
 
-      if (activeCharacterIndex === characters.length - 1) {
+      const newActiveIndex = (activeCharacterIndex + 1) % characters.length;
+
+      if (newActiveIndex === 0) {
         setRound(prevRound => {
           logEvent(`Round ${prevRound + 1} started`);
           return prevRound + 1;
@@ -132,6 +128,20 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
 
       return updatedCharacters;
     });
+
+    setActiveCharacterIndex(prevIndex => {
+      const newIndex = (prevIndex + 1) % characters.length;
+      
+      if (newIndex > lastResetIndex || (lastResetIndex === characters.length - 1 && newIndex === 0)) {
+        resetCharacterActions(newIndex);
+        setLastResetIndex(newIndex);
+      }
+      
+      logEvent(`Turn changed to ${characters[newIndex].name}`);
+      return newIndex;
+    });
+
+    setTurnTime(0);
   };
 
   useEffect(() => {
