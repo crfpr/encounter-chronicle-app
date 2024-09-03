@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import EncounterTracker from '../components/EncounterTracker';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
-import { Upload, Download, X, Sun, Moon } from 'lucide-react';
+import { Upload, Download, X, Sun, Moon, Users } from 'lucide-react';
 import MobileMenuButton from '../components/MobileMenuButton';
 import ThemeToggle from '../components/ThemeToggle';
 
@@ -22,31 +22,32 @@ const Index = () => {
       setIsMobile(window.innerWidth < 768);
       updateContentHeight();
     };
-
     window.addEventListener('resize', handleResize);
     updateContentHeight();
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    const savedTheme = localStorage.getItem('theme');
+    setIsDarkMode(savedTheme === 'dark');
+
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle('dark', isDarkMode);
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   const updateContentHeight = () => {
     const header = document.querySelector('header');
     if (header) {
-      const height = header.offsetHeight;
-      setHeaderHeight(height);
-      setContentHeight(`calc(100vh - ${height}px)`);
+      const newHeaderHeight = header.offsetHeight;
+      setHeaderHeight(newHeaderHeight);
+      const newHeight = `calc(100vh - ${newHeaderHeight}px)`;
+      setContentHeight(newHeight);
     }
-  };
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark');
   };
 
   const exportEncounterData = () => {
@@ -59,7 +60,19 @@ const Index = () => {
       console.error('No encounter data to export');
       return;
     }
-    downloadJSON(data, `${data.encounterName.replace(/\s+/g, '_')}_encounter.json`);
+    try {
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${data.encounterName.replace(/\s+/g, '_')}_data.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error exporting encounter data:', error);
+    }
     setIsMobileMenuOpen(false);
   };
 
@@ -69,70 +82,42 @@ const Index = () => {
       return;
     }
     const data = encounterTrackerRef.current.getPartyData();
-    if (!data || data.characters.length === 0) {
+    if (!data || data.length === 0) {
       console.error('No party data to export');
       return;
     }
-    downloadJSON(data, `${data.partyName.replace(/\s+/g, '_')}_party.json`);
-    setIsMobileMenuOpen(false);
-  };
-
-  const downloadJSON = (data, filename) => {
     try {
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const partyData = data.map(character => ({
+        name: character.name,
+        type: character.type,
+        movement: character.maxMovement,
+        ac: character.ac,
+        maxHp: character.maxHp,
+      }));
+      const blob = new Blob([JSON.stringify(partyData, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = filename;
+      a.download = `party_data.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('Error exporting data:', error);
+      console.error('Error exporting party data:', error);
     }
+    setIsMobileMenuOpen(false);
   };
 
-  const uploadFile = (event) => {
+  const uploadEncounterData = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
         try {
           const data = JSON.parse(e.target.result);
-          if (data.characters) {
-            if (data.round) {
-              // This is an encounter file
-              setEncounterData(data);
-              setEncounterName(data.encounterName);
-            } else {
-              // This is a party file
-              const newEncounterData = {
-                encounterName: data.partyName,
-                characters: data.characters.map(char => ({
-                  ...char,
-                  currentHp: char.maxHp,
-                  currentMovement: char.maxMovement,
-                  action: false,
-                  bonusAction: false,
-                  reaction: false,
-                  initiative: '',
-                  conditions: [],
-                  tokens: []
-                })),
-                round: 1,
-                encounterTime: 0,
-                notes: '',
-                log: [],
-                activeCharacterIndex: 0,
-                isRunning: false
-              };
-              setEncounterData(newEncounterData);
-              setEncounterName(data.partyName);
-            }
-          } else {
-            console.error('Invalid file format');
-          }
+          setEncounterData(data);
+          setEncounterName(data.encounterName);
         } catch (error) {
           console.error('Error parsing JSON:', error);
         }
@@ -142,25 +127,38 @@ const Index = () => {
     setIsMobileMenuOpen(false);
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   const handleUploadClick = () => {
     fileInputRef.current.click();
   };
 
   return (
     <div className={`flex flex-col ${isMobile ? 'h-screen' : ''} ${isDarkMode ? 'dark' : ''}`}>
-      <header className="bg-white dark:bg-zinc-950 border-b border-zinc-300 dark:border-zinc-800 fixed top-0 left-0 right-0 z-10">
-        <div className="container mx-auto px-4 py-2 flex justify-between items-center">
-          <Input
-            type="text"
-            value={encounterName}
-            onChange={(e) => setEncounterName(e.target.value)}
-            className="text-lg font-bold bg-transparent border-none focus:outline-none focus:ring-0 p-0 h-auto"
-          />
-          <div className="flex items-center space-x-2">
-            {isMobile ? (
-              <MobileMenuButton onClick={toggleMobileMenu} />
-            ) : (
-              <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+      <header className={`bg-white text-black dark:bg-black dark:text-white py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999] border-b border-zinc-300 dark:border-zinc-700`}>
+        <div className="container mx-auto px-4 flex items-center justify-between">
+          <div className="flex items-center flex-grow">
+            <Input
+              value={encounterName}
+              onChange={(e) => setEncounterName(e.target.value)}
+              className={`font-bold bg-transparent border-none text-black dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-0 ${isMobile ? 'text-xl flex-grow' : 'text-2xl'}`}
+              placeholder="Enter encounter name..."
+            />
+          </div>
+          <div className="flex items-center">
+            {!isMobile && (
+              <>
+                <div className="w-4" />
+                <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+              </>
+            )}
+            {isMobile && (
+              <>
+                <div className="w-4" />
+                <MobileMenuButton onClick={toggleMobileMenu} />
+              </>
             )}
           </div>
         </div>
@@ -173,7 +171,7 @@ const Index = () => {
               encounterName={encounterName} 
               setEncounterName={setEncounterName}
               exportEncounterData={exportEncounterData}
-              uploadEncounterData={uploadFile}
+              uploadEncounterData={uploadEncounterData}
               isMobile={isMobile}
               contentHeight={contentHeight}
               loadedEncounterData={encounterData}
@@ -196,12 +194,12 @@ const Index = () => {
                 Save Encounter
               </Button>
               <Button onClick={exportPartyData} className="w-full flex items-center justify-center">
-                <Download className="mr-2 h-4 w-4" />
+                <Users className="mr-2 h-4 w-4" />
                 Save Party
               </Button>
               <Button onClick={handleUploadClick} className="w-full flex items-center justify-center">
                 <Upload className="mr-2 h-4 w-4" />
-                Load File
+                Load Encounter
               </Button>
               <Button onClick={toggleTheme} className="w-full flex items-center justify-center">
                 {isDarkMode ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
@@ -211,7 +209,7 @@ const Index = () => {
                 ref={fileInputRef}
                 type="file"
                 accept=".json"
-                onChange={uploadFile}
+                onChange={uploadEncounterData}
                 style={{ display: 'none' }}
               />
             </div>
@@ -228,19 +226,19 @@ const Index = () => {
                 Save Encounter
               </Button>
               <Button onClick={exportPartyData} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
-                <Download className="mr-2 h-4 w-4" />
+                <Users className="mr-2 h-4 w-4" />
                 Save Party
               </Button>
               <Button className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
-                <label htmlFor="upload-file" className="cursor-pointer flex items-center justify-center w-full">
+                <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center justify-center w-full">
                   <Upload className="mr-2 h-4 w-4" />
-                  Load File
+                  Load Encounter
                 </label>
                 <input
-                  id="upload-file"
+                  id="upload-encounter-data"
                   type="file"
                   accept=".json"
-                  onChange={uploadFile}
+                  onChange={uploadEncounterData}
                   style={{ display: 'none' }}
                 />
               </Button>
