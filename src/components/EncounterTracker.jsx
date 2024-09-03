@@ -31,8 +31,16 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       log: encounterLog,
       activeCharacterIndex,
       isRunning
+    }),
+    getPartyData: () => ({
+      partyName: encounterName,
+      characters: filterPCCharacters(),
     })
   }));
+
+  const filterPCCharacters = () => {
+    return characters.filter(character => character.type === 'PC');
+  };
 
   useEffect(() => {
     if (loadedEncounterData) {
