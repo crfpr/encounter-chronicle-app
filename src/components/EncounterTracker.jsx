@@ -20,7 +20,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
   const [lastResetRound, setLastResetRound] = useState(0);
   const [encounterLog, setEncounterLog] = useState([]);
-  const [movementResetThisRound, setMovementResetThisRound] = useState(false);
 
   useImperativeHandle(ref, () => ({
     getEncounterData: () => ({
@@ -75,6 +74,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
           action: false,
           bonusAction: false,
           reaction: false,
+          currentMovement: char.maxMovement,
           tokens: char.tokens.map(token => ({
             ...token,
             duration: token.duration !== null ? Math.max(0, token.duration - 1) : null
@@ -85,15 +85,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       }
       return char;
     }));
-  };
-
-  const resetAllMovement = () => {
-    setCharacters(prevCharacters => prevCharacters.map(char => ({
-      ...char,
-      currentMovement: char.maxMovement
-    })));
-    setMovementResetThisRound(true);
-    logEvent('Reset movement for all characters');
   };
 
   const handlePreviousTurn = () => {
@@ -131,10 +122,8 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
 
       if (activeCharacterIndex === characters.length - 1) {
         setRound(prevRound => {
-          const newRound = prevRound + 1;
-          logEvent(`Round ${newRound} started`);
-          setMovementResetThisRound(false);
-          return newRound;
+          logEvent(`Round ${prevRound + 1} started`);
+          return prevRound + 1;
         });
         return updatedCharacters.map(char => ({
           ...char,
@@ -144,10 +133,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
 
       return updatedCharacters;
     });
-
-    if (!movementResetThisRound) {
-      resetAllMovement();
-    }
   };
 
   useEffect(() => {
