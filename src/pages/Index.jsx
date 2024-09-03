@@ -42,10 +42,12 @@ const Index = () => {
 
   const updateContentHeight = () => {
     const header = document.querySelector('header');
-    const newHeaderHeight = header.offsetHeight;
-    setHeaderHeight(newHeaderHeight);
-    const newHeight = `calc(100vh - ${newHeaderHeight}px)`;
-    setContentHeight(newHeight);
+    if (header) {
+      const newHeaderHeight = header.offsetHeight;
+      setHeaderHeight(newHeaderHeight);
+      const newHeight = `calc(100vh - ${newHeaderHeight}px)`;
+      setContentHeight(newHeight);
+    }
   };
 
   const exportEncounterData = () => {
