@@ -340,9 +340,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                     onClick={() => toggleTokenDuration(token.id)}
                     variant="ghost"
                     size="sm"
-                    className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700"
+                    className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700 group"
                   >
-                    <Clock className="h-3 w-3" />
+                    <Clock className="h-3 w-3 group-hover:text-white" />
                   </Button>
                 )}
                 <Button
