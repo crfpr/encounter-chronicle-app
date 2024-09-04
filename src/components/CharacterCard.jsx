@@ -168,7 +168,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
                   onFocus={() => setIsNumericInputActive(true)}
                   onBlur={() => setIsNumericInputActive(false)}
-                  className="w-10 h-10 text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 font-bold text-lg"
+                  className="w-10 h-10 text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 font-bold text-sm"
                   maxLength={2}
                   style={{
                     WebkitAppearance: 'none',
