@@ -115,7 +115,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out min-h-[200px]`}>
       {/* Left Tab */}
-      <div className={`w-18 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
+      <div className={`w-20 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
         <div className="flex flex-col items-center">
           <Input
             type="text"
@@ -128,7 +128,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               setIsNumericInputActive(false);
               handleInitiativeBlur();
             }}
-            className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm`}
+            className={`w-14 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm`}
             maxLength={3}
           />
         </div>
@@ -158,7 +158,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 />
               </div>
               <div className="flex items-center ml-2 relative">
-                <ShieldIcon className="absolute pointer-events-none text-zinc-400" />
+                <ShieldIcon className="absolute pointer-events-none text-zinc-400" width="48" height="48" />
                 <Input
                   type="text"
                   inputMode="numeric"
@@ -167,7 +167,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
                   onFocus={() => setIsNumericInputActive(true)}
                   onBlur={() => setIsNumericInputActive(false)}
-                  className="w-10 h-10 text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm"
+                  className="w-12 h-12 text-center bg-transparent text-black dark:text-zinc-100 border-zinc-800 focus:ring-0 text-sm pl-4"
                   maxLength={2}
                   style={{
                     WebkitAppearance: 'none',
