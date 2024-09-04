@@ -120,13 +120,13 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const TokenInput = ({ token }) => {
-    const [inputWidth, setInputWidth] = useState(14);
+    const [inputWidth, setInputWidth] = useState(40);
     const inputRef = useRef(null);
 
     useEffect(() => {
       if (inputRef.current) {
         const textWidth = getTextWidth(token.label, getComputedStyle(inputRef.current).font);
-        setInputWidth(Math.max(14, Math.min(textWidth + 4, 120))); // Min 14px, max 120px
+        setInputWidth(Math.max(40, Math.min(textWidth + 8, 120))); // Min 40px, max 120px
       }
     }, [token.label]);
 
@@ -143,7 +143,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         type="text"
         value={token.label}
         onChange={(e) => handleTokenLabelChange(token.id, e.target.value)}
-        className="h-5 px-1 text-xs bg-transparent border-none focus:outline-none focus:ring-0"
+        className="h-5 px-1 text-xs bg-transparent border-none focus:outline-none focus:ring-0 overflow-visible"
         style={{ width: `${inputWidth}px` }}
         maxLength={30}
       />
