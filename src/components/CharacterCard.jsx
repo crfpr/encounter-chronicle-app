@@ -294,7 +294,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 variant="link" 
                 className="btn-sm text-xs text-zinc-700 dark:text-zinc-300 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 whitespace-nowrap bg-transparent dark:bg-transparent p-0 h-auto flex items-end"
               >
-                Delete character
+                Delete
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
