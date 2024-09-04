@@ -112,9 +112,17 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const toggleTokenDuration = (tokenId) => {
-    const updatedTokens = tokens.map(token => 
-      token.id === tokenId ? { ...token, showDuration: !token.showDuration } : token
-    );
+    const updatedTokens = tokens.map(token => {
+      if (token.id === tokenId) {
+        const newShowDuration = !token.showDuration;
+        return {
+          ...token,
+          showDuration: newShowDuration,
+          tokenDuration: newShowDuration ? turnTime : token.tokenDuration
+        };
+      }
+      return token;
+    });
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
   };
@@ -144,7 +152,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         value={token.label}
         onChange={(e) => handleTokenLabelChange(token.id, e.target.value)}
         className="h-5 px-1 text-xs bg-transparent border-none focus:outline-none focus:ring-0 overflow-visible"
-        style={{ width: `${inputWidth}px` }}
+        style={{ width: `${inputWidth}px`, minWidth: '40px' }}
         maxLength={30}
       />
     );
