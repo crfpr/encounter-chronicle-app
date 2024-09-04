@@ -147,14 +147,30 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         <div className="flex-grow space-y-2">
           {/* First row */}
           <div className="flex items-center space-x-2 relative">
-            <div className="flex-grow">
-              <CharacterNameType
-                name={character.name || 'New Character'}
-                type={character.type}
-                onUpdate={(newName, newType) => {
-                  updateCharacter({ ...character, name: newName || 'New Character', type: newType });
-                }}
-              />
+            <div className="flex-grow flex items-center">
+              <div className="flex-grow">
+                <CharacterNameType
+                  name={character.name || 'New Character'}
+                  type={character.type}
+                  onUpdate={(newName, newType) => {
+                    updateCharacter({ ...character, name: newName || 'New Character', type: newType });
+                  }}
+                />
+              </div>
+              <div className="flex items-center ml-2">
+                <label className="text-xs font-semibold mr-1">AC</label>
+                <Input
+                  type="text"
+                  inputMode="numeric"
+                  value={character.ac}
+                  onChange={(e) => handleInputChange('ac', e.target.value)}
+                  onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
+                  onFocus={() => setIsNumericInputActive(true)}
+                  onBlur={() => setIsNumericInputActive(false)}
+                  className="w-12 text-center h-[30px] bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners"
+                  maxLength={3}
+                />
+              </div>
             </div>
           </div>
 
@@ -297,20 +313,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       {/* Right Tab */}
       <div className={`w-18 flex-shrink-0 ${getTabColor()} border-l ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
         <div className="flex flex-col items-center space-y-2">
-          <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>AC</label>
-            <Input
-              type="text"
-              inputMode="numeric"
-              value={character.ac}
-              onChange={(e) => handleInputChange('ac', e.target.value)}
-              onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
-              onFocus={() => setIsNumericInputActive(true)}
-              onBlur={() => setIsNumericInputActive(false)}
-              className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners`}
-              maxLength={3}
-            />
-          </div>
           <div className="flex flex-col items-center">
             <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>HP</label>
             <Input
