@@ -3,6 +3,10 @@ import { Input } from '../components/ui/input';
 import ShieldIcon from './ShieldIcon';
 
 const CharacterStats = ({ character, handleInputChange, handleNumericInputKeyDown, setIsNumericInputActive, isActive }) => {
+  if (!character) {
+    return null; // Return null if character is undefined
+  }
+
   const { ac, currentHp, maxHp } = character;
 
   return (
@@ -12,7 +16,7 @@ const CharacterStats = ({ character, handleInputChange, handleNumericInputKeyDow
         <Input
           type="text"
           inputMode="numeric"
-          value={ac}
+          value={ac || ''}
           onChange={(e) => handleInputChange('ac', e.target.value)}
           onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', ac)}
           onFocus={() => setIsNumericInputActive(true)}
@@ -29,7 +33,7 @@ const CharacterStats = ({ character, handleInputChange, handleNumericInputKeyDow
         <Input
           type="text"
           inputMode="numeric"
-          value={currentHp}
+          value={currentHp || ''}
           onChange={(e) => handleInputChange('currentHp', e.target.value)}
           onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', currentHp)}
           onFocus={() => setIsNumericInputActive(true)}
@@ -41,7 +45,7 @@ const CharacterStats = ({ character, handleInputChange, handleNumericInputKeyDow
         <Input
           type="text"
           inputMode="numeric"
-          value={maxHp}
+          value={maxHp || ''}
           onChange={(e) => handleInputChange('maxHp', e.target.value)}
           onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', maxHp)}
           onFocus={() => setIsNumericInputActive(true)}
