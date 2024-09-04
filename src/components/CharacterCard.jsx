@@ -158,7 +158,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 />
               </div>
               <div className="flex items-center ml-2 relative">
-                <ShieldIcon className="absolute pointer-events-none text-zinc-400" />
+                <ShieldIcon className="absolute pointer-events-none text-zinc-800" />
                 <Input
                   type="text"
                   inputMode="numeric"
@@ -167,7 +167,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
                   onFocus={() => setIsNumericInputActive(true)}
                   onBlur={() => setIsNumericInputActive(false)}
-                  className="w-10 h-10 text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm"
+                  className="w-12 h-12 text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm pl-1"
                   maxLength={2}
                   style={{
                     WebkitAppearance: 'none',
