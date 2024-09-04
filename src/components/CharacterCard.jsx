@@ -76,8 +76,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     return `h-[30px] px-2 text-xs border transition-colors ${
       isToggled
         ? isActive
-          ? 'bg-zinc-800 text-white dark:bg-red-500 dark:text-white'
-          : 'bg-red-500 text-white dark:bg-red-500 dark:text-white'
+          ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white'
+          : 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white'
         : 'bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800'
     } border-zinc-300 dark:border-zinc-800`;
   };
