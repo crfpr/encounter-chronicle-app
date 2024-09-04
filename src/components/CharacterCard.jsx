@@ -98,7 +98,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   const handleTokenDurationChange = (tokenId, newDuration) => {
     const updatedTokens = tokens.map(token => 
-      token.id === tokenId ? { ...token, tokenDuration: newDuration } : token
+      token.id === tokenId ? { ...token, tokenDuration: newDuration === '' ? null : newDuration } : token
     );
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
@@ -119,7 +119,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         return {
           ...token,
           showDuration: newShowDuration,
-          tokenDuration: newShowDuration ? turnTime : token.tokenDuration
+          tokenDuration: newShowDuration ? null : token.tokenDuration
         };
       }
       return token;
@@ -133,6 +133,16 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         tokenInputRefs.current[tokenId].focus();
       }
     }, 0);
+  };
+
+  const handleTokenDurationBlur = (tokenId, value) => {
+    if (value === '' || isNaN(value)) {
+      const updatedTokens = tokens.map(token => 
+        token.id === tokenId ? { ...token, showDuration: false, tokenDuration: null } : token
+      );
+      setTokens(updatedTokens);
+      updateCharacter({ ...character, tokens: updatedTokens });
+    }
   };
 
   const TokenInput = ({ token }) => {
@@ -312,11 +322,13 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 {token.showDuration ? (
                   <Input
                     type="number"
-                    value={token.tokenDuration}
-                    onChange={(e) => handleTokenDurationChange(token.id, parseInt(e.target.value) || 0)}
+                    value={token.tokenDuration || ''}
+                    onChange={(e) => handleTokenDurationChange(token.id, e.target.value)}
+                    onBlur={(e) => handleTokenDurationBlur(token.id, e.target.value)}
                     className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0 no-spinners"
                     min="0"
                     ref={(el) => tokenInputRefs.current[token.id] = el}
+                    placeholder=""
                   />
                 ) : (
                   <Button
