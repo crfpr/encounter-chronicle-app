@@ -1,59 +1,27 @@
 import React from 'react';
 import { Input } from '../components/ui/input';
-import ShieldIcon from './ShieldIcon';
 
-const CharacterStats = ({ character, handleInputChange, handleNumericInputKeyDown, setIsNumericInputActive, isActive }) => {
-  if (!character) {
-    return null; // Return null if character is undefined
-  }
-
-  const { ac, currentHp, maxHp } = character;
-
+const CharacterStats = ({ ac, currentHp, maxHp, handleInputChange, handleNumericInputKeyDown, setIsNumericInputActive, isActive }) => {
   return (
-    <div className="flex items-center space-x-2">
-      <div className="relative">
-        <ShieldIcon className="w-10 h-10 text-zinc-800 dark:text-zinc-200" />
-        <Input
-          type="text"
-          inputMode="numeric"
-          value={ac || ''}
-          onChange={(e) => handleInputChange('ac', e.target.value)}
-          onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', ac)}
-          onFocus={() => setIsNumericInputActive(true)}
-          onBlur={() => setIsNumericInputActive(false)}
-          className="absolute inset-0 w-full h-full text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm"
-          maxLength={2}
-          style={{
-            WebkitAppearance: 'none',
-            MozAppearance: 'textfield',
-          }}
-        />
-      </div>
-      <div className="flex flex-col items-center">
-        <Input
-          type="text"
-          inputMode="numeric"
-          value={currentHp || ''}
-          onChange={(e) => handleInputChange('currentHp', e.target.value)}
-          onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', currentHp)}
-          onFocus={() => setIsNumericInputActive(true)}
-          onBlur={() => setIsNumericInputActive(false)}
-          className={`w-14 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm`}
-          maxLength={3}
-        />
-        <span className="text-xs text-zinc-500 dark:text-zinc-400">/</span>
-        <Input
-          type="text"
-          inputMode="numeric"
-          value={maxHp || ''}
-          onChange={(e) => handleInputChange('maxHp', e.target.value)}
-          onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', maxHp)}
-          onFocus={() => setIsNumericInputActive(true)}
-          onBlur={() => setIsNumericInputActive(false)}
-          className={`w-14 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm`}
-          maxLength={3}
-        />
-      </div>
+    <div className="flex items-center ml-2 relative">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute pointer-events-none">
+        <path d="M20 2L4 8V20C4 30 20 38 20 38C20 38 36 30 36 20V8L20 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+      <Input
+        type="text"
+        inputMode="numeric"
+        value={ac}
+        onChange={(e) => handleInputChange('ac', e.target.value)}
+        onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', ac)}
+        onFocus={() => setIsNumericInputActive(true)}
+        onBlur={() => setIsNumericInputActive(false)}
+        className="w-[40px] h-[40px] text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm"
+        maxLength={2}
+        style={{
+          WebkitAppearance: 'none',
+          MozAppearance: 'textfield',
+        }}
+      />
     </div>
   );
 };

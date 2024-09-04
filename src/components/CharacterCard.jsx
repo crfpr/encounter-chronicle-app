@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
+import { ToggleGroup, ToggleGroupItem } from "../components/ui/toggle-group";
 import { Badge } from "../components/ui/badge";
 import TurnNavigator from './TurnNavigator';
 import CharacterNameType from './CharacterNameType';
-import { PlusCircle, X } from 'lucide-react';
+import { PlusCircle, X, Clock } from 'lucide-react';
 import TokenInput from './TokenInput';
 import CharacterStats from './CharacterStats';
 import ActionButtons from './ActionButtons';
 
-const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, round }) => {
+const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
 
   useEffect(() => {
@@ -176,7 +177,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 />
               </div>
               <CharacterStats
-                character={character}
+                ac={character.ac}
+                currentHp={character.currentHp}
+                maxHp={character.maxHp}
                 handleInputChange={handleInputChange}
                 handleNumericInputKeyDown={handleNumericInputKeyDown}
                 setIsNumericInputActive={setIsNumericInputActive}
@@ -253,6 +256,39 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+        </div>
+      </div>
+
+      <div className={`w-18 flex-shrink-0 ${getTabColor()} border-l ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
+        <div className="flex flex-col items-center space-y-2">
+          <div className="flex flex-col items-center">
+            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>HP</label>
+            <Input
+              type="text"
+              inputMode="numeric"
+              value={character.currentHp}
+              onChange={(e) => handleInputChange('currentHp', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
+              onFocus={() => setIsNumericInputActive(true)}
+              onBlur={() => setIsNumericInputActive(false)}
+              className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm`}
+              maxLength={3}
+            />
+          </div>
+          <div className="flex flex-col items-center">
+            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>Max HP</label>
+            <Input
+              type="text"
+              inputMode="numeric"
+              value={character.maxHp}
+              onChange={(e) => handleInputChange('maxHp', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
+              onFocus={() => setIsNumericInputActive(true)}
+              onBlur={() => setIsNumericInputActive(false)}
+              className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm`}
+              maxLength={3}
+            />
+          </div>
         </div>
       </div>
     </div>
