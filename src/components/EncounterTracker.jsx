@@ -98,8 +98,8 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     setCharacters(prevCharacters => {
       const updatedCharacters = prevCharacters.map((char, index) => {
         if (index === activeCharacterIndex) {
-          // Update tokens for the current active character
-          const updatedTokens = char.tokens.map(token => ({
+          // Update tokens for the current active character only if they haven't acted this round
+          const updatedTokens = char.hasActed ? char.tokens : char.tokens.map(token => ({
             ...token,
             tokenDuration: token.tokenDuration > 0 ? token.tokenDuration - 1 : 0
           })).filter(token => token.tokenDuration > 0);
