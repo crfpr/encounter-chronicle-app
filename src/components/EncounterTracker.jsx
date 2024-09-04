@@ -97,9 +97,9 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   const handleNextTurn = () => {
     setCharacters(prevCharacters => {
       const updatedCharacters = prevCharacters.map((char, index) => {
-        if (index === activeCharacterIndex) {
+        if (index === activeCharacterIndex && !char.hasActed) {
           // Update tokens for the current active character only if they haven't acted this round
-          const updatedTokens = char.hasActed ? char.tokens : char.tokens.map(token => ({
+          const updatedTokens = char.tokens.map(token => ({
             ...token,
             tokenDuration: token.tokenDuration > 0 ? token.tokenDuration - 1 : 0
           })).filter(token => token.tokenDuration > 0);
@@ -108,7 +108,8 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
             ...char,
             cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime,
             tokens: updatedTokens,
-            hasActed: true
+            hasActed: true,
+            turnCount: (char.turnCount || 0) + 1
           };
         }
         return char;
@@ -141,19 +142,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
 
     setTurnTime(0);
   };
-
-  useEffect(() => {
-    setCharacters(prevCharacters => prevCharacters.map((char, index) => {
-      if (index === activeCharacterIndex && !char.hasActed) {
-        return {
-          ...char,
-          turnCount: (char.turnCount || 0) + 1,
-          roundCount: round
-        };
-      }
-      return char;
-    }));
-  }, [activeCharacterIndex, round]);
 
   const handleSwipeLeft = () => {
     if (isMobile) {
