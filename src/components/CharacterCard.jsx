@@ -146,8 +146,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       <div className="flex-grow p-2 flex flex-col">
         <div className="flex-grow space-y-2">
           {/* First row */}
-          <div className="flex items-center space-x-2 relative">
-            <div className="flex-grow flex items-center">
+          <div className="flex items-start space-x-2 relative">
+            <div className="flex-grow flex items-start">
               <div className="flex-grow">
                 <CharacterNameType
                   name={character.name || 'New Character'}
