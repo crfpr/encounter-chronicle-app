@@ -321,7 +321,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   isActive
                     ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'
                     : 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100'
-                }`}
+                } hover:text-white transition-colors`}
               >
                 <TokenInput token={token} />
                 {token.showDuration ? (
