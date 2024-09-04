@@ -119,6 +119,37 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     updateCharacter({ ...character, tokens: updatedTokens });
   };
 
+  const TokenInput = ({ token }) => {
+    const [inputWidth, setInputWidth] = useState(14);
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+      if (inputRef.current) {
+        const textWidth = getTextWidth(token.label, getComputedStyle(inputRef.current).font);
+        setInputWidth(Math.max(14, Math.min(textWidth + 4, 120))); // Min 14px, max 120px
+      }
+    }, [token.label]);
+
+    const getTextWidth = (text, font) => {
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      context.font = font;
+      return context.measureText(text).width;
+    };
+
+    return (
+      <Input
+        ref={inputRef}
+        type="text"
+        value={token.label}
+        onChange={(e) => handleTokenLabelChange(token.id, e.target.value)}
+        className="h-5 px-1 text-xs bg-transparent border-none focus:outline-none focus:ring-0"
+        style={{ width: `${inputWidth}px` }}
+        maxLength={30}
+      />
+    );
+  };
+
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out`}>
       {/* Left Tab */}
@@ -261,13 +292,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                     : 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100'
                 }`}
               >
-                <Input
-                  type="text"
-                  value={token.label}
-                  onChange={(e) => handleTokenLabelChange(token.id, e.target.value)}
-                  className="w-14 h-5 px-1 text-xs bg-transparent border-none focus:outline-none focus:ring-0"
-                  maxLength={30}
-                />
+                <TokenInput token={token} />
                 {token.showDuration ? (
                   <Input
                     type="number"
