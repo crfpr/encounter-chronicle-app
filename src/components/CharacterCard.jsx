@@ -10,6 +10,7 @@ import { PlusCircle, X, Clock } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
+  const tokenInputRefs = useRef({});
 
   useEffect(() => {
     setTokens(character.tokens || []);
@@ -125,6 +126,13 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     });
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
+
+    // Focus the input after a short delay to ensure it's rendered
+    setTimeout(() => {
+      if (tokenInputRefs.current[tokenId]) {
+        tokenInputRefs.current[tokenId].focus();
+      }
+    }, 0);
   };
 
   const TokenInput = ({ token }) => {
@@ -308,6 +316,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                     onChange={(e) => handleTokenDurationChange(token.id, parseInt(e.target.value) || 0)}
                     className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0 no-spinners"
                     min="0"
+                    ref={(el) => tokenInputRefs.current[token.id] = el}
                   />
                 ) : (
                   <Button
