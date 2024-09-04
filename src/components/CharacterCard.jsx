@@ -6,6 +6,7 @@ import { ToggleGroup, ToggleGroupItem } from "../components/ui/toggle-group";
 import { Badge } from "../components/ui/badge";
 import TurnNavigator from './TurnNavigator';
 import CharacterNameType from './CharacterNameType';
+import ShieldIcon from './ShieldIcon';
 import { PlusCircle, X } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
@@ -157,7 +158,8 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   }}
                 />
               </div>
-              <div className="flex items-center ml-2">
+              <div className="flex items-center ml-2 relative">
+                <ShieldIcon className="absolute pointer-events-none text-zinc-400" />
                 <Input
                   type="text"
                   inputMode="numeric"
@@ -166,10 +168,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
                   onFocus={() => setIsNumericInputActive(true)}
                   onBlur={() => setIsNumericInputActive(false)}
-                  className="w-12 text-center h-[40px] bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners rounded-full font-bold"
-                  maxLength={3}
+                  className="w-10 h-10 text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 font-bold text-lg"
+                  maxLength={2}
                   style={{
-                    clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+                    WebkitAppearance: 'none',
+                    MozAppearance: 'textfield',
                   }}
                 />
               </div>
