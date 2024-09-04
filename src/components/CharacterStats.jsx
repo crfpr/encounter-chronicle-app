@@ -1,27 +1,45 @@
 import React from 'react';
-import { Input } from '../components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
 
-const CharacterStats = ({ ac, onAcChange, onInputKeyDown, setIsNumericInputActive }) => {
+const CharacterStats = ({ characters, round }) => {
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
   return (
-    <div className="flex items-center ml-2 relative">
-      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute pointer-events-none">
-        <path d="M20 2L4 8V20C4 30 20 38 20 38C20 38 36 30 36 20V8L20 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-      <Input
-        type="text"
-        inputMode="numeric"
-        value={ac}
-        onChange={(e) => onAcChange(e.target.value)}
-        onKeyDown={(e) => onInputKeyDown(e, 'ac', ac)}
-        onFocus={() => setIsNumericInputActive(true)}
-        onBlur={() => setIsNumericInputActive(false)}
-        className="w-[40px] h-[40px] text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm"
-        maxLength={2}
-        style={{
-          WebkitAppearance: 'none',
-          MozAppearance: 'textfield',
-        }}
-      />
+    <div className="overflow-x-auto">
+      <Table className="w-full">
+        <TableHeader>
+          <TableRow className="[&>th]:p-2 [&>th]:text-xs [&>th]:font-semibold">
+            <TableHead className="w-1/3">Name</TableHead>
+            <TableHead className="text-right">Turns</TableHead>
+            <TableHead className="text-right">Rounds</TableHead>
+            <TableHead className="text-right">Turn avg.</TableHead>
+            <TableHead className="text-right">Turn total</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {characters.map((character) => (
+            <TableRow key={character.id} className="[&>td]:p-2">
+              <TableCell className="font-medium">
+                <div className="truncate max-w-[120px]" title={character.name}>
+                  {character.name}
+                </div>
+              </TableCell>
+              <TableCell className="text-right">{character.turnCount || 0}</TableCell>
+              <TableCell className="text-right">{character.roundCount || round}</TableCell>
+              <TableCell className="text-right">
+                {character.turnCount > 0
+                  ? formatTime(Math.floor((character.cumulativeTurnTime || 0) / character.turnCount))
+                  : '0:00'}
+              </TableCell>
+              <TableCell className="text-right">{formatTime(character.cumulativeTurnTime || 0)}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 };
