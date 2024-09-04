@@ -33,7 +33,8 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
       turnCount: 0,
       roundCount: 0,
       cumulativeTurnTime: 0,
-      tokens: []
+      tokens: [],
+      hasActed: false
     };
     setCharacters(prevCharacters => [...prevCharacters, newCharacter]);
   };
