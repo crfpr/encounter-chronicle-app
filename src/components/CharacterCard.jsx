@@ -158,7 +158,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 />
               </div>
               <div className="flex items-center ml-2">
-                <label className="text-xs font-semibold mr-1">AC</label>
                 <Input
                   type="text"
                   inputMode="numeric"
@@ -167,8 +166,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
                   onFocus={() => setIsNumericInputActive(true)}
                   onBlur={() => setIsNumericInputActive(false)}
-                  className="w-12 text-center h-[30px] bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners"
+                  className="w-12 text-center h-[40px] bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners rounded-full font-bold"
                   maxLength={3}
+                  style={{
+                    clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+                  }}
                 />
               </div>
             </div>
