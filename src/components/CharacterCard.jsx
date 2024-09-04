@@ -6,7 +6,7 @@ import { ToggleGroup, ToggleGroupItem } from "../components/ui/toggle-group";
 import { Badge } from "../components/ui/badge";
 import TurnNavigator from './TurnNavigator';
 import CharacterNameType from './CharacterNameType';
-import { PlusCircle, X } from 'lucide-react';
+import { PlusCircle, X, Clock } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
@@ -83,7 +83,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const handleAddToken = () => {
-    const newToken = { id: Date.now(), label: 'Token', tokenDuration: 1 };
+    const newToken = { id: Date.now(), label: 'Token', tokenDuration: null, showDuration: false };
     const updatedTokens = [...tokens, newToken];
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
@@ -105,7 +105,15 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
 
   const handleTokenLabelChange = (tokenId, newLabel) => {
     const updatedTokens = tokens.map(token => 
-      token.id === tokenId ? { ...token, label: newLabel } : token
+      token.id === tokenId ? { ...token, label: newLabel.slice(0, 30) } : token
+    );
+    setTokens(updatedTokens);
+    updateCharacter({ ...character, tokens: updatedTokens });
+  };
+
+  const toggleTokenDuration = (tokenId) => {
+    const updatedTokens = tokens.map(token => 
+      token.id === tokenId ? { ...token, showDuration: !token.showDuration } : token
     );
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
@@ -258,14 +266,26 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   value={token.label}
                   onChange={(e) => handleTokenLabelChange(token.id, e.target.value)}
                   className="w-14 h-5 px-1 text-xs bg-transparent border-none focus:outline-none focus:ring-0"
+                  maxLength={30}
                 />
-                <Input
-                  type="number"
-                  value={token.tokenDuration}
-                  onChange={(e) => handleTokenDurationChange(token.id, parseInt(e.target.value) || 0)}
-                  className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0 no-spinners"
-                  min="0"
-                />
+                {token.showDuration ? (
+                  <Input
+                    type="number"
+                    value={token.tokenDuration}
+                    onChange={(e) => handleTokenDurationChange(token.id, parseInt(e.target.value) || 0)}
+                    className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0 no-spinners"
+                    min="0"
+                  />
+                ) : (
+                  <Button
+                    onClick={() => toggleTokenDuration(token.id)}
+                    variant="ghost"
+                    size="sm"
+                    className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700"
+                  >
+                    <Clock className="h-3 w-3" />
+                  </Button>
+                )}
                 <Button
                   onClick={() => handleRemoveToken(token.id)}
                   variant="ghost"
