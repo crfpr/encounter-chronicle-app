@@ -6,7 +6,6 @@ import { ToggleGroup, ToggleGroupItem } from "../components/ui/toggle-group";
 import { Badge } from "../components/ui/badge";
 import TurnNavigator from './TurnNavigator';
 import CharacterNameType from './CharacterNameType';
-import ShieldIcon from './ShieldIcon';
 import { PlusCircle, X } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
@@ -158,7 +157,9 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                 />
               </div>
               <div className="flex items-center ml-2 relative">
-                <ShieldIcon className="absolute pointer-events-none text-zinc-800" />
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute pointer-events-none">
+                  <path d="M20 2L4 8V20C4 30 20 38 20 38C20 38 36 30 36 20V8L20 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
                 <Input
                   type="text"
                   inputMode="numeric"
@@ -167,7 +168,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                   onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
                   onFocus={() => setIsNumericInputActive(true)}
                   onBlur={() => setIsNumericInputActive(false)}
-                  className="w-12 h-12 text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm pl-1"
+                  className="w-[40px] h-[40px] text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm"
                   maxLength={2}
                   style={{
                     WebkitAppearance: 'none',
