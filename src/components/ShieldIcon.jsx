@@ -9,7 +9,6 @@ const ShieldIcon = (props) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    {/* Placeholder path for shield shape */}
     <path
       d="M20 2L4 8V20C4 30 20 38 20 38C20 38 36 30 36 20V8L20 2Z"
       stroke="currentColor"
