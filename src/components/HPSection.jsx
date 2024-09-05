@@ -61,7 +61,7 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
           onOpenChange={setIsSelectOpen}
           open={isSelectOpen}
         >
-          <SelectTrigger className="w-full h-[30px] text-xs">
+          <SelectTrigger className={`w-full h-[30px] text-xs ${isActive ? 'bg-zinc-800 text-white' : 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'}`}>
             <SelectValue placeholder={getStatusLabel(character.state)} />
           </SelectTrigger>
           <SelectContent>
