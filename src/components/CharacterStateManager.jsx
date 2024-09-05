@@ -37,9 +37,9 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
           variant="outline"
           size="sm"
           className={cn(
-            "w-4 h-4 p-0 rounded-full",
+            "w-6 h-6 p-0 rounded-full",
             character.deathSaves[type].includes(value) 
-              ? (type === 'failures' ? 'bg-red-500' : 'bg-green-500') 
+              ? (type === 'failures' ? 'bg-red-500 dark:bg-red-900' : 'bg-green-500 dark:bg-green-900') 
               : 'bg-zinc-200 dark:bg-zinc-700'
           )}
         />
@@ -47,16 +47,16 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
     };
 
     return (
-      <div className="flex items-center space-x-2 text-xs">
-        <Label className="text-[10px]">Failure</Label>
-        <div className="flex space-x-1">
+      <div className="flex items-center justify-center space-x-4 text-sm py-4">
+        <Label className="text-base font-semibold">Failure</Label>
+        <div className="flex space-x-2">
           {renderSaveButtons('failures')}
         </div>
-        <div className="h-4 w-px bg-zinc-300 dark:bg-zinc-700" />
-        <div className="flex space-x-1">
+        <div className="h-8 w-px bg-zinc-300 dark:bg-zinc-700" />
+        <div className="flex space-x-2">
           {renderSaveButtons('successes')}
         </div>
-        <Label className="text-[10px]">Success</Label>
+        <Label className="text-base font-semibold">Success</Label>
       </div>
     );
   };
