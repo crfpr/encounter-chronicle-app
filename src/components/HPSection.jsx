@@ -10,8 +10,9 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
     let updatedCharacter = { ...character, state: newState };
     if (newState === 'ko') {
       updatedCharacter.currentHp = 0;
+      updatedCharacter.deathSaves = { successes: [], failures: [] };
     } else if (newState === 'stable') {
-      updatedCharacter.currentHp = 1;
+      updatedCharacter.currentHp = 0;
     } else if (newState === 'dead') {
       updatedCharacter.currentHp = 0;
     }

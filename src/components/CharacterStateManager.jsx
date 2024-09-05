@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button } from './ui/button';
-import { Separator } from "./ui/separator";
 import { Label } from "./ui/label";
 import { cn } from "../lib/utils";
 
@@ -19,7 +18,7 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
     }
 
     if (type === 'successes' && updatedDeathSaves.successes.length === 3) {
-      updateCharacter({ ...character, state: 'stable', currentHp: 1, deathSaves: updatedDeathSaves });
+      updateCharacter({ ...character, state: 'stable', currentHp: 0, deathSaves: updatedDeathSaves });
       return;
     }
 

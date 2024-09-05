@@ -7,7 +7,7 @@ export const useCharacterManagement = (loadedEncounterData) => {
         ...char,
         hasActed: false,
         state: char.state || 'alive',
-        deathSaves: char.deathSaves || { successes: 0, failures: 0 }
+        deathSaves: char.deathSaves || { successes: [], failures: [] }
       }));
     }
     return [];
@@ -20,7 +20,7 @@ export const useCharacterManagement = (loadedEncounterData) => {
         ...newCharacter,
         hasActed: false,
         state: 'alive',
-        deathSaves: { successes: 0, failures: 0 }
+        deathSaves: { successes: [], failures: [] }
       }
     ]);
   }, []);
