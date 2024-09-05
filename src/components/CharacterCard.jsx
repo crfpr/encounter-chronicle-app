@@ -10,6 +10,7 @@ import { PlusCircle } from 'lucide-react';
 import { debounce } from 'lodash';
 import CharacterActions from './CharacterActions';
 import HPSection from './HPSection';
+import CharacterStateManager from './CharacterStateManager';
 
 const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
@@ -204,6 +205,13 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
               setIsNumericInputActive={setIsNumericInputActive}
               isMobile={isMobile}
             />
+          )}
+
+          {/* Death save trackers */}
+          {character.state === 'ko' && (
+            <div className="mt-2">
+              <CharacterStateManager character={character} updateCharacter={updateCharacter} />
+            </div>
           )}
 
           {/* New row for tokens and Add Token button */}

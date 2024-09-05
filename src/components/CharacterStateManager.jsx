@@ -51,7 +51,7 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
     };
 
     return (
-      <div className="flex flex-col items-center space-y-1 mt-2">
+      <div className="flex items-center space-x-4">
         <div className="flex items-center space-x-1">
           <Label className="text-[10px]">Failure</Label>
           {renderSaveButtons('failures')}

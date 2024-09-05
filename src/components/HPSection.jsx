@@ -76,11 +76,6 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
           </SelectContent>
         </Select>
       </div>
-      {character.state === 'ko' && (
-        <div className="mt-2 w-full">
-          <CharacterStateManager character={character} updateCharacter={updateCharacter} />
-        </div>
-      )}
     </div>
   );
 };
