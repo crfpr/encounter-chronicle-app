@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
@@ -6,11 +6,11 @@ import { ToggleGroup, ToggleGroupItem } from "../components/ui/toggle-group";
 import { Badge } from "../components/ui/badge";
 import TurnNavigator from './TurnNavigator';
 import CharacterNameType from './CharacterNameType';
+import TokenInput from './TokenInput';
 import { PlusCircle, X, Clock } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
-  const tokenInputRefs = useRef({});
 
   useEffect(() => {
     setTokens(character.tokens || []);
@@ -108,13 +108,13 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     updateCharacter({ ...character, tokens: updatedTokens });
   };
 
-  const handleTokenLabelChange = (tokenId, newLabel) => {
+  const handleTokenLabelChange = useCallback((tokenId, newLabel) => {
     const updatedTokens = tokens.map(token => 
-      token.id === tokenId ? { ...token, label: newLabel.slice(0, 30) } : token
+      token.id === tokenId ? { ...token, label: newLabel } : token
     );
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
-  };
+  }, [tokens, updateCharacter, character]);
 
   const toggleTokenDuration = (tokenId) => {
     const updatedTokens = tokens.map(token => {
@@ -131,13 +131,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     });
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
-
-    // Focus the input after a short delay to ensure it's rendered
-    setTimeout(() => {
-      if (tokenInputRefs.current[tokenId]) {
-        tokenInputRefs.current[tokenId].focus();
-      }
-    }, 0);
   };
 
   const handleTokenDurationBlur = (tokenId, value) => {
@@ -148,37 +141,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       setTokens(updatedTokens);
       updateCharacter({ ...character, tokens: updatedTokens });
     }
-  };
-
-  const TokenInput = ({ token }) => {
-    const [inputWidth, setInputWidth] = useState(40);
-    const inputRef = useRef(null);
-
-    useEffect(() => {
-      if (inputRef.current) {
-        const textWidth = getTextWidth(token.label, getComputedStyle(inputRef.current).font);
-        setInputWidth(Math.max(40, Math.min(textWidth + 8, 120))); // Min 40px, max 120px
-      }
-    }, [token.label]);
-
-    const getTextWidth = (text, font) => {
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
-      context.font = font;
-      return context.measureText(text).width;
-    };
-
-    return (
-      <Input
-        ref={inputRef}
-        type="text"
-        value={token.label}
-        onChange={(e) => handleTokenLabelChange(token.id, e.target.value)}
-        className="h-5 px-1 text-xs bg-transparent border-none focus:outline-none focus:ring-0 overflow-visible"
-        style={{ width: `${inputWidth}px`, minWidth: '40px' }}
-        maxLength={30}
-      />
-    );
   };
 
   return (
@@ -323,7 +285,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                     : 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100'
                 } hover:text-white transition-colors`}
               >
-                <TokenInput token={token} />
+                <TokenInput token={token} onLabelChange={handleTokenLabelChange} />
                 {token.showDuration ? (
                   <Input
                     type="number"
@@ -332,7 +294,6 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                     onBlur={(e) => handleTokenDurationBlur(token.id, e.target.value)}
                     className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0 no-spinners"
                     min="1"
-                    ref={(el) => tokenInputRefs.current[token.id] = el}
                     placeholder=""
                   />
                 ) : (
