@@ -15,7 +15,7 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
   const [tokens, setTokens] = useState(character.tokens || []);
 
   const handleAddToken = useCallback(() => {
-    const newToken = { id: Date.now(), label: 'Token', tokenDuration: null, showDuration: false, isPersistent: true };
+    const newToken = { id: Date.now(), label: 'Token', tokenDuration: null, isPersistent: true };
     const updatedTokens = [...tokens, newToken];
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
@@ -43,15 +43,13 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
     updateCharacter({ ...character, tokens: updatedTokens });
   }, 300), [tokens, character, updateCharacter]);
 
-  const toggleTokenDuration = useCallback((tokenId) => {
+  const handleTogglePersistent = useCallback((tokenId) => {
     const updatedTokens = tokens.map(token => {
       if (token.id === tokenId) {
-        const newShowDuration = !token.showDuration;
         return {
           ...token,
-          showDuration: newShowDuration,
-          tokenDuration: newShowDuration ? token.tokenDuration : null,
-          isPersistent: newShowDuration ? false : true
+          isPersistent: !token.isPersistent,
+          tokenDuration: token.isPersistent ? 1 : null
         };
       }
       return token;
@@ -120,10 +118,10 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
         onLabelChange={handleTokenLabelChange}
         onDurationChange={handleTokenDurationChange}
         onRemove={handleRemoveToken}
-        onToggleDuration={toggleTokenDuration}
+        onTogglePersistent={handleTogglePersistent}
       />
     </Badge>
-  )), [tokens, isActive, handleTokenLabelChange, handleTokenDurationChange, handleRemoveToken, toggleTokenDuration]);
+  )), [tokens, isActive, handleTokenLabelChange, handleTokenDurationChange, handleRemoveToken, handleTogglePersistent]);
 
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''}`}>

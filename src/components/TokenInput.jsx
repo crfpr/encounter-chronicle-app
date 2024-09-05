@@ -4,7 +4,7 @@ import { debounce } from 'lodash';
 import { Button } from './ui/button';
 import { Clock, X } from 'lucide-react';
 
-const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemove, onToggleDuration }) => {
+const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemove, onTogglePersistent }) => {
   const [localLabel, setLocalLabel] = useState(token.label);
   const [inputWidth, setInputWidth] = useState(40);
   const inputRef = useRef(null);
@@ -50,6 +50,10 @@ const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemov
     onDurationChange(token.id, newDuration);
   };
 
+  const handleTogglePersistent = () => {
+    onTogglePersistent(token.id);
+  };
+
   return (
     <div className="flex items-center space-x-1">
       <Input
@@ -66,7 +70,7 @@ const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemov
       />
       {token.isPersistent ? (
         <Button
-          onClick={() => onToggleDuration(token.id)}
+          onClick={handleTogglePersistent}
           variant="ghost"
           size="sm"
           className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700 group"

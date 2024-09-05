@@ -56,11 +56,20 @@ export const useEncounterLogic = (characters, setCharacters) => {
     setCharacters(prevCharacters => {
       const updatedCharacters = prevCharacters.map((char, index) => {
         if (index === activeCharacterIndex) {
+          const updatedTokens = char.tokens.map(token => {
+            if (!token.isPersistent && token.tokenDuration !== null) {
+              const newDuration = token.tokenDuration > 0 ? token.tokenDuration - 1 : 0;
+              return { ...token, tokenDuration: newDuration };
+            }
+            return token;
+          }).filter(token => token.isPersistent || token.tokenDuration > 0);
+
           return {
             ...char,
             cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime,
             hasActed: true,
-            turnCount: (char.turnCount || 0) + 1
+            turnCount: (char.turnCount || 0) + 1,
+            tokens: updatedTokens
           };
         }
         return char;
