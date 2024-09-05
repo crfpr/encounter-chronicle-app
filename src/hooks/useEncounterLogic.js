@@ -41,7 +41,7 @@ export const useEncounterLogic = (characters, setCharacters) => {
       }
       return char;
     }));
-  }, [setCharacters]);
+  }, []);
 
   const handlePreviousTurn = useCallback(() => {
     setActiveCharacterIndex(prevIndex => {
@@ -58,12 +58,10 @@ export const useEncounterLogic = (characters, setCharacters) => {
         if (index === activeCharacterIndex) {
           const updatedTokens = char.tokens.map(token => {
             if (token.tokenDuration !== null && token.tokenDuration > 0) {
-              if (token.createdRound !== round) {
-                return {
-                  ...token,
-                  tokenDuration: token.tokenDuration - 1
-                };
-              }
+              return {
+                ...token,
+                tokenDuration: token.tokenDuration - 1
+              };
             }
             return token;
           }).filter(token => token.tokenDuration === null || token.tokenDuration > 0);
@@ -90,11 +88,7 @@ export const useEncounterLogic = (characters, setCharacters) => {
         });
         return updatedCharacters.map(char => ({
           ...char,
-          hasActed: false,
-          tokens: char.tokens.map(token => ({
-            ...token,
-            createdRound: token.createdRound === round ? round + 1 : token.createdRound
-          }))
+          hasActed: false
         }));
       }
 
@@ -109,7 +103,7 @@ export const useEncounterLogic = (characters, setCharacters) => {
     });
 
     setTurnTime(0);
-  }, [characters, activeCharacterIndex, turnTime, resetCharacterActions, round]);
+  }, [characters, activeCharacterIndex, turnTime, resetCharacterActions]);
 
   const logEvent = useCallback((event) => {
     setEncounterLog(prevLog => [
