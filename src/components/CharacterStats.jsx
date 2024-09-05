@@ -1,57 +1,46 @@
 import React from 'react';
-import { Input } from '../components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
 
-const CharacterStats = ({ character, handleInputChange, handleNumericInputKeyDown }) => {
+const CharacterStats = ({ characters, round }) => {
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
   return (
-    <>
-      <div className="flex space-x-2">
-        <Input
-          type="number"
-          value={character.currentHp}
-          onChange={(e) => handleInputChange('currentHp', e.target.value)}
-          onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
-          className="w-16 h-[30px] text-center bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700"
-          placeholder="HP"
-        />
-        <span className="flex items-center">/</span>
-        <Input
-          type="number"
-          value={character.maxHp}
-          onChange={(e) => handleInputChange('maxHp', e.target.value)}
-          onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
-          className="w-16 h-[30px] text-center bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700"
-          placeholder="Max"
-        />
-        <Input
-          type="number"
-          value={character.ac}
-          onChange={(e) => handleInputChange('ac', e.target.value)}
-          onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
-          className="w-12 h-[30px] text-center bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700"
-          placeholder="AC"
-        />
-      </div>
-      <div className="flex space-x-2 items-center">
-        <Input
-          type="number"
-          value={character.currentMovement}
-          onChange={(e) => handleInputChange('currentMovement', e.target.value)}
-          onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
-          className="w-12 h-[30px] text-center bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700"
-          placeholder="Move"
-        />
-        <span className="flex items-center">/</span>
-        <Input
-          type="number"
-          value={character.maxMovement}
-          onChange={(e) => handleInputChange('maxMovement', e.target.value)}
-          onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
-          className="w-12 h-[30px] text-center bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700"
-          placeholder="Max"
-        />
-        <span className="text-sm">ft.</span>
-      </div>
-    </>
+    <div className="overflow-x-auto">
+      <Table className="w-full">
+        <TableHeader>
+          <TableRow className="[&>th]:p-2 [&>th]:text-xs [&>th]:font-semibold">
+            <TableHead className="w-1/3">Name</TableHead>
+            <TableHead className="text-right">Turns</TableHead>
+            <TableHead className="text-right">Rounds</TableHead>
+            <TableHead className="text-right">Turn avg.</TableHead>
+            <TableHead className="text-right">Turn total</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {characters.map((character) => (
+            <TableRow key={character.id} className="[&>td]:p-2">
+              <TableCell className="font-medium">
+                <div className="truncate max-w-[120px]" title={character.name}>
+                  {character.name}
+                </div>
+              </TableCell>
+              <TableCell className="text-right">{character.turnCount || 0}</TableCell>
+              <TableCell className="text-right">{character.roundCount || round}</TableCell>
+              <TableCell className="text-right">
+                {character.turnCount > 0
+                  ? formatTime(Math.floor((character.cumulativeTurnTime || 0) / character.turnCount))
+                  : '0:00'}
+              </TableCell>
+              <TableCell className="text-right">{formatTime(character.cumulativeTurnTime || 0)}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
 

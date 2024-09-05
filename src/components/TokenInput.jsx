@@ -12,14 +12,10 @@ const TokenInput = forwardRef(({ token, onLabelChange, isNew, onFocus }, ref) =>
       const textWidth = getTextWidth(localLabel || 'Token', getComputedStyle(inputRef.current).font);
       setInputWidth(Math.max(40, Math.min(textWidth + 8, 120))); // Min 40px, max 120px
     }
-  }, [localLabel]);
-
-  useEffect(() => {
     if (isNew) {
       setLocalLabel('');
-      inputRef.current?.focus();
     }
-  }, [isNew]);
+  }, [localLabel, isNew]);
 
   const getTextWidth = (text, font) => {
     const canvas = document.createElement('canvas');
