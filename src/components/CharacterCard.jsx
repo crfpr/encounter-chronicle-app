@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Badge } from "../components/ui/badge";
@@ -6,45 +6,38 @@ import TurnNavigator from './TurnNavigator';
 import CharacterNameType from './CharacterNameType';
 import TokenInput from './TokenInput';
 import { PlusCircle } from 'lucide-react';
-import { debounce } from 'lodash';
 import CharacterActions from './CharacterActions';
 import HPSection from './HPSection';
 import CharacterStateManager from './CharacterStateManager';
 
 const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
-  const [tokens, setTokens] = useState(character.tokens || []);
-
   const handleAddToken = useCallback(() => {
     const newToken = { id: Date.now(), label: 'Token', tokenDuration: null, isPersistent: true };
-    const updatedTokens = [...tokens, newToken];
-    setTokens(updatedTokens);
+    const updatedTokens = [...character.tokens, newToken];
     updateCharacter({ ...character, tokens: updatedTokens });
-  }, [tokens, character, updateCharacter]);
+  }, [character, updateCharacter]);
 
   const handleRemoveToken = useCallback((tokenId) => {
-    const updatedTokens = tokens.filter(token => token.id !== tokenId);
-    setTokens(updatedTokens);
+    const updatedTokens = character.tokens.filter(token => token.id !== tokenId);
     updateCharacter({ ...character, tokens: updatedTokens });
-  }, [tokens, character, updateCharacter]);
+  }, [character, updateCharacter]);
 
   const handleTokenDurationChange = useCallback((tokenId, newDuration) => {
-    const updatedTokens = tokens.map(token => 
+    const updatedTokens = character.tokens.map(token => 
       token.id === tokenId ? { ...token, tokenDuration: newDuration, isPersistent: newDuration === null } : token
     );
-    setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
-  }, [tokens, character, updateCharacter]);
+  }, [character, updateCharacter]);
 
-  const handleTokenLabelChange = useCallback(debounce((tokenId, newLabel) => {
-    const updatedTokens = tokens.map(token => 
+  const handleTokenLabelChange = useCallback((tokenId, newLabel) => {
+    const updatedTokens = character.tokens.map(token => 
       token.id === tokenId ? { ...token, label: newLabel } : token
     );
-    setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
-  }, 300), [tokens, character, updateCharacter]);
+  }, [character, updateCharacter]);
 
   const handleTogglePersistent = useCallback((tokenId) => {
-    const updatedTokens = tokens.map(token => {
+    const updatedTokens = character.tokens.map(token => {
       if (token.id === tokenId) {
         return {
           ...token,
@@ -54,9 +47,8 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
       }
       return token;
     });
-    setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
-  }, [tokens, character, updateCharacter]);
+  }, [character, updateCharacter]);
 
   const handleInputChange = useCallback((field, value) => {
     if (field === 'initiative' || field === 'ac' || field === 'currentHp' || field === 'maxHp' || field === 'currentMovement' || field === 'maxMovement') {
@@ -104,7 +96,7 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
       : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
   }, [isActive]);
 
-  const memoizedTokens = useMemo(() => tokens.map((token) => (
+  const memoizedTokens = useMemo(() => character.tokens.map((token) => (
     <Badge
       key={token.id}
       className={`h-[30px] px-1 flex items-center space-x-1 ${
@@ -121,7 +113,7 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
         onTogglePersistent={handleTogglePersistent}
       />
     </Badge>
-  )), [tokens, isActive, handleTokenLabelChange, handleTokenDurationChange, handleRemoveToken, handleTogglePersistent]);
+  )), [character.tokens, isActive, handleTokenLabelChange, handleTokenDurationChange, handleRemoveToken, handleTogglePersistent]);
 
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''}`}>
