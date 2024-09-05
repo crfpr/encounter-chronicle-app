@@ -84,7 +84,7 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
                   {getStatusLabel(state)}
                 </Button>
               ))}
-              <Separator className="my-2" />
+              <Separator className="my-0" />
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button 

@@ -34,7 +34,8 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
       roundCount: 0,
       cumulativeTurnTime: 0,
       tokens: [],
-      hasActed: false
+      hasActed: false,
+      state: 'alive'  // Ensure new characters are created in 'alive' state
     };
     setCharacters(prevCharacters => [...prevCharacters, newCharacter]);
   };
