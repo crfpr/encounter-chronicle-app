@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Input } from './ui/input';
 import { debounce } from 'lodash';
 
@@ -25,12 +25,9 @@ const TokenInput = React.memo(({ token, onLabelChange, isNew, onFocus }) => {
     return context.measureText(text).width;
   };
 
-  const debouncedOnLabelChange = useCallback(
-    debounce((newLabel) => {
-      onLabelChange(token.id, newLabel);
-    }, 300),
-    [token.id, onLabelChange]
-  );
+  const debouncedOnLabelChange = debounce((newLabel) => {
+    onLabelChange(token.id, newLabel);
+  }, 300);
 
   const handleChange = (e) => {
     const newLabel = e.target.value.slice(0, 30);
