@@ -7,17 +7,19 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
 
   const handleStateChange = (newState) => {
     let updatedCharacter = { ...character, state: newState };
-    if (newState === 'unconscious') {
+    if (newState === 'ko') {
       updatedCharacter.currentHp = 0;
     } else if (newState === 'stable') {
       updatedCharacter.currentHp = 1;
+    } else if (newState === 'dead') {
+      updatedCharacter.currentHp = 0;
     }
     updateCharacter(updatedCharacter);
   };
 
   const getStatusLabel = (state) => {
     switch (state) {
-      case 'unconscious': return 'KO';
+      case 'ko': return 'KO';
       case 'stable': return 'Stable';
       case 'dead': return 'Dead';
       default: return 'Alive';
@@ -37,7 +39,7 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
             onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
             onFocus={() => setIsNumericInputActive(true)}
             onBlur={() => setIsNumericInputActive(false)}
-            className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm`}
+            className={`w-14 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm`}
             maxLength={3}
           />
         </div>
@@ -51,7 +53,7 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
             onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
             onFocus={() => setIsNumericInputActive(true)}
             onBlur={() => setIsNumericInputActive(false)}
-            className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm`}
+            className={`w-14 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm`}
             maxLength={3}
           />
         </div>
@@ -61,12 +63,12 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
           onOpenChange={setIsSelectOpen}
           open={isSelectOpen}
         >
-          <SelectTrigger className={`w-full h-[30px] text-xs ${isActive ? 'bg-zinc-800 text-white' : 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'}`}>
+          <SelectTrigger className={`w-full h-[30px] text-xs ${isActive ? 'bg-zinc-800 text-white border-0' : 'bg-zinc-800 text-white border-0 dark:bg-zinc-800 dark:text-zinc-100'}`}>
             <SelectValue placeholder={getStatusLabel(character.state)} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="alive">Alive</SelectItem>
-            <SelectItem value="unconscious">Unconscious</SelectItem>
+            <SelectItem value="ko">KO</SelectItem>
             <SelectItem value="stable">Stable</SelectItem>
             <SelectItem value="dead">Dead</SelectItem>
           </SelectContent>
