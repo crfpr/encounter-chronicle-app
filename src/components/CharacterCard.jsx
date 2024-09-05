@@ -8,6 +8,7 @@ import TurnNavigator from './TurnNavigator';
 import CharacterNameType from './CharacterNameType';
 import TokenInput from './TokenInput';
 import { PlusCircle, X, Clock } from 'lucide-react';
+import ShieldIcon from './ShieldIcon';
 
 const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
@@ -199,11 +200,138 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
     </Badge>
   )), [tokens, isActive, newTokenId, activeDurationInput, handleTokenLabelChange, handleTokenFocus, handleTokenDurationChange, handleTokenDurationBlur, toggleTokenDuration, handleRemoveToken, setIsNumericInputActive]);
 
-  // Rest of the component remains the same...
-
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out`}>
-      {/* Component JSX remains the same... */}
+      <div className={`w-full flex flex-col`}>
+        <div className={`flex items-center justify-between p-2 ${getTabColor()}`}>
+          <CharacterNameType
+            name={character.name}
+            type={character.type}
+            onUpdate={(name, type) => updateCharacter({ ...character, name, type })}
+          />
+          <div className="flex items-center space-x-2">
+            <Input
+              type="number"
+              value={character.initiative}
+              onChange={(e) => handleInputChange('initiative', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
+              onBlur={handleInitiativeBlur}
+              onFocus={() => setIsNumericInputActive(true)}
+              className="w-12 h-[30px] text-center bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners"
+              placeholder="Init"
+            />
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-[30px] w-[30px] p-0">
+                  <X className="h-4 w-4" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you sure you want to remove this character?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete the character from the encounter.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => removeCharacter(character.id)}>
+                    Remove
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center p-2 space-x-2 space-y-2">
+          <div className="flex items-center space-x-2 mt-2">
+            <Input
+              type="number"
+              value={character.currentHp}
+              onChange={(e) => handleInputChange('currentHp', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
+              onFocus={() => setIsNumericInputActive(true)}
+              className="w-12 h-[30px] text-center bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners"
+              placeholder="HP"
+            />
+            <span>/</span>
+            <Input
+              type="number"
+              value={character.maxHp}
+              onChange={(e) => handleInputChange('maxHp', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
+              onFocus={() => setIsNumericInputActive(true)}
+              className="w-12 h-[30px] text-center bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners"
+              placeholder="Max"
+            />
+          </div>
+          <div className="flex items-center space-x-1">
+            <ShieldIcon className="w-5 h-5" />
+            <Input
+              type="number"
+              value={character.ac}
+              onChange={(e) => handleInputChange('ac', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
+              onFocus={() => setIsNumericInputActive(true)}
+              className="w-12 h-[30px] text-center bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners"
+              placeholder="AC"
+            />
+          </div>
+          <div className="flex items-center space-x-1">
+            <Input
+              type="number"
+              value={character.currentMovement}
+              onChange={(e) => handleInputChange('currentMovement', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
+              onFocus={() => setIsNumericInputActive(true)}
+              className="w-12 h-[30px] text-center bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners"
+              placeholder="Move"
+            />
+            <span>/</span>
+            <Input
+              type="number"
+              value={character.maxMovement}
+              onChange={(e) => handleInputChange('maxMovement', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
+              onFocus={() => setIsNumericInputActive(true)}
+              className="w-12 h-[30px] text-center bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners"
+              placeholder="Max"
+            />
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center p-2 space-x-2 space-y-2">
+          <ToggleGroup type="multiple" className="flex flex-wrap gap-1 mt-2" onValueChange={handleToggleAction}>
+            <ToggleGroupItem value="action" className={getToggleGroupItemStyle(isActive, character.action)}>
+              Action
+            </ToggleGroupItem>
+            <ToggleGroupItem value="bonusAction" className={getToggleGroupItemStyle(isActive, character.bonusAction)}>
+              Bonus
+            </ToggleGroupItem>
+            <ToggleGroupItem value="reaction" className={getToggleGroupItemStyle(isActive, character.reaction)}>
+              Reaction
+            </ToggleGroupItem>
+          </ToggleGroup>
+        </div>
+        <div className="flex flex-wrap items-center p-2 space-x-2 space-y-2">
+          {memoizedTokens}
+          <Button
+            onClick={handleAddToken}
+            variant="outline"
+            size="sm"
+            className="h-[30px] bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-800"
+          >
+            <PlusCircle className="h-4 w-4 mr-1" />
+            Add Token
+          </Button>
+        </div>
+      </div>
+      <div className={`flex-shrink-0 w-10 ${getTabColor()} flex flex-col items-center justify-center`}>
+        <TurnNavigator
+          turnTime={turnTime}
+          onPreviousTurn={onPreviousTurn}
+          onNextTurn={onNextTurn}
+        />
+      </div>
     </div>
   );
 });
