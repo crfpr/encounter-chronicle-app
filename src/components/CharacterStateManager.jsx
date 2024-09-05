@@ -5,16 +5,6 @@ import { Label } from "./ui/label";
 import { cn } from "../lib/utils";
 
 const CharacterStateManager = ({ character, updateCharacter }) => {
-  const handleStateChange = (newState) => {
-    const updatedCharacter = { 
-      ...character, 
-      state: newState,
-      deathSaves: newState === 'unconscious' ? { failures: [], successes: [] } : undefined,
-      currentHp: newState === 'stable' ? 1 : newState === 'unconscious' ? 0 : character.currentHp
-    };
-    updateCharacter(updatedCharacter);
-  };
-
   const handleDeathSaveToggle = (type, value) => {
     const updatedDeathSaves = {
       ...character.deathSaves,
@@ -24,12 +14,12 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
     };
 
     if (type === 'failures' && updatedDeathSaves.failures.length === 3) {
-      handleStateChange('dead');
+      updateCharacter({ ...character, state: 'dead', currentHp: 0, deathSaves: updatedDeathSaves });
       return;
     }
 
     if (type === 'successes' && updatedDeathSaves.successes.length === 3) {
-      handleStateChange('stable');
+      updateCharacter({ ...character, state: 'stable', currentHp: 1, deathSaves: updatedDeathSaves });
       return;
     }
 
@@ -38,17 +28,6 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
       deathSaves: updatedDeathSaves
     });
   };
-
-  const renderStateButton = (state, label) => (
-    <Button
-      onClick={() => handleStateChange(state)}
-      variant={character.state === state ? 'default' : 'outline'}
-      size="sm"
-      className="text-xs"
-    >
-      {label}
-    </Button>
-  );
 
   const renderDeathSaves = () => {
     const renderSaveButtons = (type) => {
@@ -63,8 +42,8 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
               variant="outline"
               size="sm"
               className={cn(
-                "w-6 h-6 p-0",
-                character.deathSaves?.[type].includes(value) ? color : ''
+                "w-4 h-4 p-0",
+                character.deathSaves[type].includes(value) ? color : ''
               )}
             />
           ))}
@@ -73,25 +52,22 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
     };
 
     return (
-      <div className="flex items-center space-x-2 mt-2">
-        <Label className="text-xs">Failure</Label>
-        {renderSaveButtons('failures')}
-        <Separator orientation="vertical" className="h-6" />
-        {renderSaveButtons('successes')}
-        <Label className="text-xs">Success</Label>
+      <div className="flex flex-col items-center space-y-1 mt-2">
+        <div className="flex items-center space-x-1">
+          <Label className="text-[10px]">Failure</Label>
+          {renderSaveButtons('failures')}
+        </div>
+        <div className="flex items-center space-x-1">
+          <Label className="text-[10px]">Success</Label>
+          {renderSaveButtons('successes')}
+        </div>
       </div>
     );
   };
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center space-x-2">
-        {renderStateButton('alive', 'Alive')}
-        {renderStateButton('unconscious', 'Unconscious')}
-        {renderStateButton('stable', 'Stable')}
-        {renderStateButton('dead', 'Dead')}
-      </div>
-      {character.state === 'unconscious' && renderDeathSaves()}
+      {renderDeathSaves()}
     </div>
   );
 };
