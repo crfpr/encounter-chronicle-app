@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef, forwardRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Input } from './ui/input';
 import { debounce } from 'lodash';
 
-const TokenInput = forwardRef(({ token, onLabelChange, isNew, onFocus }, ref) => {
+const TokenInput = React.memo(({ token, onLabelChange, isNew }) => {
   const [localLabel, setLocalLabel] = useState(token.label);
   const [inputWidth, setInputWidth] = useState(40);
   const inputRef = useRef(null);
@@ -12,10 +12,7 @@ const TokenInput = forwardRef(({ token, onLabelChange, isNew, onFocus }, ref) =>
       const textWidth = getTextWidth(localLabel || 'Token', getComputedStyle(inputRef.current).font);
       setInputWidth(Math.max(40, Math.min(textWidth + 8, 120))); // Min 40px, max 120px
     }
-    if (isNew) {
-      setLocalLabel('');
-    }
-  }, [localLabel, isNew]);
+  }, [localLabel]);
 
   const getTextWidth = (text, font) => {
     const canvas = document.createElement('canvas');
@@ -35,7 +32,6 @@ const TokenInput = forwardRef(({ token, onLabelChange, isNew, onFocus }, ref) =>
   };
 
   const handleFocus = () => {
-    onFocus();
     if (localLabel === 'Token') {
       setLocalLabel('');
     }
@@ -49,14 +45,7 @@ const TokenInput = forwardRef(({ token, onLabelChange, isNew, onFocus }, ref) =>
 
   return (
     <Input
-      ref={(node) => {
-        inputRef.current = node;
-        if (typeof ref === 'function') {
-          ref(node);
-        } else if (ref) {
-          ref.current = node;
-        }
-      }}
+      ref={inputRef}
       type="text"
       value={localLabel}
       onChange={handleChange}
@@ -70,4 +59,4 @@ const TokenInput = forwardRef(({ token, onLabelChange, isNew, onFocus }, ref) =>
   );
 });
 
-export default React.memo(TokenInput);
+export default TokenInput;
