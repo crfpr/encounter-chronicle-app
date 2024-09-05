@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Input } from './ui/input';
 import { debounce } from 'lodash';
 
@@ -18,35 +18,38 @@ const TokenInput = React.memo(({ token, onLabelChange, isNew, onFocus }) => {
     }
   }, [localLabel, isNew]);
 
-  const getTextWidth = (text, font) => {
+  const getTextWidth = useCallback((text, font) => {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     context.font = font;
     return context.measureText(text).width;
-  };
+  }, []);
 
-  const debouncedOnLabelChange = debounce((newLabel) => {
-    onLabelChange(token.id, newLabel);
-  }, 300);
+  const debouncedOnLabelChange = useCallback(
+    debounce((newLabel) => {
+      onLabelChange(token.id, newLabel);
+    }, 300),
+    [token.id, onLabelChange]
+  );
 
-  const handleChange = (e) => {
+  const handleChange = useCallback((e) => {
     const newLabel = e.target.value.slice(0, 30);
     setLocalLabel(newLabel);
     debouncedOnLabelChange(newLabel);
-  };
+  }, [debouncedOnLabelChange]);
 
-  const handleFocus = () => {
+  const handleFocus = useCallback(() => {
     onFocus();
     if (localLabel === 'Token') {
       setLocalLabel('');
     }
-  };
+  }, [onFocus, localLabel]);
 
-  const handleBlur = () => {
+  const handleBlur = useCallback(() => {
     if (localLabel.trim() === '') {
       setLocalLabel('Token');
     }
-  };
+  }, [localLabel]);
 
   return (
     <Input
