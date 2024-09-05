@@ -120,7 +120,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
         case 'tracker':
           return (
             <div className="flex-grow overflow-hidden flex flex-col h-full">
-              <div ref={headerRef} className="sticky top-0 z-10 bg-white dark:bg-zinc-950 mb-2 px-3">
+              <div ref={headerRef} className="sticky top-0 z-10 bg-white dark:bg-zinc-950 mb-2">
                 <EncounterHeader
                   isRunning={isRunning}
                   toggleEncounter={toggleEncounter}
@@ -149,7 +149,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
           );
         case 'notes':
           return (
-            <div className="h-full flex flex-col pb-20 px-3">
+            <div className="h-full flex flex-col pb-20">
               <div className="flex-grow">
                 <NotesSection key={`notes-section-${activePage}-${isMobile}`} notes={notes} setNotes={(newNotes) => {
                   setNotes(newNotes);
@@ -160,7 +160,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
           );
         case 'stats':
           return (
-            <div className="h-full flex flex-col px-3">
+            <div className="h-full flex flex-col">
               <div className="flex-grow overflow-y-auto pb-20">
                 <CharacterStats characters={characters} round={round} key={round} />
               </div>

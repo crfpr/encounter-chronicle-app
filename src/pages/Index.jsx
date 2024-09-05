@@ -85,7 +85,7 @@ const Index = () => {
 
   const renderHeader = () => (
     <header className={`bg-white text-black dark:bg-black dark:text-white py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999] border-b border-zinc-300 dark:border-zinc-700`}>
-      <div className="container mx-auto px-3 flex items-center justify-between">
+      <div className="container mx-auto px-4 flex items-center justify-between">
         <div className="flex items-center flex-grow">
           <Input
             value={encounterName}
@@ -188,7 +188,7 @@ const Index = () => {
   return (
     <div className={`flex flex-col ${isMobile ? 'h-screen' : ''} ${isDarkMode ? 'dark' : ''}`}>
       {renderHeader()}
-      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''} bg-white dark:bg-zinc-950`} style={{ height: contentHeight }}>
+      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-12' : ''} bg-white dark:bg-zinc-950`} style={{ height: contentHeight }}>
         <div className={`h-full overflow-y-auto`}>
           <div className={`container mx-auto h-full`}>
             <EncounterTracker 
