@@ -58,10 +58,13 @@ export const useEncounterLogic = (characters, setCharacters) => {
         if (index === activeCharacterIndex && !char.hasActed) {
           const updatedTokens = char.tokens.map(token => {
             if (token.tokenDuration !== null && token.tokenDuration > 0) {
-              return {
-                ...token,
-                tokenDuration: token.tokenDuration - 1
-              };
+              // Only decrement if the token wasn't created this round
+              if (token.createdRound !== round) {
+                return {
+                  ...token,
+                  tokenDuration: token.tokenDuration - 1
+                };
+              }
             }
             return token;
           }).filter(token => token.tokenDuration === null || token.tokenDuration > 0);
@@ -100,7 +103,7 @@ export const useEncounterLogic = (characters, setCharacters) => {
     });
 
     setTurnTime(0);
-  }, [characters, activeCharacterIndex, turnTime, resetCharacterActions]);
+  }, [characters, activeCharacterIndex, turnTime, resetCharacterActions, round]);
 
   const logEvent = useCallback((event) => {
     setEncounterLog(prevLog => [
