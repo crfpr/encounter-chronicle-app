@@ -76,6 +76,13 @@ const Index = () => {
     }
   };
 
+  const handleUploadEncounterData = (event) => {
+    uploadEncounterData(event);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const renderHeader = () => (
     <header className={`bg-white text-black dark:bg-black dark:text-white py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999] border-b border-zinc-300 dark:border-zinc-700`}>
       <div className="container mx-auto px-4 flex items-center justify-between">
@@ -136,7 +143,7 @@ const Index = () => {
               ref={fileInputRef}
               type="file"
               accept=".json"
-              onChange={uploadEncounterData}
+              onChange={handleUploadEncounterData}
               style={{ display: 'none' }}
             />
           </div>
@@ -168,7 +175,7 @@ const Index = () => {
                 id="upload-encounter-data"
                 type="file"
                 accept=".json"
-                onChange={uploadEncounterData}
+                onChange={handleUploadEncounterData}
                 style={{ display: 'none' }}
               />
             </Button>

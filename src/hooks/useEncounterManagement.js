@@ -83,11 +83,11 @@ export const useEncounterManagement = () => {
                   id: Date.now() + Math.random(),
                   name: char.characterName,
                   type: char.characterType,
-                  maxMovement: char.characterMaxMovement,
-                  currentMovement: char.characterMaxMovement,
-                  ac: char.characterAC,
-                  maxHp: char.characterMaxHP,
-                  currentHp: char.characterMaxHP,
+                  maxMovement: char.characterMaxMovement || 30,
+                  currentMovement: char.characterMaxMovement || 30,
+                  ac: char.characterAC || 10,
+                  maxHp: char.characterMaxHP || 10,
+                  currentHp: char.characterMaxHP || 10,
                   initiative: '',
                   action: false,
                   bonusAction: false,
@@ -106,18 +106,21 @@ export const useEncounterManagement = () => {
                 ...data,
                 characters: data.characters.map(char => ({
                   ...char,
+                  id: char.id || Date.now() + Math.random(),
                   state: char.state || 'alive',
                   deathSaves: char.deathSaves || { successes: [], failures: [] },
                   turnCount: char.turnCount || 0,
                   roundCount: char.roundCount || 0,
-                  cumulativeTurnTime: char.cumulativeTurnTime || 0
+                  cumulativeTurnTime: char.cumulativeTurnTime || 0,
+                  tokens: char.tokens || [],
+                  conditions: char.conditions || []
                 }))
               };
             }
 
             setEncounterData(processedData);
             setEncounterName(processedData.encounterName);
-            console.log('Encounter data loaded successfully');
+            console.log('Encounter data loaded successfully:', processedData);
           } else {
             console.error('Invalid data format');
           }
