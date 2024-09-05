@@ -53,16 +53,21 @@ export const useEncounterLogic = (characters, setCharacters) => {
   }, [characters]);
 
   const handleNextTurn = useCallback(() => {
+    console.log('handleNextTurn called');
     setCharacters(prevCharacters => {
       const updatedCharacters = prevCharacters.map((char, index) => {
         if (index === activeCharacterIndex) {
+          console.log(`Updating tokens for ${char.name}`);
+          console.log('Before update:', char.tokens);
           const updatedTokens = char.tokens.map(token => {
             if (!token.isPersistent && token.tokenDuration !== null) {
               const newDuration = token.tokenDuration > 0 ? token.tokenDuration - 1 : 0;
+              console.log(`Token ${token.label}: ${token.tokenDuration} -> ${newDuration}`);
               return { ...token, tokenDuration: newDuration };
             }
             return token;
           }).filter(token => token.isPersistent || token.tokenDuration > 0);
+          console.log('After update:', updatedTokens);
 
           return {
             ...char,
