@@ -1,15 +1,48 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 
 export const useEncounterManagement = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
   const [encounterData, setEncounterData] = useState(null);
+  const encounterTrackerRef = useRef(null);
 
   const exportEncounterData = useCallback(() => {
-    // Implementation remains the same
+    if (encounterTrackerRef.current) {
+      const data = encounterTrackerRef.current.getEncounterData();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${data.encounterName.replace(/\s+/g, '_')}_encounter.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
   }, []);
 
   const exportPartyData = useCallback(() => {
-    // Implementation remains the same
+    if (encounterTrackerRef.current) {
+      const data = encounterTrackerRef.current.getEncounterData();
+      const partyData = {
+        encounterName: data.encounterName,
+        characters: data.characters.map(char => ({
+          characterName: char.name,
+          characterType: char.type,
+          characterMaxMovement: char.maxMovement,
+          characterAC: char.ac,
+          characterMaxHP: char.maxHp
+        }))
+      };
+      const blob = new Blob([JSON.stringify(partyData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${data.encounterName.replace(/\s+/g, '_')}_party.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
   }, []);
 
   const uploadEncounterData = useCallback((event) => {
@@ -84,6 +117,7 @@ export const useEncounterManagement = () => {
     setEncounterData,
     exportEncounterData,
     exportPartyData,
-    uploadEncounterData
+    uploadEncounterData,
+    encounterTrackerRef
   };
 };
