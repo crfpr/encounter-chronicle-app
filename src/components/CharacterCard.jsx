@@ -12,6 +12,7 @@ import { PlusCircle, X, Clock } from 'lucide-react';
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
   const [newTokenId, setNewTokenId] = useState(null);
+  const [activeDurationInput, setActiveDurationInput] = useState(null);
 
   useEffect(() => {
     setTokens(character.tokens || []);
@@ -85,7 +86,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const handleAddToken = () => {
-    const newToken = { id: Date.now(), label: 'New Token', tokenDuration: null, showDuration: false, isPersistent: true };
+    const newToken = { id: Date.now(), label: 'Token', tokenDuration: null, showDuration: false, isPersistent: true };
     const updatedTokens = [...tokens, newToken];
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
@@ -133,6 +134,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     });
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
+    setActiveDurationInput(tokenId);
   };
 
   const handleTokenDurationBlur = (tokenId, value) => {
@@ -143,6 +145,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       setTokens(updatedTokens);
       updateCharacter({ ...character, tokens: updatedTokens });
     }
+    setActiveDurationInput(null);
   };
 
   const handleTokenFocus = () => {
@@ -307,6 +310,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                     className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0 no-spinners"
                     min="1"
                     placeholder=""
+                    autoFocus={token.id === activeDurationInput}
                   />
                 ) : (
                   <Button

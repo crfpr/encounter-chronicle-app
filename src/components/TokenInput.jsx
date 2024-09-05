@@ -9,7 +9,7 @@ const TokenInput = React.memo(({ token, onLabelChange, isNew, onFocus }) => {
 
   useEffect(() => {
     if (inputRef.current) {
-      const textWidth = getTextWidth(localLabel, getComputedStyle(inputRef.current).font);
+      const textWidth = getTextWidth(localLabel || 'Token', getComputedStyle(inputRef.current).font);
       setInputWidth(Math.max(40, Math.min(textWidth + 8, 120))); // Min 40px, max 120px
     }
     if (isNew) {
@@ -40,6 +40,15 @@ const TokenInput = React.memo(({ token, onLabelChange, isNew, onFocus }) => {
 
   const handleFocus = () => {
     onFocus();
+    if (localLabel === 'Token') {
+      setLocalLabel('');
+    }
+  };
+
+  const handleBlur = () => {
+    if (localLabel.trim() === '') {
+      setLocalLabel('Token');
+    }
   };
 
   return (
@@ -49,9 +58,11 @@ const TokenInput = React.memo(({ token, onLabelChange, isNew, onFocus }) => {
       value={localLabel}
       onChange={handleChange}
       onFocus={handleFocus}
+      onBlur={handleBlur}
       className="h-5 px-1 text-xs bg-transparent border-none focus:outline-none focus:ring-0 overflow-visible"
       style={{ width: `${inputWidth}px`, minWidth: '40px' }}
       maxLength={30}
+      placeholder="Token"
     />
   );
 });
