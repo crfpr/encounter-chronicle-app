@@ -3,7 +3,7 @@ import { Button } from './ui/button';
 import { Label } from "./ui/label";
 import { cn } from "../lib/utils";
 
-const CharacterStateManager = ({ character, updateCharacter, isMobile }) => {
+const CharacterStateManager = ({ character, updateCharacter }) => {
   const handleDeathSaveToggle = (type, value) => {
     const updatedDeathSaves = {
       ...character.deathSaves,
@@ -53,14 +53,14 @@ const CharacterStateManager = ({ character, updateCharacter, isMobile }) => {
     };
 
     return (
-      <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} items-center justify-center space-y-2 text-xs py-2`}>
-        <div className={`flex items-center ${isMobile ? 'justify-between w-full' : 'space-x-2'}`}>
+      <div className="flex flex-col items-center justify-center space-y-2 text-xs py-2">
+        <div className="flex items-center space-x-2">
           <Label className="text-sm font-semibold w-14">Failure</Label>
           <div className="flex space-x-1">
             {renderSaveButtons('failures')}
           </div>
         </div>
-        <div className={`flex items-center ${isMobile ? 'justify-between w-full' : 'space-x-2'}`}>
+        <div className="flex items-center space-x-2">
           <Label className="text-sm font-semibold w-14">Success</Label>
           <div className="flex space-x-1">
             {renderSaveButtons('successes')}
