@@ -28,6 +28,17 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
     });
   };
 
+  const getToggleGroupItemStyle = (type, isToggled) => {
+    return cn(
+      "w-6 h-6 p-0 rounded-full",
+      isToggled
+        ? type === 'failures'
+          ? 'bg-red-800 dark:bg-red-900 text-white'
+          : 'bg-green-800 dark:bg-green-900 text-white'
+        : 'bg-zinc-200 dark:bg-zinc-700'
+    );
+  };
+
   const renderDeathSaves = () => {
     const renderSaveButtons = (type) => {
       return [1, 2, 3].map((value) => (
@@ -36,12 +47,7 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
           onClick={() => handleDeathSaveToggle(type, value)}
           variant="outline"
           size="sm"
-          className={cn(
-            "w-6 h-6 p-0 rounded-full",
-            character.deathSaves[type].includes(value) 
-              ? (type === 'failures' ? 'bg-red-500 dark:bg-red-900' : 'bg-green-500 dark:bg-green-900') 
-              : 'bg-zinc-200 dark:bg-zinc-700'
-          )}
+          className={getToggleGroupItemStyle(type, character.deathSaves[type].includes(value))}
         />
       ));
     };
