@@ -63,9 +63,10 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       setEncounterLog(loadedEncounterData.log || []);
       setEncounterName(loadedEncounterData.encounterName || 'New Encounter');
       setIsRunning(loadedEncounterData.isRunning || false);
+      setCharacters(loadedEncounterData.characters || []);
       logEvent('Encounter data loaded');
     }
-  }, [loadedEncounterData, setEncounterName, logEvent]);
+  }, [loadedEncounterData, setEncounterName, logEvent, setCharacters]);
 
   const handleSwipeLeft = useCallback(() => {
     if (isMobile) {
