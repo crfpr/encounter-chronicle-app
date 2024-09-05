@@ -13,6 +13,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   const [activePage, setActivePage] = useState('tracker');
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
   const trackerRef = useRef(null);
+  const headerRef = useRef(null);
 
   const {
     characters,
@@ -118,7 +119,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
         case 'tracker':
           return (
             <div className="flex-grow overflow-hidden flex flex-col h-full">
-              <div className="mb-4">
+              <div ref={headerRef} className="sticky top-0 z-10 bg-white dark:bg-zinc-950 mb-4">
                 <EncounterHeader
                   isRunning={isRunning}
                   toggleEncounter={toggleEncounter}
@@ -170,7 +171,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
         <div className="flex flex-col lg:flex-row w-full h-full space-y-6 lg:space-y-0 lg:space-x-6">
           <div className="lg:w-2/3 h-full flex flex-col">
             <div className="bg-white border border-zinc-300 dark:border-zinc-700 rounded-lg flex flex-col overflow-hidden h-full shadow-md dark:shadow-none">
-              <div className="p-4">
+              <div ref={headerRef} className="sticky top-0 z-10 bg-white dark:bg-zinc-950 p-4">
                 <EncounterHeader
                   isRunning={isRunning}
                   toggleEncounter={toggleEncounter}

@@ -8,15 +8,10 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
 
   useEffect(() => {
     if (activeCharacterRef.current && listRef.current) {
-      const listRect = listRef.current.getBoundingClientRect();
-      const cardRect = activeCharacterRef.current.getBoundingClientRect();
-      
-      if (cardRect.top < listRect.top || cardRect.bottom > listRect.bottom) {
-        activeCharacterRef.current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        });
-      }
+      activeCharacterRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
     }
   }, [activeCharacterIndex]);
 
@@ -78,7 +73,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
   };
 
   return (
-    <div ref={listRef} className="space-y-4 overflow-y-auto h-full">
+    <div ref={listRef} className="space-y-4 overflow-y-auto h-full px-4">
       {characters.map((character, index) => (
         <div 
           key={character.id} 
