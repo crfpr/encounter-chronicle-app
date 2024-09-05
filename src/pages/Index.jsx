@@ -85,7 +85,7 @@ const Index = () => {
 
   const renderHeader = () => (
     <header className={`bg-white text-black dark:bg-black dark:text-white py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999] border-b border-zinc-300 dark:border-zinc-700`}>
-      <div className="container mx-auto px-4 flex items-center justify-between">
+      <div className="container mx-auto flex items-center justify-between px-4">
         <div className="flex items-center flex-grow">
           <Input
             value={encounterName}

@@ -87,7 +87,7 @@ const CharacterList = forwardRef(({ characters, setCharacters, activeCharacterIn
   };
 
   return (
-    <div ref={listRef} className={`space-y-3 overflow-y-auto h-full ${isMobile ? 'px-4' : 'px-4'}`}>
+    <div ref={listRef} className="space-y-3 overflow-y-auto h-full px-4">
       {characters.map((character, index) => (
         <div 
           key={character.id} 
