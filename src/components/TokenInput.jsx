@@ -70,7 +70,16 @@ const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemov
         maxLength={30}
         placeholder="Token"
       />
-      {token.showDuration ? (
+      {token.isPersistent ? (
+        <Button
+          onClick={() => onToggleDuration(token.id)}
+          variant="ghost"
+          size="sm"
+          className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700 group"
+        >
+          <Clock className="h-3 w-3 group-hover:text-white" />
+        </Button>
+      ) : (
         <Input
           type="number"
           value={token.tokenDuration || ''}
@@ -80,15 +89,6 @@ const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemov
           min="1"
           placeholder=""
         />
-      ) : (
-        <Button
-          onClick={() => onToggleDuration(token.id)}
-          variant="ghost"
-          size="sm"
-          className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700 group"
-        >
-          <Clock className="h-3 w-3 group-hover:text-white" />
-        </Button>
       )}
       <Button
         onClick={() => onRemove(token.id)}
