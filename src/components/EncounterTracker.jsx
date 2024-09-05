@@ -38,7 +38,9 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       setRound(loadedEncounterData.round || 1);
       setCharacters(loadedEncounterData.characters.map(char => ({
         ...char,
-        hasActed: false
+        hasActed: false,
+        state: char.state || 'alive', // Add default state
+        deathSaves: char.deathSaves || { successes: 0, failures: 0 } // Add default death saves
       })) || []);
       setActiveCharacterIndex(loadedEncounterData.activeCharacterIndex || 0);
       setEncounterTime(loadedEncounterData.encounterTime || 0);
@@ -98,7 +100,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     setCharacters(prevCharacters => {
       const updatedCharacters = prevCharacters.map((char, index) => {
         if (index === activeCharacterIndex && !char.hasActed) {
-          // Update tokens for the current active character only if they haven't acted this round
           const updatedTokens = char.tokens.map(token => {
             if (token.tokenDuration !== null && token.tokenDuration > 0) {
               return {
@@ -122,16 +123,13 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
 
       const newActiveIndex = (activeCharacterIndex + 1) % characters.length;
 
-      // Check if all characters have acted
       const allHaveActed = updatedCharacters.every(char => char.hasActed);
 
       if (allHaveActed) {
-        // Start a new round
         setRound(prevRound => {
           logEvent(`Round ${prevRound + 1} started`);
           return prevRound + 1;
         });
-        // Reset hasActed for all characters
         return updatedCharacters.map(char => ({ ...char, hasActed: false }));
       }
 
@@ -222,7 +220,15 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   };
 
   const addCharacter = (newCharacter) => {
-    setCharacters(prevCharacters => [...prevCharacters, { ...newCharacter, hasActed: false }]);
+    setCharacters(prevCharacters => [
+      ...prevCharacters,
+      {
+        ...newCharacter,
+        hasActed: false,
+        state: 'alive',
+        deathSaves: { successes: 0, failures: 0 }
+      }
+    ]);
     logEvent(`Added new character: ${newCharacter.name}`);
   };
 
