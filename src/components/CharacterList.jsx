@@ -1,19 +1,33 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import CharacterCard from './CharacterCard';
 import { Button } from '../components/ui/button';
 
-const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, round }) => {
-  const activeCharacterRef = useRef(null);
+const CharacterList = forwardRef(({ characters, setCharacters, activeCharacterIndex, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, round }, ref) => {
   const listRef = useRef(null);
+  const activeCharacterRef = useRef(null);
+
+  useImperativeHandle(ref, () => ({
+    scrollToActiveCharacter: () => {
+      if (activeCharacterRef.current && listRef.current) {
+        const listRect = listRef.current.getBoundingClientRect();
+        const cardRect = activeCharacterRef.current.getBoundingClientRect();
+        const scrollTop = listRef.current.scrollTop;
+
+        if (cardRect.top < listRect.top || cardRect.bottom > listRect.bottom) {
+          listRef.current.scrollTo({
+            top: scrollTop + cardRect.top - listRect.top - 16,
+            behavior: 'smooth'
+          });
+        }
+      }
+    }
+  }));
 
   useEffect(() => {
-    if (activeCharacterRef.current && listRef.current) {
-      activeCharacterRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
+    if (ref.current) {
+      ref.current.scrollToActiveCharacter();
     }
-  }, [activeCharacterIndex]);
+  }, [activeCharacterIndex, ref]);
 
   const addCharacter = () => {
     const newCharacter = {
@@ -106,6 +120,6 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
       </div>
     </div>
   );
-};
+});
 
 export default CharacterList;

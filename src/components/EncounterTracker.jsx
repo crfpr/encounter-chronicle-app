@@ -14,6 +14,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
   const trackerRef = useRef(null);
   const headerRef = useRef(null);
+  const characterListRef = useRef(null);
 
   const {
     characters,
@@ -129,6 +130,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
               </div>
               <div ref={trackerRef} className="flex-grow overflow-y-auto pb-20">
                 <CharacterList 
+                  ref={characterListRef}
                   characters={characters} 
                   setCharacters={setCharacters} 
                   activeCharacterIndex={activeCharacterIndex}
@@ -181,6 +183,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
               </div>
               <div ref={trackerRef} className="flex-grow overflow-hidden" style={{ maxHeight: 'calc(100% - 88px)' }}>
                 <CharacterList 
+                  ref={characterListRef}
                   characters={characters} 
                   setCharacters={setCharacters} 
                   activeCharacterIndex={activeCharacterIndex}
