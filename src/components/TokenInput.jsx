@@ -50,12 +50,6 @@ const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemov
     onDurationChange(token.id, newDuration);
   };
 
-  const handleDurationBlur = (e) => {
-    if (e.target.value === '') {
-      onToggleDuration(token.id);
-    }
-  };
-
   return (
     <div className="flex items-center space-x-1">
       <Input
@@ -84,9 +78,8 @@ const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemov
           type="number"
           value={token.tokenDuration || ''}
           onChange={handleDurationChange}
-          onBlur={handleDurationBlur}
           className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0 no-spinners"
-          min="1"
+          min="0"
           placeholder=""
         />
       )}
