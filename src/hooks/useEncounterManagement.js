@@ -35,13 +35,15 @@ export const useEncounterManagement = () => {
         const data = encounterTrackerRef.current.getEncounterData();
         const partyData = {
           encounterName: data.encounterName,
-          characters: data.characters.map(char => ({
-            characterName: char.name,
-            characterType: char.type,
-            characterMaxMovement: char.maxMovement,
-            characterAC: char.ac,
-            characterMaxHP: char.maxHp
-          }))
+          characters: data.characters
+            .filter(char => char.type === 'PC')
+            .map(char => ({
+              characterName: char.name,
+              characterType: char.type,
+              characterMaxMovement: char.maxMovement,
+              characterAC: char.ac,
+              characterMaxHP: char.maxHp
+            }))
         };
         const blob = new Blob([JSON.stringify(partyData, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
