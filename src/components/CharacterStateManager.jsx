@@ -30,7 +30,7 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
 
   const getToggleGroupItemStyle = (type, isToggled) => {
     return cn(
-      "w-6 h-6 p-0 rounded-full",
+      "w-5 h-5 p-0 rounded-full",
       isToggled
         ? type === 'failures'
           ? 'bg-red-800 dark:bg-red-900 text-white'
@@ -53,22 +53,25 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
     };
 
     return (
-      <div className="flex items-center justify-center space-x-4 text-sm py-4">
-        <Label className="text-base font-semibold">Failure</Label>
-        <div className="flex space-x-2">
-          {renderSaveButtons('failures')}
+      <div className="flex flex-col items-center justify-center space-y-2 text-xs py-2">
+        <div className="flex items-center space-x-2">
+          <Label className="text-sm font-semibold w-14">Failure</Label>
+          <div className="flex space-x-1">
+            {renderSaveButtons('failures')}
+          </div>
         </div>
-        <div className="h-8 w-px bg-zinc-300 dark:bg-zinc-700" />
-        <div className="flex space-x-2">
-          {renderSaveButtons('successes')}
+        <div className="flex items-center space-x-2">
+          <Label className="text-sm font-semibold w-14">Success</Label>
+          <div className="flex space-x-1">
+            {renderSaveButtons('successes')}
+          </div>
         </div>
-        <Label className="text-base font-semibold">Success</Label>
       </div>
     );
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-1">
       {renderDeathSaves()}
     </div>
   );

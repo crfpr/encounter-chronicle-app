@@ -208,7 +208,7 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
 
           {/* Death save trackers */}
           {character.state === 'ko' && (
-            <div className="mt-2">
+            <div className="mt-1">
               <CharacterStateManager character={character} updateCharacter={updateCharacter} />
             </div>
           )}
