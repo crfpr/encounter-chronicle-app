@@ -5,43 +5,61 @@ export const useEncounterManagement = () => {
   const [encounterData, setEncounterData] = useState(null);
   const encounterTrackerRef = useRef(null);
 
-  const exportEncounterData = useCallback(() => {
+  const exportEncounterData = useCallback(async () => {
     if (encounterTrackerRef.current) {
-      const data = encounterTrackerRef.current.getEncounterData();
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${data.encounterName.replace(/\s+/g, '_')}_encounter.json`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      try {
+        const data = encounterTrackerRef.current.getEncounterData();
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${data.encounterName.replace(/\s+/g, '_')}_encounter.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        console.log('Encounter data exported successfully');
+      } catch (error) {
+        console.error('Error exporting encounter data:', error);
+        throw error;
+      }
+    } else {
+      console.error('encounterTrackerRef is not available');
+      throw new Error('Encounter tracker reference is not available');
     }
   }, []);
 
-  const exportPartyData = useCallback(() => {
+  const exportPartyData = useCallback(async () => {
     if (encounterTrackerRef.current) {
-      const data = encounterTrackerRef.current.getEncounterData();
-      const partyData = {
-        encounterName: data.encounterName,
-        characters: data.characters.map(char => ({
-          characterName: char.name,
-          characterType: char.type,
-          characterMaxMovement: char.maxMovement,
-          characterAC: char.ac,
-          characterMaxHP: char.maxHp
-        }))
-      };
-      const blob = new Blob([JSON.stringify(partyData, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${data.encounterName.replace(/\s+/g, '_')}_party.json`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      try {
+        const data = encounterTrackerRef.current.getEncounterData();
+        const partyData = {
+          encounterName: data.encounterName,
+          characters: data.characters.map(char => ({
+            characterName: char.name,
+            characterType: char.type,
+            characterMaxMovement: char.maxMovement,
+            characterAC: char.ac,
+            characterMaxHP: char.maxHp
+          }))
+        };
+        const blob = new Blob([JSON.stringify(partyData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${data.encounterName.replace(/\s+/g, '_')}_party.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        console.log('Party data exported successfully');
+      } catch (error) {
+        console.error('Error exporting party data:', error);
+        throw error;
+      }
+    } else {
+      console.error('encounterTrackerRef is not available');
+      throw new Error('Encounter tracker reference is not available');
     }
   }, []);
 
@@ -99,6 +117,7 @@ export const useEncounterManagement = () => {
 
             setEncounterData(processedData);
             setEncounterName(processedData.encounterName);
+            console.log('Encounter data loaded successfully');
           } else {
             console.error('Invalid data format');
           }

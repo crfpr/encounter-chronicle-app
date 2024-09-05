@@ -15,7 +15,8 @@ const Index = () => {
     setEncounterData,
     exportEncounterData,
     exportPartyData,
-    uploadEncounterData
+    uploadEncounterData,
+    encounterTrackerRef
   } = useEncounterManagement();
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -23,7 +24,6 @@ const Index = () => {
   const fileInputRef = useRef(null);
   const [contentHeight, setContentHeight] = useState('calc(100vh - 64px)');
   const [headerHeight, setHeaderHeight] = useState(64);
-  const encounterTrackerRef = useRef(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
@@ -57,6 +57,24 @@ const Index = () => {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   const handleUploadClick = () => fileInputRef.current.click();
+
+  const handleExportEncounterData = async () => {
+    try {
+      await exportEncounterData();
+      console.log('Encounter data exported successfully');
+    } catch (error) {
+      console.error('Error exporting encounter data:', error);
+    }
+  };
+
+  const handleExportPartyData = async () => {
+    try {
+      await exportPartyData();
+      console.log('Party data exported successfully');
+    } catch (error) {
+      console.error('Error exporting party data:', error);
+    }
+  };
 
   const renderHeader = () => (
     <header className={`bg-white text-black dark:bg-black dark:text-white py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999] border-b border-zinc-300 dark:border-zinc-700`}>
@@ -98,11 +116,11 @@ const Index = () => {
             </Button>
           </div>
           <div className="p-4 space-y-4">
-            <Button onClick={exportEncounterData} className="w-full flex items-center justify-center">
+            <Button onClick={handleExportEncounterData} className="w-full flex items-center justify-center">
               <Download className="mr-2 h-4 w-4" />
               Save Encounter
             </Button>
-            <Button onClick={exportPartyData} className="w-full flex items-center justify-center">
+            <Button onClick={handleExportPartyData} className="w-full flex items-center justify-center">
               <Download className="mr-2 h-4 w-4" />
               Save Party
             </Button>
@@ -133,11 +151,11 @@ const Index = () => {
         <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
           <p className="text-center sm:text-left">&copy; 2023 Encounter Tracker. All rights reserved.</p>
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-            <Button onClick={exportEncounterData} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
+            <Button onClick={handleExportEncounterData} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
               <Download className="mr-2 h-4 w-4" />
               Save Encounter
             </Button>
-            <Button onClick={exportPartyData} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
+            <Button onClick={handleExportPartyData} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
               <Download className="mr-2 h-4 w-4" />
               Save Party
             </Button>
