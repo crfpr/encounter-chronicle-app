@@ -15,6 +15,11 @@ const TokenInput = React.memo(({ token, onLabelChange, isNew, onFocus }) => {
     if (isNew) {
       setLocalLabel('');
       inputRef.current?.focus();
+      // Release focus after a short delay
+      const timer = setTimeout(() => {
+        inputRef.current?.blur();
+      }, 10);
+      return () => clearTimeout(timer);
     }
   }, [localLabel, isNew]);
 
