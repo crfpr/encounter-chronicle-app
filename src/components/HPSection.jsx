@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/popover";
-import CharacterStateManager from './CharacterStateManager';
 import { Separator } from "../components/ui/separator";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 
@@ -37,31 +36,31 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
       <div className="flex flex-col items-center space-y-2 w-full">
         <div className="flex flex-col items-center w-full">
           <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>HP</label>
-          <Input
-            type="text"
-            inputMode="numeric"
-            value={character.currentHp}
-            onChange={(e) => handleInputChange('currentHp', e.target.value)}
-            onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
-            onFocus={() => setIsNumericInputActive(true)}
-            onBlur={() => setIsNumericInputActive(false)}
-            className={`w-16 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm`}
-            maxLength={3}
-          />
-        </div>
-        <div className="flex flex-col items-center w-full">
-          <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>Max HP</label>
-          <Input
-            type="text"
-            inputMode="numeric"
-            value={character.maxHp}
-            onChange={(e) => handleInputChange('maxHp', e.target.value)}
-            onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
-            onFocus={() => setIsNumericInputActive(true)}
-            onBlur={() => setIsNumericInputActive(false)}
-            className={`w-16 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm`}
-            maxLength={3}
-          />
+          <div className="relative w-16">
+            <Input
+              type="text"
+              inputMode="numeric"
+              value={character.currentHp}
+              onChange={(e) => handleInputChange('currentHp', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
+              onFocus={() => setIsNumericInputActive(true)}
+              onBlur={() => setIsNumericInputActive(false)}
+              className={`w-full text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm mb-0 pb-3`}
+              maxLength={3}
+            />
+            <Separator className="absolute bottom-[14px] left-0 right-0" />
+            <Input
+              type="text"
+              inputMode="numeric"
+              value={character.maxHp}
+              onChange={(e) => handleInputChange('maxHp', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
+              onFocus={() => setIsNumericInputActive(true)}
+              onBlur={() => setIsNumericInputActive(false)}
+              className={`w-full text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm mt-0 pt-3`}
+              maxLength={3}
+            />
+          </div>
         </div>
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
           <PopoverTrigger asChild>
