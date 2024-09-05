@@ -126,7 +126,7 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
   )), [tokens, isActive, handleTokenLabelChange, handleTokenDurationChange, handleRemoveToken, toggleTokenDuration]);
 
   return (
-    <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out`}>
+    <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''}`}>
       {/* Left Tab */}
       <div className={`w-18 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
         <div className="flex flex-col items-center">
@@ -156,7 +156,7 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
         )}
       </div>
       
-      <div className="flex-grow p-2 flex flex-col">
+      <div className={`flex-grow p-2 flex flex-col ${isMobile ? 'px-1' : ''}`}>
         <div className="flex-grow space-y-2">
           {/* First row */}
           <div className="flex items-start space-x-2 relative">
@@ -218,9 +218,9 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
             {memoizedTokens}
             <Button
               onClick={handleAddToken}
-              className="h-[30px] px-2 text-xs border transition-colors bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-800"
+              className={`h-[30px] px-2 text-xs border transition-colors bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-800 ${isMobile ? 'text-[10px]' : ''}`}
             >
-              <PlusCircle className="h-4 w-4 mr-1" />
+              <PlusCircle className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'} mr-1`} />
               Add token
             </Button>
           </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react
 import CharacterCard from './CharacterCard';
 import { Button } from '../components/ui/button';
 
-const CharacterList = forwardRef(({ characters, setCharacters, activeCharacterIndex, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, round }, ref) => {
+const CharacterList = forwardRef(({ characters, setCharacters, activeCharacterIndex, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, round, isMobile }, ref) => {
   const listRef = useRef(null);
   const activeCharacterRef = useRef(null);
 
@@ -87,7 +87,7 @@ const CharacterList = forwardRef(({ characters, setCharacters, activeCharacterIn
   };
 
   return (
-    <div ref={listRef} className="space-y-4 overflow-y-auto h-full px-4">
+    <div ref={listRef} className={`space-y-4 overflow-y-auto h-full ${isMobile ? 'px-0' : 'px-4'}`}>
       {characters.map((character, index) => (
         <div 
           key={character.id} 
@@ -107,10 +107,11 @@ const CharacterList = forwardRef(({ characters, setCharacters, activeCharacterIn
             onInitiativeBlur={handleInitiativeBlur}
             onInitiativeSubmit={handleInitiativeSubmit}
             round={round}
+            isMobile={isMobile}
           />
         </div>
       ))}
-      <div className="pb-6">
+      <div className={`pb-6 ${isMobile ? 'px-3' : ''}`}>
         <Button 
           onClick={addCharacter} 
           className="w-full bg-zinc-800 hover:bg-zinc-700 text-white dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 dark:hover:text-zinc-100 transition-colors duration-200"
