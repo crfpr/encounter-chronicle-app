@@ -31,32 +31,35 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
     }
   };
 
-  const handleHPChange = (e) => {
-    const [currentHp, maxHp] = e.target.value.split('/');
-    handleInputChange('currentHp', currentHp.trim());
-    handleInputChange('maxHp', maxHp.trim());
-  };
-
   return (
     <div className={`w-20 flex-shrink-0 ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} border-l border-zinc-300 dark:border-zinc-800 flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
       <div className="flex flex-col items-center space-y-2 w-full">
         <div className="flex flex-col items-center w-full">
           <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>HP</label>
-          <div className="relative w-16">
+          <div className="relative w-16 border border-zinc-300 dark:border-zinc-700 rounded">
             <Input
               type="text"
-              value={`${character.currentHp}/${character.maxHp}`}
-              onChange={handleHPChange}
-              onKeyDown={(e) => {
-                if (e.key === '/') e.preventDefault();
-                handleNumericInputKeyDown(e, 'currentHp', character.currentHp);
-              }}
+              inputMode="numeric"
+              value={character.currentHp}
+              onChange={(e) => handleInputChange('currentHp', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
-              className={`w-full text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm`}
-              maxLength={7}
+              className={`w-full text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-none no-spinners text-sm`}
+              maxLength={3}
             />
-            <Separator className="absolute top-1/2 left-0 right-0 -translate-y-1/2" />
+            <Separator className="my-0" />
+            <Input
+              type="text"
+              inputMode="numeric"
+              value={character.maxHp}
+              onChange={(e) => handleInputChange('maxHp', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
+              onFocus={() => setIsNumericInputActive(true)}
+              onBlur={() => setIsNumericInputActive(false)}
+              className={`w-full text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-none no-spinners text-sm`}
+              maxLength={3}
+            />
           </div>
         </div>
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
