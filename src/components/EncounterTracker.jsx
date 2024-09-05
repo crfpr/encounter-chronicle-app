@@ -12,6 +12,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   const [notes, setNotes] = useState('');
   const [activePage, setActivePage] = useState('tracker');
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
+  const trackerRef = useRef(null);
 
   const {
     characters,
@@ -125,7 +126,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
                   round={round}
                 />
               </div>
-              <div className="flex-grow overflow-y-auto pb-20">
+              <div ref={trackerRef} className="flex-grow overflow-y-auto pb-20">
                 <CharacterList 
                   characters={characters} 
                   setCharacters={setCharacters} 
@@ -177,22 +178,20 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
                   round={round}
                 />
               </div>
-              <div className="flex-grow overflow-hidden" style={{ maxHeight: 'calc(100% - 88px)' }}>
-                <div className="h-full overflow-y-auto px-4 pb-4">
-                  <CharacterList 
-                    characters={characters} 
-                    setCharacters={setCharacters} 
-                    activeCharacterIndex={activeCharacterIndex}
-                    turnTime={turnTime}
-                    onPreviousTurn={handlePreviousTurn}
-                    onNextTurn={handleNextTurn}
-                    setIsNumericInputActive={setIsNumericInputActive}
-                    updateCharacter={updateCharacter}
-                    addCharacter={addCharacter}
-                    removeCharacter={removeCharacter}
-                    round={round}
-                  />
-                </div>
+              <div ref={trackerRef} className="flex-grow overflow-hidden" style={{ maxHeight: 'calc(100% - 88px)' }}>
+                <CharacterList 
+                  characters={characters} 
+                  setCharacters={setCharacters} 
+                  activeCharacterIndex={activeCharacterIndex}
+                  turnTime={turnTime}
+                  onPreviousTurn={handlePreviousTurn}
+                  onNextTurn={handleNextTurn}
+                  setIsNumericInputActive={setIsNumericInputActive}
+                  updateCharacter={updateCharacter}
+                  addCharacter={addCharacter}
+                  removeCharacter={removeCharacter}
+                  round={round}
+                />
               </div>
             </div>
           </div>

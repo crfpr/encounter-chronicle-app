@@ -4,13 +4,19 @@ import { Button } from '../components/ui/button';
 
 const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, round }) => {
   const activeCharacterRef = useRef(null);
+  const listRef = useRef(null);
 
   useEffect(() => {
-    if (activeCharacterRef.current) {
-      activeCharacterRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
+    if (activeCharacterRef.current && listRef.current) {
+      const listRect = listRef.current.getBoundingClientRect();
+      const cardRect = activeCharacterRef.current.getBoundingClientRect();
+      
+      if (cardRect.top < listRect.top || cardRect.bottom > listRect.bottom) {
+        activeCharacterRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }
     }
   }, [activeCharacterIndex]);
 
@@ -35,7 +41,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
       cumulativeTurnTime: 0,
       tokens: [],
       hasActed: false,
-      state: 'alive'  // Ensure new characters are created in 'alive' state
+      state: 'alive'
     };
     setCharacters(prevCharacters => [...prevCharacters, newCharacter]);
   };
@@ -72,7 +78,7 @@ const CharacterList = ({ characters, setCharacters, activeCharacterIndex, turnTi
   };
 
   return (
-    <div className="space-y-4">
+    <div ref={listRef} className="space-y-4 overflow-y-auto h-full">
       {characters.map((character, index) => (
         <div 
           key={character.id} 
