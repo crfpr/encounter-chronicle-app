@@ -8,27 +8,99 @@ import TurnNavigator from './TurnNavigator';
 import CharacterNameType from './CharacterNameType';
 import TokenInput from './TokenInput';
 import { PlusCircle, X, Clock } from 'lucide-react';
+import { debounce } from 'lodash';
 
-const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
-  const [tokens, setTokens] = useState(character.tokens || []);
+// Custom hook for token management
+const useTokenManagement = (initialTokens, updateCharacter) => {
+  const [tokens, setTokens] = useState(initialTokens || []);
   const [newTokenId, setNewTokenId] = useState(null);
   const [activeDurationInput, setActiveDurationInput] = useState(null);
 
+  const handleAddToken = useCallback(() => {
+    const newToken = { id: Date.now(), label: 'Token', tokenDuration: null, showDuration: false, isPersistent: true };
+    const updatedTokens = [...tokens, newToken];
+    setTokens(updatedTokens);
+    updateCharacter(prevCharacter => ({ ...prevCharacter, tokens: updatedTokens }));
+    setNewTokenId(newToken.id);
+  }, [tokens, updateCharacter]);
+
+  const handleRemoveToken = useCallback((tokenId) => {
+    const updatedTokens = tokens.filter(token => token.id !== tokenId);
+    setTokens(updatedTokens);
+    updateCharacter(prevCharacter => ({ ...prevCharacter, tokens: updatedTokens }));
+  }, [tokens, updateCharacter]);
+
+  const handleTokenDurationChange = useCallback((tokenId, newDuration) => {
+    const updatedTokens = tokens.map(token => 
+      token.id === tokenId ? { 
+        ...token, 
+        tokenDuration: newDuration === '' ? null : newDuration,
+        isPersistent: newDuration === '' || newDuration === null
+      } : token
+    );
+    setTokens(updatedTokens);
+    updateCharacter(prevCharacter => ({ ...prevCharacter, tokens: updatedTokens }));
+  }, [tokens, updateCharacter]);
+
+  const handleTokenLabelChange = useCallback(debounce((tokenId, newLabel) => {
+    const updatedTokens = tokens.map(token => 
+      token.id === tokenId ? { ...token, label: newLabel } : token
+    );
+    setTokens(updatedTokens);
+    updateCharacter(prevCharacter => ({ ...prevCharacter, tokens: updatedTokens }));
+  }, 300), [tokens, updateCharacter]);
+
+  const toggleTokenDuration = useCallback((tokenId) => {
+    const updatedTokens = tokens.map(token => {
+      if (token.id === tokenId) {
+        const newShowDuration = !token.showDuration;
+        return {
+          ...token,
+          showDuration: newShowDuration,
+          tokenDuration: newShowDuration ? '' : token.tokenDuration,
+          isPersistent: newShowDuration ? true : token.isPersistent
+        };
+      }
+      return token;
+    });
+    setTokens(updatedTokens);
+    updateCharacter(prevCharacter => ({ ...prevCharacter, tokens: updatedTokens }));
+    setActiveDurationInput(tokenId);
+  }, [tokens, updateCharacter]);
+
+  return {
+    tokens,
+    newTokenId,
+    activeDurationInput,
+    handleAddToken,
+    handleRemoveToken,
+    handleTokenDurationChange,
+    handleTokenLabelChange,
+    toggleTokenDuration,
+    setActiveDurationInput
+  };
+};
+
+const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
+  const {
+    tokens,
+    newTokenId,
+    activeDurationInput,
+    handleAddToken,
+    handleRemoveToken,
+    handleTokenDurationChange,
+    handleTokenLabelChange,
+    toggleTokenDuration,
+    setActiveDurationInput
+  } = useTokenManagement(character.tokens, updateCharacter);
+
+  const newTokenRef = useRef(null);
+
   useEffect(() => {
-    setTokens(character.tokens || []);
-  }, [character.tokens]);
-
-  const getBorderStyle = useCallback(() => {
-    return isActive
-      ? 'border-zinc-800 dark:border-zinc-800'
-      : 'border-zinc-300 dark:border-zinc-800';
-  }, [isActive]);
-
-  const getTabColor = useCallback(() => {
-    return isActive
-      ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'
-      : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
-  }, [isActive]);
+    if (newTokenId && newTokenRef.current) {
+      newTokenRef.current.focus();
+    }
+  }, [newTokenId]);
 
   const handleInputChange = useCallback((field, value) => {
     if (field === 'initiative' || field === 'ac' || field === 'currentHp' || field === 'maxHp' || field === 'currentMovement' || field === 'maxMovement') {
@@ -74,6 +146,18 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
     updateCharacter(updatedCharacter);
   }, [character, updateCharacter]);
 
+  const getBorderStyle = useCallback(() => {
+    return isActive
+      ? 'border-zinc-800 dark:border-zinc-800'
+      : 'border-zinc-300 dark:border-zinc-800';
+  }, [isActive]);
+
+  const getTabColor = useCallback(() => {
+    return isActive
+      ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'
+      : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
+  }, [isActive]);
+
   const getToggleGroupItemStyle = useCallback((isActive, isToggled) => {
     return `h-[30px] px-2 text-xs border transition-colors ${
       isToggled
@@ -84,68 +168,12 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
     } border-zinc-300 dark:border-zinc-800`;
   }, []);
 
-  const handleAddToken = useCallback(() => {
-    const newToken = { id: Date.now(), label: 'Token', tokenDuration: null, showDuration: false, isPersistent: true };
-    const updatedTokens = [...tokens, newToken];
-    setTokens(updatedTokens);
-    updateCharacter({ ...character, tokens: updatedTokens });
-    setNewTokenId(newToken.id);
-  }, [character, tokens, updateCharacter]);
-
-  const handleRemoveToken = useCallback((tokenId) => {
-    const updatedTokens = tokens.filter(token => token.id !== tokenId);
-    setTokens(updatedTokens);
-    updateCharacter({ ...character, tokens: updatedTokens });
-  }, [character, tokens, updateCharacter]);
-
-  const handleTokenDurationChange = useCallback((tokenId, newDuration) => {
-    const updatedTokens = tokens.map(token => 
-      token.id === tokenId ? { 
-        ...token, 
-        tokenDuration: newDuration === '' ? null : newDuration,
-        isPersistent: newDuration === '' || newDuration === null
-      } : token
-    );
-    setTokens(updatedTokens);
-    updateCharacter({ ...character, tokens: updatedTokens });
-  }, [character, tokens, updateCharacter]);
-
-  const handleTokenLabelChange = useCallback((tokenId, newLabel) => {
-    const updatedTokens = tokens.map(token => 
-      token.id === tokenId ? { ...token, label: newLabel } : token
-    );
-    setTokens(updatedTokens);
-    updateCharacter({ ...character, tokens: updatedTokens });
-  }, [character, tokens, updateCharacter]);
-
-  const toggleTokenDuration = useCallback((tokenId) => {
-    const updatedTokens = tokens.map(token => {
-      if (token.id === tokenId) {
-        const newShowDuration = !token.showDuration;
-        return {
-          ...token,
-          showDuration: newShowDuration,
-          tokenDuration: newShowDuration ? '' : token.tokenDuration,
-          isPersistent: newShowDuration ? true : token.isPersistent
-        };
-      }
-      return token;
-    });
-    setTokens(updatedTokens);
-    updateCharacter({ ...character, tokens: updatedTokens });
-    setActiveDurationInput(tokenId);
-  }, [character, tokens, updateCharacter]);
-
   const handleTokenDurationBlur = useCallback((tokenId, value) => {
     if (value === '' || isNaN(value)) {
-      const updatedTokens = tokens.map(token => 
-        token.id === tokenId ? { ...token, showDuration: false, tokenDuration: null, isPersistent: true } : token
-      );
-      setTokens(updatedTokens);
-      updateCharacter({ ...character, tokens: updatedTokens });
+      handleTokenDurationChange(tokenId, null);
     }
     setActiveDurationInput(null);
-  }, [character, tokens, updateCharacter]);
+  }, [handleTokenDurationChange]);
 
   const handleTokenFocus = useCallback(() => {
     setIsNumericInputActive(true);
@@ -165,6 +193,7 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
         onLabelChange={handleTokenLabelChange} 
         isNew={token.id === newTokenId}
         onFocus={handleTokenFocus}
+        ref={token.id === newTokenId ? newTokenRef : null}
       />
       {token.showDuration ? (
         <Input

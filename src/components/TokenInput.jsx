@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { Input } from './ui/input';
 import { debounce } from 'lodash';
 
-const TokenInput = React.memo(({ token, onLabelChange, isNew, onFocus }) => {
+const TokenInput = forwardRef(({ token, onLabelChange, isNew, onFocus }, ref) => {
   const [localLabel, setLocalLabel] = useState(token.label);
   const [inputWidth, setInputWidth] = useState(40);
   const inputRef = useRef(null);
@@ -14,7 +14,6 @@ const TokenInput = React.memo(({ token, onLabelChange, isNew, onFocus }) => {
     }
     if (isNew) {
       setLocalLabel('');
-      inputRef.current?.focus();
     }
   }, [localLabel, isNew]);
 
@@ -50,7 +49,14 @@ const TokenInput = React.memo(({ token, onLabelChange, isNew, onFocus }) => {
 
   return (
     <Input
-      ref={inputRef}
+      ref={(node) => {
+        inputRef.current = node;
+        if (typeof ref === 'function') {
+          ref(node);
+        } else if (ref) {
+          ref.current = node;
+        }
+      }}
       type="text"
       value={localLabel}
       onChange={handleChange}
@@ -64,4 +70,4 @@ const TokenInput = React.memo(({ token, onLabelChange, isNew, onFocus }) => {
   );
 });
 
-export default TokenInput;
+export default React.memo(TokenInput);
