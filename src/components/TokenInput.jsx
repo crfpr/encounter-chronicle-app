@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Input } from './ui/input';
 import { debounce } from 'lodash';
+import { Button } from './ui/button';
+import { Clock, X } from 'lucide-react';
 
-const TokenInput = React.memo(({ token, onLabelChange, isNew }) => {
+const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemove, onToggleDuration }) => {
   const [localLabel, setLocalLabel] = useState(token.label);
   const [inputWidth, setInputWidth] = useState(40);
   const inputRef = useRef(null);
@@ -43,19 +45,60 @@ const TokenInput = React.memo(({ token, onLabelChange, isNew }) => {
     }
   };
 
+  const handleDurationChange = (e) => {
+    const newDuration = e.target.value === '' ? null : parseInt(e.target.value, 10);
+    onDurationChange(token.id, newDuration);
+  };
+
+  const handleDurationBlur = (e) => {
+    if (e.target.value === '') {
+      onToggleDuration(token.id);
+    }
+  };
+
   return (
-    <Input
-      ref={inputRef}
-      type="text"
-      value={localLabel}
-      onChange={handleChange}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
-      className="h-5 px-1 text-xs bg-transparent border-none focus:outline-none focus:ring-0 overflow-visible"
-      style={{ width: `${inputWidth}px`, minWidth: '40px' }}
-      maxLength={30}
-      placeholder="Token"
-    />
+    <div className="flex items-center space-x-1">
+      <Input
+        ref={inputRef}
+        type="text"
+        value={localLabel}
+        onChange={handleChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        className="h-5 px-1 text-xs bg-transparent border-none focus:outline-none focus:ring-0 overflow-visible"
+        style={{ width: `${inputWidth}px`, minWidth: '40px' }}
+        maxLength={30}
+        placeholder="Token"
+      />
+      {token.showDuration ? (
+        <Input
+          type="number"
+          value={token.tokenDuration || ''}
+          onChange={handleDurationChange}
+          onBlur={handleDurationBlur}
+          className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0 no-spinners"
+          min="1"
+          placeholder=""
+        />
+      ) : (
+        <Button
+          onClick={() => onToggleDuration(token.id)}
+          variant="ghost"
+          size="sm"
+          className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700 group"
+        >
+          <Clock className="h-3 w-3 group-hover:text-white" />
+        </Button>
+      )}
+      <Button
+        onClick={() => onRemove(token.id)}
+        variant="ghost"
+        size="sm"
+        className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700"
+      >
+        <X className="h-3 w-3" />
+      </Button>
+    </div>
   );
 });
 
