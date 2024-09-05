@@ -2,14 +2,12 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
-import { ToggleGroup, ToggleGroupItem } from "../components/ui/toggle-group";
 import { Badge } from "../components/ui/badge";
 import TurnNavigator from './TurnNavigator';
 import CharacterNameType from './CharacterNameType';
 import TokenInput from './TokenInput';
 import { PlusCircle } from 'lucide-react';
 import { debounce } from 'lodash';
-import CharacterStateManager from './CharacterStateManager';
 import CharacterActions from './CharacterActions';
 import HPSection from './HPSection';
 
@@ -207,12 +205,6 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
               isMobile={isMobile}
             />
           )}
-
-          {/* Character state manager */}
-          <CharacterStateManager
-            character={character}
-            updateCharacter={updateCharacter}
-          />
 
           {/* New row for tokens and Add Token button */}
           <div className="flex items-center flex-wrap gap-2">
