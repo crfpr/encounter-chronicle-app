@@ -90,7 +90,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
     setNewTokenId(newToken.id);
-    setTimeout(() => setNewTokenId(null), 100); // Clear newTokenId after a short delay
+    setTimeout(() => setNewTokenId(null), 100);
   };
 
   const handleRemoveToken = (tokenId) => {
@@ -135,6 +135,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
     setActiveDurationInput(tokenId);
+    setIsNumericInputActive(true);
   };
 
   const handleTokenDurationBlur = (tokenId, value) => {
@@ -152,71 +153,177 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
     setIsNumericInputActive(true);
   };
 
-  // ... (rest of the component code remains the same)
-
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out`}>
-      {/* ... (existing JSX code) */}
-      
-      {/* Token section */}
-      <div className="flex items-center flex-wrap gap-2">
-        {tokens.map((token) => (
-          <Badge
-            key={token.id}
-            className={`h-[30px] px-1 flex items-center space-x-1 ${
-              isActive
-                ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'
-                : 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100'
-            } hover:text-white transition-colors`}
-          >
-            <TokenInput 
-              token={token} 
-              onLabelChange={handleTokenLabelChange} 
-              isNew={token.id === newTokenId}
-              onFocus={handleTokenFocus}
+      <div className={`flex-grow p-4 ${getTabColor()}`}>
+        <div className="flex flex-col space-y-4">
+          <CharacterNameType
+            name={character.name}
+            type={character.type}
+            onUpdate={(name, type) => updateCharacter({ ...character, name, type })}
+          />
+          <div className="flex items-center space-x-2">
+            <Input
+              type="number"
+              value={character.initiative}
+              onChange={(e) => handleInputChange('initiative', e.target.value)}
+              onBlur={handleInitiativeBlur}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
+              onFocus={() => setIsNumericInputActive(true)}
+              className="w-16 text-center no-spinners"
+              placeholder="Init"
             />
-            {token.showDuration ? (
+            <Input
+              type="number"
+              value={character.ac}
+              onChange={(e) => handleInputChange('ac', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
+              onFocus={() => setIsNumericInputActive(true)}
+              className="w-16 text-center no-spinners"
+              placeholder="AC"
+            />
+            <div className="flex items-center space-x-1">
               <Input
                 type="number"
-                value={token.tokenDuration || ''}
-                onChange={(e) => handleTokenDurationChange(token.id, e.target.value)}
-                onBlur={(e) => handleTokenDurationBlur(token.id, e.target.value)}
+                value={character.currentHp}
+                onChange={(e) => handleInputChange('currentHp', e.target.value)}
+                onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
                 onFocus={() => setIsNumericInputActive(true)}
-                className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0 no-spinners"
-                min="1"
-                placeholder=""
-                autoFocus={token.id === activeDurationInput}
+                className="w-16 text-center no-spinners"
+                placeholder="HP"
               />
-            ) : (
-              <Button
-                onClick={() => toggleTokenDuration(token.id)}
-                variant="ghost"
-                size="sm"
-                className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700 group"
+              <span>/</span>
+              <Input
+                type="number"
+                value={character.maxHp}
+                onChange={(e) => handleInputChange('maxHp', e.target.value)}
+                onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
+                onFocus={() => setIsNumericInputActive(true)}
+                className="w-16 text-center no-spinners"
+                placeholder="Max"
+              />
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <ToggleGroup type="multiple" value={[character.action && 'action', character.bonusAction && 'bonusAction', character.reaction && 'reaction'].filter(Boolean)} onValueChange={handleToggleAction}>
+              <ToggleGroupItem value="action" className={getToggleGroupItemStyle(isActive, character.action)}>
+                Action
+              </ToggleGroupItem>
+              <ToggleGroupItem value="bonusAction" className={getToggleGroupItemStyle(isActive, character.bonusAction)}>
+                Bonus
+              </ToggleGroupItem>
+              <ToggleGroupItem value="reaction" className={getToggleGroupItemStyle(isActive, character.reaction)}>
+                Reaction
+              </ToggleGroupItem>
+            </ToggleGroup>
+            <div className="flex items-center space-x-1">
+              <Input
+                type="number"
+                value={character.currentMovement}
+                onChange={(e) => handleInputChange('currentMovement', e.target.value)}
+                onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
+                onFocus={() => setIsNumericInputActive(true)}
+                className="w-16 text-center no-spinners"
+                placeholder="Move"
+              />
+              <span>/</span>
+              <Input
+                type="number"
+                value={character.maxMovement}
+                onChange={(e) => handleInputChange('maxMovement', e.target.value)}
+                onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
+                onFocus={() => setIsNumericInputActive(true)}
+                className="w-16 text-center no-spinners"
+                placeholder="Max"
+              />
+            </div>
+          </div>
+          <div className="flex items-center flex-wrap gap-2">
+            {tokens.map((token) => (
+              <Badge
+                key={token.id}
+                className={`h-[30px] px-1 flex items-center space-x-1 ${
+                  isActive
+                    ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'
+                    : 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100'
+                } hover:text-white transition-colors`}
               >
-                <Clock className="h-3 w-3 group-hover:text-white" />
-              </Button>
-            )}
+                <TokenInput 
+                  token={token} 
+                  onLabelChange={handleTokenLabelChange} 
+                  isNew={token.id === newTokenId}
+                  onFocus={handleTokenFocus}
+                />
+                {token.showDuration ? (
+                  <Input
+                    type="number"
+                    value={token.tokenDuration || ''}
+                    onChange={(e) => handleTokenDurationChange(token.id, e.target.value)}
+                    onBlur={(e) => handleTokenDurationBlur(token.id, e.target.value)}
+                    onFocus={() => setIsNumericInputActive(true)}
+                    className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0 no-spinners"
+                    min="1"
+                    placeholder=""
+                    autoFocus={token.id === activeDurationInput}
+                  />
+                ) : (
+                  <Button
+                    onClick={() => toggleTokenDuration(token.id)}
+                    variant="ghost"
+                    size="sm"
+                    className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700 group"
+                  >
+                    <Clock className="h-3 w-3 group-hover:text-white" />
+                  </Button>
+                )}
+                <Button
+                  onClick={() => handleRemoveToken(token.id)}
+                  variant="ghost"
+                  size="sm"
+                  className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700"
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              </Badge>
+            ))}
             <Button
-              onClick={() => handleRemoveToken(token.id)}
-              variant="ghost"
-              size="sm"
-              className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700"
+              onClick={handleAddToken}
+              className="h-[30px] px-2 text-xs border transition-colors bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-800"
             >
-              <X className="h-3 w-3" />
+              <PlusCircle className="h-4 w-4 mr-1" />
+              Add token
             </Button>
-          </Badge>
-        ))}
-        <Button
-          onClick={handleAddToken}
-          className="h-[30px] px-2 text-xs border transition-colors bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-800"
-        >
-          <PlusCircle className="h-4 w-4 mr-1" />
-          Add token
-        </Button>
+          </div>
+        </div>
       </div>
-      
-      {/* ... (rest of the JSX code) */}
+      <div className={`w-12 flex-shrink-0 ${getTabColor()}`}>
+        <TurnNavigator
+          turnTime={turnTime}
+          onPreviousTurn={onPreviousTurn}
+          onNextTurn={onNextTurn}
+        />
+      </div>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button variant="ghost" size="sm" className="absolute top-2 right-2 h-6 w-6 p-0 rounded-full">
+            <X className="h-4 w-4" />
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to remove this character?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the character from the encounter.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() => removeCharacter(character.id)}>
+              Remove
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
