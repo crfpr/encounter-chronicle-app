@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import { Badge } from "../components/ui/badge";
 import TurnNavigator from './TurnNavigator';
 import CharacterNameType from './CharacterNameType';
@@ -226,34 +225,6 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
             </Button>
           </div>
         </div>
-
-        {/* Delete button */}
-        <div className="mt-auto self-end">
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button 
-                variant="link" 
-                className="btn-sm text-xs text-zinc-700 dark:text-zinc-300 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 whitespace-nowrap bg-transparent dark:bg-transparent p-0 h-auto flex items-end"
-              >
-                Delete
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete the character.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={() => removeCharacter(character.id)}>
-                  Delete
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
       </div>
 
       {/* Right Tab */}
@@ -264,6 +235,7 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
         handleNumericInputKeyDown={handleNumericInputKeyDown}
         setIsNumericInputActive={setIsNumericInputActive}
         updateCharacter={updateCharacter}
+        removeCharacter={removeCharacter}
       />
     </div>
   );
