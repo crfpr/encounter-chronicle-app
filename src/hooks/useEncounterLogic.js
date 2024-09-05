@@ -55,7 +55,7 @@ export const useEncounterLogic = (characters, setCharacters) => {
   const handleNextTurn = useCallback(() => {
     setCharacters(prevCharacters => {
       const updatedCharacters = prevCharacters.map((char, index) => {
-        if (index === activeCharacterIndex && !char.hasActed) {
+        if (index === activeCharacterIndex) {
           const updatedTokens = char.tokens.map(token => {
             if (token.tokenDuration !== null && token.tokenDuration > 0) {
               // Only decrement if the token wasn't created this round
