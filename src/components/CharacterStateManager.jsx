@@ -21,6 +21,13 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
         ? character.deathSaves[type].filter(v => v !== value)
         : [...character.deathSaves[type], value]
     };
+
+    // Check if all three failures are toggled on
+    if (type === 'failures' && updatedDeathSaves.failures.length === 3) {
+      handleStateChange('dead');
+      return;
+    }
+
     updateCharacter({
       ...character,
       deathSaves: updatedDeathSaves
