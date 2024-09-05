@@ -227,10 +227,131 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
     </Badge>
   )), [tokens, isActive, newTokenId, activeDurationInput, handleTokenLabelChange, handleTokenFocus, handleTokenDurationChange, handleTokenDurationBlur, toggleTokenDuration, handleRemoveToken, setIsNumericInputActive]);
 
-  // ... (rest of the component remains unchanged)
-
   return (
-    // ... (JSX structure remains unchanged)
+    <div className={`bg-white dark:bg-zinc-950 border ${getBorderStyle()} rounded-lg overflow-hidden mb-4 transition-all duration-300 ease-in-out`}>
+      <div className={`${getTabColor()} p-2 flex justify-between items-center`}>
+        <div className="flex-grow">
+          <CharacterNameType
+            name={character.name}
+            type={character.type}
+            onUpdate={(name, type) => updateCharacter({ ...character, name, type })}
+          />
+        </div>
+        <div className="flex items-center space-x-2">
+          <Input
+            type="text"
+            value={character.initiative}
+            onChange={(e) => handleInputChange('initiative', e.target.value)}
+            onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
+            onBlur={handleInitiativeBlur}
+            className="w-12 h-[30px] text-center bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700"
+            placeholder="Init"
+          />
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" size="sm" className="h-[30px] px-2 bg-red-500 hover:bg-red-600 text-white">
+                <X className="h-4 w-4" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete the character.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => removeCharacter(character.id)}>
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      </div>
+      <div className="p-4 grid grid-cols-12 gap-4">
+        <div className="col-span-9 space-y-4">
+          <div className="flex space-x-2">
+            <Input
+              type="number"
+              value={character.currentHp}
+              onChange={(e) => handleInputChange('currentHp', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
+              className="w-16 h-[30px] text-center bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700"
+              placeholder="HP"
+            />
+            <span className="flex items-center">/</span>
+            <Input
+              type="number"
+              value={character.maxHp}
+              onChange={(e) => handleInputChange('maxHp', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
+              className="w-16 h-[30px] text-center bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700"
+              placeholder="Max"
+            />
+            <Input
+              type="number"
+              value={character.ac}
+              onChange={(e) => handleInputChange('ac', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
+              className="w-12 h-[30px] text-center bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700"
+              placeholder="AC"
+            />
+          </div>
+          <div className="flex space-x-2 items-center">
+            <Input
+              type="number"
+              value={character.currentMovement}
+              onChange={(e) => handleInputChange('currentMovement', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
+              className="w-12 h-[30px] text-center bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700"
+              placeholder="Move"
+            />
+            <span className="flex items-center">/</span>
+            <Input
+              type="number"
+              value={character.maxMovement}
+              onChange={(e) => handleInputChange('maxMovement', e.target.value)}
+              onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
+              className="w-12 h-[30px] text-center bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700"
+              placeholder="Max"
+            />
+            <span className="text-sm">ft.</span>
+          </div>
+          <ToggleGroup type="multiple" value={['action', 'bonusAction', 'reaction'].filter(action => character[action])} onValueChange={handleToggleAction} className="justify-start">
+            <ToggleGroupItem value="action" aria-label="Toggle action" className={getToggleGroupItemStyle(isActive, character.action)}>
+              Action
+            </ToggleGroupItem>
+            <ToggleGroupItem value="bonusAction" aria-label="Toggle bonus action" className={getToggleGroupItemStyle(isActive, character.bonusAction)}>
+              Bonus
+            </ToggleGroupItem>
+            <ToggleGroupItem value="reaction" aria-label="Toggle reaction" className={getToggleGroupItemStyle(isActive, character.reaction)}>
+              Reaction
+            </ToggleGroupItem>
+          </ToggleGroup>
+          <div className="flex flex-wrap gap-2">
+            {memoizedTokens}
+            <Button
+              onClick={handleAddToken}
+              variant="outline"
+              size="sm"
+              className="h-[30px] px-2 bg-white hover:bg-zinc-100 text-black dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-100"
+            >
+              <PlusCircle className="h-4 w-4 mr-1" />
+              Add Token
+            </Button>
+          </div>
+        </div>
+        <div className="col-span-3">
+          <TurnNavigator
+            turnTime={turnTime}
+            onPreviousTurn={onPreviousTurn}
+            onNextTurn={onNextTurn}
+          />
+        </div>
+      </div>
+    </div>
   );
 });
 
