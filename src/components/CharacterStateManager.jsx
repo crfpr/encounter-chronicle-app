@@ -9,15 +9,17 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
     const updatedCharacter = { 
       ...character, 
       state: newState,
-      deathSaves: newState === 'unconscious' ? { failures: 0, successes: 0 } : undefined
+      deathSaves: newState === 'unconscious' ? { failures: [], successes: [] } : undefined
     };
     updateCharacter(updatedCharacter);
   };
 
-  const handleDeathSaveChange = (type, value) => {
+  const handleDeathSaveToggle = (type, value) => {
     const updatedDeathSaves = {
       ...character.deathSaves,
-      [type]: value
+      [type]: character.deathSaves[type].includes(value)
+        ? character.deathSaves[type].filter(v => v !== value)
+        : [...character.deathSaves[type], value]
     };
     updateCharacter({
       ...character,
@@ -37,7 +39,7 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
   );
 
   const renderDeathSaves = () => {
-    const renderSaveButtons = (type, count) => {
+    const renderSaveButtons = (type) => {
       const isFailure = type === 'failures';
       const color = isFailure ? 'bg-red-500' : 'bg-green-500';
       return (
@@ -45,12 +47,12 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
           {[1, 2, 3].map((value) => (
             <Button
               key={`${type}-${value}`}
-              onClick={() => handleDeathSaveChange(type, value)}
+              onClick={() => handleDeathSaveToggle(type, value)}
               variant="outline"
               size="sm"
               className={cn(
                 "w-6 h-6 p-0",
-                character.deathSaves?.[type] >= value ? color : ''
+                character.deathSaves?.[type].includes(value) ? color : ''
               )}
             />
           ))}
@@ -61,9 +63,9 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
     return (
       <div className="flex items-center space-x-2 mt-2">
         <Label className="text-xs">Failure</Label>
-        {renderSaveButtons('failures', character.deathSaves?.failures || 0)}
+        {renderSaveButtons('failures')}
         <Separator orientation="vertical" className="h-6" />
-        {renderSaveButtons('successes', character.deathSaves?.successes || 0)}
+        {renderSaveButtons('successes')}
         <Label className="text-xs">Success</Label>
       </div>
     );
