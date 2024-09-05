@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Input } from '../components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
+import { Button } from '../components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/popover";
 import CharacterStateManager from './CharacterStateManager';
 
 const HPSection = ({ character, isActive, handleInputChange, handleNumericInputKeyDown, setIsNumericInputActive, updateCharacter }) => {
-  const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const handleStateChange = (newState) => {
     let updatedCharacter = { ...character, state: newState };
@@ -12,11 +13,12 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
       updatedCharacter.currentHp = 0;
       updatedCharacter.deathSaves = { successes: [], failures: [] };
     } else if (newState === 'stable') {
-      updatedCharacter.currentHp = 0;
+      updatedCharacter.currentHp = 1;
     } else if (newState === 'dead') {
       updatedCharacter.currentHp = 0;
     }
     updateCharacter(updatedCharacter);
+    setIsPopoverOpen(false);
   };
 
   const getStatusLabel = (state) => {
@@ -59,22 +61,30 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
             maxLength={3}
           />
         </div>
-        <Select 
-          value={character.state} 
-          onValueChange={handleStateChange}
-          onOpenChange={setIsSelectOpen}
-          open={isSelectOpen}
-        >
-          <SelectTrigger className={`w-full h-[30px] text-xs bg-transparent border-none hover:underline focus:ring-0 ${isActive ? 'text-white' : 'text-black dark:text-zinc-100'}`}>
-            <SelectValue placeholder={getStatusLabel(character.state)} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="alive">Alive</SelectItem>
-            <SelectItem value="ko">KO</SelectItem>
-            <SelectItem value="stable">Stable</SelectItem>
-            <SelectItem value="dead">Dead</SelectItem>
-          </SelectContent>
-        </Select>
+        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className={`w-full h-[30px] text-xs ${isActive ? 'bg-zinc-700 text-white hover:bg-zinc-600' : 'bg-white text-black hover:bg-zinc-100'} dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700 border-zinc-300 dark:border-zinc-700`}
+            >
+              {getStatusLabel(character.state)}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <div className="flex flex-col">
+              {['alive', 'ko', 'stable', 'dead'].map((state) => (
+                <Button
+                  key={state}
+                  variant="ghost"
+                  onClick={() => handleStateChange(state)}
+                  className="justify-start"
+                >
+                  {getStatusLabel(state)}
+                </Button>
+              ))}
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
     </div>
   );

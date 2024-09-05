@@ -18,7 +18,7 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
     }
 
     if (type === 'successes' && updatedDeathSaves.successes.length === 3) {
-      updateCharacter({ ...character, state: 'stable', currentHp: 0, deathSaves: updatedDeathSaves });
+      updateCharacter({ ...character, state: 'stable', currentHp: 1, deathSaves: updatedDeathSaves });
       return;
     }
 
@@ -30,36 +30,33 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
 
   const renderDeathSaves = () => {
     const renderSaveButtons = (type) => {
-      const isFailure = type === 'failures';
-      const color = isFailure ? 'bg-red-500' : 'bg-green-500';
-      return (
-        <div className="flex space-x-1">
-          {[1, 2, 3].map((value) => (
-            <Button
-              key={`${type}-${value}`}
-              onClick={() => handleDeathSaveToggle(type, value)}
-              variant="outline"
-              size="sm"
-              className={cn(
-                "w-4 h-4 p-0",
-                character.deathSaves[type].includes(value) ? color : ''
-              )}
-            />
-          ))}
-        </div>
-      );
+      return [1, 2, 3].map((value) => (
+        <Button
+          key={`${type}-${value}`}
+          onClick={() => handleDeathSaveToggle(type, value)}
+          variant="outline"
+          size="sm"
+          className={cn(
+            "w-4 h-4 p-0 rounded-full",
+            character.deathSaves[type].includes(value) 
+              ? (type === 'failures' ? 'bg-red-500' : 'bg-green-500') 
+              : 'bg-zinc-200 dark:bg-zinc-700'
+          )}
+        />
+      ));
     };
 
     return (
-      <div className="flex items-center space-x-4">
-        <div className="flex items-center space-x-1">
-          <Label className="text-[10px]">Failure</Label>
+      <div className="flex items-center space-x-2 text-xs">
+        <Label className="text-[10px]">Failure</Label>
+        <div className="flex space-x-1">
           {renderSaveButtons('failures')}
         </div>
-        <div className="flex items-center space-x-1">
-          <Label className="text-[10px]">Success</Label>
+        <div className="h-4 w-px bg-zinc-300 dark:bg-zinc-700" />
+        <div className="flex space-x-1">
           {renderSaveButtons('successes')}
         </div>
+        <Label className="text-[10px]">Success</Label>
       </div>
     );
   };
