@@ -6,16 +6,22 @@ import { Separator } from "./ui/separator";
 
 const CharacterStateManager = ({ character, updateCharacter }) => {
   const handleStateChange = (newState) => {
-    updateCharacter({ ...character, state: newState });
+    const updatedCharacter = { 
+      ...character, 
+      state: newState,
+      deathSaves: newState === 'unconscious' ? { failures: 0, successes: 0 } : undefined
+    };
+    updateCharacter(updatedCharacter);
   };
 
   const handleDeathSaveChange = (type, value) => {
+    const updatedDeathSaves = {
+      ...character.deathSaves,
+      [type]: value
+    };
     updateCharacter({
       ...character,
-      deathSaves: {
-        ...character.deathSaves,
-        [type]: value
-      }
+      deathSaves: updatedDeathSaves
     });
   };
 
@@ -34,7 +40,7 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
     <div className="flex items-center space-x-2 mt-2">
       <Label className="text-xs">Failure</Label>
       <RadioGroup
-        value={character.deathSaves.failures}
+        value={character.deathSaves?.failures || 0}
         onValueChange={(value) => handleDeathSaveChange('failures', parseInt(value))}
         className="flex space-x-1"
       >
@@ -44,7 +50,7 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
       </RadioGroup>
       <Separator orientation="vertical" className="h-6" />
       <RadioGroup
-        value={character.deathSaves.successes}
+        value={character.deathSaves?.successes || 0}
         onValueChange={(value) => handleDeathSaveChange('successes', parseInt(value))}
         className="flex space-x-1"
       >
