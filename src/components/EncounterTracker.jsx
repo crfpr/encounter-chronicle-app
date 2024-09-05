@@ -5,20 +5,41 @@ import CharacterStats from './CharacterStats';
 import NotesSection from './NotesSection';
 import MobileMenu from './MobileMenu';
 import SwipeHandler from './SwipeHandler';
-import { Button } from './ui/button';
-import { Copy } from 'lucide-react';
+import { useCharacterManagement } from '../hooks/useCharacterManagement';
+import { useEncounterLogic } from '../hooks/useEncounterLogic';
 
 const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile, contentHeight, loadedEncounterData }, ref) => {
-  const [round, setRound] = useState(1);
-  const [characters, setCharacters] = useState([]);
-  const [activeCharacterIndex, setActiveCharacterIndex] = useState(0);
-  const [encounterTime, setEncounterTime] = useState(0);
-  const [turnTime, setTurnTime] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
   const [notes, setNotes] = useState('');
   const [activePage, setActivePage] = useState('tracker');
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
-  const [encounterLog, setEncounterLog] = useState([]);
+
+  const {
+    characters,
+    setCharacters,
+    addCharacter,
+    removeCharacter,
+    updateCharacter
+  } = useCharacterManagement(loadedEncounterData);
+
+  const {
+    round,
+    setRound,
+    activeCharacterIndex,
+    setActiveCharacterIndex,
+    encounterTime,
+    setEncounterTime,
+    turnTime,
+    setTurnTime,
+    isRunning,
+    setIsRunning,
+    encounterLog,
+    setEncounterLog,
+    toggleEncounter,
+    handlePreviousTurn,
+    handleNextTurn,
+    resetCharacterActions,
+    logEvent
+  } = useEncounterLogic(characters, setCharacters);
 
   useImperativeHandle(ref, () => ({
     getEncounterData: () => ({
@@ -36,12 +57,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   useEffect(() => {
     if (loadedEncounterData) {
       setRound(loadedEncounterData.round || 1);
-      setCharacters(loadedEncounterData.characters.map(char => ({
-        ...char,
-        hasActed: false,
-        state: char.state || 'alive', // Add default state
-        deathSaves: char.deathSaves || { successes: 0, failures: 0 } // Add default death saves
-      })) || []);
       setActiveCharacterIndex(loadedEncounterData.activeCharacterIndex || 0);
       setEncounterTime(loadedEncounterData.encounterTime || 0);
       setNotes(loadedEncounterData.notes || '');
@@ -50,131 +65,31 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       setIsRunning(loadedEncounterData.isRunning || false);
       logEvent('Encounter data loaded');
     }
-  }, [loadedEncounterData, setEncounterName]);
+  }, [loadedEncounterData, setEncounterName, logEvent]);
 
-  const toggleEncounter = useCallback(() => {
-    setIsRunning(prevIsRunning => !prevIsRunning);
-    logEvent(isRunning ? 'Encounter paused' : 'Encounter started');
-  }, [isRunning]);
-
-  useEffect(() => {
-    let interval;
-    if (isRunning) {
-      interval = setInterval(() => {
-        setEncounterTime(prevTime => prevTime + 1);
-        setTurnTime(prevTime => prevTime + 1);
-      }, 1000);
-    } else {
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [isRunning]);
-
-  const resetCharacterActions = (characterIndex) => {
-    setCharacters(prevCharacters => prevCharacters.map((char, index) => {
-      if (index === characterIndex) {
-        const updatedChar = {
-          ...char,
-          action: false,
-          bonusAction: false,
-          reaction: false,
-          currentMovement: char.maxMovement
-        };
-        logEvent(`Reset actions for ${char.name}`);
-        return updatedChar;
-      }
-      return char;
-    }));
-  };
-
-  const handlePreviousTurn = () => {
-    setActiveCharacterIndex(prevIndex => {
-      const newIndex = prevIndex === 0 ? characters.length - 1 : prevIndex - 1;
-      logEvent(`Turn changed to ${characters[newIndex].name}`);
-      return newIndex;
-    });
-    setTurnTime(0);
-  };
-
-  const handleNextTurn = () => {
-    setCharacters(prevCharacters => {
-      const updatedCharacters = prevCharacters.map((char, index) => {
-        if (index === activeCharacterIndex && !char.hasActed) {
-          const updatedTokens = char.tokens.map(token => {
-            if (token.tokenDuration !== null && token.tokenDuration > 0) {
-              return {
-                ...token,
-                tokenDuration: token.tokenDuration - 1
-              };
-            }
-            return token;
-          }).filter(token => token.tokenDuration === null || token.tokenDuration > 0);
-
-          return {
-            ...char,
-            cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime,
-            tokens: updatedTokens,
-            hasActed: true,
-            turnCount: (char.turnCount || 0) + 1
-          };
-        }
-        return char;
-      });
-
-      const newActiveIndex = (activeCharacterIndex + 1) % characters.length;
-
-      const allHaveActed = updatedCharacters.every(char => char.hasActed);
-
-      if (allHaveActed) {
-        setRound(prevRound => {
-          logEvent(`Round ${prevRound + 1} started`);
-          return prevRound + 1;
-        });
-        return updatedCharacters.map(char => ({ ...char, hasActed: false }));
-      }
-
-      return updatedCharacters;
-    });
-
-    setActiveCharacterIndex(prevIndex => {
-      const newIndex = (prevIndex + 1) % characters.length;
-      resetCharacterActions(newIndex);
-      logEvent(`Turn changed to ${characters[newIndex].name}`);
-      return newIndex;
-    });
-
-    setTurnTime(0);
-  };
-
-  const handleSwipeLeft = () => {
+  const handleSwipeLeft = useCallback(() => {
     if (isMobile) {
       setActivePage(prevPage => {
         switch (prevPage) {
-          case 'tracker':
-            return 'notes';
-          case 'notes':
-            return 'stats';
-          default:
-            return prevPage;
+          case 'tracker': return 'notes';
+          case 'notes': return 'stats';
+          default: return prevPage;
         }
       });
     }
-  };
+  }, [isMobile]);
 
-  const handleSwipeRight = () => {
+  const handleSwipeRight = useCallback(() => {
     if (isMobile) {
       setActivePage(prevPage => {
         switch (prevPage) {
-          case 'notes':
-            return 'tracker';
-          case 'stats':
-            return 'notes';
-          default:
-            return prevPage;
+          case 'notes': return 'tracker';
+          case 'stats': return 'notes';
+          default: return prevPage;
         }
       });
     }
-  };
+  }, [isMobile]);
 
   const handleKeyDown = useCallback((e) => {
     if (!isMobile && characters.length > 1 && !isNumericInputActive) {
@@ -194,49 +109,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [handleKeyDown]);
-
-  const logEvent = (event) => {
-    setEncounterLog(prevLog => [
-      ...prevLog,
-      {
-        timestamp: new Date().toISOString(),
-        event: event,
-        encounterTime: encounterTime,
-        round: round
-      }
-    ]);
-  };
-
-  const updateCharacter = (updatedCharacter) => {
-    setCharacters(prevCharacters => 
-      prevCharacters.map(c => {
-        if (c.id === updatedCharacter.id) {
-          logEvent(`Updated ${c.name}: ${JSON.stringify(updatedCharacter)}`);
-          return { ...c, ...updatedCharacter };
-        }
-        return c;
-      })
-    );
-  };
-
-  const addCharacter = (newCharacter) => {
-    setCharacters(prevCharacters => [
-      ...prevCharacters,
-      {
-        ...newCharacter,
-        hasActed: false,
-        state: 'alive',
-        deathSaves: { successes: 0, failures: 0 }
-      }
-    ]);
-    logEvent(`Added new character: ${newCharacter.name}`);
-  };
-
-  const removeCharacter = (id) => {
-    const characterToRemove = characters.find(c => c.id === id);
-    setCharacters(prevCharacters => prevCharacters.filter(c => c.id !== id));
-    logEvent(`Removed character: ${characterToRemove.name}`);
-  };
 
   const renderContent = () => {
     if (isMobile) {

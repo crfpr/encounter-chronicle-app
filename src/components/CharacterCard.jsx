@@ -9,6 +9,7 @@ import CharacterNameType from './CharacterNameType';
 import TokenInput from './TokenInput';
 import { PlusCircle } from 'lucide-react';
 import { debounce } from 'lodash';
+import CharacterStateManager from './CharacterStateManager';
 
 const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
@@ -152,25 +153,6 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
     </Badge>
   )), [tokens, isActive, handleTokenLabelChange, handleTokenDurationChange, handleRemoveToken, toggleTokenDuration]);
 
-  const renderCharacterState = () => {
-    switch (character.state) {
-      case 'unconscious':
-        return (
-          <div className="text-red-500 font-bold">
-            Unconscious
-          </div>
-        );
-      case 'dead':
-        return (
-          <div className="text-red-700 font-bold">
-            Dead
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
-
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out`}>
       {/* Left Tab */}
@@ -304,8 +286,11 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
             </div>
           )}
 
-          {/* Character state */}
-          {renderCharacterState()}
+          {/* Character state manager */}
+          <CharacterStateManager
+            character={character}
+            updateCharacter={updateCharacter}
+          />
 
           {/* New row for tokens and Add Token button */}
           <div className="flex items-center flex-wrap gap-2">
