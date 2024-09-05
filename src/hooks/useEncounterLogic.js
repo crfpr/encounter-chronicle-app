@@ -52,8 +52,20 @@ export const useEncounterLogic = (characters, setCharacters) => {
     setTurnTime(0);
   }, [characters]);
 
+  const debugTokens = useCallback(() => {
+    console.log('--- Current Token State ---');
+    characters.forEach((char, index) => {
+      console.log(`${char.name} (index: ${index}):`);
+      char.tokens.forEach(token => {
+        console.log(`  - ${token.label}: duration = ${token.tokenDuration}, isPersistent = ${token.isPersistent}`);
+      });
+    });
+    console.log('---------------------------');
+  }, [characters]);
+
   const handleNextTurn = useCallback(() => {
     console.log('handleNextTurn called');
+    debugTokens();
     setCharacters(prevCharacters => {
       const updatedCharacters = prevCharacters.map((char, index) => {
         if (index === activeCharacterIndex) {
@@ -106,7 +118,8 @@ export const useEncounterLogic = (characters, setCharacters) => {
     });
 
     setTurnTime(0);
-  }, [characters, activeCharacterIndex, turnTime, resetCharacterActions]);
+    debugTokens();
+  }, [characters, activeCharacterIndex, turnTime, resetCharacterActions, debugTokens]);
 
   const logEvent = useCallback((event) => {
     setEncounterLog(prevLog => [
@@ -137,6 +150,7 @@ export const useEncounterLogic = (characters, setCharacters) => {
     handlePreviousTurn,
     handleNextTurn,
     resetCharacterActions,
-    logEvent
+    logEvent,
+    debugTokens
   };
 };
