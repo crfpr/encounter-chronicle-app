@@ -58,7 +58,6 @@ export const useEncounterLogic = (characters, setCharacters) => {
         if (index === activeCharacterIndex) {
           const updatedTokens = char.tokens.map(token => {
             if (token.tokenDuration !== null && token.tokenDuration > 0) {
-              // Only decrement if the token wasn't created this round
               if (token.createdRound !== round) {
                 return {
                   ...token,
@@ -89,7 +88,14 @@ export const useEncounterLogic = (characters, setCharacters) => {
           logEvent(`Round ${prevRound + 1} started`);
           return prevRound + 1;
         });
-        return updatedCharacters.map(char => ({ ...char, hasActed: false }));
+        return updatedCharacters.map(char => ({
+          ...char,
+          hasActed: false,
+          tokens: char.tokens.map(token => ({
+            ...token,
+            createdRound: token.createdRound === round ? round + 1 : token.createdRound
+          }))
+        }));
       }
 
       return updatedCharacters;
