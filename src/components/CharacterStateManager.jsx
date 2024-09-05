@@ -10,7 +10,7 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
       ...character, 
       state: newState,
       deathSaves: newState === 'unconscious' ? { failures: [], successes: [] } : undefined,
-      currentHp: newState === 'stable' ? 1 : character.currentHp
+      currentHp: newState === 'stable' ? 1 : newState === 'unconscious' ? 0 : character.currentHp
     };
     updateCharacter(updatedCharacter);
   };
@@ -23,13 +23,11 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
         : [...character.deathSaves[type], value]
     };
 
-    // Check if all three failures are toggled on
     if (type === 'failures' && updatedDeathSaves.failures.length === 3) {
       handleStateChange('dead');
       return;
     }
 
-    // Check if all three successes are toggled on
     if (type === 'successes' && updatedDeathSaves.successes.length === 3) {
       handleStateChange('stable');
       return;
