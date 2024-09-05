@@ -11,6 +11,7 @@ import { PlusCircle, X, Clock } from 'lucide-react';
 
 const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
+  const [newTokenId, setNewTokenId] = useState(null);
 
   useEffect(() => {
     setTokens(character.tokens || []);
@@ -84,10 +85,11 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
   };
 
   const handleAddToken = () => {
-    const newToken = { id: Date.now(), label: 'Token', tokenDuration: null, showDuration: false, isPersistent: true };
+    const newToken = { id: Date.now(), label: 'New Token', tokenDuration: null, showDuration: false, isPersistent: true };
     const updatedTokens = [...tokens, newToken];
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
+    setNewTokenId(newToken.id);
   };
 
   const handleRemoveToken = (tokenId) => {
@@ -123,7 +125,7 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
         return {
           ...token,
           showDuration: newShowDuration,
-          tokenDuration: newShowDuration ? null : token.tokenDuration,
+          tokenDuration: newShowDuration ? '' : token.tokenDuration,
           isPersistent: newShowDuration ? true : token.isPersistent
         };
       }
@@ -141,6 +143,10 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
       setTokens(updatedTokens);
       updateCharacter({ ...character, tokens: updatedTokens });
     }
+  };
+
+  const handleTokenFocus = () => {
+    setIsNumericInputActive(true);
   };
 
   return (
@@ -285,13 +291,19 @@ const CharacterCard = ({ character, updateCharacter, removeCharacter, isActive, 
                     : 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100'
                 } hover:text-white transition-colors`}
               >
-                <TokenInput token={token} onLabelChange={handleTokenLabelChange} />
+                <TokenInput 
+                  token={token} 
+                  onLabelChange={handleTokenLabelChange} 
+                  isNew={token.id === newTokenId}
+                  onFocus={handleTokenFocus}
+                />
                 {token.showDuration ? (
                   <Input
                     type="number"
                     value={token.tokenDuration || ''}
                     onChange={(e) => handleTokenDurationChange(token.id, e.target.value)}
                     onBlur={(e) => handleTokenDurationBlur(token.id, e.target.value)}
+                    onFocus={() => setIsNumericInputActive(true)}
                     className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0 no-spinners"
                     min="1"
                     placeholder=""
