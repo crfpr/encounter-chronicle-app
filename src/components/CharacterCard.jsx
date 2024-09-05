@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
@@ -10,13 +10,11 @@ import TokenInput from './TokenInput';
 import { PlusCircle } from 'lucide-react';
 import { debounce } from 'lodash';
 import CharacterStateManager from './CharacterStateManager';
+import CharacterActions from './CharacterActions';
+import HPSection from './HPSection';
 
 const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
   const [tokens, setTokens] = useState(character.tokens || []);
-
-  useEffect(() => {
-    setTokens(character.tokens || []);
-  }, [character.tokens]);
 
   const handleAddToken = useCallback(() => {
     const newToken = { id: Date.now(), label: 'Token', tokenDuration: null, showDuration: false, isPersistent: true };
@@ -33,11 +31,7 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
 
   const handleTokenDurationChange = useCallback((tokenId, newDuration) => {
     const updatedTokens = tokens.map(token => 
-      token.id === tokenId ? { 
-        ...token, 
-        tokenDuration: newDuration,
-        isPersistent: newDuration === null
-      } : token
+      token.id === tokenId ? { ...token, tokenDuration: newDuration, isPersistent: newDuration === null } : token
     );
     setTokens(updatedTokens);
     updateCharacter({ ...character, tokens: updatedTokens });
@@ -102,16 +96,6 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
     onInitiativeBlur(character.id, character.initiative);
   }, [character.id, character.initiative, onInitiativeBlur]);
 
-  const handleToggleAction = useCallback((value) => {
-    const updatedCharacter = {
-      ...character,
-      action: value.includes('action'),
-      bonusAction: value.includes('bonusAction'),
-      reaction: value.includes('reaction')
-    };
-    updateCharacter(updatedCharacter);
-  }, [character, updateCharacter]);
-
   const getBorderStyle = useCallback(() => {
     return isActive
       ? 'border-zinc-800 dark:border-zinc-800'
@@ -123,16 +107,6 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
       ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'
       : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
   }, [isActive]);
-
-  const getToggleGroupItemStyle = useCallback((isActive, isToggled) => {
-    return `h-[30px] px-2 text-xs border transition-colors ${
-      isToggled
-        ? isActive
-          ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white'
-          : 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white'
-        : 'bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800'
-    } border-zinc-300 dark:border-zinc-800`;
-  }, []);
 
   const memoizedTokens = useMemo(() => tokens.map((token) => (
     <Badge
@@ -223,67 +197,15 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
 
           {/* Second row */}
           {character.state === 'alive' && (
-            <div className="flex flex-wrap items-center gap-2">
-              <ToggleGroup 
-                type="multiple" 
-                value={[
-                  character.action && 'action',
-                  character.bonusAction && 'bonusAction',
-                  character.reaction && 'reaction'
-                ].filter(Boolean)}
-                onValueChange={handleToggleAction}
-                className="flex"
-              >
-                <ToggleGroupItem 
-                  value="action" 
-                  className={getToggleGroupItemStyle(isActive, character.action)}
-                >
-                  {isMobile ? 'A' : 'Action'}
-                </ToggleGroupItem>
-                <ToggleGroupItem 
-                  value="bonusAction" 
-                  className={getToggleGroupItemStyle(isActive, character.bonusAction)}
-                >
-                  {isMobile ? 'B' : 'Bonus'}
-                </ToggleGroupItem>
-                <ToggleGroupItem 
-                  value="reaction" 
-                  className={getToggleGroupItemStyle(isActive, character.reaction)}
-                >
-                  {isMobile ? 'R' : 'Reaction'}
-                </ToggleGroupItem>
-              </ToggleGroup>
-              <div className="flex items-center space-x-2">
-                <Input
-                  type="text"
-                  inputMode="numeric"
-                  value={character.currentMovement}
-                  onChange={(e) => handleInputChange('currentMovement', e.target.value)}
-                  onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
-                  onFocus={() => setIsNumericInputActive(true)}
-                  onBlur={() => setIsNumericInputActive(false)}
-                  className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm"
-                  placeholder="Current"
-                  maxLength={3}
-                />
-                <span className="self-center text-xs">/</span>
-                <div className="flex items-center">
-                  <Input
-                    type="text"
-                    inputMode="numeric"
-                    value={character.maxMovement}
-                    onChange={(e) => handleInputChange('maxMovement', e.target.value)}
-                    onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
-                    onFocus={() => setIsNumericInputActive(true)}
-                    onBlur={() => setIsNumericInputActive(false)}
-                    className="w-16 text-center h-[30px] bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners text-sm"
-                    placeholder="Max"
-                    maxLength={3}
-                  />
-                  <span className="text-xs ml-1">ft</span>
-                </div>
-              </div>
-            </div>
+            <CharacterActions
+              character={character}
+              isActive={isActive}
+              updateCharacter={updateCharacter}
+              handleInputChange={handleInputChange}
+              handleNumericInputKeyDown={handleNumericInputKeyDown}
+              setIsNumericInputActive={setIsNumericInputActive}
+              isMobile={isMobile}
+            />
           )}
 
           {/* Character state manager */}
@@ -335,38 +257,14 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
       </div>
 
       {/* Right Tab */}
-      <div className={`w-18 flex-shrink-0 ${getTabColor()} border-l ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
-        <div className="flex flex-col items-center space-y-2">
-          <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>HP</label>
-            <Input
-              type="text"
-              inputMode="numeric"
-              value={character.currentHp}
-              onChange={(e) => handleInputChange('currentHp', e.target.value)}
-              onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
-              onFocus={() => setIsNumericInputActive(true)}
-              onBlur={() => setIsNumericInputActive(false)}
-              className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm`}
-              maxLength={3}
-            />
-          </div>
-          <div className="flex flex-col items-center">
-            <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>Max HP</label>
-            <Input
-              type="text"
-              inputMode="numeric"
-              value={character.maxHp}
-              onChange={(e) => handleInputChange('maxHp', e.target.value)}
-              onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
-              onFocus={() => setIsNumericInputActive(true)}
-              onBlur={() => setIsNumericInputActive(false)}
-              className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm`}
-              maxLength={3}
-            />
-          </div>
-        </div>
-      </div>
+      <HPSection
+        character={character}
+        isActive={isActive}
+        handleInputChange={handleInputChange}
+        handleNumericInputKeyDown={handleNumericInputKeyDown}
+        setIsNumericInputActive={setIsNumericInputActive}
+        updateCharacter={updateCharacter}
+      />
     </div>
   );
 });
