@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef, forwardRef, useImperativeHandle } from 'react';
+import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import EncounterHeader from './EncounterHeader';
 import CharacterList from './CharacterList';
 import CharacterStats from './CharacterStats';
@@ -9,11 +9,9 @@ import { useCharacterManagement } from '../hooks/useCharacterManagement';
 import { useEncounterLogic } from '../hooks/useEncounterLogic';
 
 const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile, contentHeight, loadedEncounterData }, ref) => {
-  const [notes, setNotes] = useState('');
-  const [activePage, setActivePage] = useState('tracker');
-  const [isNumericInputActive, setIsNumericInputActive] = useState(false);
-  const trackerRef = useRef(null);
-  const headerRef = useRef(null);
+  const [notes, setNotes] = React.useState('');
+  const [activePage, setActivePage] = React.useState('tracker');
+  const [isNumericInputActive, setIsNumericInputActive] = React.useState(false);
   const characterListRef = useRef(null);
 
   const {
@@ -71,7 +69,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     }
   }, [loadedEncounterData, setEncounterName, logEvent, setCharacters]);
 
-  const handleSwipeLeft = useCallback(() => {
+  const handleSwipeLeft = React.useCallback(() => {
     if (isMobile) {
       setActivePage(prevPage => {
         switch (prevPage) {
@@ -83,7 +81,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     }
   }, [isMobile]);
 
-  const handleSwipeRight = useCallback(() => {
+  const handleSwipeRight = React.useCallback(() => {
     if (isMobile) {
       setActivePage(prevPage => {
         switch (prevPage) {
@@ -95,7 +93,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     }
   }, [isMobile]);
 
-  const handleKeyDown = useCallback((e) => {
+  const handleKeyDown = React.useCallback((e) => {
     if (!isMobile && characters.length > 1 && !isNumericInputActive) {
       if (e.key === 'ArrowUp') {
         e.preventDefault();
@@ -119,52 +117,44 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       switch (activePage) {
         case 'tracker':
           return (
-            <div className="flex-grow overflow-hidden flex flex-col h-full">
-              <div ref={headerRef} className="sticky top-0 z-10 bg-white dark:bg-zinc-950 mb-2 px-4">
-                <EncounterHeader
-                  isRunning={isRunning}
-                  toggleEncounter={toggleEncounter}
-                  encounterTime={encounterTime}
-                  round={round}
-                />
-              </div>
-              <div ref={trackerRef} className="flex-grow overflow-y-auto pb-20">
-                <CharacterList 
-                  ref={characterListRef}
-                  characters={characters} 
-                  setCharacters={setCharacters} 
-                  activeCharacterIndex={activeCharacterIndex}
-                  turnTime={turnTime}
-                  onPreviousTurn={handlePreviousTurn}
-                  onNextTurn={handleNextTurn}
-                  setIsNumericInputActive={setIsNumericInputActive}
-                  updateCharacter={updateCharacter}
-                  addCharacter={addCharacter}
-                  removeCharacter={removeCharacter}
-                  round={round}
-                  isMobile={isMobile}
-                />
-              </div>
+            <div className="flex-grow overflow-y-auto">
+              <EncounterHeader
+                isRunning={isRunning}
+                toggleEncounter={toggleEncounter}
+                encounterTime={encounterTime}
+                round={round}
+              />
+              <CharacterList 
+                ref={characterListRef}
+                characters={characters} 
+                setCharacters={setCharacters} 
+                activeCharacterIndex={activeCharacterIndex}
+                turnTime={turnTime}
+                onPreviousTurn={handlePreviousTurn}
+                onNextTurn={handleNextTurn}
+                setIsNumericInputActive={setIsNumericInputActive}
+                updateCharacter={updateCharacter}
+                addCharacter={addCharacter}
+                removeCharacter={removeCharacter}
+                round={round}
+                isMobile={isMobile}
+              />
             </div>
           );
         case 'notes':
           return (
-            <div className="h-full flex flex-col pb-20 px-4">
-              <div className="flex-grow">
-                <NotesSection key={`notes-section-${activePage}-${isMobile}`} notes={notes} setNotes={(newNotes) => {
-                  setNotes(newNotes);
-                  logEvent(`Notes updated`);
-                }} isMobile={true} />
-              </div>
-            </div>
+            <NotesSection 
+              notes={notes} 
+              setNotes={(newNotes) => {
+                setNotes(newNotes);
+                logEvent(`Notes updated`);
+              }} 
+              isMobile={true} 
+            />
           );
         case 'stats':
           return (
-            <div className="h-full flex flex-col px-4">
-              <div className="flex-grow overflow-y-auto pb-20">
-                <CharacterStats characters={characters} round={round} key={round} />
-              </div>
-            </div>
+            <CharacterStats characters={characters} round={round} key={round} />
           );
         default:
           return null;
@@ -173,16 +163,14 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       return (
         <div className="flex flex-col lg:flex-row w-full h-full space-y-6 lg:space-y-0 lg:space-x-6">
           <div className="lg:w-2/3 h-full flex flex-col">
-            <div className="bg-white border border-zinc-300 dark:border-zinc-700 rounded-lg flex flex-col overflow-hidden h-full shadow-md dark:shadow-none">
-              <div ref={headerRef} className="sticky top-0 z-10 bg-white dark:bg-zinc-950 p-4">
-                <EncounterHeader
-                  isRunning={isRunning}
-                  toggleEncounter={toggleEncounter}
-                  encounterTime={encounterTime}
-                  round={round}
-                />
-              </div>
-              <div ref={trackerRef} className="flex-grow overflow-hidden" style={{ maxHeight: 'calc(100% - 88px)' }}>
+            <div className="bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-lg flex flex-col overflow-hidden h-full shadow-md dark:shadow-none">
+              <EncounterHeader
+                isRunning={isRunning}
+                toggleEncounter={toggleEncounter}
+                encounterTime={encounterTime}
+                round={round}
+              />
+              <div className="flex-grow overflow-hidden">
                 <CharacterList 
                   ref={characterListRef}
                   characters={characters} 
@@ -202,15 +190,17 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
             </div>
           </div>
           <div className="lg:w-1/3 h-full flex flex-col space-y-6">
-            <div className="bg-white border border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex-1 overflow-hidden flex flex-col shadow-md dark:shadow-none">
-              <div className="flex-grow">
-                <NotesSection notes={notes} setNotes={(newNotes) => {
+            <div className="bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex-1 overflow-hidden flex flex-col shadow-md dark:shadow-none">
+              <NotesSection 
+                notes={notes} 
+                setNotes={(newNotes) => {
                   setNotes(newNotes);
                   logEvent(`Notes updated`);
-                }} isMobile={false} />
-              </div>
+                }} 
+                isMobile={false} 
+              />
             </div>
-            <div className="bg-white border border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex-1 overflow-hidden flex flex-col shadow-md dark:shadow-none">
+            <div className="bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex-1 overflow-hidden flex flex-col shadow-md dark:shadow-none">
               <h2 className="text-xl font-semibold mb-2">Character Stats</h2>
               <div className="flex-grow overflow-y-auto">
                 <CharacterStats characters={characters} round={round} />

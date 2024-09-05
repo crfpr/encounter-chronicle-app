@@ -2,7 +2,7 @@ import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react
 import CharacterCard from './CharacterCard';
 import { Button } from '../components/ui/button';
 
-const CharacterList = forwardRef(({ characters, setCharacters, activeCharacterIndex, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, round, isMobile }, ref) => {
+const CharacterList = forwardRef(({ characters, setCharacters, activeCharacterIndex, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, updateCharacter, addCharacter, removeCharacter, round, isMobile }, ref) => {
   const listRef = useRef(null);
   const activeCharacterRef = useRef(null);
 
@@ -29,40 +29,14 @@ const CharacterList = forwardRef(({ characters, setCharacters, activeCharacterIn
     }
   }, [activeCharacterIndex, ref]);
 
-  const addCharacter = () => {
-    const newCharacter = {
-      id: Date.now(),
-      initiative: '',
-      name: 'New Character',
-      type: 'PC',
-      currentHp: 0,
-      maxHp: 0,
-      tempHp: 0,
-      ac: 10,
-      action: false,
-      bonusAction: false,
-      currentMovement: 30,
-      maxMovement: 30,
-      reaction: false,
-      conditions: [],
-      turnCount: 0,
-      roundCount: 0,
-      cumulativeTurnTime: 0,
-      tokens: [],
-      hasActed: false,
-      state: 'alive'
-    };
-    setCharacters(prevCharacters => [...prevCharacters, newCharacter]);
+  const handleInitiativeBlur = (id, initiative) => {
+    updateCharacter({ id, initiative });
+    sortCharacters();
   };
 
-  const removeCharacter = (id) => {
-    setCharacters(prevCharacters => prevCharacters.filter(c => c.id !== id));
-  };
-
-  const updateCharacter = (updatedCharacter) => {
-    setCharacters(prevCharacters => 
-      prevCharacters.map(c => c.id === updatedCharacter.id ? { ...c, ...updatedCharacter } : c)
-    );
+  const handleInitiativeSubmit = (id, initiative) => {
+    updateCharacter({ id, initiative });
+    sortCharacters();
   };
 
   const sortCharacters = () => {
@@ -76,18 +50,8 @@ const CharacterList = forwardRef(({ characters, setCharacters, activeCharacterIn
     );
   };
 
-  const handleInitiativeBlur = (id, initiative) => {
-    updateCharacter({ id, initiative });
-    sortCharacters();
-  };
-
-  const handleInitiativeSubmit = (id, initiative) => {
-    updateCharacter({ id, initiative });
-    sortCharacters();
-  };
-
   return (
-    <div ref={listRef} className="space-y-3 overflow-y-auto h-full px-4">
+    <div ref={listRef} className="space-y-3 overflow-y-auto h-full px-3">
       {characters.map((character, index) => (
         <div 
           key={character.id} 
