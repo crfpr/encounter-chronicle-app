@@ -38,14 +38,9 @@ const CharacterCard = React.memo(({
     updateCharacter({
       ...character,
       tokens: character.tokens.map(token => 
-        token.id === tokenId ? { 
-          ...token, 
-          ...changes, 
-          isPersistent: changes.tokenDuration === null 
-        } : token
+        token.id === tokenId ? { ...token, ...changes } : token
       )
     });
-    console.log(`Token ${tokenId} updated:`, changes);
   }, [character, updateCharacter]);
 
   const handleInputChange = useCallback((field, value) => {
@@ -86,7 +81,7 @@ const CharacterCard = React.memo(({
         onLabelChange={(newLabel) => handleTokenChange(token.id, { label: newLabel })}
         onDurationChange={(newDuration) => handleTokenChange(token.id, { tokenDuration: newDuration })}
         onRemove={() => handleRemoveToken(token.id)}
-        onTogglePersistent={(isPersistent) => handleTokenChange(token.id, { isPersistent })}
+        onTogglePersistent={() => handleTokenChange(token.id, { isPersistent: !token.isPersistent })}
       />
     </Badge>
   )), [character.tokens, isActive, handleTokenChange, handleRemoveToken]);
