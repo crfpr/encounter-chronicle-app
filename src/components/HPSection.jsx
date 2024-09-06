@@ -48,7 +48,8 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
     updateCharacter({
       ...character,
       currentHp: value,
-      state: newState
+      state: newState,
+      deathSaves: newState === 'ko' ? { successes: [], failures: [] } : character.deathSaves
     });
   };
 

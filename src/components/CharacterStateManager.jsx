@@ -47,7 +47,7 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
           onClick={() => handleDeathSaveToggle(type, value)}
           variant="outline"
           size="sm"
-          className={getToggleGroupItemStyle(type, character.deathSaves[type].includes(value))}
+          className={getToggleGroupItemStyle(type, character.deathSaves && character.deathSaves[type].includes(value))}
         />
       ));
     };
@@ -72,7 +72,7 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
 
   return (
     <div className="space-y-1">
-      {renderDeathSaves()}
+      {character.deathSaves && renderDeathSaves()}
     </div>
   );
 };

@@ -31,7 +31,16 @@ export const useCharacterManagement = (loadedEncounterData) => {
 
   const updateCharacter = useCallback((updatedCharacter) => {
     setCharacters(prevCharacters => 
-      prevCharacters.map(c => c.id === updatedCharacter.id ? { ...c, ...updatedCharacter } : c)
+      prevCharacters.map(c => {
+        if (c.id === updatedCharacter.id) {
+          return {
+            ...c,
+            ...updatedCharacter,
+            deathSaves: updatedCharacter.deathSaves || c.deathSaves || { successes: [], failures: [] }
+          };
+        }
+        return c;
+      })
     );
   }, []);
 
