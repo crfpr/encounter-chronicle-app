@@ -56,16 +56,12 @@ export const useEncounterLogic = (characters, setCharacters) => {
   const handleNextTurn = useCallback(() => {
     setCharacters(prevCharacters => {
       const updatedCharacters = prevCharacters.map((char, index) => {
-        if (index === activeCharacterIndex) {
+        if (index === activeCharacterIndex && !char.hasActed) {
           const updatedTokens = char.tokens.map(token => {
             if (!token.isPersistent && token.tokenDuration !== null) {
               const newDuration = token.tokenDuration > 0 ? token.tokenDuration - 1 : 0;
               console.log(`Token ${token.label} duration decreased from ${token.tokenDuration} to ${newDuration}`);
-              return { 
-                ...token, 
-                tokenDuration: newDuration,
-                isPersistent: newDuration === 0
-              };
+              return { ...token, tokenDuration: newDuration };
             }
             return token;
           }).filter(token => token.isPersistent || token.tokenDuration > 0);
