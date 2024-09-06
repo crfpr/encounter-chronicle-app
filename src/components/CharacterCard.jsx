@@ -26,49 +26,25 @@ const CharacterCard = React.memo(({
 }) => {
   const handleAddToken = useCallback(() => {
     const newToken = { id: Date.now(), label: 'Token', tokenDuration: null, isPersistent: true };
-    const updatedTokens = [...character.tokens, newToken];
-    updateCharacter({ ...character, tokens: updatedTokens });
+    updateCharacter({ ...character, tokens: [...character.tokens, newToken] });
   }, [character, updateCharacter]);
 
   const handleRemoveToken = useCallback((tokenId) => {
-    const updatedTokens = character.tokens.filter(token => token.id !== tokenId);
-    updateCharacter({ ...character, tokens: updatedTokens });
+    updateCharacter({ ...character, tokens: character.tokens.filter(token => token.id !== tokenId) });
   }, [character, updateCharacter]);
 
-  const handleTokenDurationChange = useCallback((tokenId, newDuration) => {
-    const updatedTokens = character.tokens.map(token => 
-      token.id === tokenId ? { ...token, tokenDuration: newDuration, isPersistent: newDuration === null } : token
-    );
-    updateCharacter({ ...character, tokens: updatedTokens });
-  }, [character, updateCharacter]);
-
-  const handleTokenLabelChange = useCallback((tokenId, newLabel) => {
-    const updatedTokens = character.tokens.map(token => 
-      token.id === tokenId ? { ...token, label: newLabel } : token
-    );
-    updateCharacter({ ...character, tokens: updatedTokens });
-  }, [character, updateCharacter]);
-
-  const handleTogglePersistent = useCallback((tokenId) => {
-    const updatedTokens = character.tokens.map(token => {
-      if (token.id === tokenId) {
-        return {
-          ...token,
-          isPersistent: !token.isPersistent,
-          tokenDuration: token.isPersistent ? 1 : null
-        };
-      }
-      return token;
+  const handleTokenChange = useCallback((tokenId, changes) => {
+    updateCharacter({
+      ...character,
+      tokens: character.tokens.map(token => 
+        token.id === tokenId ? { ...token, ...changes } : token
+      )
     });
-    updateCharacter({ ...character, tokens: updatedTokens });
   }, [character, updateCharacter]);
 
   const handleInputChange = useCallback((field, value) => {
     if (['initiative', 'ac', 'currentHp', 'maxHp', 'currentMovement', 'maxMovement'].includes(field)) {
-      if (value === '' || (Number.isInteger(Number(value)) && Number(value) >= 0 && Number(value) <= 999)) {
-        updateCharacter({ ...character, [field]: value });
-      }
-      return;
+      value = value === '' || (Number.isInteger(Number(value)) && Number(value) >= 0 && Number(value) <= 999) ? value : character[field];
     }
     updateCharacter({ ...character, [field]: value });
   }, [character, updateCharacter]);
@@ -79,75 +55,53 @@ const CharacterCard = React.memo(({
     }
     if (e.key === 'Enter') {
       e.preventDefault();
-      handleInputSubmit(field, currentValue);
       e.target.blur();
+      field === 'initiative' ? onInitiativeSubmit(character.id, currentValue) : handleInputChange(field, currentValue);
     }
-  }, []);
+  }, [character.id, handleInputChange, onInitiativeSubmit]);
 
-  const handleInputSubmit = useCallback((field, value) => {
-    setIsNumericInputActive(false);
-    if (field === 'initiative') {
-      onInitiativeSubmit(character.id, value);
-    } else {
-      handleInputChange(field, value);
-    }
-  }, [character.id, handleInputChange, onInitiativeSubmit, setIsNumericInputActive]);
+  const getBorderStyle = useCallback(() => 
+    isActive ? 'border-zinc-700 dark:border-zinc-700' : 'border-zinc-300 dark:border-zinc-700'
+  , [isActive]);
 
-  const handleInitiativeBlur = useCallback(() => {
-    onInitiativeBlur(character.id, character.initiative);
-  }, [character.id, character.initiative, onInitiativeBlur]);
-
-  const getBorderStyle = useCallback(() => {
-    return isActive
-      ? 'border-zinc-700 dark:border-zinc-700'
-      : 'border-zinc-300 dark:border-zinc-700';
-  }, [isActive]);
-
-  const getTabColor = useCallback(() => {
-    return isActive
-      ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'
-      : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
-  }, [isActive]);
+  const getTabColor = useCallback(() => 
+    isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'
+  , [isActive]);
 
   const memoizedTokens = useMemo(() => character.tokens.map((token) => (
     <Badge
       key={token.id}
       className={`h-[30px] px-1 flex items-center space-x-1 ${
-        isActive
-          ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100'
-          : 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100'
+        isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100'
       } hover:text-white transition-colors`}
     >
       <TokenInput 
         token={token}
-        onLabelChange={handleTokenLabelChange}
-        onDurationChange={handleTokenDurationChange}
-        onRemove={handleRemoveToken}
-        onTogglePersistent={handleTogglePersistent}
+        onLabelChange={(newLabel) => handleTokenChange(token.id, { label: newLabel })}
+        onDurationChange={(newDuration) => handleTokenChange(token.id, { tokenDuration: newDuration })}
+        onRemove={() => handleRemoveToken(token.id)}
+        onTogglePersistent={() => handleTokenChange(token.id, { isPersistent: !token.isPersistent })}
       />
     </Badge>
-  )), [character.tokens, isActive, handleTokenLabelChange, handleTokenDurationChange, handleRemoveToken, handleTogglePersistent]);
+  )), [character.tokens, isActive, handleTokenChange, handleRemoveToken]);
 
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''}`}>
-      {/* Left Tab */}
       <div className={`w-18 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
-        <div className="flex flex-col items-center">
-          <Input
-            type="text"
-            inputMode="numeric"
-            value={character.initiative}
-            onChange={(e) => handleInputChange('initiative', e.target.value)}
-            onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
-            onFocus={() => setIsNumericInputActive(true)}
-            onBlur={() => {
-              setIsNumericInputActive(false);
-              handleInitiativeBlur();
-            }}
-            className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm`}
-            maxLength={3}
-          />
-        </div>
+        <Input
+          type="text"
+          inputMode="numeric"
+          value={character.initiative}
+          onChange={(e) => handleInputChange('initiative', e.target.value)}
+          onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
+          onFocus={() => setIsNumericInputActive(true)}
+          onBlur={() => {
+            setIsNumericInputActive(false);
+            onInitiativeBlur(character.id, character.initiative);
+          }}
+          className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm`}
+          maxLength={3}
+        />
         <div className="flex-1 flex items-center justify-center mt-2 h-[90px]">
           {isActive ? (
             <TurnNavigator
@@ -163,7 +117,6 @@ const CharacterCard = React.memo(({
       
       <div className={`flex-grow p-2 flex flex-col ${isMobile ? 'px-1' : ''}`}>
         <div className="flex-grow space-y-2">
-          {/* First row */}
           <div className="flex items-start space-x-2 relative">
             <div className="flex-grow flex items-start">
               <div className="flex-grow">
@@ -198,7 +151,6 @@ const CharacterCard = React.memo(({
             </div>
           </div>
 
-          {/* Second row */}
           {character.state === 'alive' && (
             <CharacterActions
               character={character}
@@ -211,14 +163,12 @@ const CharacterCard = React.memo(({
             />
           )}
 
-          {/* Death save trackers */}
           {character.state === 'ko' && (
             <div className="mt-1">
               <CharacterStateManager character={character} updateCharacter={updateCharacter} />
             </div>
           )}
 
-          {/* New row for tokens and Add Token button */}
           <div className="flex items-center flex-wrap gap-2">
             {memoizedTokens}
             <Button
@@ -232,7 +182,6 @@ const CharacterCard = React.memo(({
         </div>
       </div>
 
-      {/* Right Tab */}
       <HPSection
         character={character}
         isActive={isActive}
