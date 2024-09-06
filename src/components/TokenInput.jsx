@@ -49,7 +49,6 @@ const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemov
   const handleDurationChange = (e) => {
     const newDuration = e.target.value === '' ? null : parseInt(e.target.value, 10);
     onDurationChange(newDuration);
-    // Update isPersistent based on the new duration
     onTogglePersistent(newDuration === null);
   };
 
