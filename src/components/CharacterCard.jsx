@@ -59,8 +59,10 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
           const numericValue = Number(value);
           if (numericValue === 0 && character.state !== 'dead') {
             updatedCharacter.state = 'ko';
-          } else if (numericValue > 0 && (character.state === 'ko' || character.state === 'dead' || (character.state === 'stable' && numericValue > 1))) {
-            updatedCharacter.state = 'alive';
+          } else if (numericValue > 0) {
+            if (character.state === 'ko' || character.state === 'dead' || (character.state === 'stable' && numericValue > 1)) {
+              updatedCharacter.state = 'alive';
+            }
           }
         }
         

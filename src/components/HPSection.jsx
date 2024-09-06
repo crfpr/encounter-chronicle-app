@@ -33,6 +33,25 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
     }
   };
 
+  const handleHPChange = (value) => {
+    const numericValue = Number(value);
+    let newState = character.state;
+
+    if (numericValue === 0 && character.state !== 'dead') {
+      newState = 'ko';
+    } else if (numericValue > 0) {
+      if (character.state === 'ko' || character.state === 'dead' || (character.state === 'stable' && numericValue > 1)) {
+        newState = 'alive';
+      }
+    }
+
+    updateCharacter({
+      ...character,
+      currentHp: value,
+      state: newState
+    });
+  };
+
   return (
     <div className={`w-20 flex-shrink-0 ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} border-l border-zinc-300 dark:border-zinc-700 flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
       <div className="flex flex-col items-center space-y-2 w-full">
@@ -43,7 +62,7 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
               type="text"
               inputMode="numeric"
               value={character.currentHp}
-              onChange={(e) => handleInputChange('currentHp', e.target.value)}
+              onChange={(e) => handleHPChange(e.target.value)}
               onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={() => setIsNumericInputActive(false)}
