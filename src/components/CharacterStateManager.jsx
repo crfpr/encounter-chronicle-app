@@ -3,7 +3,7 @@ import { Button } from './ui/button';
 import { Label } from "./ui/label";
 import { cn } from "../lib/utils";
 
-const CharacterStateManager = ({ character, updateCharacter }) => {
+const CharacterStateManager = ({ character, updateCharacter, isMobile }) => {
   const handleDeathSaveToggle = (type, value) => {
     const updatedDeathSaves = {
       ...character.deathSaves,
@@ -52,22 +52,42 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
       ));
     };
 
-    return (
-      <div className="flex flex-col items-center justify-center space-y-2 text-xs py-2">
-        <div className="flex items-center space-x-2">
-          <Label className="text-sm font-semibold w-14">Failure</Label>
-          <div className="flex space-x-1">
-            {renderSaveButtons('failures')}
+    if (isMobile) {
+      return (
+        <div className="flex flex-col items-center justify-center space-y-2 text-xs py-2">
+          <div className="flex items-center space-x-2">
+            <Label className="text-sm font-semibold w-14">Failure</Label>
+            <div className="flex space-x-1">
+              {renderSaveButtons('failures')}
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Label className="text-sm font-semibold w-14">Success</Label>
+            <div className="flex space-x-1">
+              {renderSaveButtons('successes')}
+            </div>
           </div>
         </div>
-        <div className="flex items-center space-x-2">
-          <Label className="text-sm font-semibold w-14">Success</Label>
-          <div className="flex space-x-1">
-            {renderSaveButtons('successes')}
+      );
+    } else {
+      return (
+        <div className="flex items-center justify-center space-x-4 text-xs py-2">
+          <div className="flex items-center space-x-2">
+            <Label className="text-sm font-semibold">Failure</Label>
+            <div className="flex space-x-1">
+              {renderSaveButtons('failures')}
+            </div>
+          </div>
+          <div className="w-px h-6 bg-zinc-300 dark:bg-zinc-700" />
+          <div className="flex items-center space-x-2">
+            <Label className="text-sm font-semibold">Success</Label>
+            <div className="flex space-x-1">
+              {renderSaveButtons('successes')}
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   };
 
   return (
