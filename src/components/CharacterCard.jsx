@@ -65,7 +65,7 @@ const CharacterCard = React.memo(({
   , [isActive]);
 
   const getTabColor = useCallback(() => 
-    isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'text-black dark:text-zinc-100'
+    isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'
   , [isActive]);
 
   const memoizedTokens = useMemo(() => character.tokens.map((token) => (
@@ -86,8 +86,8 @@ const CharacterCard = React.memo(({
   )), [character.tokens, isActive, handleTokenChange, handleRemoveToken]);
 
   return (
-    <div className={`flex relative rounded-lg border ${getBorderStyle()} transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''}`} style={{ minHeight: '150px' }}>
-      <div className={`w-18 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200 rounded-l-lg`}>
+    <div className={`flex bg-white dark:bg-zinc-950 relative rounded-lg border ${getBorderStyle()} transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''}`} style={{ minHeight: '150px' }}>
+      <div className={`w-18 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
         <Input
           type="text"
           inputMode="numeric"
@@ -99,7 +99,7 @@ const CharacterCard = React.memo(({
             setIsNumericInputActive(false);
             onInitiativeBlur(character.id, character.initiative);
           }}
-          className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-transparent text-black dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm`}
+          className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm`}
           maxLength={3}
         />
         <div className="flex-1 flex items-center justify-center mt-2">
@@ -165,7 +165,7 @@ const CharacterCard = React.memo(({
 
           {character.state === 'ko' && (
             <div className="mt-1">
-              <CharacterStateManager character={character} updateCharacter={updateCharacter} isMobile={isMobile} />
+              <CharacterStateManager character={character} updateCharacter={updateCharacter} />
             </div>
           )}
 
@@ -173,7 +173,7 @@ const CharacterCard = React.memo(({
             {memoizedTokens}
             <Button
               onClick={handleAddToken}
-              className={`h-[30px] px-2 text-xs border transition-colors bg-transparent text-black hover:bg-zinc-100 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-700 ${isMobile ? 'text-[10px]' : ''}`}
+              className={`h-[30px] px-2 text-xs border transition-colors bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-700 ${isMobile ? 'text-[10px]' : ''}`}
             >
               <PlusCircle className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'} mr-1`} />
               Add token
