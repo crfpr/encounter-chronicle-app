@@ -60,10 +60,13 @@ export const useEncounterLogic = (characters, setCharacters) => {
           const updatedTokens = char.tokens.map(token => {
             if (!token.isPersistent && token.tokenDuration !== null) {
               const newDuration = token.tokenDuration > 0 ? token.tokenDuration - 1 : 0;
+              console.log(`Token ${token.label} duration decreased from ${token.tokenDuration} to ${newDuration}`);
               return { ...token, tokenDuration: newDuration };
             }
             return token;
           }).filter(token => token.isPersistent || token.tokenDuration > 0);
+
+          console.log(`Updated tokens for ${char.name}:`, updatedTokens);
 
           return {
             ...char,
@@ -112,6 +115,7 @@ export const useEncounterLogic = (characters, setCharacters) => {
         round: round
       }
     ]);
+    console.log(`Event logged: ${event}`);
   }, [encounterTime, round]);
 
   return {

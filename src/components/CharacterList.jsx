@@ -61,7 +61,13 @@ const CharacterList = forwardRef(({ characters, setCharacters, activeCharacterIn
 
   const updateCharacter = (updatedCharacter) => {
     setCharacters(prevCharacters => 
-      prevCharacters.map(c => c.id === updatedCharacter.id ? { ...c, ...updatedCharacter } : c)
+      prevCharacters.map(c => {
+        if (c.id === updatedCharacter.id) {
+          console.log(`Updating character ${c.name}:`, updatedCharacter);
+          return { ...c, ...updatedCharacter };
+        }
+        return c;
+      })
     );
   };
 
