@@ -110,7 +110,7 @@ const CharacterCard = React.memo(({
               onNextTurn={onNextTurn}
             />
           ) : (
-            <div className="h-[90px]" />
+            <div className="h-[90px]" /> // Placeholder for inactive cards
           )}
         </div>
       </div>
