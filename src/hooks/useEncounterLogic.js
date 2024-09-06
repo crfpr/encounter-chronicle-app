@@ -57,7 +57,7 @@ export const useEncounterLogic = (characters, setCharacters) => {
       const updatedCharacters = prevCharacters.map((char, index) => {
         if (index === activeCharacterIndex) {
           const updatedTokens = char.tokens.map(token => {
-            if (!token.isPersistent && token.tokenDuration !== null) {
+            if (!token.isPersistent && token.tokenDuration !== null && !char.hasActed) {
               const newDuration = token.tokenDuration > 0 ? token.tokenDuration - 1 : 0;
               return { ...token, tokenDuration: newDuration };
             }
