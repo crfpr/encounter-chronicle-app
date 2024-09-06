@@ -34,7 +34,8 @@ export const useEncounterLogic = (characters, setCharacters) => {
           action: false,
           bonusAction: false,
           reaction: false,
-          currentMovement: char.maxMovement
+          currentMovement: char.maxMovement,
+          hasActed: false
         };
         logEvent(`Reset actions for ${char.name}`);
         return updatedChar;
@@ -52,34 +53,17 @@ export const useEncounterLogic = (characters, setCharacters) => {
     setTurnTime(0);
   }, [characters]);
 
-  const debugTokens = useCallback(() => {
-    console.log('--- Current Token State ---');
-    characters.forEach((char, index) => {
-      console.log(`${char.name} (index: ${index}):`);
-      char.tokens.forEach(token => {
-        console.log(`  - ${token.label}: duration = ${token.tokenDuration}, isPersistent = ${token.isPersistent}`);
-      });
-    });
-    console.log('---------------------------');
-  }, [characters]);
-
   const handleNextTurn = useCallback(() => {
-    console.log('handleNextTurn called');
-    debugTokens();
     setCharacters(prevCharacters => {
       const updatedCharacters = prevCharacters.map((char, index) => {
-        if (index === activeCharacterIndex) {
-          console.log(`Updating tokens for ${char.name}`);
-          console.log('Before update:', char.tokens);
+        if (index === activeCharacterIndex && !char.hasActed) {
           const updatedTokens = char.tokens.map(token => {
             if (!token.isPersistent && token.tokenDuration !== null) {
               const newDuration = token.tokenDuration > 0 ? token.tokenDuration - 1 : 0;
-              console.log(`Token ${token.label}: ${token.tokenDuration} -> ${newDuration}`);
               return { ...token, tokenDuration: newDuration };
             }
             return token;
           }).filter(token => token.isPersistent || token.tokenDuration > 0);
-          console.log('After update:', updatedTokens);
 
           return {
             ...char,
@@ -91,8 +75,6 @@ export const useEncounterLogic = (characters, setCharacters) => {
         }
         return char;
       });
-
-      const newActiveIndex = (activeCharacterIndex + 1) % characters.length;
 
       const allHaveActed = updatedCharacters.every(char => char.hasActed);
 
@@ -118,8 +100,7 @@ export const useEncounterLogic = (characters, setCharacters) => {
     });
 
     setTurnTime(0);
-    debugTokens();
-  }, [characters, activeCharacterIndex, turnTime, resetCharacterActions, debugTokens]);
+  }, [characters, activeCharacterIndex, turnTime, resetCharacterActions]);
 
   const logEvent = useCallback((event) => {
     setEncounterLog(prevLog => [
@@ -150,7 +131,6 @@ export const useEncounterLogic = (characters, setCharacters) => {
     handlePreviousTurn,
     handleNextTurn,
     resetCharacterActions,
-    logEvent,
-    debugTokens
+    logEvent
   };
 };

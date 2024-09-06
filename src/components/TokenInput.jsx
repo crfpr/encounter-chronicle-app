@@ -7,6 +7,7 @@ import { Clock, X } from 'lucide-react';
 const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemove, onTogglePersistent }) => {
   const [localLabel, setLocalLabel] = useState(token.label);
   const [inputWidth, setInputWidth] = useState(40);
+  const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemov
   };
 
   const debouncedOnLabelChange = debounce((newLabel) => {
-    onLabelChange(token.id, newLabel);
+    onLabelChange(newLabel);
   }, 300);
 
   const handleChange = (e) => {
@@ -47,11 +48,12 @@ const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemov
 
   const handleDurationChange = (e) => {
     const newDuration = e.target.value === '' ? null : parseInt(e.target.value, 10);
-    onDurationChange(token.id, newDuration);
+    onDurationChange(newDuration);
   };
 
   const handleTogglePersistent = () => {
-    onTogglePersistent(token.id);
+    onTogglePersistent();
+    setIsEditing(!token.isPersistent);
   };
 
   return (
@@ -68,16 +70,7 @@ const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemov
         maxLength={30}
         placeholder="Token"
       />
-      {token.isPersistent ? (
-        <Button
-          onClick={handleTogglePersistent}
-          variant="ghost"
-          size="sm"
-          className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700 group"
-        >
-          <Clock className="h-3 w-3 group-hover:text-white" />
-        </Button>
-      ) : (
+      {isEditing ? (
         <Input
           type="number"
           value={token.tokenDuration || ''}
@@ -86,6 +79,15 @@ const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemov
           min="0"
           placeholder=""
         />
+      ) : (
+        <Button
+          onClick={handleTogglePersistent}
+          variant="ghost"
+          size="sm"
+          className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700 group"
+        >
+          <Clock className="h-3 w-3 group-hover:text-white" />
+        </Button>
       )}
       <Button
         onClick={() => onRemove(token.id)}
