@@ -53,7 +53,18 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
   const handleInputChange = useCallback((field, value) => {
     if (field === 'initiative' || field === 'ac' || field === 'currentHp' || field === 'maxHp' || field === 'currentMovement' || field === 'maxMovement') {
       if (value === '' || (Number.isInteger(Number(value)) && Number(value) >= 0 && Number(value) <= 999)) {
-        updateCharacter({ ...character, [field]: value });
+        let updatedCharacter = { ...character, [field]: value };
+        
+        if (field === 'currentHp') {
+          const numericValue = Number(value);
+          if (numericValue === 0 && character.state !== 'dead') {
+            updatedCharacter.state = 'ko';
+          } else if (numericValue > 0 && (character.state === 'ko' || character.state === 'dead' || (character.state === 'stable' && numericValue > 1))) {
+            updatedCharacter.state = 'alive';
+          }
+        }
+        
+        updateCharacter(updatedCharacter);
       }
       return;
     }

@@ -17,6 +17,8 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
       updatedCharacter.currentHp = 1;
     } else if (newState === 'dead') {
       updatedCharacter.currentHp = 0;
+    } else if (newState === 'alive' && updatedCharacter.currentHp === 0) {
+      updatedCharacter.currentHp = 1;
     }
     updateCharacter(updatedCharacter);
     setIsPopoverOpen(false);
