@@ -65,7 +65,7 @@ const CharacterCard = React.memo(({
   , [isActive]);
 
   const getTabColor = useCallback(() => 
-    isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'text-black dark:text-zinc-100'
+    isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'
   , [isActive]);
 
   const memoizedTokens = useMemo(() => character.tokens.map((token) => (
@@ -87,7 +87,7 @@ const CharacterCard = React.memo(({
 
   return (
     <div className={`flex relative rounded-lg border ${getBorderStyle()} transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''}`} style={{ minHeight: '150px' }}>
-      <div className={`w-18 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200 rounded-l-lg`}>
+      <div className={`w-18 flex-shrink-0 ${getTabColor()} rounded-l-lg flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
         <Input
           type="text"
           inputMode="numeric"
