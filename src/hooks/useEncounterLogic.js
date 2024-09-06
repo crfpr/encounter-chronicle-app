@@ -60,7 +60,6 @@ export const useEncounterLogic = (characters, setCharacters) => {
             if (!token.isPersistent && token.tokenDuration !== null && !char.hasActed) {
               const newDuration = token.tokenDuration > 0 ? token.tokenDuration - 1 : 0;
               if (newDuration !== token.tokenDuration) {
-                console.log(`Token "${token.label}" for ${char.name} decremented from ${token.tokenDuration} to ${newDuration}`);
                 logEvent(`Token "${token.label}" for ${char.name} decremented to ${newDuration}`);
               }
               return { ...token, tokenDuration: newDuration };
@@ -70,9 +69,9 @@ export const useEncounterLogic = (characters, setCharacters) => {
 
           return {
             ...char,
-            cumulativeTurnTime: (char.cumulativeTurnTime || 0) + turnTime,
+            cumulativeTurnTime: char.hasActed ? char.cumulativeTurnTime : (char.cumulativeTurnTime || 0) + turnTime,
+            turnCount: char.hasActed ? char.turnCount : (char.turnCount || 0) + 1,
             hasActed: true,
-            turnCount: (char.turnCount || 0) + 1,
             tokens: updatedTokens
           };
         }
@@ -88,7 +87,8 @@ export const useEncounterLogic = (characters, setCharacters) => {
         });
         return updatedCharacters.map(char => ({
           ...char,
-          hasActed: false
+          hasActed: false,
+          roundCount: (char.roundCount || 0) + 1
         }));
       }
 
