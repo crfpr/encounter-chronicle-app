@@ -8,6 +8,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
   const [editedType, setEditedType] = useState(type);
   const componentRef = useRef(null);
   const inputRef = useRef(null);
+  const selectRef = useRef(null);
 
   useEffect(() => {
     if (isEditing) {
@@ -17,7 +18,8 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (componentRef.current && !componentRef.current.contains(event.target)) {
+      if (componentRef.current && !componentRef.current.contains(event.target) &&
+          !selectRef.current.contains(event.target)) {
         handleBlur();
       }
     };
@@ -74,20 +76,21 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
             value={editedName}
             onChange={handleNameChange}
             onKeyDown={handleKeyDown}
-            onBlur={handleBlur}
             className="flex-grow h-[30px] bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800"
             placeholder="New Character"
           />
-          <Select value={editedType} onValueChange={handleTypeChange}>
-            <SelectTrigger className="w-24 h-[30px]">
-              <SelectValue placeholder="Type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="PC">PC</SelectItem>
-              <SelectItem value="Enemy">Enemy</SelectItem>
-              <SelectItem value="Neutral">Neutral</SelectItem>
-            </SelectContent>
-          </Select>
+          <div ref={selectRef}>
+            <Select value={editedType} onValueChange={handleTypeChange}>
+              <SelectTrigger className="w-24 h-[30px]">
+                <SelectValue placeholder="Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="PC">PC</SelectItem>
+                <SelectItem value="Enemy">Enemy</SelectItem>
+                <SelectItem value="Neutral">Neutral</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </>
       ) : (
         <div
