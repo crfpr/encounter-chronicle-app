@@ -49,6 +49,9 @@ const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemov
   const handleDurationChange = (e) => {
     const newDuration = e.target.value === '' ? null : parseInt(e.target.value, 10);
     onDurationChange(newDuration);
+    if (newDuration === null) {
+      onTogglePersistent();
+    }
   };
 
   const handleTogglePersistent = () => {
@@ -70,11 +73,17 @@ const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemov
         maxLength={30}
         placeholder="Token"
       />
-      {isEditing ? (
+      {isEditing && !token.isPersistent ? (
         <Input
           type="number"
           value={token.tokenDuration || ''}
           onChange={handleDurationChange}
+          onBlur={() => {
+            if (token.tokenDuration === null) {
+              onTogglePersistent();
+              setIsEditing(false);
+            }
+          }}
           className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0 no-spinners"
           min="0"
           placeholder=""
