@@ -12,7 +12,6 @@ const Index = () => {
     encounterName,
     setEncounterName,
     encounterData,
-    setEncounterData,
     exportEncounterData,
     exportPartyData,
     uploadEncounterData,
@@ -23,7 +22,6 @@ const Index = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const fileInputRef = useRef(null);
   const [contentHeight, setContentHeight] = useState('calc(100vh - 64px)');
-  const [headerHeight, setHeaderHeight] = useState(64);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
@@ -50,7 +48,6 @@ const Index = () => {
   const updateContentHeight = () => {
     const header = document.querySelector('header');
     const newHeaderHeight = header.offsetHeight;
-    setHeaderHeight(newHeaderHeight);
     setContentHeight(`calc(100vh - ${newHeaderHeight}px)`);
   };
 
@@ -95,18 +92,8 @@ const Index = () => {
           />
         </div>
         <div className="flex items-center">
-          {!isMobile && (
-            <>
-              <div className="w-4" />
-              <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-            </>
-          )}
-          {isMobile && (
-            <>
-              <div className="w-4" />
-              <MobileMenuButton onClick={toggleMobileMenu} />
-            </>
-          )}
+          {!isMobile && <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />}
+          {isMobile && <MobileMenuButton onClick={toggleMobileMenu} />}
         </div>
       </div>
     </header>
@@ -156,7 +143,17 @@ const Index = () => {
     !isMobile && (
       <footer className="bg-black text-white py-4 mt-auto">
         <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-          <p className="text-center sm:text-left">&copy; 2023 Encounter Tracker. All rights reserved.</p>
+          <p className="text-center sm:text-left">
+            Made by Fieldhouse and GPT-Engineer. 2024.{' '}
+            <a
+              href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-zinc-300"
+            >
+              CC BY-NC-SA 4.0
+            </a>
+          </p>
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
             <Button onClick={handleExportEncounterData} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
               <Download className="mr-2 h-4 w-4" />
