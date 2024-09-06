@@ -35,7 +35,6 @@ export const useEncounterLogic = (characters, setCharacters) => {
           bonusAction: false,
           reaction: false,
           currentMovement: char.maxMovement,
-          hasActed: false
         };
         logEvent(`Reset actions for ${char.name}`);
         return updatedChar;
@@ -56,17 +55,14 @@ export const useEncounterLogic = (characters, setCharacters) => {
   const handleNextTurn = useCallback(() => {
     setCharacters(prevCharacters => {
       const updatedCharacters = prevCharacters.map((char, index) => {
-        if (index === activeCharacterIndex && !char.hasActed) {
+        if (index === activeCharacterIndex) {
           const updatedTokens = char.tokens.map(token => {
             if (!token.isPersistent && token.tokenDuration !== null) {
               const newDuration = token.tokenDuration > 0 ? token.tokenDuration - 1 : 0;
-              console.log(`Token ${token.label} duration decreased from ${token.tokenDuration} to ${newDuration}`);
               return { ...token, tokenDuration: newDuration };
             }
             return token;
           }).filter(token => token.isPersistent || token.tokenDuration > 0);
-
-          console.log(`Updated tokens for ${char.name}:`, updatedTokens);
 
           return {
             ...char,
@@ -88,7 +84,7 @@ export const useEncounterLogic = (characters, setCharacters) => {
         });
         return updatedCharacters.map(char => ({
           ...char,
-          hasActed: false
+          hasActed: false // Reset hasActed for all characters at the start of a new round
         }));
       }
 
