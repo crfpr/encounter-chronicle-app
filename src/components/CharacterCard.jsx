@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { Input } from '../components/ui/input';
 import TurnNavigator from './TurnNavigator';
+import PlaceholderTurnNavigator from './PlaceholderTurnNavigator';
 import CharacterNameType from './CharacterNameType';
 import TokenInput from './TokenInput';
 import { PlusCircle } from 'lucide-react';
@@ -86,7 +87,7 @@ const CharacterCard = React.memo(({
   )), [character.tokens, isActive, handleTokenChange, handleRemoveToken]);
 
   return (
-    <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''}`}>
+    <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''} min-h-[150px]`}>
       <div className={`w-18 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
         <Input
           type="text"
@@ -110,7 +111,7 @@ const CharacterCard = React.memo(({
               onNextTurn={onNextTurn}
             />
           ) : (
-            <div className="h-[90px]" /> // Placeholder for inactive cards
+            <PlaceholderTurnNavigator />
           )}
         </div>
       </div>
@@ -165,7 +166,7 @@ const CharacterCard = React.memo(({
 
           {character.state === 'ko' && (
             <div className="mt-1">
-              <CharacterStateManager character={character} updateCharacter={updateCharacter} />
+              <CharacterStateManager character={character} updateCharacter={updateCharacter} isMobile={isMobile} />
             </div>
           )}
 
