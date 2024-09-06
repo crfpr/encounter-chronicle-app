@@ -86,7 +86,7 @@ const CharacterCard = React.memo(({
   )), [character.tokens, isActive, handleTokenChange, handleRemoveToken]);
 
   return (
-    <div className={`flex bg-white dark:bg-zinc-950 relative rounded-lg border ${getBorderStyle()} transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''}`} style={{ minHeight: '150px' }}>
+    <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''}`}>
       <div className={`w-18 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
         <Input
           type="text"
@@ -102,7 +102,7 @@ const CharacterCard = React.memo(({
           className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm`}
           maxLength={3}
         />
-        <div className="flex-1 flex items-center justify-center mt-2">
+        <div className="flex-1 flex items-center justify-center mt-2 h-[90px]">
           {isActive ? (
             <TurnNavigator
               turnTime={turnTime}
