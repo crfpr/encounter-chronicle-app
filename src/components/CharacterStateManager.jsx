@@ -53,15 +53,16 @@ const CharacterStateManager = ({ character, updateCharacter }) => {
     };
 
     return (
-      <div className="flex flex-col items-center justify-center space-y-2 text-xs py-2">
-        <div className="flex items-center space-x-2">
-          <Label className="text-sm font-semibold w-14">Failure</Label>
+      <div className="flex items-center justify-center space-x-2 text-xs py-2">
+        <div className="flex items-center space-x-1">
+          <Label className="text-sm font-semibold mr-1">Failure</Label>
           <div className="flex space-x-1">
             {renderSaveButtons('failures')}
           </div>
         </div>
-        <div className="flex items-center space-x-2">
-          <Label className="text-sm font-semibold w-14">Success</Label>
+        <div className="w-px h-6 bg-zinc-300 dark:bg-zinc-700" />
+        <div className="flex items-center space-x-1">
+          <Label className="text-sm font-semibold mr-1">Success</Label>
           <div className="flex space-x-1">
             {renderSaveButtons('successes')}
           </div>
