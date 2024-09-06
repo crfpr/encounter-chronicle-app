@@ -9,6 +9,7 @@ const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemov
   const [inputWidth, setInputWidth] = useState(40);
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef(null);
+  const durationInputRef = useRef(null);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -49,14 +50,27 @@ const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemov
   const handleDurationChange = (e) => {
     const newDuration = e.target.value === '' ? null : parseInt(e.target.value, 10);
     onDurationChange(newDuration);
-    if (newDuration === null) {
+  };
+
+  const handleDurationBlur = () => {
+    if (token.tokenDuration === null) {
       onTogglePersistent();
+      setIsEditing(false);
     }
   };
 
   const handleTogglePersistent = () => {
-    onTogglePersistent();
-    setIsEditing(!token.isPersistent);
+    if (token.isPersistent) {
+      setIsEditing(true);
+      setTimeout(() => {
+        if (durationInputRef.current) {
+          durationInputRef.current.focus();
+        }
+      }, 0);
+    } else {
+      onTogglePersistent();
+      setIsEditing(false);
+    }
   };
 
   return (
@@ -75,15 +89,11 @@ const TokenInput = React.memo(({ token, onLabelChange, onDurationChange, onRemov
       />
       {isEditing && !token.isPersistent ? (
         <Input
+          ref={durationInputRef}
           type="number"
           value={token.tokenDuration || ''}
           onChange={handleDurationChange}
-          onBlur={() => {
-            if (token.tokenDuration === null) {
-              onTogglePersistent();
-              setIsEditing(false);
-            }
-          }}
+          onBlur={handleDurationBlur}
           className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0 no-spinners"
           min="0"
           placeholder=""
