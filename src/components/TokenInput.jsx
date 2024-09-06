@@ -5,8 +5,8 @@ import { Clock, X } from 'lucide-react';
 
 const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onTogglePersistent }) => {
   const [isLabelEditing, setIsLabelEditing] = useState(false);
-  const [localLabel, setLocalLabel] = useState(token.label);
   const [isDurationEditing, setIsDurationEditing] = useState(false);
+  const [localLabel, setLocalLabel] = useState(token.label);
   const [localDuration, setLocalDuration] = useState(token.tokenDuration);
   const labelInputRef = useRef(null);
   const durationInputRef = useRef(null);
@@ -23,14 +23,8 @@ const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onToggle
     }
   }, [isDurationEditing]);
 
-  const handleLabelClick = () => {
-    setIsLabelEditing(true);
-  };
-
-  const handleLabelChange = (e) => {
-    setLocalLabel(e.target.value);
-  };
-
+  const handleLabelClick = () => setIsLabelEditing(true);
+  const handleLabelChange = (e) => setLocalLabel(e.target.value);
   const handleLabelBlur = () => {
     setIsLabelEditing(false);
     onLabelChange(localLabel);
@@ -48,11 +42,11 @@ const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onToggle
   const handleDurationChange = (e) => {
     const newDuration = e.target.value === '' ? null : parseInt(e.target.value, 10);
     setLocalDuration(newDuration);
+    onDurationChange(newDuration);
   };
 
   const handleDurationBlur = () => {
     setIsDurationEditing(false);
-    onDurationChange(localDuration);
     if (localDuration === null) {
       onTogglePersistent();
     }
@@ -75,15 +69,7 @@ const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onToggle
           {localLabel}
         </span>
       )}
-      <Button
-        onClick={handleClockClick}
-        variant="ghost"
-        size="sm"
-        className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700 group"
-      >
-        <Clock className="h-3 w-3 group-hover:text-white" />
-      </Button>
-      {isDurationEditing && !token.isPersistent && (
+      {isDurationEditing || !token.isPersistent ? (
         <Input
           ref={durationInputRef}
           type="number"
@@ -93,6 +79,15 @@ const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onToggle
           className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0"
           min="0"
         />
+      ) : (
+        <Button
+          onClick={handleClockClick}
+          variant="ghost"
+          size="sm"
+          className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700 group"
+        >
+          <Clock className="h-3 w-3 group-hover:text-white" />
+        </Button>
       )}
       <Button
         onClick={onRemove}
