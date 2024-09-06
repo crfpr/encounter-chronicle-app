@@ -23,6 +23,10 @@ const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onToggle
     }
   }, [isDurationEditing]);
 
+  useEffect(() => {
+    setLocalDuration(token.tokenDuration);
+  }, [token.tokenDuration]);
+
   const handleLabelClick = () => setIsLabelEditing(true);
   const handleLabelChange = (e) => setLocalLabel(e.target.value);
   const handleLabelBlur = () => {
@@ -61,11 +65,11 @@ const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onToggle
           value={localLabel}
           onChange={handleLabelChange}
           onBlur={handleLabelBlur}
-          className="h-5 px-1 text-xs bg-transparent border-none focus:outline-none focus:ring-0"
+          className="h-5 px-2 text-xs bg-transparent border-none focus:outline-none focus:ring-0"
           maxLength={30}
         />
       ) : (
-        <span onClick={handleLabelClick} className="cursor-pointer text-xs">
+        <span onClick={handleLabelClick} className="cursor-pointer text-xs pl-1">
           {localLabel}
         </span>
       )}
@@ -76,7 +80,7 @@ const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onToggle
           value={localDuration || ''}
           onChange={handleDurationChange}
           onBlur={handleDurationBlur}
-          className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0"
+          className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           min="0"
         />
       ) : (
