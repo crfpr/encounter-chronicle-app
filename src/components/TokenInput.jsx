@@ -7,6 +7,7 @@ const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onToggle
   const [isLabelEditing, setIsLabelEditing] = useState(false);
   const [localLabel, setLocalLabel] = useState(token.label);
   const [isDurationEditing, setIsDurationEditing] = useState(false);
+  const [localDuration, setLocalDuration] = useState(token.tokenDuration);
   const labelInputRef = useRef(null);
   const durationInputRef = useRef(null);
 
@@ -46,12 +47,13 @@ const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onToggle
 
   const handleDurationChange = (e) => {
     const newDuration = e.target.value === '' ? null : parseInt(e.target.value, 10);
-    onDurationChange(newDuration);
+    setLocalDuration(newDuration);
   };
 
   const handleDurationBlur = () => {
     setIsDurationEditing(false);
-    if (token.tokenDuration === null) {
+    onDurationChange(localDuration);
+    if (localDuration === null) {
       onTogglePersistent();
     }
   };
@@ -85,7 +87,7 @@ const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onToggle
         <Input
           ref={durationInputRef}
           type="number"
-          value={token.tokenDuration || ''}
+          value={localDuration || ''}
           onChange={handleDurationChange}
           onBlur={handleDurationBlur}
           className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0"
