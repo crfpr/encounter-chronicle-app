@@ -53,20 +53,7 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
   const handleInputChange = useCallback((field, value) => {
     if (field === 'initiative' || field === 'ac' || field === 'currentHp' || field === 'maxHp' || field === 'currentMovement' || field === 'maxMovement') {
       if (value === '' || (Number.isInteger(Number(value)) && Number(value) >= 0 && Number(value) <= 999)) {
-        let updatedCharacter = { ...character, [field]: value };
-        
-        if (field === 'currentHp') {
-          const numericValue = Number(value);
-          if (numericValue === 0 && character.state !== 'dead') {
-            updatedCharacter.state = 'ko';
-          } else if (numericValue > 0) {
-            if (character.state === 'ko' || character.state === 'dead' || (character.state === 'stable' && numericValue > 1)) {
-              updatedCharacter.state = 'alive';
-            }
-          }
-        }
-        
-        updateCharacter(updatedCharacter);
+        updateCharacter({ ...character, [field]: value });
       }
       return;
     }
@@ -148,15 +135,17 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
             maxLength={3}
           />
         </div>
-        {isActive && (
-          <div className="flex-1 flex items-center justify-center mt-2">
+        <div className="flex-1 flex items-center justify-center mt-2 h-[90px]">
+          {isActive ? (
             <TurnNavigator
               turnTime={turnTime}
               onPreviousTurn={onPreviousTurn}
               onNextTurn={onNextTurn}
             />
-          </div>
-        )}
+          ) : (
+            <div className="h-[90px]" /> {/* Placeholder to maintain consistent height */}
+          )}
+        </div>
       </div>
       
       <div className={`flex-grow p-2 flex flex-col ${isMobile ? 'px-1' : ''}`}>
