@@ -65,7 +65,7 @@ const CharacterCard = React.memo(({
   , [isActive]);
 
   const getTabColor = useCallback(() => 
-    isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'
+    isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'text-black dark:text-zinc-100'
   , [isActive]);
 
   const memoizedTokens = useMemo(() => character.tokens.map((token) => (
@@ -99,7 +99,7 @@ const CharacterCard = React.memo(({
             setIsNumericInputActive(false);
             onInitiativeBlur(character.id, character.initiative);
           }}
-          className={`w-11 text-center ${isActive ? 'bg-transparent text-white dark:text-white' : 'bg-transparent text-black dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm`}
+          className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-transparent text-black dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm`}
           maxLength={3}
         />
         <div className="flex-1 flex items-center justify-center mt-2">
@@ -110,7 +110,7 @@ const CharacterCard = React.memo(({
               onNextTurn={onNextTurn}
             />
           ) : (
-            <div className="h-[90px]" />
+            <div className="h-[90px]" /> // Placeholder for inactive cards
           )}
         </div>
       </div>

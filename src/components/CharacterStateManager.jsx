@@ -91,7 +91,7 @@ const CharacterStateManager = ({ character, updateCharacter, isMobile }) => {
   };
 
   return (
-    <div className="flex items-center justify-center h-[70px]">
+    <div className="space-y-1">
       {character.deathSaves && renderDeathSaves()}
     </div>
   );
