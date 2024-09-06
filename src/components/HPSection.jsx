@@ -32,11 +32,11 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
   };
 
   return (
-    <div className={`w-20 flex-shrink-0 ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} border-l border-zinc-300 dark:border-zinc-600 flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
+    <div className={`w-20 flex-shrink-0 ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} border-l border-zinc-300 dark:border-zinc-700 flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
       <div className="flex flex-col items-center space-y-2 w-full">
         <div className="flex flex-col items-center w-full">
           <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>HP</label>
-          <div className="relative w-16 border border-zinc-300 dark:border-zinc-600 rounded overflow-hidden">
+          <div className="relative w-16 border border-zinc-300 dark:border-zinc-700 rounded overflow-hidden">
             <Input
               type="text"
               inputMode="numeric"
@@ -48,7 +48,7 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
               className={`w-full text-center ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white' : 'bg-white text-black dark:bg-zinc-800 dark:text-zinc-100'} h-[30px] border-none no-spinners text-sm`}
               maxLength={3}
             />
-            <Separator className="my-0 bg-zinc-300 dark:bg-zinc-600" />
+            <Separator className="my-0 bg-zinc-300 dark:bg-zinc-700" />
             <Input
               type="text"
               inputMode="numeric"
@@ -66,7 +66,7 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className={`w-full h-[30px] text-xs ${isActive ? 'bg-zinc-700 text-white hover:bg-zinc-600' : 'bg-white text-black hover:bg-zinc-100'} dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700 border-zinc-300 dark:border-zinc-600`}
+              className={`w-full h-[30px] text-xs ${isActive ? 'bg-zinc-700 text-white hover:bg-zinc-600' : 'bg-white text-black hover:bg-zinc-100'} dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700 border-zinc-300 dark:border-zinc-700`}
             >
               {getStatusLabel(character.state)}
             </Button>

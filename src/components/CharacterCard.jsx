@@ -86,8 +86,8 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
 
   const getBorderStyle = useCallback(() => {
     return isActive
-      ? 'border-zinc-800 dark:border-zinc-800'
-      : 'border-zinc-300 dark:border-zinc-800';
+      ? 'border-zinc-700 dark:border-zinc-700'
+      : 'border-zinc-300 dark:border-zinc-700';
   }, [isActive]);
 
   const getTabColor = useCallback(() => {
@@ -131,7 +131,7 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
               setIsNumericInputActive(false);
               handleInitiativeBlur();
             }}
-            className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm`}
+            className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm`}
             maxLength={3}
           />
         </div>
@@ -208,7 +208,7 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
             {memoizedTokens}
             <Button
               onClick={handleAddToken}
-              className={`h-[30px] px-2 text-xs border transition-colors bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-800 ${isMobile ? 'text-[10px]' : ''}`}
+              className={`h-[30px] px-2 text-xs border transition-colors bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-700 ${isMobile ? 'text-[10px]' : ''}`}
             >
               <PlusCircle className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'} mr-1`} />
               Add token
