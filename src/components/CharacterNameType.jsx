@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
@@ -6,6 +7,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(name || 'New Character');
   const [editedType, setEditedType] = useState(type);
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
   const componentRef = useRef(null);
   const inputRef = useRef(null);
   const selectRef = useRef(null);
@@ -18,8 +20,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (componentRef.current && !componentRef.current.contains(event.target) &&
-          !selectRef.current.contains(event.target)) {
+      if (componentRef.current && !componentRef.current.contains(event.target) && !isSelectOpen) {
         handleBlur();
       }
     };
@@ -31,7 +32,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isEditing]);
+  }, [isEditing, isSelectOpen]);
 
   useEffect(() => {
     setEditedName(name || 'New Character');
@@ -43,10 +44,12 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
   };
 
   const handleBlur = () => {
-    setIsEditing(false);
-    const finalName = editedName.trim() || 'New Character';
-    if (finalName !== name || editedType !== type) {
-      onUpdate(finalName, editedType);
+    if (!isSelectOpen) {
+      setIsEditing(false);
+      const finalName = editedName.trim() || 'New Character';
+      if (finalName !== name || editedType !== type) {
+        onUpdate(finalName, editedType);
+      }
     }
   };
 
@@ -54,34 +57,49 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       handleBlur();
+    } else if (e.key === 'Tab' && !e.shiftKey) {
+      e.preventDefault();
+      selectRef.current?.focus();
     }
   };
 
   const handleNameChange = (e) => {
-    setEditedName(e.target.value);
+    const newName = e.target.value;
+    setEditedName(newName);
+    onUpdate(newName, editedType);
   };
 
   const handleTypeChange = (value) => {
     setEditedType(value);
     onUpdate(editedName, value);
+    setIsSelectOpen(false);
   };
 
   return (
-    <div ref={componentRef} className="flex items-center space-x-2">
-      {isEditing ? (
-        <>
-          <Input
-            ref={inputRef}
-            type="text"
-            value={editedName}
-            onChange={handleNameChange}
-            onKeyDown={handleKeyDown}
-            className="flex-grow h-[30px] bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800"
-            placeholder="New Character"
-          />
-          <div ref={selectRef}>
-            <Select value={editedType} onValueChange={handleTypeChange}>
-              <SelectTrigger className="w-24 h-[30px]">
+    <div ref={componentRef}>
+      <Button
+        variant="secondary"
+        className="w-full h-[40px] text-left justify-start px-3 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900 dark:text-zinc-200 border-zinc-300 dark:border-zinc-800"
+        onClick={handleClick}
+      >
+        {isEditing ? (
+          <div className="flex items-center w-full" onClick={(e) => e.stopPropagation()}>
+            <Input
+              ref={inputRef}
+              type="text"
+              value={editedName}
+              onChange={handleNameChange}
+              onKeyDown={handleKeyDown}
+              className="flex-grow mr-2 h-[30px] bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800"
+              placeholder="New Character"
+            />
+            <Select 
+              value={editedType} 
+              onValueChange={handleTypeChange}
+              onOpenChange={setIsSelectOpen}
+              open={isSelectOpen}
+            >
+              <SelectTrigger className="w-24 h-[30px]" ref={selectRef}>
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
@@ -91,16 +109,13 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
               </SelectContent>
             </Select>
           </div>
-        </>
-      ) : (
-        <div
-          className="flex items-center justify-between w-full h-[40px] px-3 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900 dark:text-zinc-200 border-zinc-300 dark:border-zinc-800 rounded cursor-pointer"
-          onClick={handleClick}
-        >
-          <span className="text-lg font-bold truncate">{editedName}</span>
-          <span className="text-sm">{editedType}</span>
-        </div>
-      )}
+        ) : (
+          <div className="flex items-center justify-between w-full">
+            <span className="text-lg font-bold truncate">{editedName}</span>
+            <span className="text-sm">{editedType}</span>
+          </div>
+        )}
+      </Button>
     </div>
   );
 };
