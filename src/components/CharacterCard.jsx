@@ -1,7 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
 import { Input } from '../components/ui/input';
-import { Button } from '../components/ui/button';
-import { Badge } from "../components/ui/badge";
 import TurnNavigator from './TurnNavigator';
 import CharacterNameType from './CharacterNameType';
 import TokenInput from './TokenInput';
@@ -9,8 +7,23 @@ import { PlusCircle } from 'lucide-react';
 import CharacterActions from './CharacterActions';
 import HPSection from './HPSection';
 import CharacterStateManager from './CharacterStateManager';
+import { Badge } from "../components/ui/badge";
+import { Button } from '../components/ui/button';
 
-const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter, isActive, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, onInitiativeBlur, onInitiativeSubmit, isMobile, round }) => {
+const CharacterCard = React.memo(({ 
+  character, 
+  updateCharacter, 
+  removeCharacter, 
+  isActive, 
+  turnTime, 
+  onPreviousTurn, 
+  onNextTurn, 
+  setIsNumericInputActive, 
+  onInitiativeBlur, 
+  onInitiativeSubmit, 
+  isMobile, 
+  round 
+}) => {
   const handleAddToken = useCallback(() => {
     const newToken = { id: Date.now(), label: 'Token', tokenDuration: null, isPersistent: true };
     const updatedTokens = [...character.tokens, newToken];
@@ -51,7 +64,7 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
   }, [character, updateCharacter]);
 
   const handleInputChange = useCallback((field, value) => {
-    if (field === 'initiative' || field === 'ac' || field === 'currentHp' || field === 'maxHp' || field === 'currentMovement' || field === 'maxMovement') {
+    if (['initiative', 'ac', 'currentHp', 'maxHp', 'currentMovement', 'maxMovement'].includes(field)) {
       if (value === '' || (Number.isInteger(Number(value)) && Number(value) >= 0 && Number(value) <= 999)) {
         updateCharacter({ ...character, [field]: value });
       }
@@ -143,7 +156,7 @@ const CharacterCard = React.memo(({ character, updateCharacter, removeCharacter,
               onNextTurn={onNextTurn}
             />
           ) : (
-            <div className="h-[90px]" /> {/* Placeholder to maintain consistent height */}
+            <div className="h-[90px]" />
           )}
         </div>
       </div>
