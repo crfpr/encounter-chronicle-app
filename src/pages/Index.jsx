@@ -40,13 +40,14 @@ const Index = () => {
 
   useEffect(() => {
     document.body.classList.toggle('dark', isDarkMode);
+    document.body.classList.toggle('light', !isDarkMode);
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
   const updateContentHeight = () => {
     const header = document.querySelector('header');
-    const newHeaderHeight = header.offsetHeight;
+    const newHeaderHeight = header ? header.offsetHeight : 64;
     setContentHeight(`calc(100vh - ${newHeaderHeight}px)`);
   };
 
@@ -79,13 +80,13 @@ const Index = () => {
   };
 
   const renderHeader = () => (
-    <header className={`bg-white text-black dark:bg-black dark:text-white py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999] border-b border-zinc-300 dark:border-zinc-700`}>
+    <header className={`py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999] border-b border-zinc-300 dark:border-zinc-700`}>
       <div className="container mx-auto px-4 flex items-center justify-between">
         <div className="flex items-center flex-grow">
           <Input
             value={encounterName}
             onChange={(e) => setEncounterName(e.target.value)}
-            className={`font-bold bg-transparent border-none text-black dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-0 ${isMobile ? 'text-xl flex-grow' : 'text-2xl'}`}
+            className={`font-bold bg-transparent border-none placeholder-zinc-400 focus:outline-none focus:ring-0 ${isMobile ? 'text-xl flex-grow' : 'text-2xl'}`}
             placeholder="Enter encounter name..."
           />
         </div>
@@ -100,7 +101,7 @@ const Index = () => {
   const renderMobileMenu = () => (
     isMobile && isMobileMenuOpen && (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000] dark:bg-opacity-70">
-        <div className="fixed top-0 right-0 h-full w-64 bg-white shadow-lg dark:bg-zinc-800 dark:text-white">
+        <div className="fixed top-0 right-0 h-full w-64 shadow-lg">
           <div className="flex justify-between items-center p-4 border-b border-zinc-300 dark:border-zinc-700">
             <h2 className="text-lg font-semibold">Menu</h2>
             <Button variant="ghost" size="sm" onClick={toggleMobileMenu}>
@@ -139,22 +140,22 @@ const Index = () => {
 
   const renderFooter = () => (
     !isMobile && (
-      <footer className="bg-black text-white py-2 mt-auto">
+      <footer className="py-2 mt-auto border-t border-zinc-300 dark:border-zinc-700">
         <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
           <p className="text-center sm:text-left text-xs">
-            Encounter Chronicle - <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer" className="underline hover:text-zinc-300">CC BY-NC-SA 4.0</a>, 2024.<br />
-            Made by Fieldhouse & <a href="https://gptengineer.app/" target="_blank" rel="noopener noreferrer" className="underline hover:text-zinc-300">GPT-Engineer</a>.
+            Encounter Chronicle - <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer" className="underline hover:text-zinc-600 dark:hover:text-zinc-300">CC BY-NC-SA 4.0</a>, 2024.<br />
+            Made by Fieldhouse & <a href="https://gptengineer.app/" target="_blank" rel="noopener noreferrer" className="underline hover:text-zinc-600 dark:hover:text-zinc-300">GPT-Engineer</a>.
           </p>
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-            <Button onClick={handleExportEncounterData} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
+            <Button onClick={handleExportEncounterData} className="px-4 py-2 rounded w-full sm:w-auto">
               <Download className="mr-2 h-4 w-4" />
               Save Encounter
             </Button>
-            <Button onClick={handleExportPartyData} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
+            <Button onClick={handleExportPartyData} className="px-4 py-2 rounded w-full sm:w-auto">
               <Download className="mr-2 h-4 w-4" />
               Save Party
             </Button>
-            <Button className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
+            <Button className="px-4 py-2 rounded w-full sm:w-auto">
               <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center justify-center w-full">
                 <Upload className="mr-2 h-4 w-4" />
                 Load File
@@ -174,9 +175,9 @@ const Index = () => {
   );
 
   return (
-    <div className={`flex flex-col ${isMobile ? 'h-screen' : ''} ${isDarkMode ? 'dark' : ''}`}>
+    <div className={`flex flex-col ${isMobile ? 'h-screen' : ''} ${isDarkMode ? 'dark' : 'light'}`}>
       {renderHeader()}
-      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''} bg-white dark:bg-zinc-950`} style={{ height: contentHeight }}>
+      <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''}`} style={{ height: contentHeight }}>
         <div className={`h-full overflow-y-auto ${isMobile ? 'px-0 sm:px-2' : 'px-4'}`}>
           <div className={`container mx-auto ${isMobile ? 'px-0' : 'px-4'} py-4 h-full`}>
             <EncounterTracker 

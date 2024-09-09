@@ -84,6 +84,57 @@
   }
 }
 
+/* Light mode styles */
+.light {
+  @apply bg-white text-black;
+}
+
+.light input,
+.light select,
+.light textarea {
+  @apply bg-white text-black border-zinc-300;
+}
+
+.light button {
+  @apply bg-white text-black hover:bg-zinc-100;
+}
+
+.light .bg-white {
+  @apply bg-white;
+}
+
+.light .text-black {
+  @apply text-black;
+}
+
+.light .border-black {
+  @apply border-zinc-300;
+}
+
+.light .hover\:bg-gray-200:hover {
+  @apply hover:bg-zinc-100;
+}
+
+.light .text-gray-500 {
+  @apply text-zinc-600;
+}
+
+.light .text-gray-600 {
+  @apply text-zinc-700;
+}
+
+.light .text-gray-700 {
+  @apply text-zinc-800;
+}
+
+.light .text-gray-800 {
+  @apply text-zinc-900;
+}
+
+.light .text-gray-900 {
+  @apply text-black;
+}
+
 /* Dark mode styles */
 .dark {
   @apply bg-black text-zinc-100;
