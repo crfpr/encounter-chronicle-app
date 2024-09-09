@@ -7,7 +7,8 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
-    setIsDarkMode(savedTheme === 'dark');
+    const initialTheme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    setIsDarkMode(initialTheme === 'dark');
   }, []);
 
   useEffect(() => {
