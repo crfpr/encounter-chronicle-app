@@ -82,7 +82,7 @@ const CharacterCard = React.memo(({
 
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''} min-h-[150px]`}>
-      <div className={`w-18 flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
+      <div className={`w-[18vw] flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
         <Input
           type="text"
           inputMode="numeric"
@@ -114,13 +114,14 @@ const CharacterCard = React.memo(({
         <div className="flex-grow space-y-2">
           <div className="flex items-start space-x-2 relative">
             <div className="flex-grow flex items-start">
-              <div className="flex-grow">
+              <div className={`flex-grow ${isMobile ? 'w-[40vw]' : ''}`}>
                 <CharacterNameType
                   name={character.name || 'New Character'}
                   type={character.type}
                   onUpdate={(newName, newType) => {
                     updateCharacter({ ...character, name: newName || 'New Character', type: newType });
                   }}
+                  isMobile={isMobile}
                 />
               </div>
               <div className="flex items-center ml-2 relative">

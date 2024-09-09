@@ -3,7 +3,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
-const CharacterNameType = ({ name, type, onUpdate }) => {
+const CharacterNameType = ({ name, type, onUpdate, isMobile }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(name || 'New Character');
   const [editedType, setEditedType] = useState(type);
@@ -79,7 +79,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
     <div ref={componentRef}>
       <Button
         variant="secondary"
-        className="w-full h-[40px] text-left justify-start px-3 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900 dark:text-zinc-200 border-zinc-300 dark:border-zinc-800"
+        className={`w-full h-[40px] text-left justify-start px-3 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900 dark:text-zinc-200 border-zinc-300 dark:border-zinc-800 ${isMobile ? 'text-sm' : ''}`}
         onClick={handleClick}
       >
         {isEditing ? (
@@ -90,7 +90,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
               value={editedName}
               onChange={handleNameChange}
               onKeyDown={handleKeyDown}
-              className="flex-grow mr-2 h-[30px] bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800"
+              className={`flex-grow mr-2 h-[30px] bg-white text-black dark:bg-zinc-950 dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 ${isMobile ? 'text-sm' : ''}`}
               placeholder="New Character"
             />
             <Select 
@@ -99,7 +99,7 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
               onOpenChange={setIsSelectOpen}
               open={isSelectOpen}
             >
-              <SelectTrigger className="w-24 h-[30px]" ref={selectRef}>
+              <SelectTrigger className={`w-24 h-[30px] ${isMobile ? 'text-xs' : ''}`} ref={selectRef}>
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
@@ -110,8 +110,8 @@ const CharacterNameType = ({ name, type, onUpdate }) => {
             </Select>
           </div>
         ) : (
-          <div className="flex items-center justify-between w-full">
-            <span className="text-lg font-bold truncate">{editedName}</span>
+          <div className={`flex items-center justify-between w-full ${isMobile ? 'text-sm' : ''}`}>
+            <span className={`font-bold truncate ${isMobile ? 'max-w-[30vw]' : ''}`}>{editedName}</span>
             <span className="text-sm">{editedType}</span>
           </div>
         )}
