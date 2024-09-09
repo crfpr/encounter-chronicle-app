@@ -108,7 +108,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
             round={encounterLogic.round}
           />
         </div>
-        <div ref={trackerRef} className="flex-grow overflow-y-auto">
+        <div ref={trackerRef} className={`flex-grow overflow-y-auto ${isMobile ? 'pb-20' : ''}`}>
           <CharacterList ref={characterListRef} {...commonProps} />
         </div>
       </div>
