@@ -1,41 +1,14 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef } from 'react';
 
 export const useEncounterManagement = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
   const [encounterData, setEncounterData] = useState(null);
   const encounterTrackerRef = useRef(null);
 
-  useEffect(() => {
-    const savedData = localStorage.getItem('encounterData');
-    if (savedData) {
-      const parsedData = JSON.parse(savedData);
-      setEncounterData(parsedData);
-      setEncounterName(parsedData.encounterName);
-    }
-  }, []);
-
-  const saveEncounterData = useCallback((data) => {
-    // Only save if there's actual data to save
-    if (data && data.characters && data.characters.length > 0) {
-      localStorage.setItem('encounterData', JSON.stringify(data));
-      setEncounterData(data);
-    }
-  }, []);
-
-  const resetEncounter = useCallback(() => {
-    localStorage.removeItem('encounterData');
-    setEncounterData(null);
-    setEncounterName('New Encounter');
-    if (encounterTrackerRef.current) {
-      encounterTrackerRef.current.resetEncounter();
-    }
-  }, []);
-
   const exportEncounterData = useCallback(async () => {
     if (encounterTrackerRef.current) {
       try {
         const data = encounterTrackerRef.current.getEncounterData();
-        saveEncounterData(data);
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -54,7 +27,7 @@ export const useEncounterManagement = () => {
       console.error('encounterTrackerRef is not available');
       throw new Error('Encounter tracker reference is not available');
     }
-  }, [saveEncounterData]);
+  }, []);
 
   const exportPartyData = useCallback(async () => {
     if (encounterTrackerRef.current) {
@@ -149,7 +122,6 @@ export const useEncounterManagement = () => {
 
             setEncounterData(processedData);
             setEncounterName(processedData.encounterName);
-            saveEncounterData(processedData);
             console.log('Encounter data loaded successfully:', processedData);
           } else {
             console.error('Invalid data format');
@@ -160,7 +132,7 @@ export const useEncounterManagement = () => {
       };
       reader.readAsText(file);
     }
-  }, [saveEncounterData]);
+  }, []);
 
   return {
     encounterName,
@@ -170,8 +142,6 @@ export const useEncounterManagement = () => {
     exportEncounterData,
     exportPartyData,
     uploadEncounterData,
-    encounterTrackerRef,
-    saveEncounterData,
-    resetEncounter
+    encounterTrackerRef
   };
 };

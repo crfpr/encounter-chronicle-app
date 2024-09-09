@@ -54,7 +54,6 @@ export const useEncounterLogic = (characters, setCharacters) => {
 
   const handleNextTurn = useCallback(() => {
     setCharacters(prevCharacters => {
-      let allHaveActed = true;
       const updatedCharacters = prevCharacters.map((char, index) => {
         if (index === activeCharacterIndex) {
           const updatedTokens = char.tokens.map(token => {
@@ -76,17 +75,15 @@ export const useEncounterLogic = (characters, setCharacters) => {
             tokens: updatedTokens
           };
         }
-        if (!char.hasActed) {
-          allHaveActed = false;
-        }
         return char;
       });
 
+      const allHaveActed = updatedCharacters.every(char => char.hasActed);
+
       if (allHaveActed) {
         setRound(prevRound => {
-          const newRound = prevRound + 1;
-          logEvent(`Round ${newRound} started`);
-          return newRound;
+          logEvent(`Round ${prevRound + 1} started`);
+          return prevRound + 1;
         });
         return updatedCharacters.map(char => ({
           ...char,
