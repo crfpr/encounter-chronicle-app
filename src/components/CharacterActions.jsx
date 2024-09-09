@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { ToggleGroup, ToggleGroupItem } from "../components/ui/toggle-group";
 import { Input } from '../components/ui/input';
 import { useNumericInput } from '../hooks/useNumericInput';
-import { useTheme } from '../contexts/ThemeContext';
 
 const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericInputActive, isMobile }) => {
   const [currentMovement, handleCurrentMovementChange, handleCurrentMovementKeyDown, setCurrentMovement] = useNumericInput(character.currentMovement, 0, 999);
   const [maxMovement, handleMaxMovementChange, handleMaxMovementKeyDown] = useNumericInput(character.maxMovement, 0, 999);
-  const { isDarkMode } = useTheme();
 
   useEffect(() => {
     setCurrentMovement(character.currentMovement);
@@ -24,13 +22,14 @@ const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericIn
   };
 
   const getToggleGroupItemStyle = (isActive, isToggled) => {
+    const isDarkMode = document.documentElement.classList.contains('dark');
     return `h-[30px] px-2 text-xs border transition-colors ${
       isToggled
-        ? 'bg-zinc-700 text-white'
-        : isDarkMode
-          ? 'bg-zinc-950 text-zinc-100 hover:bg-zinc-800'
-          : 'bg-white text-black hover:bg-zinc-100'
-    } ${isDarkMode ? 'border-zinc-800' : 'border-zinc-300'}`;
+        ? isDarkMode
+          ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white'
+          : 'bg-zinc-700 text-white'
+        : 'bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800'
+    } border-zinc-300 dark:border-zinc-800`;
   };
 
   const handleMovementChange = (type, value) => {
@@ -98,11 +97,7 @@ const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericIn
             setIsNumericInputActive(false);
             handleMovementChange('currentMovement', currentMovement);
           }}
-          className={`w-16 text-center h-[30px] no-spinners text-sm ${
-            isDarkMode
-              ? 'bg-zinc-950 text-zinc-100 border-zinc-800'
-              : 'bg-white text-black border-zinc-300'
-          }`}
+          className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm"
           placeholder="Current"
           maxLength={3}
         />
@@ -122,11 +117,7 @@ const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericIn
               setIsNumericInputActive(false);
               handleMovementChange('maxMovement', maxMovement);
             }}
-            className={`w-16 text-center h-[30px] no-spinners text-sm ${
-              isDarkMode
-                ? 'bg-zinc-950 text-zinc-100 border-zinc-800'
-                : 'bg-white text-black border-zinc-300'
-            }`}
+            className="w-16 text-center h-[30px] bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners text-sm"
             placeholder="Max"
             maxLength={3}
           />

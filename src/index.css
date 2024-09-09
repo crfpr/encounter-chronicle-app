@@ -3,7 +3,7 @@
 @tailwind utilities;
  
 @layer base {
-  :root, .light {
+  :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -82,11 +82,6 @@
   .btn-sm {
     @apply h-[30px] px-2 text-xs;
   }
-}
-
-/* Light mode styles */
-.light .toggle-group-item[data-state="on"] {
-  @apply bg-zinc-700 text-white;
 }
 
 /* Dark mode styles */
