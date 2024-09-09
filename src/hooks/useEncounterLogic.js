@@ -34,9 +34,10 @@ export const useEncounterLogic = (characters, setCharacters) => {
           action: false,
           bonusAction: false,
           reaction: false,
-          currentMovement: char.maxMovement, // Reset current movement to max movement
+          currentMovement: char.maxMovement,
         };
-        logEvent(`Reset actions and movement for ${char.name}`);
+        console.log(`Resetting actions for ${char.name}:`, updatedChar);
+        logEvent(`Reset actions and movement for ${char.name}. Current movement set to ${updatedChar.currentMovement}`);
         return updatedChar;
       }
       return char;
@@ -46,6 +47,7 @@ export const useEncounterLogic = (characters, setCharacters) => {
   const handlePreviousTurn = useCallback(() => {
     setActiveCharacterIndex(prevIndex => {
       const newIndex = prevIndex === 0 ? characters.length - 1 : prevIndex - 1;
+      console.log(`Changing turn to previous character: ${characters[newIndex].name}`);
       logEvent(`Turn changed to ${characters[newIndex].name}`);
       resetCharacterActions(newIndex);
       return newIndex;
@@ -83,6 +85,7 @@ export const useEncounterLogic = (characters, setCharacters) => {
 
       if (allHaveActed) {
         setRound(prevRound => {
+          console.log(`Starting new round: ${prevRound + 1}`);
           logEvent(`Round ${prevRound + 1} started`);
           return prevRound + 1;
         });
@@ -98,6 +101,7 @@ export const useEncounterLogic = (characters, setCharacters) => {
 
     setActiveCharacterIndex(prevIndex => {
       const newIndex = (prevIndex + 1) % characters.length;
+      console.log(`Changing turn to next character: ${characters[newIndex].name}`);
       resetCharacterActions(newIndex);
       logEvent(`Turn changed to ${characters[newIndex].name}`);
       return newIndex;
