@@ -139,18 +139,11 @@ const Index = () => {
 
   const renderFooter = () => (
     !isMobile && (
-      <footer className="bg-black text-white py-4 mt-auto">
-        <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-          <p className="text-center sm:text-left">
-            Made by Fieldhouse and GPT-Engineer. 2024.{' '}
-            <a
-              href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-zinc-300"
-            >
-              CC BY-NC-SA 4.0
-            </a>
+      <footer className="bg-black text-white py-2 mt-auto">
+        <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
+          <p className="text-center sm:text-left text-xs">
+            Encounter Chronicle - <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer" className="underline hover:text-zinc-300">CC BY-NC-SA 4.0</a>, 2024.<br />
+            Made by Fieldhouse & <a href="https://gptengineer.app/" target="_blank" rel="noopener noreferrer" className="underline hover:text-zinc-300">GPT-Engineer</a>.
           </p>
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
             <Button onClick={handleExportEncounterData} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
