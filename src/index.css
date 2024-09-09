@@ -86,104 +86,112 @@
 
 /* Light mode styles */
 .light {
-  @apply bg-white text-black;
+  background-color: #ffffff;
+  color: #000000;
 }
 
 .light input,
 .light select,
 .light textarea {
-  @apply bg-white text-black border-zinc-300;
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #d4d4d8;
 }
 
 .light button {
-  @apply bg-white text-black hover:bg-zinc-100;
+  background-color: #ffffff;
+  color: #000000;
 }
 
-.light .bg-white {
-  @apply bg-white;
+.light button:hover {
+  background-color: #f4f4f5;
 }
 
 .light .text-black {
-  @apply text-black;
+  color: #000000;
 }
 
 .light .border-black {
-  @apply border-zinc-300;
+  border-color: #d4d4d8;
 }
 
 .light .hover\:bg-gray-200:hover {
-  @apply hover:bg-zinc-100;
+  background-color: #f4f4f5;
 }
 
 .light .text-gray-500 {
-  @apply text-zinc-600;
+  color: #71717a;
 }
 
 .light .text-gray-600 {
-  @apply text-zinc-700;
+  color: #52525b;
 }
 
 .light .text-gray-700 {
-  @apply text-zinc-800;
+  color: #3f3f46;
 }
 
 .light .text-gray-800 {
-  @apply text-zinc-900;
+  color: #27272a;
 }
 
 .light .text-gray-900 {
-  @apply text-black;
+  color: #18181b;
 }
 
 /* Dark mode styles */
 .dark {
-  @apply bg-black text-zinc-100;
+  background-color: #000000;
+  color: #f4f4f5;
 }
 
 .dark input,
 .dark select,
 .dark textarea {
-  @apply bg-zinc-800 text-zinc-100 border-zinc-700;
+  background-color: #18181b;
+  color: #f4f4f5;
+  border-color: #3f3f46;
 }
 
 .dark button {
-  @apply bg-zinc-800 text-zinc-100 hover:bg-zinc-700;
+  background-color: #18181b;
+  color: #f4f4f5;
 }
 
-.dark .bg-white {
-  @apply bg-black;
+.dark button:hover {
+  background-color: #27272a;
 }
 
 .dark .text-black {
-  @apply text-zinc-100;
+  color: #f4f4f5;
 }
 
 .dark .border-black {
-  @apply border-zinc-700;
+  border-color: #3f3f46;
 }
 
 .dark .hover\:bg-gray-200:hover {
-  @apply hover:bg-zinc-800;
+  background-color: #27272a;
 }
 
 .dark .text-gray-500 {
-  @apply text-zinc-400;
+  color: #a1a1aa;
 }
 
 .dark .text-gray-600 {
-  @apply text-zinc-300;
+  color: #d4d4d8;
 }
 
 .dark .text-gray-700 {
-  @apply text-zinc-200;
+  color: #e4e4e7;
 }
 
 .dark .text-gray-800 {
-  @apply text-zinc-100;
+  color: #f4f4f5;
 }
 
 .dark .text-gray-900 {
-  @apply text-zinc-50;
+  color: #fafafa;
 }
 
 /* Smooth scrolling for the entire page */
