@@ -47,10 +47,11 @@ export const useEncounterLogic = (characters, setCharacters) => {
     setActiveCharacterIndex(prevIndex => {
       const newIndex = prevIndex === 0 ? characters.length - 1 : prevIndex - 1;
       logEvent(`Turn changed to ${characters[newIndex].name}`);
+      resetCharacterActions(newIndex);
       return newIndex;
     });
     setTurnTime(0);
-  }, [characters]);
+  }, [characters, resetCharacterActions]);
 
   const handleNextTurn = useCallback(() => {
     setCharacters(prevCharacters => {
