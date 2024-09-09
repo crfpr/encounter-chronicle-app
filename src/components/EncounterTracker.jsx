@@ -116,6 +116,21 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   }, [handleKeyDown]);
 
   const renderContent = () => {
+    const commonProps = {
+      characters,
+      setCharacters,
+      activeCharacterIndex,
+      turnTime,
+      onPreviousTurn: handlePreviousTurn,
+      onNextTurn: handleNextTurn,
+      setIsNumericInputActive,
+      updateCharacter,
+      addCharacter,
+      removeCharacter,
+      round,
+      isMobile
+    };
+
     if (isMobile) {
       switch (activePage) {
         case 'tracker':
@@ -130,21 +145,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
                 />
               </div>
               <div ref={trackerRef} className="flex-grow overflow-y-auto pb-20 px-3">
-                <CharacterList 
-                  ref={characterListRef}
-                  characters={characters} 
-                  setCharacters={setCharacters} 
-                  activeCharacterIndex={activeCharacterIndex}
-                  turnTime={turnTime}
-                  onPreviousTurn={handlePreviousTurn}
-                  onNextTurn={handleNextTurn}
-                  setIsNumericInputActive={setIsNumericInputActive}
-                  updateCharacter={updateCharacter}
-                  addCharacter={addCharacter}
-                  removeCharacter={removeCharacter}
-                  round={round}
-                  isMobile={isMobile}
-                />
+                <CharacterList ref={characterListRef} {...commonProps} />
               </div>
             </div>
           );
@@ -184,21 +185,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
                 />
               </div>
               <div ref={trackerRef} className="flex-grow overflow-hidden" style={{ maxHeight: 'calc(100% - 88px)' }}>
-                <CharacterList 
-                  ref={characterListRef}
-                  characters={characters} 
-                  setCharacters={setCharacters} 
-                  activeCharacterIndex={activeCharacterIndex}
-                  turnTime={turnTime}
-                  onPreviousTurn={handlePreviousTurn}
-                  onNextTurn={handleNextTurn}
-                  setIsNumericInputActive={setIsNumericInputActive}
-                  updateCharacter={updateCharacter}
-                  addCharacter={addCharacter}
-                  removeCharacter={removeCharacter}
-                  round={round}
-                  isMobile={isMobile}
-                />
+                <CharacterList ref={characterListRef} {...commonProps} />
               </div>
             </div>
           </div>
