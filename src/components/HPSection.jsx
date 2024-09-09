@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/popover";
@@ -8,8 +8,12 @@ import { useNumericInput } from '../hooks/useNumericInput';
 
 const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setIsNumericInputActive, isMobile }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown] = useNumericInput(character.currentHp || 0);
+  const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown, setCurrentHp] = useNumericInput(character.currentHp || 0);
   const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(character.maxHp || 0);
+
+  useEffect(() => {
+    setCurrentHp(character.currentHp || 0);
+  }, [character.currentHp, setCurrentHp]);
 
   const handleStateChange = (newState) => {
     let updatedCharacter = { ...character, state: newState };
@@ -40,7 +44,7 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
     const numericValue = Number(value);
     let newState = character.state;
 
-    if (numericValue === 0 && Number(character.maxHp) > 0) {
+    if (numericValue <= 0 && Number(character.maxHp) > 0) {
       newState = 'ko';
     } else if (numericValue > 0) {
       if (character.state === 'ko' || character.state === 'dead' || (character.state === 'stable' && numericValue > 1)) {
@@ -50,10 +54,20 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
 
     updateCharacter({
       ...character,
-      currentHp: value,
+      currentHp: numericValue,
       state: newState,
       deathSaves: newState === 'ko' ? { successes: [], failures: [] } : character.deathSaves
     });
+  };
+
+  const handleCurrentHpBlur = () => {
+    handleHPChange(currentHp);
+    setIsNumericInputActive(false);
+  };
+
+  const handleMaxHpBlur = () => {
+    updateCharacter({ ...character, maxHp: Number(maxHp) });
+    setIsNumericInputActive(false);
   };
 
   return (
@@ -68,11 +82,10 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
               value={currentHp}
               onChange={(e) => {
                 handleCurrentHpChange(e);
-                handleHPChange(e.target.value);
               }}
               onKeyDown={handleCurrentHpKeyDown}
               onFocus={() => setIsNumericInputActive(true)}
-              onBlur={() => setIsNumericInputActive(false)}
+              onBlur={handleCurrentHpBlur}
               className={`w-full text-center ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white' : 'bg-white text-black dark:bg-zinc-800 dark:text-zinc-100'} h-[30px] border-none no-spinners text-sm`}
               maxLength={3}
             />
@@ -83,11 +96,10 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
               value={maxHp}
               onChange={(e) => {
                 handleMaxHpChange(e);
-                updateCharacter({ ...character, maxHp: e.target.value });
               }}
               onKeyDown={handleMaxHpKeyDown}
               onFocus={() => setIsNumericInputActive(true)}
-              onBlur={() => setIsNumericInputActive(false)}
+              onBlur={handleMaxHpBlur}
               className={`w-full text-center ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white' : 'bg-white text-black dark:bg-zinc-800 dark:text-zinc-100'} h-[30px] border-none no-spinners text-sm`}
               maxLength={3}
             />
