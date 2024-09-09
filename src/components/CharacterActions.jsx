@@ -1,8 +1,12 @@
 import React from 'react';
 import { ToggleGroup, ToggleGroupItem } from "../components/ui/toggle-group";
 import { Input } from '../components/ui/input';
+import { useNumericInput } from '../hooks/useNumericInput';
 
-const CharacterActions = ({ character, isActive, updateCharacter, handleInputChange, handleNumericInputKeyDown, setIsNumericInputActive, isMobile }) => {
+const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericInputActive, isMobile }) => {
+  const [currentMovement, handleCurrentMovementChange, handleCurrentMovementKeyDown] = useNumericInput(character.currentMovement, 0, 999);
+  const [maxMovement, handleMaxMovementChange, handleMaxMovementKeyDown] = useNumericInput(character.maxMovement, 0, 999);
+
   const handleToggleAction = (value) => {
     const updatedCharacter = {
       ...character,
@@ -21,6 +25,10 @@ const CharacterActions = ({ character, isActive, updateCharacter, handleInputCha
           : 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white'
         : 'bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800'
     } border-zinc-300 dark:border-zinc-800`;
+  };
+
+  const handleMovementChange = (type, value) => {
+    updateCharacter({ ...character, [type]: value });
   };
 
   return (
@@ -58,9 +66,12 @@ const CharacterActions = ({ character, isActive, updateCharacter, handleInputCha
         <Input
           type="text"
           inputMode="numeric"
-          value={character.currentMovement}
-          onChange={(e) => handleInputChange('currentMovement', e.target.value)}
-          onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentMovement', character.currentMovement)}
+          value={currentMovement}
+          onChange={(e) => {
+            handleCurrentMovementChange(e);
+            handleMovementChange('currentMovement', e.target.value);
+          }}
+          onKeyDown={handleCurrentMovementKeyDown}
           onFocus={() => setIsNumericInputActive(true)}
           onBlur={() => setIsNumericInputActive(false)}
           className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm"
@@ -72,9 +83,12 @@ const CharacterActions = ({ character, isActive, updateCharacter, handleInputCha
           <Input
             type="text"
             inputMode="numeric"
-            value={character.maxMovement}
-            onChange={(e) => handleInputChange('maxMovement', e.target.value)}
-            onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxMovement', character.maxMovement)}
+            value={maxMovement}
+            onChange={(e) => {
+              handleMaxMovementChange(e);
+              handleMovementChange('maxMovement', e.target.value);
+            }}
+            onKeyDown={handleMaxMovementKeyDown}
             onFocus={() => setIsNumericInputActive(true)}
             onBlur={() => setIsNumericInputActive(false)}
             className="w-16 text-center h-[30px] bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners text-sm"
