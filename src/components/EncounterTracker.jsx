@@ -99,7 +99,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     };
 
     const renderTracker = () => (
-      <div className="flex-grow overflow-hidden flex flex-col h-full px-4">
+      <div className="flex-grow overflow-hidden flex flex-col h-full px-4 py-4">
         <div ref={headerRef} className="sticky top-0 z-10 bg-white dark:bg-zinc-950 mb-2">
           <EncounterHeader
             isRunning={encounterLogic.isRunning}
@@ -149,12 +149,12 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       return (
         <div className="flex flex-col lg:flex-row w-full h-full space-y-6 lg:space-y-0 lg:space-x-6">
           <div className="lg:w-2/3 h-full flex flex-col">
-            <div className="bg-white border border-zinc-300 dark:border-zinc-700 rounded-lg flex flex-col overflow-hidden h-full shadow-md dark:shadow-none">
+            <div className="bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-lg flex flex-col overflow-hidden h-full shadow-md dark:shadow-none">
               {renderTracker()}
             </div>
           </div>
           <div className="lg:w-1/3 h-full flex flex-col space-y-6">
-            <div className="bg-white border border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex-1 overflow-hidden flex flex-col shadow-md dark:shadow-none">
+            <div className="bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex-1 overflow-hidden flex flex-col shadow-md dark:shadow-none">
               <div className="flex-grow">
                 <NotesSection notes={notes} setNotes={(newNotes) => {
                   setNotes(newNotes);
@@ -162,7 +162,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
                 }} isMobile={false} />
               </div>
             </div>
-            <div className="bg-white border border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex-1 overflow-hidden flex flex-col shadow-md dark:shadow-none">
+            <div className="bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex-1 overflow-hidden flex flex-col shadow-md dark:shadow-none">
               <h2 className="text-xl font-semibold mb-2">Character Stats</h2>
               <div className="flex-grow overflow-y-auto">
                 <CharacterStats characters={characters} round={encounterLogic.round} />
