@@ -44,20 +44,28 @@ const CharacterCard = React.memo(({
     });
   }, [character, updateCharacter]);
 
-  const handleInitiativeBlurAndSubmit = useCallback(() => {
+  const handleInputBlurAndSubmit = useCallback((field, value) => {
     setIsNumericInputActive(false);
-    onInitiativeBlur(character.id, initiative);
-  }, [character.id, initiative, onInitiativeBlur, setIsNumericInputActive]);
+    if (field === 'initiative') {
+      onInitiativeBlur(character.id, value);
+    } else if (field === 'ac') {
+      updateCharacter({ ...character, ac: value });
+    }
+  }, [character.id, onInitiativeBlur, setIsNumericInputActive, updateCharacter]);
 
-  const handleInitiativeKeyDownWrapper = useCallback((e) => {
+  const handleInputKeyDown = useCallback((e, field, value) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       e.target.blur();
-      handleInitiativeBlurAndSubmit();
+      handleInputBlurAndSubmit(field, value);
     } else {
-      handleInitiativeKeyDown(e);
+      if (field === 'initiative') {
+        handleInitiativeKeyDown(e);
+      } else if (field === 'ac') {
+        handleAcKeyDown(e);
+      }
     }
-  }, [handleInitiativeBlurAndSubmit, handleInitiativeKeyDown]);
+  }, [handleInitiativeKeyDown, handleAcKeyDown, handleInputBlurAndSubmit]);
 
   const getBorderStyle = useCallback(() => 
     isActive ? 'border-zinc-700 dark:border-zinc-700' : 'border-zinc-300 dark:border-zinc-700'
@@ -93,9 +101,9 @@ const CharacterCard = React.memo(({
             inputMode="numeric"
             value={initiative}
             onChange={handleInitiativeChange}
-            onKeyDown={handleInitiativeKeyDownWrapper}
+            onKeyDown={(e) => handleInputKeyDown(e, 'initiative', initiative)}
             onFocus={() => setIsNumericInputActive(true)}
-            onBlur={handleInitiativeBlurAndSubmit}
+            onBlur={() => handleInputBlurAndSubmit('initiative', initiative)}
             className={`w-full text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm overflow-visible`}
             maxLength={3}
           />
@@ -141,9 +149,9 @@ const CharacterCard = React.memo(({
                   inputMode="numeric"
                   value={ac}
                   onChange={handleAcChange}
-                  onKeyDown={handleAcKeyDown}
+                  onKeyDown={(e) => handleInputKeyDown(e, 'ac', ac)}
                   onFocus={() => setIsNumericInputActive(true)}
-                  onBlur={() => setIsNumericInputActive(false)}
+                  onBlur={() => handleInputBlurAndSubmit('ac', ac)}
                   className="w-[40px] h-[40px] text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm"
                   maxLength={2}
                   style={{
