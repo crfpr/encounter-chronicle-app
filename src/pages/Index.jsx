@@ -44,7 +44,6 @@ const Index = () => {
   }, [isDarkMode]);
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
-
   const updateContentHeight = () => {
     const header = document.querySelector('header');
     const newHeaderHeight = header.offsetHeight;
@@ -52,7 +51,6 @@ const Index = () => {
   };
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
-
   const handleUploadClick = () => fileInputRef.current.click();
 
   const handleExportEncounterData = async () => {
@@ -186,7 +184,7 @@ const Index = () => {
     <div className={`flex flex-col ${isMobile ? 'h-screen' : ''} ${isDarkMode ? 'dark' : ''}`}>
       {renderHeader()}
       <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''} bg-white dark:bg-zinc-950`} style={{ height: contentHeight }}>
-        <div className={`h-full overflow-y-auto ${isMobile ? 'px-2' : 'px-4'}`}>
+        <div className={`h-full overflow-y-auto ${isMobile ? 'px-0 sm:px-2' : 'px-4'}`}>
           <div className={`container mx-auto ${isMobile ? 'px-0' : 'px-4'} py-4 h-full`}>
             <EncounterTracker 
               ref={encounterTrackerRef}
