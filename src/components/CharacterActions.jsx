@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ToggleGroup, ToggleGroupItem } from "../components/ui/toggle-group";
 import { Input } from '../components/ui/input';
 import { useNumericInput } from '../hooks/useNumericInput';
 
 const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericInputActive, isMobile }) => {
-  const [currentMovement, handleCurrentMovementChange, handleCurrentMovementKeyDown] = useNumericInput(character.currentMovement, 0, 999);
+  const [currentMovement, handleCurrentMovementChange, handleCurrentMovementKeyDown, setCurrentMovement] = useNumericInput(character.currentMovement, 0, 999);
   const [maxMovement, handleMaxMovementChange, handleMaxMovementKeyDown] = useNumericInput(character.maxMovement, 0, 999);
+
+  useEffect(() => {
+    setCurrentMovement(character.currentMovement);
+  }, [character.currentMovement, setCurrentMovement]);
 
   const handleToggleAction = (value) => {
     const updatedCharacter = {
