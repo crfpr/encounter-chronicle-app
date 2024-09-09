@@ -67,6 +67,7 @@
   }
 }
 
+/* Light mode styles */
 .light {
   background-color: #ffffff;
   color: #000000;
@@ -74,59 +75,9 @@
 
 .light input,
 .light select,
-.light textarea {
-  background-color: #ffffff;
-  color: #000000;
-  border-color: #d4d4d8;
-}
-
+.light textarea,
 .light button {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-.light button:hover {
-  background-color: #f4f4f5;
-}
-
-.light .text-black {
-  color: #000000;
-}
-
-.light .border-black {
-  border-color: #000000;
-}
-
-.light .hover\:bg-gray-200:hover {
-  background-color: #f4f4f5;
-}
-
-.light .text-gray-500 {
-  color: #71717a;
-}
-
-.light .text-gray-600 {
-  color: #52525b;
-}
-
-.light .text-gray-700 {
-  color: #3f3f46;
-}
-
-.light .text-gray-800 {
-  color: #27272a;
-}
-
-.light .text-gray-900 {
-  color: #18181b;
-}
-
-.light header {
-  background-color: #ffffff;
-}
-
-.light footer {
-  background-color: #18181b;
+  background-color: #09090b; /* zinc-950 */
   color: #ffffff;
 }
 
@@ -135,16 +86,20 @@
 }
 
 .light .toggle-on {
-  background-color: #18181b;
+  background-color: #09090b; /* zinc-950 */
   color: #ffffff;
 }
 
-.light .tab-input,
-.light .tab-button {
-  background-color: #18181b;
+.light header {
+  background-color: #ffffff;
+}
+
+.light footer {
+  background-color: #09090b; /* zinc-950 */
   color: #ffffff;
 }
 
+/* Dark mode styles */
 .dark {
   background-color: #000000;
   color: #f4f4f5;
@@ -152,22 +107,9 @@
 
 .dark input,
 .dark select,
-.dark textarea {
-  background-color: #18181b;
-  color: #f4f4f5;
-  border-color: #3f3f46;
-}
-
+.dark textarea,
 .dark button {
   background-color: #18181b;
-  color: #f4f4f5;
-}
-
-.dark button:hover {
-  background-color: #27272a;
-}
-
-.dark .text-black {
   color: #f4f4f5;
 }
 
@@ -179,26 +121,13 @@
   background-color: #27272a;
 }
 
-.dark .text-gray-500 {
-  color: #a1a1aa;
-}
+.dark .text-gray-500 { color: #a1a1aa; }
+.dark .text-gray-600 { color: #d4d4d8; }
+.dark .text-gray-700 { color: #e4e4e7; }
+.dark .text-gray-800 { color: #f4f4f5; }
+.dark .text-gray-900 { color: #fafafa; }
 
-.dark .text-gray-600 {
-  color: #d4d4d8;
-}
-
-.dark .text-gray-700 {
-  color: #e4e4e7;
-}
-
-.dark .text-gray-800 {
-  color: #f4f4f5;
-}
-
-.dark .text-gray-900 {
-  color: #fafafa;
-}
-
+/* Common styles */
 html {
   scroll-behavior: smooth;
 }
