@@ -108,14 +108,14 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
             round={encounterLogic.round}
           />
         </div>
-        <div ref={trackerRef} className="flex-grow overflow-y-auto pb-20">
+        <div ref={trackerRef} className="flex-grow overflow-y-auto">
           <CharacterList ref={characterListRef} {...commonProps} />
         </div>
       </div>
     );
 
     const renderNotes = () => (
-      <div className="h-full flex flex-col pb-20 px-4">
+      <div className="h-full flex flex-col px-4">
         <div className="flex-grow">
           <NotesSection 
             key={`notes-section-${activePage}-${isMobile}`} 
@@ -132,7 +132,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
 
     const renderStats = () => (
       <div className="h-full flex flex-col px-4">
-        <div className="flex-grow overflow-y-auto pb-20">
+        <div className="flex-grow overflow-y-auto">
           <CharacterStats characters={characters} round={encounterLogic.round} key={encounterLogic.round} />
         </div>
       </div>
