@@ -47,19 +47,19 @@ const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericIn
           value="action" 
           className={getToggleGroupItemStyle(isActive, character.action)}
         >
-          {isMobile ? 'A' : 'Action'}
+          {isMobile ? 'Action' : 'A'}
         </ToggleGroupItem>
         <ToggleGroupItem 
           value="bonusAction" 
           className={getToggleGroupItemStyle(isActive, character.bonusAction)}
         >
-          {isMobile ? 'B' : 'Bonus'}
+          {isMobile ? 'Bonus' : 'B'}
         </ToggleGroupItem>
         <ToggleGroupItem 
           value="reaction" 
           className={getToggleGroupItemStyle(isActive, character.reaction)}
         >
-          {isMobile ? 'R' : 'Reaction'}
+          {isMobile ? 'Reaction' : 'R'}
         </ToggleGroupItem>
       </ToggleGroup>
       <div className="flex items-center space-x-2">
