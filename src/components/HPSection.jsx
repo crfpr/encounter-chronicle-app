@@ -70,6 +70,19 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
     setIsNumericInputActive(false);
   };
 
+  const handleKeyDown = (e, blurHandler) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      blurHandler();
+    } else {
+      if (e.target.id === 'currentHp') {
+        handleCurrentHpKeyDown(e);
+      } else if (e.target.id === 'maxHp') {
+        handleMaxHpKeyDown(e);
+      }
+    }
+  };
+
   return (
     <div className={`${isMobile ? 'w-auto flex-shrink-0' : 'w-20 flex-shrink-0'} ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} border-l border-zinc-300 dark:border-zinc-700 flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
       <div className="flex flex-col items-center space-y-2 w-full">
@@ -77,13 +90,12 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
           <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>HP</label>
           <div className="relative w-16 border border-zinc-300 dark:border-zinc-700 rounded overflow-hidden">
             <Input
+              id="currentHp"
               type="text"
               inputMode="numeric"
               value={currentHp}
-              onChange={(e) => {
-                handleCurrentHpChange(e);
-              }}
-              onKeyDown={handleCurrentHpKeyDown}
+              onChange={handleCurrentHpChange}
+              onKeyDown={(e) => handleKeyDown(e, handleCurrentHpBlur)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={handleCurrentHpBlur}
               className={`w-full text-center ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white' : 'bg-white text-black dark:bg-zinc-800 dark:text-zinc-100'} h-[30px] border-none no-spinners text-sm`}
@@ -91,13 +103,12 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
             />
             <Separator className="my-0 bg-zinc-300 dark:bg-zinc-700" />
             <Input
+              id="maxHp"
               type="text"
               inputMode="numeric"
               value={maxHp}
-              onChange={(e) => {
-                handleMaxHpChange(e);
-              }}
-              onKeyDown={handleMaxHpKeyDown}
+              onChange={handleMaxHpChange}
+              onKeyDown={(e) => handleKeyDown(e, handleMaxHpBlur)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={handleMaxHpBlur}
               className={`w-full text-center ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white' : 'bg-white text-black dark:bg-zinc-800 dark:text-zinc-100'} h-[30px] border-none no-spinners text-sm`}

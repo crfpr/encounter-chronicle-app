@@ -36,6 +36,20 @@ const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericIn
     updateCharacter({ ...character, [type]: value });
   };
 
+  const handleKeyDown = (e, type) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleMovementChange(type, e.target.value);
+      setIsNumericInputActive(false);
+    } else {
+      if (type === 'currentMovement') {
+        handleCurrentMovementKeyDown(e);
+      } else if (type === 'maxMovement') {
+        handleMaxMovementKeyDown(e);
+      }
+    }
+  };
+
   return (
     <div className="flex flex-wrap items-center gap-2">
       <ToggleGroup 
@@ -76,9 +90,12 @@ const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericIn
             handleCurrentMovementChange(e);
             handleMovementChange('currentMovement', e.target.value);
           }}
-          onKeyDown={handleCurrentMovementKeyDown}
+          onKeyDown={(e) => handleKeyDown(e, 'currentMovement')}
           onFocus={() => setIsNumericInputActive(true)}
-          onBlur={() => setIsNumericInputActive(false)}
+          onBlur={() => {
+            setIsNumericInputActive(false);
+            handleMovementChange('currentMovement', currentMovement);
+          }}
           className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm"
           placeholder="Current"
           maxLength={3}
@@ -93,9 +110,12 @@ const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericIn
               handleMaxMovementChange(e);
               handleMovementChange('maxMovement', e.target.value);
             }}
-            onKeyDown={handleMaxMovementKeyDown}
+            onKeyDown={(e) => handleKeyDown(e, 'maxMovement')}
             onFocus={() => setIsNumericInputActive(true)}
-            onBlur={() => setIsNumericInputActive(false)}
+            onBlur={() => {
+              setIsNumericInputActive(false);
+              handleMovementChange('maxMovement', maxMovement);
+            }}
             className="w-16 text-center h-[30px] bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners text-sm"
             placeholder="Max"
             maxLength={3}
