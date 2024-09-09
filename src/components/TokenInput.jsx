@@ -2,14 +2,16 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Clock, X } from 'lucide-react';
+import { useNumericInput } from '../hooks/useNumericInput';
 
 const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onTogglePersistent }) => {
   const [isLabelEditing, setIsLabelEditing] = useState(false);
   const [isDurationEditing, setIsDurationEditing] = useState(false);
   const [localLabel, setLocalLabel] = useState(token.label);
-  const [localDuration, setLocalDuration] = useState(token.tokenDuration);
   const labelInputRef = useRef(null);
   const durationInputRef = useRef(null);
+
+  const [localDuration, handleDurationChange, handleDurationKeyDown, setLocalDuration] = useNumericInput(token.tokenDuration, 0);
 
   useEffect(() => {
     if (isLabelEditing && labelInputRef.current) {
@@ -25,7 +27,7 @@ const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onToggle
 
   useEffect(() => {
     setLocalDuration(token.tokenDuration);
-  }, [token.tokenDuration]);
+  }, [token.tokenDuration, setLocalDuration]);
 
   const handleLabelClick = () => setIsLabelEditing(true);
   const handleLabelChange = (e) => setLocalLabel(e.target.value);
@@ -43,16 +45,21 @@ const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onToggle
     }
   };
 
-  const handleDurationChange = (e) => {
-    const newDuration = e.target.value === '' ? null : parseInt(e.target.value, 10);
-    setLocalDuration(newDuration);
-    onDurationChange(newDuration);
-  };
-
   const handleDurationBlur = () => {
     setIsDurationEditing(false);
-    if (localDuration === null) {
+    onDurationChange(localDuration === '' ? null : parseInt(localDuration, 10));
+    if (localDuration === '') {
       onTogglePersistent();
+    }
+  };
+
+  const handleDurationKeyDownWrapper = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleDurationBlur();
+      e.target.blur();
+    } else {
+      handleDurationKeyDown(e);
     }
   };
 
@@ -76,9 +83,11 @@ const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onToggle
       {isDurationEditing || !token.isPersistent ? (
         <Input
           ref={durationInputRef}
-          type="number"
+          type="text"
+          inputMode="numeric"
           value={localDuration || ''}
           onChange={handleDurationChange}
+          onKeyDown={handleDurationKeyDownWrapper}
           onBlur={handleDurationBlur}
           className="w-8 h-5 px-1 text-xs text-center bg-transparent border-none focus:outline-none focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           min="0"

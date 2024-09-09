@@ -54,6 +54,16 @@ const CharacterCard = React.memo(({
     onInitiativeBlur(character.id, initiative);
   }, [character.id, initiative, onInitiativeBlur]);
 
+  const handleInitiativeKeyDown = useCallback((e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      e.target.blur();
+      onInitiativeBlur(character.id, initiative);
+    } else {
+      handleInitiativeKeyDown(e);
+    }
+  }, [character.id, initiative, onInitiativeBlur, handleInitiativeKeyDown]);
+
   const getBorderStyle = useCallback(() => 
     isActive ? 'border-zinc-700 dark:border-zinc-700' : 'border-zinc-300 dark:border-zinc-700'
   , [isActive]);
