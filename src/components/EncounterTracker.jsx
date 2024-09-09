@@ -179,7 +179,11 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       <div className="flex-grow overflow-hidden">
         {renderContent()}
       </div>
-      {isMobile && <MobileMenu activePage={activePage} setActivePage={setActivePage} onExport={exportEncounterData} />}
+      {isMobile && (
+        <div className="fixed bottom-0 left-0 right-0 z-[10001]">
+          <MobileMenu activePage={activePage} setActivePage={setActivePage} onExport={exportEncounterData} />
+        </div>
+      )}
       {isMobile && <SwipeHandler onSwipeLeft={() => handleSwipe('left')} onSwipeRight={() => handleSwipe('right')} />}
     </div>
   );
