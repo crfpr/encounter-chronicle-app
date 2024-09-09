@@ -52,23 +52,42 @@ const CharacterStateManager = ({ character, updateCharacter, isMobile }) => {
       ));
     };
 
-    return (
-      <div className={`flex items-center ${isMobile ? 'justify-center space-x-2 text-xs py-2' : 'space-x-4'}`}>
-        <div className="flex items-center space-x-1">
-          <Label className="text-sm font-semibold mr-1">Failure</Label>
-          <div className="flex space-x-1">
-            {renderSaveButtons('failures')}
+    if (isMobile) {
+      return (
+        <div className="flex flex-col space-y-2">
+          <div className="flex items-center space-x-2">
+            <Label className="text-sm font-semibold w-16">Failure</Label>
+            <div className="flex space-x-1">
+              {renderSaveButtons('failures')}
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Label className="text-sm font-semibold w-16">Success</Label>
+            <div className="flex space-x-1">
+              {renderSaveButtons('successes')}
+            </div>
           </div>
         </div>
-        {!isMobile && <div className="w-px h-6 bg-zinc-300 dark:bg-zinc-700" />}
-        <div className="flex items-center space-x-1">
-          <Label className="text-sm font-semibold mr-1">Success</Label>
-          <div className="flex space-x-1">
-            {renderSaveButtons('successes')}
+      );
+    } else {
+      return (
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            <Label className="text-sm font-semibold">Failure</Label>
+            <div className="flex space-x-1">
+              {renderSaveButtons('failures')}
+            </div>
+          </div>
+          <div className="w-px h-6 bg-zinc-300 dark:bg-zinc-700" />
+          <div className="flex items-center space-x-2">
+            <Label className="text-sm font-semibold">Success</Label>
+            <div className="flex space-x-1">
+              {renderSaveButtons('successes')}
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   };
 
   return (
