@@ -4,9 +4,12 @@ import { Button } from '../components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/popover";
 import { Separator } from "../components/ui/separator";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
+import { useNumericInput } from '../hooks/useNumericInput';
 
-const HPSection = ({ character, isActive, handleInputChange, handleNumericInputKeyDown, setIsNumericInputActive, updateCharacter, removeCharacter }) => {
+const HPSection = ({ character, isActive, updateCharacter, removeCharacter }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown] = useNumericInput(character.currentHp);
+  const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(character.maxHp);
 
   const handleStateChange = (newState) => {
     let updatedCharacter = { ...character, state: newState };
@@ -62,11 +65,12 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
             <Input
               type="text"
               inputMode="numeric"
-              value={character.currentHp}
-              onChange={(e) => handleHPChange(e.target.value)}
-              onKeyDown={(e) => handleNumericInputKeyDown(e, 'currentHp', character.currentHp)}
-              onFocus={() => setIsNumericInputActive(true)}
-              onBlur={() => setIsNumericInputActive(false)}
+              value={currentHp}
+              onChange={(e) => {
+                handleCurrentHpChange(e);
+                handleHPChange(e.target.value);
+              }}
+              onKeyDown={handleCurrentHpKeyDown}
               className={`w-full text-center ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white' : 'bg-white text-black dark:bg-zinc-800 dark:text-zinc-100'} h-[30px] border-none no-spinners text-sm`}
               maxLength={3}
             />
@@ -74,11 +78,12 @@ const HPSection = ({ character, isActive, handleInputChange, handleNumericInputK
             <Input
               type="text"
               inputMode="numeric"
-              value={character.maxHp}
-              onChange={(e) => handleInputChange('maxHp', e.target.value)}
-              onKeyDown={(e) => handleNumericInputKeyDown(e, 'maxHp', character.maxHp)}
-              onFocus={() => setIsNumericInputActive(true)}
-              onBlur={() => setIsNumericInputActive(false)}
+              value={maxHp}
+              onChange={(e) => {
+                handleMaxHpChange(e);
+                updateCharacter({ ...character, maxHp: e.target.value });
+              }}
+              onKeyDown={handleMaxHpKeyDown}
               className={`w-full text-center ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white' : 'bg-white text-black dark:bg-zinc-800 dark:text-zinc-100'} h-[30px] border-none no-spinners text-sm`}
               maxLength={3}
             />

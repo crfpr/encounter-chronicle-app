@@ -10,6 +10,7 @@ import HPSection from './HPSection';
 import CharacterStateManager from './CharacterStateManager';
 import { Badge } from "../components/ui/badge";
 import { Button } from '../components/ui/button';
+import { useNumericInput } from '../hooks/useNumericInput';
 
 const CharacterCard = React.memo(({ 
   character, 
@@ -25,6 +26,9 @@ const CharacterCard = React.memo(({
   isMobile, 
   round 
 }) => {
+  const [initiative, handleInitiativeChange, handleInitiativeKeyDown, setInitiative] = useNumericInput(character.initiative);
+  const [ac, handleAcChange, handleAcKeyDown] = useNumericInput(character.ac);
+
   const handleAddToken = useCallback(() => {
     const newToken = { id: Date.now(), label: 'Token', tokenDuration: null, isPersistent: true };
     updateCharacter({ ...character, tokens: [...character.tokens, newToken] });
@@ -44,22 +48,12 @@ const CharacterCard = React.memo(({
   }, [character, updateCharacter]);
 
   const handleInputChange = useCallback((field, value) => {
-    if (['initiative', 'ac', 'currentHp', 'maxHp', 'currentMovement', 'maxMovement'].includes(field)) {
-      value = value === '' || (Number.isInteger(Number(value)) && Number(value) >= 0 && Number(value) <= 999) ? value : character[field];
-    }
     updateCharacter({ ...character, [field]: value });
   }, [character, updateCharacter]);
 
-  const handleNumericInputKeyDown = useCallback((e, field, currentValue) => {
-    if (!/[0-9]/.test(e.key) && !['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'].includes(e.key)) {
-      e.preventDefault();
-    }
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      e.target.blur();
-      field === 'initiative' ? onInitiativeSubmit(character.id, currentValue) : handleInputChange(field, currentValue);
-    }
-  }, [character.id, handleInputChange, onInitiativeSubmit]);
+  const handleInitiativeBlur = useCallback(() => {
+    onInitiativeBlur(character.id, initiative);
+  }, [character.id, initiative, onInitiativeBlur]);
 
   const getBorderStyle = useCallback(() => 
     isActive ? 'border-zinc-700 dark:border-zinc-700' : 'border-zinc-300 dark:border-zinc-700'
@@ -92,13 +86,13 @@ const CharacterCard = React.memo(({
         <Input
           type="text"
           inputMode="numeric"
-          value={character.initiative}
-          onChange={(e) => handleInputChange('initiative', e.target.value)}
-          onKeyDown={(e) => handleNumericInputKeyDown(e, 'initiative', character.initiative)}
+          value={initiative}
+          onChange={handleInitiativeChange}
+          onKeyDown={handleInitiativeKeyDown}
           onFocus={() => setIsNumericInputActive(true)}
           onBlur={() => {
             setIsNumericInputActive(false);
-            onInitiativeBlur(character.id, character.initiative);
+            handleInitiativeBlur();
           }}
           className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm`}
           maxLength={3}
@@ -136,9 +130,9 @@ const CharacterCard = React.memo(({
                 <Input
                   type="text"
                   inputMode="numeric"
-                  value={character.ac}
-                  onChange={(e) => handleInputChange('ac', e.target.value)}
-                  onKeyDown={(e) => handleNumericInputKeyDown(e, 'ac', character.ac)}
+                  value={ac}
+                  onChange={handleAcChange}
+                  onKeyDown={handleAcKeyDown}
                   onFocus={() => setIsNumericInputActive(true)}
                   onBlur={() => setIsNumericInputActive(false)}
                   className="w-[40px] h-[40px] text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm"
@@ -158,7 +152,6 @@ const CharacterCard = React.memo(({
               isActive={isActive}
               updateCharacter={updateCharacter}
               handleInputChange={handleInputChange}
-              handleNumericInputKeyDown={handleNumericInputKeyDown}
               setIsNumericInputActive={setIsNumericInputActive}
               isMobile={isMobile}
             />
@@ -187,7 +180,6 @@ const CharacterCard = React.memo(({
         character={character}
         isActive={isActive}
         handleInputChange={handleInputChange}
-        handleNumericInputKeyDown={handleNumericInputKeyDown}
         setIsNumericInputActive={setIsNumericInputActive}
         updateCharacter={updateCharacter}
         removeCharacter={removeCharacter}

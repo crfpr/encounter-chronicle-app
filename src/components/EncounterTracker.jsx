@@ -97,12 +97,13 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
 
   const handleKeyDown = useCallback((e) => {
     if (!isMobile && characters.length > 1 && !isNumericInputActive) {
-      if (e.key === 'ArrowUp') {
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
         e.preventDefault();
-        handlePreviousTurn();
-      } else if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        handleNextTurn();
+        if (e.key === 'ArrowUp') {
+          handlePreviousTurn();
+        } else {
+          handleNextTurn();
+        }
       }
     }
   }, [isMobile, characters.length, isNumericInputActive, handlePreviousTurn, handleNextTurn]);
