@@ -82,8 +82,9 @@ export const useEncounterLogic = (characters, setCharacters) => {
 
       if (allHaveActed) {
         setRound(prevRound => {
-          logEvent(`Round ${prevRound + 1} started`);
-          return prevRound + 1;
+          const newRound = prevRound + 1;
+          logEvent(`Round ${newRound} started`);
+          return newRound;
         });
         return updatedCharacters.map(char => ({
           ...char,
