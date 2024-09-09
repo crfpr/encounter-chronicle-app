@@ -167,3 +167,8 @@ html {
 .no-spinners {
   -moz-appearance: textfield;
 }
+
+/* Ensure initiative input text overflows */
+input[type="text"].overflow-visible {
+  overflow: visible !important;
+}

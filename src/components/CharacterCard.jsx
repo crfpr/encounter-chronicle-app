@@ -83,20 +83,25 @@ const CharacterCard = React.memo(({
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''} min-h-[150px]`}>
       <div className={`w-[80px] flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
-        <Input
-          type="text"
-          inputMode="numeric"
-          value={initiative}
-          onChange={handleInitiativeChange}
-          onKeyDown={handleInitiativeKeyDown}
-          onFocus={() => setIsNumericInputActive(true)}
-          onBlur={() => {
-            setIsNumericInputActive(false);
-            handleInitiativeBlur();
-          }}
-          className={`w-11 text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm`}
-          maxLength={3}
-        />
+        <div className="relative w-full">
+          <Input
+            type="text"
+            inputMode="numeric"
+            value={initiative}
+            onChange={handleInitiativeChange}
+            onKeyDown={handleInitiativeKeyDown}
+            onFocus={() => setIsNumericInputActive(true)}
+            onBlur={() => {
+              setIsNumericInputActive(false);
+              handleInitiativeBlur();
+            }}
+            className={`w-full text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm overflow-visible`}
+            maxLength={3}
+          />
+          <span className="absolute inset-0 flex items-center justify-center pointer-events-none text-xs text-zinc-500 dark:text-zinc-400">
+            Initiative
+          </span>
+        </div>
         <div className="flex-1 flex items-center justify-center mt-2 h-[90px]">
           {isActive ? (
             <TurnNavigator
