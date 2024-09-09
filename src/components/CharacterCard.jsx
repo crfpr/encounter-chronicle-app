@@ -21,9 +21,7 @@ const CharacterCard = React.memo(({
   onNextTurn, 
   setIsNumericInputActive, 
   onInitiativeBlur, 
-  onInitiativeSubmit, 
   isMobile, 
-  round 
 }) => {
   const [initiative, handleInitiativeChange, handleInitiativeKeyDown, setInitiative] = useNumericInput(character.initiative);
   const [ac, handleAcChange, handleAcKeyDown] = useNumericInput(character.ac);
@@ -46,23 +44,20 @@ const CharacterCard = React.memo(({
     });
   }, [character, updateCharacter]);
 
-  const handleInputChange = useCallback((field, value) => {
-    updateCharacter({ ...character, [field]: value });
-  }, [character, updateCharacter]);
-
-  const handleInitiativeBlur = useCallback(() => {
+  const handleInitiativeBlurAndSubmit = useCallback(() => {
+    setIsNumericInputActive(false);
     onInitiativeBlur(character.id, initiative);
-  }, [character.id, initiative, onInitiativeBlur]);
+  }, [character.id, initiative, onInitiativeBlur, setIsNumericInputActive]);
 
-  const handleInitiativeKeyDown = useCallback((e) => {
+  const handleInitiativeKeyDownWrapper = useCallback((e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       e.target.blur();
-      onInitiativeBlur(character.id, initiative);
+      handleInitiativeBlurAndSubmit();
     } else {
       handleInitiativeKeyDown(e);
     }
-  }, [character.id, initiative, onInitiativeBlur, handleInitiativeKeyDown]);
+  }, [handleInitiativeBlurAndSubmit, handleInitiativeKeyDown]);
 
   const getBorderStyle = useCallback(() => 
     isActive ? 'border-zinc-700 dark:border-zinc-700' : 'border-zinc-300 dark:border-zinc-700'
@@ -98,12 +93,9 @@ const CharacterCard = React.memo(({
             inputMode="numeric"
             value={initiative}
             onChange={handleInitiativeChange}
-            onKeyDown={handleInitiativeKeyDown}
+            onKeyDown={handleInitiativeKeyDownWrapper}
             onFocus={() => setIsNumericInputActive(true)}
-            onBlur={() => {
-              setIsNumericInputActive(false);
-              handleInitiativeBlur();
-            }}
+            onBlur={handleInitiativeBlurAndSubmit}
             className={`w-full text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm overflow-visible`}
             maxLength={3}
           />
@@ -168,7 +160,6 @@ const CharacterCard = React.memo(({
               character={character}
               isActive={isActive}
               updateCharacter={updateCharacter}
-              handleInputChange={handleInputChange}
               setIsNumericInputActive={setIsNumericInputActive}
               isMobile={isMobile}
             />
@@ -190,7 +181,6 @@ const CharacterCard = React.memo(({
       <HPSection
         character={character}
         isActive={isActive}
-        handleInputChange={handleInputChange}
         setIsNumericInputActive={setIsNumericInputActive}
         updateCharacter={updateCharacter}
         removeCharacter={removeCharacter}
