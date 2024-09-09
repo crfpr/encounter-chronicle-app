@@ -15,7 +15,11 @@ export const useEncounterManagement = () => {
   }, []);
 
   const saveEncounterData = useCallback((data) => {
-    localStorage.setItem('encounterData', JSON.stringify(data));
+    // Only save if there's actual data to save
+    if (data && data.characters && data.characters.length > 0) {
+      localStorage.setItem('encounterData', JSON.stringify(data));
+      setEncounterData(data);
+    }
   }, []);
 
   const resetEncounter = useCallback(() => {
