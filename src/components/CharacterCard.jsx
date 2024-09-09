@@ -164,12 +164,6 @@ const CharacterCard = React.memo(({
             />
           )}
 
-          {character.state === 'ko' && (
-            <div className="mt-1">
-              <CharacterStateManager character={character} updateCharacter={updateCharacter} isMobile={isMobile} />
-            </div>
-          )}
-
           <div className="flex items-center flex-wrap gap-2">
             {memoizedTokens}
             <Button
