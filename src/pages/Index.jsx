@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import EncounterTracker from '../components/EncounterTracker';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
-import { Upload, Download, X, Sun, Moon } from 'lucide-react';
+import { Upload, Download, X, Sun, Moon, RefreshCw } from 'lucide-react';
 import MobileMenuButton from '../components/MobileMenuButton';
 import ThemeToggle from '../components/ThemeToggle';
 import { useEncounterManagement } from '../hooks/useEncounterManagement';
@@ -15,7 +15,9 @@ const Index = () => {
     exportEncounterData,
     exportPartyData,
     uploadEncounterData,
-    encounterTrackerRef
+    encounterTrackerRef,
+    saveEncounterData,
+    resetEncounter
   } = useEncounterManagement();
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -78,6 +80,11 @@ const Index = () => {
     }
   };
 
+  const handleResetEncounter = () => {
+    resetEncounter();
+    setIsMobileMenuOpen(false);
+  };
+
   const renderHeader = () => (
     <header className={`bg-white text-black dark:bg-black dark:text-white py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999] border-b border-zinc-300 dark:border-zinc-700`}>
       <div className="container mx-auto px-4 flex items-center justify-between">
@@ -119,6 +126,10 @@ const Index = () => {
             <Button onClick={handleUploadClick} className="w-full flex items-center justify-center">
               <Upload className="mr-2 h-4 w-4" />
               Load File
+            </Button>
+            <Button onClick={handleResetEncounter} className="w-full flex items-center justify-center">
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Reset Encounter
             </Button>
             <Button onClick={toggleTheme} className="w-full flex items-center justify-center">
               {isDarkMode ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
@@ -174,6 +185,10 @@ const Index = () => {
                 style={{ display: 'none' }}
               />
             </Button>
+            <Button onClick={handleResetEncounter} className="bg-white text-black px-4 py-2 rounded hover:bg-zinc-200 w-full sm:w-auto dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Reset Encounter
+            </Button>
           </div>
         </div>
       </footer>
@@ -195,6 +210,7 @@ const Index = () => {
               isMobile={isMobile}
               contentHeight={contentHeight}
               loadedEncounterData={encounterData}
+              saveEncounterData={saveEncounterData}
             />
           </div>
         </div>

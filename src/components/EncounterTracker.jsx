@@ -8,7 +8,7 @@ import SwipeHandler from './SwipeHandler';
 import { useCharacterManagement } from '../hooks/useCharacterManagement';
 import { useEncounterLogic } from '../hooks/useEncounterLogic';
 
-const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile, contentHeight, loadedEncounterData }, ref) => {
+const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile, contentHeight, loadedEncounterData, saveEncounterData }, ref) => {
   const [notes, setNotes] = useState('');
   const [activePage, setActivePage] = useState('tracker');
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
@@ -36,7 +36,16 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       log: encounterLogic.encounterLog,
       activeCharacterIndex: encounterLogic.activeCharacterIndex,
       isRunning: encounterLogic.isRunning
-    })
+    }),
+    resetEncounter: () => {
+      setCharacters([]);
+      encounterLogic.setRound(1);
+      encounterLogic.setActiveCharacterIndex(0);
+      encounterLogic.setEncounterTime(0);
+      setNotes('');
+      encounterLogic.setEncounterLog([]);
+      encounterLogic.setIsRunning(false);
+    }
   }));
 
   useEffect(() => {
@@ -52,6 +61,20 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       encounterLogic.logEvent('Encounter data loaded');
     }
   }, [loadedEncounterData, setEncounterName, encounterLogic.logEvent, setCharacters]);
+
+  useEffect(() => {
+    const data = {
+      encounterName,
+      characters,
+      round: encounterLogic.round,
+      encounterTime: encounterLogic.encounterTime,
+      notes,
+      log: encounterLogic.encounterLog,
+      activeCharacterIndex: encounterLogic.activeCharacterIndex,
+      isRunning: encounterLogic.isRunning
+    };
+    saveEncounterData(data);
+  }, [encounterName, characters, encounterLogic.round, encounterLogic.encounterTime, notes, encounterLogic.encounterLog, encounterLogic.activeCharacterIndex, encounterLogic.isRunning, saveEncounterData]);
 
   const handleSwipe = useCallback((direction) => {
     if (isMobile) {
