@@ -7,7 +7,6 @@ import TokenInput from './TokenInput';
 import { PlusCircle } from 'lucide-react';
 import CharacterActions from './CharacterActions';
 import HPSection from './HPSection';
-import CharacterStateManager from './CharacterStateManager';
 import { Badge } from "../components/ui/badge";
 import { Button } from '../components/ui/button';
 import { useNumericInput } from '../hooks/useNumericInput';
@@ -82,7 +81,7 @@ const CharacterCard = React.memo(({
 
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''} min-h-[150px]`}>
-      <div className={`w-[18vw] flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
+      <div className={`${isMobile ? 'w-[18vw]' : 'w-[150px]'} flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
         <Input
           type="text"
           inputMode="numeric"
@@ -158,12 +157,6 @@ const CharacterCard = React.memo(({
             />
           )}
 
-          {character.state === 'ko' && (
-            <div className="mt-1">
-              <CharacterStateManager character={character} updateCharacter={updateCharacter} isMobile={isMobile} />
-            </div>
-          )}
-
           <div className="flex items-center flex-wrap gap-2">
             {memoizedTokens}
             <Button
@@ -184,6 +177,7 @@ const CharacterCard = React.memo(({
         setIsNumericInputActive={setIsNumericInputActive}
         updateCharacter={updateCharacter}
         removeCharacter={removeCharacter}
+        isMobile={isMobile}
       />
     </div>
   );

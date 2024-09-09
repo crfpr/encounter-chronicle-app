@@ -5,8 +5,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/popove
 import { Separator } from "../components/ui/separator";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import { useNumericInput } from '../hooks/useNumericInput';
+import CharacterStateManager from './CharacterStateManager';
 
-const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setIsNumericInputActive }) => {
+const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setIsNumericInputActive, isMobile }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown] = useNumericInput(character.currentHp);
   const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(character.maxHp);
@@ -57,7 +58,7 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
   };
 
   return (
-    <div className={`w-20 flex-shrink-0 ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} border-l border-zinc-300 dark:border-zinc-700 flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
+    <div className={`${isMobile ? 'w-20' : 'w-[150px]'} flex-shrink-0 ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} border-l border-zinc-300 dark:border-zinc-700 flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
       <div className="flex flex-col items-center space-y-2 w-full">
         <div className="flex flex-col items-center w-full">
           <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>HP</label>
@@ -143,6 +144,11 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
           </PopoverContent>
         </Popover>
       </div>
+      {character.state === 'ko' && (
+        <div className="mt-2 w-full">
+          <CharacterStateManager character={character} updateCharacter={updateCharacter} isMobile={isMobile} />
+        </div>
+      )}
     </div>
   );
 };

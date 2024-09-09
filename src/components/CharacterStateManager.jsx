@@ -52,23 +52,38 @@ const CharacterStateManager = ({ character, updateCharacter, isMobile }) => {
       ));
     };
 
-    return (
-      <div className={`flex items-center ${isMobile ? 'justify-center space-x-2 text-xs py-2' : 'space-x-4'}`}>
-        <div className="flex items-center space-x-1">
+    if (isMobile) {
+      return (
+        <div className="flex flex-col items-center space-y-1 text-xs">
+          <div className="flex items-center space-x-1">
+            <Label className="text-sm font-semibold mr-1">Failure</Label>
+            <div className="flex space-x-1">
+              {renderSaveButtons('failures')}
+            </div>
+          </div>
+          <div className="flex items-center space-x-1">
+            <Label className="text-sm font-semibold mr-1">Success</Label>
+            <div className="flex space-x-1">
+              {renderSaveButtons('successes')}
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex items-center space-x-1 text-xs">
           <Label className="text-sm font-semibold mr-1">Failure</Label>
           <div className="flex space-x-1">
             {renderSaveButtons('failures')}
           </div>
-        </div>
-        {!isMobile && <div className="w-px h-6 bg-zinc-300 dark:bg-zinc-700" />}
-        <div className="flex items-center space-x-1">
-          <Label className="text-sm font-semibold mr-1">Success</Label>
+          <span className="mx-1">|</span>
           <div className="flex space-x-1">
             {renderSaveButtons('successes')}
           </div>
+          <Label className="text-sm font-semibold ml-1">Success</Label>
         </div>
-      </div>
-    );
+      );
+    }
   };
 
   return (
