@@ -6,7 +6,7 @@ import { Separator } from "../components/ui/separator";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import { useNumericInput } from '../hooks/useNumericInput';
 
-const HPSection = ({ character, isActive, updateCharacter, removeCharacter }) => {
+const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setIsNumericInputActive }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown] = useNumericInput(character.currentHp);
   const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(character.maxHp);
@@ -71,6 +71,8 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter }) =>
                 handleHPChange(e.target.value);
               }}
               onKeyDown={handleCurrentHpKeyDown}
+              onFocus={() => setIsNumericInputActive(true)}
+              onBlur={() => setIsNumericInputActive(false)}
               className={`w-full text-center ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white' : 'bg-white text-black dark:bg-zinc-800 dark:text-zinc-100'} h-[30px] border-none no-spinners text-sm`}
               maxLength={3}
             />
@@ -84,6 +86,8 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter }) =>
                 updateCharacter({ ...character, maxHp: e.target.value });
               }}
               onKeyDown={handleMaxHpKeyDown}
+              onFocus={() => setIsNumericInputActive(true)}
+              onBlur={() => setIsNumericInputActive(false)}
               className={`w-full text-center ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white' : 'bg-white text-black dark:bg-zinc-800 dark:text-zinc-100'} h-[30px] border-none no-spinners text-sm`}
               maxLength={3}
             />
