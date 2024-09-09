@@ -10,7 +10,7 @@ const EncounterHeader = ({ isRunning, toggleEncounter, encounterTime, round }) =
   };
 
   return (
-    <div className="flex items-center justify-between w-full py-2">
+    <div className="flex items-center justify-between w-full p-4 bg-white dark:bg-zinc-950 border-b border-zinc-300 dark:border-zinc-700">
       <div className="flex items-center space-x-2">
         <div className="text-lg font-semibold">Round {round}</div>
       </div>

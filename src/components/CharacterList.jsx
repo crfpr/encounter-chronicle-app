@@ -93,7 +93,7 @@ const CharacterList = forwardRef(({ characters, setCharacters, activeCharacterIn
   };
 
   return (
-    <div ref={listRef} className={`space-y-4 overflow-y-auto h-full ${isMobile ? 'px-0' : 'px-4'}`}>
+    <div ref={listRef} className="space-y-4 overflow-y-auto h-full">
       {characters.map((character, index) => (
         <div 
           key={character.id} 
@@ -117,7 +117,7 @@ const CharacterList = forwardRef(({ characters, setCharacters, activeCharacterIn
           />
         </div>
       ))}
-      <div className={`pb-6 ${isMobile ? 'px-3' : ''}`}>
+      <div className="pb-6">
         <Button 
           onClick={addCharacter} 
           className="w-full bg-zinc-800 hover:bg-zinc-700 text-white dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 dark:hover:text-zinc-100 transition-colors duration-200"
