@@ -99,7 +99,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     };
 
     const renderTracker = () => (
-      <div className="flex-grow overflow-hidden flex flex-col h-full">
+      <div className="flex-grow overflow-hidden flex flex-col h-full px-4">
         <div ref={headerRef} className="sticky top-0 z-10 bg-white dark:bg-zinc-950 mb-2">
           <EncounterHeader
             isRunning={encounterLogic.isRunning}
@@ -115,7 +115,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     );
 
     const renderNotes = () => (
-      <div className="h-full flex flex-col pb-20">
+      <div className="h-full flex flex-col pb-20 px-4">
         <div className="flex-grow">
           <NotesSection 
             key={`notes-section-${activePage}-${isMobile}`} 
@@ -124,14 +124,14 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
               setNotes(newNotes);
               encounterLogic.logEvent(`Notes updated`);
             }} 
-            isMobile={true} 
+            isMobile={isMobile} 
           />
         </div>
       </div>
     );
 
     const renderStats = () => (
-      <div className="h-full flex flex-col">
+      <div className="h-full flex flex-col px-4">
         <div className="flex-grow overflow-y-auto pb-20">
           <CharacterStats characters={characters} round={encounterLogic.round} key={encounterLogic.round} />
         </div>
