@@ -34,8 +34,9 @@ export const useEncounterLogic = (characters, setCharacters) => {
           action: false,
           bonusAction: false,
           reaction: false,
+          currentMovement: char.maxMovement, // Reset current movement to max movement
         };
-        logEvent(`Reset actions for ${char.name}`);
+        logEvent(`Reset actions and movement for ${char.name}`);
         return updatedChar;
       }
       return char;
@@ -97,16 +98,6 @@ export const useEncounterLogic = (characters, setCharacters) => {
 
     setActiveCharacterIndex(prevIndex => {
       const newIndex = (prevIndex + 1) % characters.length;
-      // Reset current movement to max movement for the new active character
-      setCharacters(prevCharacters => prevCharacters.map((char, index) => {
-        if (index === newIndex) {
-          return {
-            ...char,
-            currentMovement: char.maxMovement
-          };
-        }
-        return char;
-      }));
       resetCharacterActions(newIndex);
       logEvent(`Turn changed to ${characters[newIndex].name}`);
       return newIndex;

@@ -18,11 +18,12 @@ const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericIn
   };
 
   const getToggleGroupItemStyle = (isActive, isToggled) => {
+    const isDarkMode = document.documentElement.classList.contains('dark');
     return `h-[30px] px-2 text-xs border transition-colors ${
       isToggled
-        ? isActive
+        ? isDarkMode
           ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white'
-          : 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white'
+          : 'bg-zinc-700 text-white'
         : 'bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800'
     } border-zinc-300 dark:border-zinc-800`;
   };
