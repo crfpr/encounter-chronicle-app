@@ -40,18 +40,19 @@ const Index = () => {
 
   useEffect(() => {
     document.body.classList.toggle('dark', isDarkMode);
+    document.body.classList.toggle('light', !isDarkMode);
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
   const updateContentHeight = () => {
     const header = document.querySelector('header');
-    const newHeaderHeight = header.offsetHeight;
+    const newHeaderHeight = header?.offsetHeight || 0;
     setContentHeight(`calc(100vh - ${newHeaderHeight}px)`);
   };
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
-  const handleUploadClick = () => fileInputRef.current.click();
+  const handleUploadClick = () => fileInputRef.current?.click();
 
   const handleExportEncounterData = async () => {
     try {
@@ -174,7 +175,7 @@ const Index = () => {
   );
 
   return (
-    <div className={`flex flex-col ${isMobile ? 'h-screen' : ''} ${isDarkMode ? 'dark' : ''}`}>
+    <div className={`flex flex-col ${isMobile ? 'h-screen' : ''} ${isDarkMode ? 'dark' : 'light'}`}>
       {renderHeader()}
       <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''} bg-white dark:bg-zinc-950`} style={{ height: contentHeight }}>
         <div className={`h-full overflow-y-auto ${isMobile ? 'px-0 sm:px-2' : 'px-4'}`}>
