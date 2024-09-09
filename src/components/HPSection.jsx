@@ -8,8 +8,8 @@ import { useNumericInput } from '../hooks/useNumericInput';
 
 const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setIsNumericInputActive, isMobile }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown] = useNumericInput(character.currentHp);
-  const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(character.maxHp);
+  const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown] = useNumericInput(character.currentHp || 0);
+  const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(character.maxHp || 0);
 
   const handleStateChange = (newState) => {
     let updatedCharacter = { ...character, state: newState };
@@ -40,7 +40,7 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
     const numericValue = Number(value);
     let newState = character.state;
 
-    if (numericValue === 0 && character.state !== 'dead') {
+    if (numericValue === 0 && Number(character.maxHp) > 0) {
       newState = 'ko';
     } else if (numericValue > 0) {
       if (character.state === 'ko' || character.state === 'dead' || (character.state === 'stable' && numericValue > 1)) {
