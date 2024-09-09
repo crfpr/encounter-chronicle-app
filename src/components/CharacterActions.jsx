@@ -41,6 +41,7 @@ const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericIn
       e.preventDefault();
       handleMovementChange(type, e.target.value);
       setIsNumericInputActive(false);
+      e.target.blur();
     } else {
       if (type === 'currentMovement') {
         handleCurrentMovementKeyDown(e);

@@ -57,6 +57,7 @@ const CharacterNameType = ({ name, type, onUpdate, isMobile }) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       handleBlur();
+      e.target.blur();
     } else if (e.key === 'Tab' && !e.shiftKey) {
       e.preventDefault();
       selectRef.current?.focus();

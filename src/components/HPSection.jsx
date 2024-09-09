@@ -74,6 +74,7 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
     if (e.key === 'Enter') {
       e.preventDefault();
       blurHandler();
+      e.target.blur();
     } else {
       if (e.target.id === 'currentHp') {
         handleCurrentHpKeyDown(e);
