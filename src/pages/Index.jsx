@@ -21,7 +21,7 @@ const Index = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const fileInputRef = useRef(null);
   const [contentHeight, setContentHeight] = useState('calc(100vh - 64px)');
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
     const handleResize = () => {
@@ -32,7 +32,11 @@ const Index = () => {
     updateContentHeight();
 
     const savedTheme = localStorage.getItem('theme');
-    setIsDarkMode(savedTheme === 'dark');
+    if (savedTheme) {
+      setIsDarkMode(savedTheme === 'dark');
+    } else {
+      localStorage.setItem('theme', 'dark');
+    }
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
