@@ -105,6 +105,58 @@
   color: #ffffff;
 }
 
+/* Active character card in light mode */
+.light .character-card.active input,
+.light .character-card.active select {
+  background-color: #27272a; /* zinc-800 */
+  color: #ffffff;
+}
+
+.light .character-card.active button,
+.light .character-card.active .dropdown-trigger {
+  background-color: #27272a; /* zinc-800 */
+  color: #ffffff;
+}
+
+.light .character-card.active .token button {
+  background-color: #27272a; /* zinc-800 */
+  color: #ffffff;
+}
+
+/* Inactive character card in light mode */
+.light .character-card:not(.active) .token {
+  background-color: #a1a1aa; /* zinc-400 */
+  color: #000000;
+}
+
+.light .character-card:not(.active) .token button {
+  background-color: #a1a1aa; /* zinc-400 */
+  color: #000000;
+}
+
+/* Common styles for both active and inactive character cards in light mode */
+.light .character-card .toggle-on {
+  background-color: #27272a; /* zinc-800 */
+  color: #ffffff;
+}
+
+.light .character-card button,
+.light .character-card .toggle-group {
+  border-color: #d4d4d8; /* zinc-300 */
+}
+
+/* Add character button in light mode */
+.light .add-character-button {
+  background-color: #27272a; /* zinc-800 */
+  color: #ffffff;
+}
+
+/* Notes section in light mode */
+.light .notes-section textarea,
+.light .notes-section button {
+  border-color: #d4d4d8; /* zinc-300 */
+}
+
 /* Dark mode styles */
 .dark {
   background-color: #000000;
