@@ -5,33 +5,38 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.3rem;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
   }
- 
+
   .dark {
-    --background: 0 0% 0%;
+    --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 0%;
+    --card: 240 10% 3.9%;
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 0%;
+    --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;
     --primary-foreground: 240 5.9% 10%;
@@ -46,9 +51,14 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
@@ -56,164 +66,12 @@
   body {
     @apply bg-background text-foreground;
   }
-  input, select, button {
-    @apply h-[30px] text-sm;
-  }
 }
 
-@layer components {
-  .btn-sm {
-    @apply h-[30px] px-2 text-xs;
-  }
-}
-
-/* Light mode styles */
 .light {
-  background-color: #ffffff;
-  color: #000000;
+  color-scheme: light;
 }
 
-.light input,
-.light select,
-.light textarea {
-  background-color: #ffffff;
-  color: #000000;
-  border-color: #000000;
-}
-
-.light button {
-  background-color: #ffffff;
-  color: #000000;
-  border-color: #000000;
-}
-
-.light .character-name-type {
-  border-color: #000000;
-}
-
-.light .toggle-on {
-  background-color: #09090b;
-  color: #ffffff;
-}
-
-.light header {
-  background-color: #ffffff;
-}
-
-.light footer {
-  background-color: #09090b;
-  color: #ffffff;
-}
-
-/* Active character card in light mode */
-.light .character-card.active input,
-.light .character-card.active select {
-  background-color: #27272a; /* zinc-800 */
-  color: #ffffff;
-}
-
-.light .character-card.active button,
-.light .character-card.active .dropdown-trigger {
-  background-color: #27272a; /* zinc-800 */
-  color: #ffffff;
-}
-
-.light .character-card.active .token button {
-  background-color: #27272a; /* zinc-800 */
-  color: #ffffff;
-}
-
-/* Inactive character card in light mode */
-.light .character-card:not(.active) .token {
-  background-color: #a1a1aa; /* zinc-400 */
-  color: #000000;
-}
-
-.light .character-card:not(.active) .token button {
-  background-color: #a1a1aa; /* zinc-400 */
-  color: #000000;
-}
-
-/* Common styles for both active and inactive character cards in light mode */
-.light .character-card .toggle-on {
-  background-color: #27272a; /* zinc-800 */
-  color: #ffffff;
-}
-
-.light .character-card button,
-.light .character-card .toggle-group {
-  border-color: #d4d4d8; /* zinc-300 */
-}
-
-/* Add character button in light mode */
-.light .add-character-button {
-  background-color: #27272a; /* zinc-800 */
-  color: #ffffff;
-}
-
-/* Notes section in light mode */
-.light .notes-section textarea,
-.light .notes-section button {
-  border-color: #d4d4d8; /* zinc-300 */
-}
-
-/* Dark mode styles */
 .dark {
-  background-color: #000000;
-  color: #f4f4f5;
-}
-
-.dark input,
-.dark select,
-.dark textarea,
-.dark button {
-  background-color: #18181b;
-  color: #f4f4f5;
-}
-
-.dark .border-black {
-  border-color: #3f3f46;
-}
-
-.dark .hover\:bg-gray-200:hover {
-  background-color: #27272a;
-}
-
-.dark .text-gray-500 { color: #a1a1aa; }
-.dark .text-gray-600 { color: #d4d4d8; }
-.dark .text-gray-700 { color: #e4e4e7; }
-.dark .text-gray-800 { color: #f4f4f5; }
-.dark .text-gray-900 { color: #fafafa; }
-
-/* Common styles */
-html {
-  scroll-behavior: smooth;
-}
-
-.character-card {
-  transition: all 0.3s ease-in-out;
-}
-
-.character-card.active {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.character-card:not(.active) {
-  transform: translateY(10px);
-  opacity: 0.8;
-}
-
-.no-spinners::-webkit-inner-spin-button,
-.no-spinners::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.no-spinners {
-  -moz-appearance: textfield;
-}
-
-input[type="text"].overflow-visible {
-  overflow: visible !important;
+  color-scheme: dark;
 }

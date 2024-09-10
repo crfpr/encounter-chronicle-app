@@ -4,12 +4,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { navItems } from "./nav-items";
 import { useEffect } from "react";
+import { ThemeProvider } from "./components/ThemeProvider";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   useEffect(() => {
-    // Add meta tag to prevent focus zoom on mobile
     const viewport = document.querySelector('meta[name=viewport]');
     if (viewport) {
       viewport.content = 'width=device-width, initial-scale=1, maximum-scale=1';
@@ -23,16 +23,18 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <BrowserRouter>
-          <Routes>
-            {navItems.map(({ to, page }) => (
-              <Route key={to} path={to} element={page} />
-            ))}
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <ThemeProvider>
+        <TooltipProvider>
+          <Toaster />
+          <BrowserRouter>
+            <Routes>
+              {navItems.map(({ to, page }) => (
+                <Route key={to} path={to} element={page} />
+              ))}
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };
