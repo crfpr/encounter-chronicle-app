@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import EncounterTracker from '../components/EncounterTracker';
-import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Upload, Download, X, Sun, Moon } from 'lucide-react';
-import MobileMenuButton from '../components/MobileMenuButton';
-import ThemeToggle from '../components/ThemeToggle';
 import { useEncounterManagement } from '../hooks/useEncounterManagement';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const Index = () => {
   const {
@@ -79,25 +78,6 @@ const Index = () => {
     }
   };
 
-  const renderHeader = () => (
-    <header className={`py-2 ${isMobile ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[9999] border-b border-zinc-300 dark:border-zinc-700`}>
-      <div className="container mx-auto px-4 flex items-center justify-between">
-        <div className="flex items-center flex-grow">
-          <Input
-            value={encounterName}
-            onChange={(e) => setEncounterName(e.target.value)}
-            className={`font-bold bg-transparent border-none placeholder-zinc-400 focus:outline-none focus:ring-0 ${isMobile ? 'text-xl flex-grow' : 'text-2xl'}`}
-            placeholder="Enter encounter name..."
-          />
-        </div>
-        <div className="flex items-center">
-          {!isMobile && <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />}
-          {isMobile && <MobileMenuButton onClick={toggleMobileMenu} />}
-        </div>
-      </div>
-    </header>
-  );
-
   const renderMobileMenu = () => (
     isMobile && isMobileMenuOpen && (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000] dark:bg-opacity-70">
@@ -138,45 +118,16 @@ const Index = () => {
     )
   );
 
-  const renderFooter = () => (
-    !isMobile && (
-      <footer className="py-2 mt-auto border-t border-zinc-300 dark:border-zinc-700">
-        <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
-          <p className="text-center sm:text-left text-xs">
-            Encounter Chronicle - <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer" className="underline hover:text-zinc-600 dark:hover:text-zinc-300">CC BY-NC-SA 4.0</a>, 2024.<br />
-            Made by Fieldhouse & <a href="https://gptengineer.app/" target="_blank" rel="noopener noreferrer" className="underline hover:text-zinc-600 dark:hover:text-zinc-300">GPT-Engineer</a>.
-          </p>
-          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-            <Button onClick={handleExportEncounterData} className="px-4 py-2 rounded w-full sm:w-auto">
-              <Download className="mr-2 h-4 w-4" />
-              Save Encounter
-            </Button>
-            <Button onClick={handleExportPartyData} className="px-4 py-2 rounded w-full sm:w-auto">
-              <Download className="mr-2 h-4 w-4" />
-              Save Party
-            </Button>
-            <Button className="px-4 py-2 rounded w-full sm:w-auto">
-              <label htmlFor="upload-encounter-data" className="cursor-pointer flex items-center justify-center w-full">
-                <Upload className="mr-2 h-4 w-4" />
-                Load File
-              </label>
-              <input
-                id="upload-encounter-data"
-                type="file"
-                accept=".json"
-                onChange={handleUploadEncounterData}
-                style={{ display: 'none' }}
-              />
-            </Button>
-          </div>
-        </div>
-      </footer>
-    )
-  );
-
   return (
     <div className={`flex flex-col ${isMobile ? 'h-screen' : ''} ${isDarkMode ? 'dark' : 'light'}`}>
-      {renderHeader()}
+      <Header
+        encounterName={encounterName}
+        setEncounterName={setEncounterName}
+        isMobile={isMobile}
+        isDarkMode={isDarkMode}
+        toggleTheme={toggleTheme}
+        toggleMobileMenu={toggleMobileMenu}
+      />
       <main className={`flex-grow overflow-hidden ${isMobile ? 'pt-16' : ''}`} style={{ height: contentHeight }}>
         <div className={`h-full overflow-y-auto ${isMobile ? 'px-0 sm:px-2' : 'px-4'}`}>
           <div className={`container mx-auto ${isMobile ? 'px-0' : 'px-4'} py-4 h-full`}>
@@ -194,7 +145,13 @@ const Index = () => {
         </div>
       </main>
       {renderMobileMenu()}
-      {renderFooter()}
+      {!isMobile && (
+        <Footer
+          handleExportEncounterData={handleExportEncounterData}
+          handleExportPartyData={handleExportPartyData}
+          handleUploadEncounterData={handleUploadEncounterData}
+        />
+      )}
     </div>
   );
 };
