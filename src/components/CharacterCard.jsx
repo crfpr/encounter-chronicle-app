@@ -79,7 +79,7 @@ const CharacterCard = React.memo(({
     <Badge
       key={token.id}
       className={`h-[30px] px-1 flex items-center space-x-1 ${
-        isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100'
+        isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-[hsl(var(--inactive-token))] text-zinc-900 dark:bg-[hsl(var(--inactive-token))] dark:text-zinc-100'
       } hover:text-white transition-colors`}
     >
       <TokenInput 
