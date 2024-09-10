@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Input } from '../components/ui/input';
 import TurnNavigator from './TurnNavigator';
 import PlaceholderTurnNavigator from './PlaceholderTurnNavigator';
@@ -76,6 +76,10 @@ const CharacterCard = React.memo(({
     isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'
   , [isActive]);
 
+  const getInputStyle = useCallback(() => 
+    isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'
+  , [isActive]);
+
   const memoizedTokens = useMemo(() => character.tokens.map((token) => (
     <Badge
       key={token.id}
@@ -105,7 +109,7 @@ const CharacterCard = React.memo(({
             onKeyDown={(e) => handleInputKeyDown(e, 'initiative', initiative)}
             onFocus={() => setIsNumericInputActive(true)}
             onBlur={() => handleInputBlurAndSubmit('initiative', initiative)}
-            className={`w-full text-center ${isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm overflow-visible`}
+            className={`w-full text-center ${getInputStyle()} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm overflow-visible`}
             maxLength={3}
           />
           {!initiative && (

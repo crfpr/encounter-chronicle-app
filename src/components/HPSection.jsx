@@ -84,6 +84,9 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
     }
   };
 
+  const getInputStyle = () => 
+    isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
+
   return (
     <div className={`${isMobile ? 'w-auto flex-shrink-0' : 'w-20 flex-shrink-0'} ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} border-l border-zinc-300 dark:border-zinc-700 flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
       <div className="flex flex-col items-center space-y-2 w-full">
@@ -99,7 +102,7 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
               onKeyDown={(e) => handleKeyDown(e, handleCurrentHpBlur)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={handleCurrentHpBlur}
-              className={`w-full text-center ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white' : 'bg-white text-black dark:bg-zinc-800 dark:text-zinc-100'} h-[30px] border-none no-spinners text-sm`}
+              className={`w-full text-center ${getInputStyle()} h-[30px] border-none no-spinners text-sm`}
               maxLength={3}
             />
             <Separator className="my-0 bg-zinc-300 dark:bg-zinc-700" />
@@ -112,7 +115,7 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
               onKeyDown={(e) => handleKeyDown(e, handleMaxHpBlur)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={handleMaxHpBlur}
-              className={`w-full text-center ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-white' : 'bg-white text-black dark:bg-zinc-800 dark:text-zinc-100'} h-[30px] border-none no-spinners text-sm`}
+              className={`w-full text-center ${getInputStyle()} h-[30px] border-none no-spinners text-sm`}
               maxLength={3}
             />
           </div>
@@ -121,7 +124,7 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className={`w-full h-[30px] text-xs ${isActive ? 'bg-zinc-700 text-white hover:bg-zinc-600' : 'bg-white text-black hover:bg-zinc-100'} dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700 border-zinc-300 dark:border-zinc-700`}
+              className={`w-full h-[30px] text-xs ${isActive ? 'bg-zinc-700 text-white hover:bg-zinc-600' : 'bg-white text-black hover:bg-zinc-100'} dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-700`}
             >
               {getStatusLabel(character.state)}
             </Button>
