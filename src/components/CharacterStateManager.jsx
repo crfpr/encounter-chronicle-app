@@ -52,17 +52,20 @@ const CharacterStateManager = ({ character, updateCharacter, isMobile }) => {
       ));
     };
 
+    const deathSaveContainerClass = "flex items-center space-x-2 h-[30px]";
+    const labelClass = "text-sm font-semibold";
+
     if (isMobile) {
       return (
         <div className="flex flex-col space-y-2">
-          <div className="flex items-center space-x-2">
-            <Label className="text-sm font-semibold w-16">Failure</Label>
+          <div className={deathSaveContainerClass}>
+            <Label className={`${labelClass} w-16`}>Failure</Label>
             <div className="flex space-x-1">
               {renderSaveButtons('failures')}
             </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <Label className="text-sm font-semibold w-16">Success</Label>
+          <div className={deathSaveContainerClass}>
+            <Label className={`${labelClass} w-16`}>Success</Label>
             <div className="flex space-x-1">
               {renderSaveButtons('successes')}
             </div>
@@ -71,17 +74,17 @@ const CharacterStateManager = ({ character, updateCharacter, isMobile }) => {
       );
     } else {
       return (
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2">
-            <Label className="text-sm font-semibold">Failure</Label>
-            <div className="flex space-x-1">
+        <div className="flex items-center space-x-4 h-[30px]">
+          <div className={deathSaveContainerClass}>
+            <Label className={labelClass}>Failure</Label>
+            <div className="flex space-x-1 ml-2">
               {renderSaveButtons('failures')}
             </div>
           </div>
           <div className="w-px h-6 bg-zinc-300 dark:bg-zinc-700" />
-          <div className="flex items-center space-x-2">
-            <Label className="text-sm font-semibold">Success</Label>
-            <div className="flex space-x-1">
+          <div className={deathSaveContainerClass}>
+            <Label className={labelClass}>Success</Label>
+            <div className="flex space-x-1 ml-2">
               {renderSaveButtons('successes')}
             </div>
           </div>
