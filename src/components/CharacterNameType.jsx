@@ -107,6 +107,7 @@ const CharacterNameType = ({ name, type, onUpdate, isMobile }) => {
                 <SelectItem value="Enemy">Enemy</SelectItem>
                 <SelectItem value="Neutral">Neutral</SelectItem>
                 <SelectItem value="Legendary">Legendary</SelectItem>
+                <SelectItem value="Environment">Environment</SelectItem>
               </SelectContent>
             </Select>
           </div>
