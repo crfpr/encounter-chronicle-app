@@ -18,8 +18,7 @@ const Index = () => {
     encounterTrackerRef,
     autoSave,
     toggleAutoSave,
-    autoSaveEncounter,
-    saveToLocalStorage
+    autoSaveEncounter
   } = useEncounterManagement();
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -164,7 +163,6 @@ const Index = () => {
               autoSave={autoSave}
               toggleAutoSave={toggleAutoSave}
               autoSaveEncounter={autoSaveEncounter}
-              saveToLocalStorage={saveToLocalStorage}
             />
           </div>
         </div>
