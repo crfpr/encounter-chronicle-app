@@ -124,7 +124,7 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className={`w-full h-[30px] text-xs ${isActive ? 'bg-zinc-700 text-white hover:bg-zinc-600' : 'bg-white text-black hover:bg-zinc-100'} dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-700`}
+              className={`w-full h-[30px] text-xs ${getInputStyle()} border-zinc-300 dark:border-zinc-700`}
             >
               {getStatusLabel(character.state)}
             </Button>

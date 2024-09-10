@@ -22,6 +22,7 @@ const Index = () => {
   const fileInputRef = useRef(null);
   const [contentHeight, setContentHeight] = useState('calc(100vh - 64px)');
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const mobileMenuRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -46,6 +47,19 @@ const Index = () => {
     document.body.classList.toggle('light', !isDarkMode);
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isMobileMenuOpen && mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMobileMenuOpen]);
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
   const updateContentHeight = () => {
@@ -85,7 +99,7 @@ const Index = () => {
   const renderMobileMenu = () => (
     isMobile && isMobileMenuOpen && (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000] dark:bg-opacity-70">
-        <div className={`fixed top-0 right-0 h-full w-64 shadow-lg ${isDarkMode ? 'bg-zinc-950' : 'bg-white'}`}>
+        <div ref={mobileMenuRef} className={`fixed top-0 right-0 h-full w-64 shadow-lg ${isDarkMode ? 'bg-zinc-950' : 'bg-white'}`}>
           <div className={`flex justify-between items-center p-4 border-b ${isDarkMode ? 'border-zinc-700' : 'border-zinc-300'}`}>
             <h2 className={`text-lg font-semibold ${isDarkMode ? 'text-zinc-100' : 'text-zinc-900'}`}>Menu</h2>
             <Button variant="ghost" size="sm" onClick={toggleMobileMenu}>
