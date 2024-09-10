@@ -83,10 +83,10 @@ const CharacterStateManager = ({ character, updateCharacter, isMobile }) => {
           </div>
           <div className="w-px h-6 bg-zinc-300 dark:bg-zinc-700" />
           <div className={deathSaveContainerClass}>
-            <Label className={labelClass}>Success</Label>
-            <div className="flex space-x-1 ml-2">
+            <div className="flex space-x-1">
               {renderSaveButtons('successes')}
             </div>
+            <Label className={`${labelClass} ml-2`}>Success</Label>
           </div>
         </div>
       );
