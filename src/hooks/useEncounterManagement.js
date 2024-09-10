@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 
 export const useEncounterManagement = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
@@ -6,10 +6,24 @@ export const useEncounterManagement = () => {
   const [autoSave, setAutoSave] = useState(false);
   const encounterTrackerRef = useRef(null);
 
+  useEffect(() => {
+    const savedData = localStorage.getItem('encounterData');
+    if (savedData) {
+      const parsedData = JSON.parse(savedData);
+      setEncounterData(parsedData);
+      setEncounterName(parsedData.encounterName);
+    }
+  }, []);
+
+  const saveToLocalStorage = useCallback((data) => {
+    localStorage.setItem('encounterData', JSON.stringify(data));
+  }, []);
+
   const exportEncounterData = useCallback(async (customFileName = null) => {
     if (encounterTrackerRef.current) {
       try {
         const data = encounterTrackerRef.current.getEncounterData();
+        saveToLocalStorage(data);
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -19,7 +33,7 @@ export const useEncounterManagement = () => {
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-        console.log('Encounter data exported successfully');
+        console.log('Encounter data exported and saved to local storage');
       } catch (error) {
         console.error('Error exporting encounter data:', error);
         throw error;
@@ -28,7 +42,7 @@ export const useEncounterManagement = () => {
       console.error('encounterTrackerRef is not available');
       throw new Error('Encounter tracker reference is not available');
     }
-  }, []);
+  }, [saveToLocalStorage]);
 
   const exportPartyData = useCallback(async () => {
     if (encounterTrackerRef.current) {
@@ -123,7 +137,8 @@ export const useEncounterManagement = () => {
 
             setEncounterData(processedData);
             setEncounterName(processedData.encounterName);
-            console.log('Encounter data loaded successfully:', processedData);
+            saveToLocalStorage(processedData);
+            console.log('Encounter data loaded and saved to local storage:', processedData);
           } else {
             console.error('Invalid data format');
           }
@@ -133,18 +148,22 @@ export const useEncounterManagement = () => {
       };
       reader.readAsText(file);
     }
-  }, []);
+  }, [saveToLocalStorage]);
 
   const toggleAutoSave = useCallback(() => {
     setAutoSave(prev => !prev);
   }, []);
 
   const autoSaveEncounter = useCallback((round, turnNumber) => {
-    if (autoSave) {
-      const fileName = `${encounterName.replace(/\s+/g, '_')}.r${round}.t${turnNumber}.json`;
-      exportEncounterData(fileName);
+    if (autoSave && encounterTrackerRef.current) {
+      const data = encounterTrackerRef.current.getEncounterData();
+      saveToLocalStorage(data);
+      if (round !== undefined && turnNumber !== undefined) {
+        const fileName = `${encounterName.replace(/\s+/g, '_')}.r${round}.t${turnNumber}.json`;
+        exportEncounterData(fileName);
+      }
     }
-  }, [autoSave, encounterName, exportEncounterData]);
+  }, [autoSave, encounterName, exportEncounterData, saveToLocalStorage]);
 
   return {
     encounterName,
@@ -157,6 +176,7 @@ export const useEncounterManagement = () => {
     encounterTrackerRef,
     autoSave,
     toggleAutoSave,
-    autoSaveEncounter
+    autoSaveEncounter,
+    saveToLocalStorage
   };
 };
