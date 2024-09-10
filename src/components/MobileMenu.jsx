@@ -7,21 +7,21 @@ const MobileMenu = ({ activePage, setActivePage }) => {
       <MobileButton
         variant={activePage === 'tracker' ? 'default' : 'ghost'}
         onClick={() => setActivePage('tracker')}
-        className={`text-zinc-900 dark:text-zinc-100 ${activePage === 'tracker' ? 'dark:bg-zinc-500 dark:text-white' : ''}`}
+        className={`text-zinc-900 dark:text-zinc-100 ${activePage === 'tracker' ? 'bg-zinc-800 dark:bg-zinc-500 text-white' : ''}`}
       >
         Tracker
       </MobileButton>
       <MobileButton
         variant={activePage === 'notes' ? 'default' : 'ghost'}
         onClick={() => setActivePage('notes')}
-        className={`text-zinc-900 dark:text-zinc-100 ${activePage === 'notes' ? 'dark:bg-zinc-500 dark:text-white' : ''}`}
+        className={`text-zinc-900 dark:text-zinc-100 ${activePage === 'notes' ? 'bg-zinc-800 dark:bg-zinc-500 text-white' : ''}`}
       >
         Notes
       </MobileButton>
       <MobileButton
         variant={activePage === 'stats' ? 'default' : 'ghost'}
         onClick={() => setActivePage('stats')}
-        className={`text-zinc-900 dark:text-zinc-100 ${activePage === 'stats' ? 'dark:bg-zinc-500 dark:text-white' : ''}`}
+        className={`text-zinc-900 dark:text-zinc-100 ${activePage === 'stats' ? 'bg-zinc-800 dark:bg-zinc-500 text-white' : ''}`}
       >
         Stats
       </MobileButton>
