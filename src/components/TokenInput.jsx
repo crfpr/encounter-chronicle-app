@@ -36,6 +36,14 @@ const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onToggle
     onLabelChange(localLabel);
   };
 
+  const handleLabelKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleLabelBlur();
+      e.target.blur();
+    }
+  };
+
   const handleClockClick = () => {
     if (token.isPersistent) {
       setIsDurationEditing(true);
@@ -72,6 +80,7 @@ const TokenInput = ({ token, onLabelChange, onDurationChange, onRemove, onToggle
           value={localLabel}
           onChange={handleLabelChange}
           onBlur={handleLabelBlur}
+          onKeyDown={handleLabelKeyDown}
           className="h-5 px-2 text-xs bg-transparent border-none focus:outline-none focus:ring-0"
           maxLength={30}
         />
