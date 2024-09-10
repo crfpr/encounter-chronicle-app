@@ -95,7 +95,6 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
           <div className="relative w-16 border border-zinc-300 dark:border-zinc-700 rounded overflow-hidden">
             <Input
               id={`current-hp-${character.id}`}
-              name={`current-hp-${character.id}`}
               type="text"
               inputMode="numeric"
               value={currentHp}
@@ -105,12 +104,10 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
               onBlur={handleCurrentHpBlur}
               className={`w-full text-center ${getInputStyle()} h-[30px] border-none no-spinners text-sm`}
               maxLength={3}
-              aria-label={`Current HP for ${character.name}`}
             />
             <Separator className="my-0 bg-zinc-300 dark:bg-zinc-700" />
             <Input
               id={`max-hp-${character.id}`}
-              name={`max-hp-${character.id}`}
               type="text"
               inputMode="numeric"
               value={maxHp}
@@ -120,7 +117,6 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
               onBlur={handleMaxHpBlur}
               className={`w-full text-center ${getInputStyle()} h-[30px] border-none no-spinners text-sm`}
               maxLength={3}
-              aria-label={`Max HP for ${character.name}`}
             />
           </div>
         </div>
@@ -129,8 +125,6 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
             <Button
               variant="outline"
               className={`w-full h-[30px] text-xs ${getInputStyle()} border-zinc-300 dark:border-zinc-700`}
-              id={`status-${character.id}`}
-              aria-label={`Status for ${character.name}: ${getStatusLabel(character.state)}`}
             >
               {getStatusLabel(character.state)}
             </Button>
@@ -143,7 +137,6 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
                   variant="ghost"
                   onClick={() => handleStateChange(state)}
                   className="justify-start"
-                  id={`status-option-${state}-${character.id}`}
                 >
                   {getStatusLabel(state)}
                 </Button>
@@ -154,7 +147,6 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
                   <Button 
                     variant="ghost" 
                     className="justify-start text-red-900 dark:text-red-500 hover:text-red-700 dark:hover:text-red-400"
-                    id={`delete-character-${character.id}`}
                   >
                     Delete
                   </Button>

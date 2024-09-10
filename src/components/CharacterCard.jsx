@@ -7,6 +7,7 @@ import TokenInput from './TokenInput';
 import { PlusCircle } from 'lucide-react';
 import CharacterActions from './CharacterActions';
 import HPSection from './HPSection';
+import CharacterStateManager from './CharacterStateManager';
 import { Badge } from "../components/ui/badge";
 import { Button } from '../components/ui/button';
 import { useNumericInput } from '../hooks/useNumericInput';
@@ -111,8 +112,6 @@ const CharacterCard = React.memo(({
             className={`w-full text-center ${getInputStyle()} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm overflow-visible`}
             maxLength={3}
             id={`initiative-${character.id}`}
-            name={`initiative-${character.id}`}
-            aria-label={`Initiative for ${character.name}`}
           />
           {!initiative && (
             <span className="absolute inset-0 flex items-center justify-center pointer-events-none text-xs text-zinc-500 dark:text-zinc-400">
@@ -145,7 +144,6 @@ const CharacterCard = React.memo(({
                     updateCharacter({ ...character, name: newName || 'New Character', type: newType });
                   }}
                   isMobile={isMobile}
-                  characterId={character.id}
                 />
               </div>
               <div className="flex items-center ml-2 relative">
@@ -167,8 +165,6 @@ const CharacterCard = React.memo(({
                     MozAppearance: 'textfield',
                   }}
                   id={`ac-${character.id}`}
-                  name={`ac-${character.id}`}
-                  aria-label={`Armor Class for ${character.name}`}
                 />
               </div>
             </div>
