@@ -1,36 +1,14 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef } from 'react';
 
 export const useEncounterManagement = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
   const [encounterData, setEncounterData] = useState(null);
   const encounterTrackerRef = useRef(null);
 
-  // Load saved data on initial render
-  useEffect(() => {
-    const savedData = localStorage.getItem('encounterData');
-    if (savedData) {
-      const parsedData = JSON.parse(savedData);
-      setEncounterData(parsedData);
-      setEncounterName(parsedData.encounterName || 'New Encounter');
-    }
-  }, []);
-
-  // Save data to local storage
-  const saveToLocalStorage = useCallback((data) => {
-    localStorage.setItem('encounterData', JSON.stringify(data));
-  }, []);
-
-  // New function to save encounter data
-  const saveEncounterData = useCallback((data) => {
-    setEncounterData(data);
-    saveToLocalStorage(data);
-  }, [saveToLocalStorage]);
-
   const exportEncounterData = useCallback(async () => {
     if (encounterTrackerRef.current) {
       try {
         const data = encounterTrackerRef.current.getEncounterData();
-        saveToLocalStorage(data);
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -40,7 +18,7 @@ export const useEncounterManagement = () => {
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-        console.log('Encounter data exported and saved successfully');
+        console.log('Encounter data exported successfully');
       } catch (error) {
         console.error('Error exporting encounter data:', error);
         throw error;
@@ -49,7 +27,7 @@ export const useEncounterManagement = () => {
       console.error('encounterTrackerRef is not available');
       throw new Error('Encounter tracker reference is not available');
     }
-  }, [saveToLocalStorage]);
+  }, []);
 
   const exportPartyData = useCallback(async () => {
     if (encounterTrackerRef.current) {
@@ -142,9 +120,9 @@ export const useEncounterManagement = () => {
               };
             }
 
-            saveEncounterData(processedData);
+            setEncounterData(processedData);
             setEncounterName(processedData.encounterName);
-            console.log('Encounter data loaded and saved successfully:', processedData);
+            console.log('Encounter data loaded successfully:', processedData);
           } else {
             console.error('Invalid data format');
           }
@@ -154,17 +132,16 @@ export const useEncounterManagement = () => {
       };
       reader.readAsText(file);
     }
-  }, [saveEncounterData]);
+  }, []);
 
   return {
     encounterName,
     setEncounterName,
     encounterData,
-    setEncounterData: saveEncounterData,
+    setEncounterData,
     exportEncounterData,
     exportPartyData,
     uploadEncounterData,
-    encounterTrackerRef,
-    saveEncounterData
+    encounterTrackerRef
   };
 };

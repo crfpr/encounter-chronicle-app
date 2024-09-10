@@ -8,7 +8,7 @@ import SwipeHandler from './SwipeHandler';
 import { useCharacterManagement } from '../hooks/useCharacterManagement';
 import { useEncounterLogic } from '../hooks/useEncounterLogic';
 
-const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile, contentHeight, loadedEncounterData, saveEncounterData }, ref) => {
+const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile, contentHeight, loadedEncounterData }, ref) => {
   const [notes, setNotes] = useState('');
   const [activePage, setActivePage] = useState('tracker');
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
@@ -81,21 +81,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
-
-  // New effect to save encounter data whenever it changes
-  useEffect(() => {
-    const currentData = {
-      encounterName,
-      characters,
-      round: encounterLogic.round,
-      encounterTime: encounterLogic.encounterTime,
-      notes,
-      log: encounterLogic.encounterLog,
-      activeCharacterIndex: encounterLogic.activeCharacterIndex,
-      isRunning: encounterLogic.isRunning
-    };
-    saveEncounterData(currentData);
-  }, [encounterName, characters, encounterLogic.round, encounterLogic.encounterTime, notes, encounterLogic.encounterLog, encounterLogic.activeCharacterIndex, encounterLogic.isRunning, saveEncounterData]);
 
   const renderContent = () => {
     const commonProps = {
