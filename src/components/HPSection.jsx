@@ -87,116 +87,123 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
   const getInputStyle = () => 
     isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
 
+  const renderHPInputs = () => (
+    <div className="flex flex-col items-center w-full">
+      <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>HP</label>
+      <div className="relative w-16 border border-zinc-300 dark:border-zinc-700 rounded overflow-hidden">
+        <Input
+          id={`current-hp-${character.id}`}
+          type="text"
+          inputMode="numeric"
+          value={currentHp}
+          onChange={handleCurrentHpChange}
+          onKeyDown={(e) => handleKeyDown(e, 'currentHp', currentHp)}
+          onFocus={() => setIsNumericInputActive(true)}
+          onBlur={handleCurrentHpBlur}
+          className={`w-full text-center ${getInputStyle()} h-[30px] border-none no-spinners text-sm`}
+          maxLength={3}
+        />
+        <Separator className="my-0 bg-zinc-300 dark:bg-zinc-700" />
+        <Input
+          id={`max-hp-${character.id}`}
+          type="text"
+          inputMode="numeric"
+          value={maxHp}
+          onChange={handleMaxHpChange}
+          onKeyDown={(e) => handleKeyDown(e, 'maxHp', maxHp)}
+          onFocus={() => setIsNumericInputActive(true)}
+          onBlur={handleMaxHpBlur}
+          className={`w-full text-center ${getInputStyle()} h-[30px] border-none no-spinners text-sm`}
+          maxLength={3}
+        />
+      </div>
+    </div>
+  );
+
+  const renderStateButton = () => (
+    character.type !== 'Environment' ? (
+      <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className={`w-full h-[30px] text-xs ${getInputStyle()} border-zinc-300 dark:border-zinc-700`}
+          >
+            {getStatusLabel(character.state)}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0">
+          <div className="flex flex-col">
+            {['alive', 'ko', 'stable', 'dead'].map((state) => (
+              <Button
+                key={state}
+                variant="ghost"
+                onClick={() => handleStateChange(state)}
+                className="justify-start"
+              >
+                {getStatusLabel(state)}
+              </Button>
+            ))}
+            <Separator className="my-0" />
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  className="justify-start text-red-900 dark:text-red-500 hover:text-red-700 dark:hover:text-red-400"
+                >
+                  Delete
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete the character.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => removeCharacter(character.id)}>
+                    Delete
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        </PopoverContent>
+      </Popover>
+    ) : (
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button 
+            variant="outline"
+            className={`w-full h-[30px] text-xs ${getInputStyle()} border-zinc-300 dark:border-zinc-700`}
+          >
+            Delete
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the environment.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() => removeCharacter(character.id)}>
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    )
+  );
+
   return (
     <div className={`${isMobile ? 'w-auto flex-shrink-0' : 'w-20 flex-shrink-0'} ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} border-l border-zinc-300 dark:border-zinc-700 flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
       <div className="flex flex-col items-center space-y-2 w-full">
-        <div className="flex flex-col items-center w-full">
-          <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>HP</label>
-          <div className="relative w-16 border border-zinc-300 dark:border-zinc-700 rounded overflow-hidden">
-            <Input
-              id={`current-hp-${character.id}`}
-              type="text"
-              inputMode="numeric"
-              value={currentHp}
-              onChange={handleCurrentHpChange}
-              onKeyDown={(e) => handleKeyDown(e, 'currentHp', currentHp)}
-              onFocus={() => setIsNumericInputActive(true)}
-              onBlur={handleCurrentHpBlur}
-              className={`w-full text-center ${getInputStyle()} h-[30px] border-none no-spinners text-sm`}
-              maxLength={3}
-            />
-            <Separator className="my-0 bg-zinc-300 dark:bg-zinc-700" />
-            <Input
-              id={`max-hp-${character.id}`}
-              type="text"
-              inputMode="numeric"
-              value={maxHp}
-              onChange={handleMaxHpChange}
-              onKeyDown={(e) => handleKeyDown(e, 'maxHp', maxHp)}
-              onFocus={() => setIsNumericInputActive(true)}
-              onBlur={handleMaxHpBlur}
-              className={`w-full text-center ${getInputStyle()} h-[30px] border-none no-spinners text-sm`}
-              maxLength={3}
-            />
-          </div>
-        </div>
-        {character.type !== 'Environment' && (
-          <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className={`w-full h-[30px] text-xs ${getInputStyle()} border-zinc-300 dark:border-zinc-700`}
-              >
-                {getStatusLabel(character.state)}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-              <div className="flex flex-col">
-                {['alive', 'ko', 'stable', 'dead'].map((state) => (
-                  <Button
-                    key={state}
-                    variant="ghost"
-                    onClick={() => handleStateChange(state)}
-                    className="justify-start"
-                  >
-                    {getStatusLabel(state)}
-                  </Button>
-                ))}
-                <Separator className="my-0" />
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button 
-                      variant="ghost" 
-                      className="justify-start text-red-900 dark:text-red-500 hover:text-red-700 dark:hover:text-red-400"
-                    >
-                      Delete
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete the character.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => removeCharacter(character.id)}>
-                        Delete
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </div>
-            </PopoverContent>
-          </Popover>
-        )}
-        {character.type === 'Environment' && (
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button 
-                variant="outline"
-                className={`w-full h-[30px] text-xs ${getInputStyle()} border-zinc-300 dark:border-zinc-700`}
-              >
-                Delete
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete the environment.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={() => removeCharacter(character.id)}>
-                  Delete
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        )}
+        {renderHPInputs()}
+        {renderStateButton()}
       </div>
     </div>
   );
