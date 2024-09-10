@@ -101,7 +101,7 @@ const Index = () => {
     isMobile && isMobileMenuOpen && (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000] dark:bg-opacity-70">
         <div ref={mobileMenuRef} className={`fixed top-0 right-0 h-full w-64 shadow-lg ${isDarkMode ? 'bg-zinc-950' : 'bg-white'}`}>
-          <div className={`flex items-center justify-between py-2 px-4 border-b ${isDarkMode ? 'border-zinc-700' : 'border-zinc-300'}`} style={{ height: '64px' }}>
+          <div className={`flex items-center justify-between px-4 border-b ${isDarkMode ? 'border-zinc-700' : 'border-zinc-300'}`} style={{ height: '57px' }}>
             <h2 className={`text-xl font-bold ${isDarkMode ? 'text-zinc-100' : 'text-zinc-900'}`}>Menu</h2>
             <MobileMenuButton onClick={toggleMobileMenu} isOpen={true} />
           </div>
