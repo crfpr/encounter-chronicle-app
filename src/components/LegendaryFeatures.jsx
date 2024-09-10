@@ -49,7 +49,7 @@ const LegendaryFeatures = ({ character, updateCharacter, isMobile }) => {
           (character.legendaryActions || []).filter(Boolean).length,
           handleLegendaryActionToggle
         )}
-        {renderCounter(
+        {character.state === 'alive' && renderCounter(
           'Legendary Resistances:',
           3,
           (character.legendaryResistances || []).filter(Boolean).length,
