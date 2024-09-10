@@ -24,7 +24,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     updateCharacter
   } = useCharacterManagement(loadedEncounterData);
 
-  const encounterLogic = useEncounterLogic(characters, setCharacters);
+  const encounterLogic = useEncounterLogic(characters, setCharacters, autoSaveEncounter);
 
   useImperativeHandle(ref, () => ({
     getEncounterData: () => ({
@@ -82,12 +82,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
-  const handleNextTurn = useCallback(() => {
-    encounterLogic.handleNextTurn();
-    const activeCharIndex = (encounterLogic.activeCharacterIndex + 1) % characters.length;
-    autoSaveEncounter(encounterLogic.round, activeCharIndex + 1);
-  }, [encounterLogic, characters.length, autoSaveEncounter]);
-
   const renderContent = () => {
     const commonProps = {
       characters,
@@ -95,7 +89,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       activeCharacterIndex: encounterLogic.activeCharacterIndex,
       turnTime: encounterLogic.turnTime,
       onPreviousTurn: encounterLogic.handlePreviousTurn,
-      onNextTurn: handleNextTurn,
+      onNextTurn: encounterLogic.handleNextTurn,
       setIsNumericInputActive,
       updateCharacter,
       addCharacter,

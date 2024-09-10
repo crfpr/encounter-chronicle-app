@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 
-export const useEncounterLogic = (characters, setCharacters) => {
+export const useEncounterLogic = (characters, setCharacters, autoSaveEncounter) => {
   const [round, setRound] = useState(1);
   const [activeCharacterIndex, setActiveCharacterIndex] = useState(0);
   const [encounterTime, setEncounterTime] = useState(0);
@@ -44,16 +44,19 @@ export const useEncounterLogic = (characters, setCharacters) => {
     }));
   }, []);
 
-  const handlePreviousTurn = useCallback(() => {
-    setActiveCharacterIndex(prevIndex => {
-      const newIndex = prevIndex === 0 ? characters.length - 1 : prevIndex - 1;
-      console.log(`Changing turn to previous character: ${characters[newIndex].name}`);
-      logEvent(`Turn changed to ${characters[newIndex].name}`);
-      resetCharacterActions(newIndex);
-      return newIndex;
-    });
+  const changeTurn = useCallback((newIndex) => {
+    setActiveCharacterIndex(newIndex);
+    console.log(`Changing turn to character: ${characters[newIndex].name}`);
+    logEvent(`Turn changed to ${characters[newIndex].name}`);
+    resetCharacterActions(newIndex);
     setTurnTime(0);
-  }, [characters, resetCharacterActions]);
+    autoSaveEncounter(round, newIndex + 1);
+  }, [characters, resetCharacterActions, round, autoSaveEncounter]);
+
+  const handlePreviousTurn = useCallback(() => {
+    const newIndex = activeCharacterIndex === 0 ? characters.length - 1 : activeCharacterIndex - 1;
+    changeTurn(newIndex);
+  }, [activeCharacterIndex, characters.length, changeTurn]);
 
   const handleNextTurn = useCallback(() => {
     setCharacters(prevCharacters => {
@@ -99,16 +102,9 @@ export const useEncounterLogic = (characters, setCharacters) => {
       return updatedCharacters;
     });
 
-    setActiveCharacterIndex(prevIndex => {
-      const newIndex = (prevIndex + 1) % characters.length;
-      console.log(`Changing turn to next character: ${characters[newIndex].name}`);
-      resetCharacterActions(newIndex);
-      logEvent(`Turn changed to ${characters[newIndex].name}`);
-      return newIndex;
-    });
-
-    setTurnTime(0);
-  }, [characters, activeCharacterIndex, turnTime, resetCharacterActions]);
+    const newIndex = (activeCharacterIndex + 1) % characters.length;
+    changeTurn(newIndex);
+  }, [characters, activeCharacterIndex, turnTime, changeTurn]);
 
   const logEvent = useCallback((event) => {
     setEncounterLog(prevLog => [
