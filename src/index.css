@@ -75,9 +75,14 @@
 
 .light input,
 .light select,
-.light textarea,
+.light textarea {
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #000000;
+}
+
 .light button {
-  background-color: #09090b; /* zinc-950 */
+  background-color: #09090b;
   color: #ffffff;
 }
 
@@ -86,7 +91,7 @@
 }
 
 .light .toggle-on {
-  background-color: #09090b; /* zinc-950 */
+  background-color: #09090b;
   color: #ffffff;
 }
 
@@ -95,7 +100,7 @@
 }
 
 .light footer {
-  background-color: #09090b; /* zinc-950 */
+  background-color: #09090b;
   color: #ffffff;
 }
 
