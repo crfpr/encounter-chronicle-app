@@ -66,24 +66,18 @@ const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericIn
         <ToggleGroupItem 
           value="action" 
           className={getToggleGroupItemStyle(isActive, character.action)}
-          id={`action-${character.id}`}
-          aria-label="Action"
         >
           Action
         </ToggleGroupItem>
         <ToggleGroupItem 
           value="bonusAction" 
           className={getToggleGroupItemStyle(isActive, character.bonusAction)}
-          id={`bonus-action-${character.id}`}
-          aria-label="Bonus Action"
         >
           Bonus
         </ToggleGroupItem>
         <ToggleGroupItem 
           value="reaction" 
           className={getToggleGroupItemStyle(isActive, character.reaction)}
-          id={`reaction-${character.id}`}
-          aria-label="Reaction"
         >
           Reaction
         </ToggleGroupItem>
@@ -107,8 +101,6 @@ const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericIn
           placeholder="Current"
           maxLength={3}
           id={`current-movement-${character.id}`}
-          name={`current-movement-${character.id}`}
-          aria-label={`Current movement for ${character.name}`}
         />
         <span className="self-center text-xs">/</span>
         <div className="flex items-center">
@@ -130,8 +122,6 @@ const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericIn
             placeholder="Max"
             maxLength={3}
             id={`max-movement-${character.id}`}
-            name={`max-movement-${character.id}`}
-            aria-label={`Maximum movement for ${character.name}`}
           />
           <span className="text-xs ml-1">ft</span>
         </div>
