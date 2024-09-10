@@ -8,6 +8,7 @@ import { PlusCircle } from 'lucide-react';
 import CharacterActions from './CharacterActions';
 import HPSection from './HPSection';
 import CharacterStateManager from './CharacterStateManager';
+import LegendaryFeatures from './LegendaryFeatures';
 import { Badge } from "../components/ui/badge";
 import { Button } from '../components/ui/button';
 import { useNumericInput } from '../hooks/useNumericInput';
@@ -182,6 +183,14 @@ const CharacterCard = React.memo(({
 
           {character.state === 'ko' && (
             <CharacterStateManager
+              character={character}
+              updateCharacter={updateCharacter}
+              isMobile={isMobile}
+            />
+          )}
+
+          {character.type === 'Legendary' && (
+            <LegendaryFeatures
               character={character}
               updateCharacter={updateCharacter}
               isMobile={isMobile}
