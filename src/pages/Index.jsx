@@ -85,11 +85,11 @@ const Index = () => {
   const renderMobileMenu = () => (
     isMobile && isMobileMenuOpen && (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000] dark:bg-opacity-70">
-        <div className="fixed top-0 right-0 h-full w-64 shadow-lg">
-          <div className="flex justify-between items-center p-4 border-b border-zinc-300 dark:border-zinc-700">
-            <h2 className="text-lg font-semibold">Menu</h2>
+        <div className={`fixed top-0 right-0 h-full w-64 shadow-lg ${isDarkMode ? 'bg-zinc-950' : 'bg-white'}`}>
+          <div className={`flex justify-between items-center p-4 border-b ${isDarkMode ? 'border-zinc-700' : 'border-zinc-300'}`}>
+            <h2 className={`text-lg font-semibold ${isDarkMode ? 'text-zinc-100' : 'text-zinc-900'}`}>Menu</h2>
             <Button variant="ghost" size="sm" onClick={toggleMobileMenu}>
-              <X className="h-6 w-6" />
+              <X className={`h-6 w-6 ${isDarkMode ? 'text-zinc-100' : 'text-zinc-900'}`} />
             </Button>
           </div>
           <div className="p-4 space-y-4">
