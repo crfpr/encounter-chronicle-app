@@ -19,7 +19,7 @@ const LegendaryFeatures = ({ character, updateCharacter, isMobile }) => {
   const renderCounter = (label, count, usedCount, onToggle) => {
     return (
       <div className={`flex items-center space-x-2 h-[30px] ${isMobile ? 'flex-col items-start space-y-1' : ''}`}>
-        <Label className="text-sm font-semibold w-24">{label}</Label>
+        <Label className="text-sm font-semibold w-36">{label}</Label>
         <div className="flex space-x-1">
           {[...Array(count)].map((_, index) => (
             <Button
@@ -41,7 +41,7 @@ const LegendaryFeatures = ({ character, updateCharacter, isMobile }) => {
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       {(character.state === 'alive' || character.state === 'ko' || character.state === 'stable') &&
         renderCounter('Legendary Actions', 3, (character.legendaryActions || []).filter(Boolean).length, handleLegendaryActionToggle)}
       {renderCounter('Legendary Resistances', 3, (character.legendaryResistances || []).filter(Boolean).length, handleLegendaryResistanceToggle)}
