@@ -7,6 +7,7 @@ import TokenInput from './TokenInput';
 import { PlusCircle } from 'lucide-react';
 import CharacterActions from './CharacterActions';
 import HPSection from './HPSection';
+import CharacterStateManager from './CharacterStateManager';
 import { Badge } from "../components/ui/badge";
 import { Button } from '../components/ui/button';
 import { useNumericInput } from '../hooks/useNumericInput';
@@ -169,6 +170,14 @@ const CharacterCard = React.memo(({
               isActive={isActive}
               updateCharacter={updateCharacter}
               setIsNumericInputActive={setIsNumericInputActive}
+              isMobile={isMobile}
+            />
+          )}
+
+          {character.state === 'ko' && (
+            <CharacterStateManager
+              character={character}
+              updateCharacter={updateCharacter}
               isMobile={isMobile}
             />
           )}

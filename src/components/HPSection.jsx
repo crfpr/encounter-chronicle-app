@@ -5,6 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/popove
 import { Separator } from "../components/ui/separator";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import { useNumericInput } from '../hooks/useNumericInput';
+import CharacterStateManager from './CharacterStateManager';
 
 const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setIsNumericInputActive, isMobile }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -167,6 +168,13 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
           </PopoverContent>
         </Popover>
       </div>
+      {character.state === 'ko' && (
+        <CharacterStateManager
+          character={character}
+          updateCharacter={updateCharacter}
+          isMobile={isMobile}
+        />
+      )}
     </div>
   );
 };
