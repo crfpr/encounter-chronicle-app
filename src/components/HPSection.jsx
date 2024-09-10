@@ -120,55 +120,83 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
             />
           </div>
         </div>
-        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className={`w-full h-[30px] text-xs ${getInputStyle()} border-zinc-300 dark:border-zinc-700`}
-            >
-              {getStatusLabel(character.state)}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
-            <div className="flex flex-col">
-              {['alive', 'ko', 'stable', 'dead'].map((state) => (
-                <Button
-                  key={state}
-                  variant="ghost"
-                  onClick={() => handleStateChange(state)}
-                  className="justify-start"
-                >
-                  {getStatusLabel(state)}
-                </Button>
-              ))}
-              <Separator className="my-0" />
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button 
-                    variant="ghost" 
-                    className="justify-start text-red-900 dark:text-red-500 hover:text-red-700 dark:hover:text-red-400"
+        {character.type !== 'Environment' && (
+          <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={`w-full h-[30px] text-xs ${getInputStyle()} border-zinc-300 dark:border-zinc-700`}
+              >
+                {getStatusLabel(character.state)}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <div className="flex flex-col">
+                {['alive', 'ko', 'stable', 'dead'].map((state) => (
+                  <Button
+                    key={state}
+                    variant="ghost"
+                    onClick={() => handleStateChange(state)}
+                    className="justify-start"
                   >
-                    Delete
+                    {getStatusLabel(state)}
                   </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete the character.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => removeCharacter(character.id)}>
+                ))}
+                <Separator className="my-0" />
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      className="justify-start text-red-900 dark:text-red-500 hover:text-red-700 dark:hover:text-red-400"
+                    >
                       Delete
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
-          </PopoverContent>
-        </Popover>
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete the character.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => removeCharacter(character.id)}>
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            </PopoverContent>
+          </Popover>
+        )}
+        {character.type === 'Environment' && (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button 
+                variant="outline"
+                className={`w-full h-[30px] text-xs ${getInputStyle()} border-zinc-300 dark:border-zinc-700`}
+              >
+                Delete
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete the environment.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => removeCharacter(character.id)}>
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
       </div>
     </div>
   );

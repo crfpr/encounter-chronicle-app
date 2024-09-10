@@ -24,7 +24,14 @@ export const useCharacterManagement = (loadedEncounterData) => {
         state: 'alive',
         deathSaves: { successes: [], failures: [] },
         legendaryActions: [false, false, false],
-        legendaryResistances: [false, false, false]
+        legendaryResistances: [false, false, false],
+        ...(newCharacter.type === 'Environment' ? {
+          action: undefined,
+          bonusAction: undefined,
+          reaction: undefined,
+          currentMovement: undefined,
+          maxMovement: undefined
+        } : {})
       }
     ]);
   }, []);
@@ -37,13 +44,20 @@ export const useCharacterManagement = (loadedEncounterData) => {
     setCharacters(prevCharacters => 
       prevCharacters.map(c => {
         if (c.id === updatedCharacter.id) {
-          return {
+          const baseUpdate = {
             ...c,
             ...updatedCharacter,
             deathSaves: updatedCharacter.deathSaves || c.deathSaves || { successes: [], failures: [] },
             legendaryActions: updatedCharacter.legendaryActions || c.legendaryActions || [false, false, false],
             legendaryResistances: updatedCharacter.legendaryResistances || c.legendaryResistances || [false, false, false]
           };
+
+          if (updatedCharacter.type === 'Environment') {
+            const { action, bonusAction, reaction, currentMovement, maxMovement, ...rest } = baseUpdate;
+            return rest;
+          }
+
+          return baseUpdate;
         }
         return c;
       })
