@@ -5,13 +5,13 @@ import { cn } from "../lib/utils";
 
 const LegendaryFeatures = ({ character, updateCharacter, isMobile }) => {
   const handleLegendaryActionToggle = (index) => {
-    const updatedActions = [...character.legendaryActions];
+    const updatedActions = [...(character.legendaryActions || [])];
     updatedActions[index] = !updatedActions[index];
     updateCharacter({ ...character, legendaryActions: updatedActions });
   };
 
   const handleLegendaryResistanceToggle = (index) => {
-    const updatedResistances = [...character.legendaryResistances];
+    const updatedResistances = [...(character.legendaryResistances || [])];
     updatedResistances[index] = !updatedResistances[index];
     updateCharacter({ ...character, legendaryResistances: updatedResistances });
   };
@@ -43,8 +43,8 @@ const LegendaryFeatures = ({ character, updateCharacter, isMobile }) => {
   return (
     <div className="space-y-2">
       {(character.state === 'alive' || character.state === 'ko' || character.state === 'stable') &&
-        renderCounter('Legendary Actions', 3, character.legendaryActions.filter(Boolean).length, handleLegendaryActionToggle)}
-      {renderCounter('Legendary Resistances', 3, character.legendaryResistances.filter(Boolean).length, handleLegendaryResistanceToggle)}
+        renderCounter('Legendary Actions', 3, (character.legendaryActions || []).filter(Boolean).length, handleLegendaryActionToggle)}
+      {renderCounter('Legendary Resistances', 3, (character.legendaryResistances || []).filter(Boolean).length, handleLegendaryResistanceToggle)}
     </div>
   );
 };

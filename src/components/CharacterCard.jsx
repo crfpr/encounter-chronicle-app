@@ -98,6 +98,85 @@ const CharacterCard = React.memo(({
     </Badge>
   )), [character.tokens, isActive, handleTokenChange, handleRemoveToken]);
 
+  const renderCharacterContent = () => (
+    <>
+      <div className="flex-grow space-y-2">
+        <div className="flex items-start space-x-2 relative">
+          <div className="flex-grow flex items-start">
+            <div className={`flex-grow ${isMobile ? 'w-[40vw]' : ''}`}>
+              <CharacterNameType
+                name={character.name || 'New Character'}
+                type={character.type}
+                onUpdate={(newName, newType) => {
+                  updateCharacter({ ...character, name: newName || 'New Character', type: newType });
+                }}
+                isMobile={isMobile}
+              />
+            </div>
+            <div className="flex items-center ml-2 relative">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute pointer-events-none">
+                <path d="M20 2L4 8V20C4 30 20 38 20 38C20 38 36 30 36 20V8L20 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <Input
+                type="text"
+                inputMode="numeric"
+                value={ac}
+                onChange={handleAcChange}
+                onKeyDown={(e) => handleInputKeyDown(e, 'ac', ac)}
+                onFocus={() => setIsNumericInputActive(true)}
+                onBlur={() => handleInputBlurAndSubmit('ac', ac)}
+                className="w-[40px] h-[40px] text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm"
+                maxLength={2}
+                style={{
+                  WebkitAppearance: 'none',
+                  MozAppearance: 'textfield',
+                }}
+                id={`ac-${character.id}`}
+              />
+            </div>
+          </div>
+        </div>
+
+        {character.state === 'alive' && (
+          <CharacterActions
+            character={character}
+            isActive={isActive}
+            updateCharacter={updateCharacter}
+            setIsNumericInputActive={setIsNumericInputActive}
+            isMobile={isMobile}
+          />
+        )}
+
+        {character.state === 'ko' && (
+          <CharacterStateManager
+            character={character}
+            updateCharacter={updateCharacter}
+            isMobile={isMobile}
+          />
+        )}
+
+        {character.type === 'Legendary' && (
+          <LegendaryFeatures
+            character={character}
+            updateCharacter={updateCharacter}
+            isMobile={isMobile}
+          />
+        )}
+
+        <div className="flex items-center flex-wrap gap-2">
+          {memoizedTokens}
+          <Button
+            onClick={handleAddToken}
+            className={`h-[30px] px-2 text-xs border transition-colors bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-700 ${isMobile ? 'text-[10px]' : ''}`}
+          >
+            <PlusCircle className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'} mr-1`} />
+            Add token
+          </Button>
+        </div>
+      </div>
+    </>
+  );
+
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''} min-h-[150px]`}>
       <div className={`w-[80px] flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
@@ -134,80 +213,7 @@ const CharacterCard = React.memo(({
       </div>
       
       <div className={`flex-grow p-2 flex flex-col ${isMobile ? 'px-1' : ''}`}>
-        <div className="flex-grow space-y-2">
-          <div className="flex items-start space-x-2 relative">
-            <div className="flex-grow flex items-start">
-              <div className={`flex-grow ${isMobile ? 'w-[40vw]' : ''}`}>
-                <CharacterNameType
-                  name={character.name || 'New Character'}
-                  type={character.type}
-                  onUpdate={(newName, newType) => {
-                    updateCharacter({ ...character, name: newName || 'New Character', type: newType });
-                  }}
-                  isMobile={isMobile}
-                />
-              </div>
-              <div className="flex items-center ml-2 relative">
-                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute pointer-events-none">
-                  <path d="M20 2L4 8V20C4 30 20 38 20 38C20 38 36 30 36 20V8L20 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <Input
-                  type="text"
-                  inputMode="numeric"
-                  value={ac}
-                  onChange={handleAcChange}
-                  onKeyDown={(e) => handleInputKeyDown(e, 'ac', ac)}
-                  onFocus={() => setIsNumericInputActive(true)}
-                  onBlur={() => handleInputBlurAndSubmit('ac', ac)}
-                  className="w-[40px] h-[40px] text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm"
-                  maxLength={2}
-                  style={{
-                    WebkitAppearance: 'none',
-                    MozAppearance: 'textfield',
-                  }}
-                  id={`ac-${character.id}`}
-                />
-              </div>
-            </div>
-          </div>
-
-          {character.state === 'alive' && (
-            <CharacterActions
-              character={character}
-              isActive={isActive}
-              updateCharacter={updateCharacter}
-              setIsNumericInputActive={setIsNumericInputActive}
-              isMobile={isMobile}
-            />
-          )}
-
-          {character.state === 'ko' && (
-            <CharacterStateManager
-              character={character}
-              updateCharacter={updateCharacter}
-              isMobile={isMobile}
-            />
-          )}
-
-          {character.type === 'Legendary' && (
-            <LegendaryFeatures
-              character={character}
-              updateCharacter={updateCharacter}
-              isMobile={isMobile}
-            />
-          )}
-
-          <div className="flex items-center flex-wrap gap-2">
-            {memoizedTokens}
-            <Button
-              onClick={handleAddToken}
-              className={`h-[30px] px-2 text-xs border transition-colors bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800 border-zinc-300 dark:border-zinc-700 ${isMobile ? 'text-[10px]' : ''}`}
-            >
-              <PlusCircle className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'} mr-1`} />
-              Add token
-            </Button>
-          </div>
-        </div>
+        {renderCharacterContent()}
       </div>
 
       <HPSection

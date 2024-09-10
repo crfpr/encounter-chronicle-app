@@ -7,7 +7,9 @@ export const useCharacterManagement = (loadedEncounterData) => {
         ...char,
         hasActed: false,
         state: char.state || 'alive',
-        deathSaves: char.deathSaves || { successes: [], failures: [] }
+        deathSaves: char.deathSaves || { successes: [], failures: [] },
+        legendaryActions: char.legendaryActions || [false, false, false],
+        legendaryResistances: char.legendaryResistances || [false, false, false]
       }));
     }
     return [];
@@ -20,7 +22,9 @@ export const useCharacterManagement = (loadedEncounterData) => {
         ...newCharacter,
         hasActed: false,
         state: 'alive',
-        deathSaves: { successes: [], failures: [] }
+        deathSaves: { successes: [], failures: [] },
+        legendaryActions: [false, false, false],
+        legendaryResistances: [false, false, false]
       }
     ]);
   }, []);
@@ -36,7 +40,9 @@ export const useCharacterManagement = (loadedEncounterData) => {
           return {
             ...c,
             ...updatedCharacter,
-            deathSaves: updatedCharacter.deathSaves || c.deathSaves || { successes: [], failures: [] }
+            deathSaves: updatedCharacter.deathSaves || c.deathSaves || { successes: [], failures: [] },
+            legendaryActions: updatedCharacter.legendaryActions || c.legendaryActions || [false, false, false],
+            legendaryResistances: updatedCharacter.legendaryResistances || c.legendaryResistances || [false, false, false]
           };
         }
         return c;

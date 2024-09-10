@@ -36,6 +36,9 @@ export const useEncounterLogic = (characters, setCharacters, autoSaveEncounter) 
           reaction: false,
           currentMovement: char.maxMovement,
         };
+        if (char.type === 'Legendary') {
+          updatedChar.legendaryActions = [false, false, false];
+        }
         console.log(`Resetting actions for ${char.name}:`, updatedChar);
         logEvent(`Reset actions and movement for ${char.name}. Current movement set to ${updatedChar.currentMovement}`);
         return updatedChar;
@@ -95,7 +98,8 @@ export const useEncounterLogic = (characters, setCharacters, autoSaveEncounter) 
         return updatedCharacters.map(char => ({
           ...char,
           hasActed: false,
-          roundCount: (char.roundCount || 0) + 1
+          roundCount: (char.roundCount || 0) + 1,
+          legendaryActions: char.type === 'Legendary' ? [false, false, false] : char.legendaryActions
         }));
       }
 
