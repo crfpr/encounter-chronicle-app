@@ -20,6 +20,12 @@ export const useEncounterManagement = () => {
     localStorage.setItem('encounterData', JSON.stringify(data));
   }, []);
 
+  // New function to save encounter data
+  const saveEncounterData = useCallback((data) => {
+    setEncounterData(data);
+    saveToLocalStorage(data);
+  }, [saveToLocalStorage]);
+
   const exportEncounterData = useCallback(async () => {
     if (encounterTrackerRef.current) {
       try {
@@ -136,9 +142,8 @@ export const useEncounterManagement = () => {
               };
             }
 
-            setEncounterData(processedData);
+            saveEncounterData(processedData);
             setEncounterName(processedData.encounterName);
-            saveToLocalStorage(processedData);
             console.log('Encounter data loaded and saved successfully:', processedData);
           } else {
             console.error('Invalid data format');
@@ -149,17 +154,17 @@ export const useEncounterManagement = () => {
       };
       reader.readAsText(file);
     }
-  }, [saveToLocalStorage]);
+  }, [saveEncounterData]);
 
   return {
     encounterName,
     setEncounterName,
     encounterData,
-    setEncounterData,
+    setEncounterData: saveEncounterData,
     exportEncounterData,
     exportPartyData,
     uploadEncounterData,
     encounterTrackerRef,
-    saveToLocalStorage
+    saveEncounterData
   };
 };
