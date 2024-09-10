@@ -155,7 +155,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
           </div>
           <div className="lg:w-1/3 h-full flex flex-col space-y-4">
             <div className="bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex-1 overflow-hidden flex flex-col shadow-md dark:shadow-none">
-              <div className="flex-grow">
+              <div className="flex-grow overflow-y-auto">
                 <NotesSection notes={notes} setNotes={(newNotes) => {
                   setNotes(newNotes);
                   encounterLogic.logEvent(`Notes updated`);
@@ -176,7 +176,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-grow overflow-hidden">
+      <div className="flex-grow overflow-y-auto">
         {renderContent()}
       </div>
       {isMobile && (
