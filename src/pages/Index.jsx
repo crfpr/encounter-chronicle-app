@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import EncounterTracker from '../components/EncounterTracker';
 import { Button } from '../components/ui/button';
-import { Upload, Download, X, Sun, Moon } from 'lucide-react';
+import { Upload, Download, Sun, Moon } from 'lucide-react';
 import { useEncounterManagement } from '../hooks/useEncounterManagement';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import MobileMenuButton from '../components/MobileMenuButton';
 
 const Index = () => {
   const {
@@ -100,11 +101,9 @@ const Index = () => {
     isMobile && isMobileMenuOpen && (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000] dark:bg-opacity-70">
         <div ref={mobileMenuRef} className={`fixed top-0 right-0 h-full w-64 shadow-lg ${isDarkMode ? 'bg-zinc-950' : 'bg-white'}`}>
-          <div className={`flex justify-between items-center p-4 border-b ${isDarkMode ? 'border-zinc-700' : 'border-zinc-300'}`}>
-            <h2 className={`text-lg font-semibold ${isDarkMode ? 'text-zinc-100' : 'text-zinc-900'}`}>Menu</h2>
-            <Button variant="ghost" size="sm" onClick={toggleMobileMenu}>
-              <X className={`h-6 w-6 ${isDarkMode ? 'text-zinc-100' : 'text-zinc-900'}`} />
-            </Button>
+          <div className={`flex justify-between items-center py-2 px-4 border-b ${isDarkMode ? 'border-zinc-700' : 'border-zinc-300'}`}>
+            <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-zinc-100' : 'text-zinc-900'}`}>Menu</h2>
+            <MobileMenuButton onClick={toggleMobileMenu} />
           </div>
           <div className="p-4 space-y-4">
             <Button onClick={handleExportEncounterData} className="w-full flex items-center justify-center">
