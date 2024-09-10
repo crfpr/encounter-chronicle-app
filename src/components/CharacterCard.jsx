@@ -111,6 +111,7 @@ const CharacterCard = React.memo(({
             onBlur={() => handleInputBlurAndSubmit('initiative', initiative)}
             className={`w-full text-center ${getInputStyle()} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm overflow-visible`}
             maxLength={3}
+            id={`initiative-${character.id}`}
           />
           {!initiative && (
             <span className="absolute inset-0 flex items-center justify-center pointer-events-none text-xs text-zinc-500 dark:text-zinc-400">
@@ -163,6 +164,7 @@ const CharacterCard = React.memo(({
                     WebkitAppearance: 'none',
                     MozAppearance: 'textfield',
                   }}
+                  id={`ac-${character.id}`}
                 />
               </div>
             </div>

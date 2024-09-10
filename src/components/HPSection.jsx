@@ -70,15 +70,15 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
     setIsNumericInputActive(false);
   };
 
-  const handleKeyDown = (e, blurHandler) => {
+  const handleKeyDown = (e, field, value) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      blurHandler();
       e.target.blur();
+      handleInputBlurAndSubmit(field, value);
     } else {
-      if (e.target.id === 'currentHp') {
+      if (field === 'currentHp') {
         handleCurrentHpKeyDown(e);
-      } else if (e.target.id === 'maxHp') {
+      } else if (field === 'maxHp') {
         handleMaxHpKeyDown(e);
       }
     }
@@ -94,12 +94,12 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
           <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>HP</label>
           <div className="relative w-16 border border-zinc-300 dark:border-zinc-700 rounded overflow-hidden">
             <Input
-              id="currentHp"
+              id={`current-hp-${character.id}`}
               type="text"
               inputMode="numeric"
               value={currentHp}
               onChange={handleCurrentHpChange}
-              onKeyDown={(e) => handleKeyDown(e, handleCurrentHpBlur)}
+              onKeyDown={(e) => handleKeyDown(e, 'currentHp', currentHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={handleCurrentHpBlur}
               className={`w-full text-center ${getInputStyle()} h-[30px] border-none no-spinners text-sm`}
@@ -107,12 +107,12 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
             />
             <Separator className="my-0 bg-zinc-300 dark:bg-zinc-700" />
             <Input
-              id="maxHp"
+              id={`max-hp-${character.id}`}
               type="text"
               inputMode="numeric"
               value={maxHp}
               onChange={handleMaxHpChange}
-              onKeyDown={(e) => handleKeyDown(e, handleMaxHpBlur)}
+              onKeyDown={(e) => handleKeyDown(e, 'maxHp', maxHp)}
               onFocus={() => setIsNumericInputActive(true)}
               onBlur={handleMaxHpBlur}
               className={`w-full text-center ${getInputStyle()} h-[30px] border-none no-spinners text-sm`}

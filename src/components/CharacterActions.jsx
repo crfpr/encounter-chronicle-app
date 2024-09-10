@@ -100,6 +100,7 @@ const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericIn
           className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm"
           placeholder="Current"
           maxLength={3}
+          id={`current-movement-${character.id}`}
         />
         <span className="self-center text-xs">/</span>
         <div className="flex items-center">
@@ -120,6 +121,7 @@ const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericIn
             className="w-16 text-center h-[30px] bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners text-sm"
             placeholder="Max"
             maxLength={3}
+            id={`max-movement-${character.id}`}
           />
           <span className="text-xs ml-1">ft</span>
         </div>
