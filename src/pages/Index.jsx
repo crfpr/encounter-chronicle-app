@@ -15,8 +15,7 @@ const Index = () => {
     exportEncounterData,
     exportPartyData,
     uploadEncounterData,
-    encounterTrackerRef,
-    saveEncounterData
+    encounterTrackerRef
   } = useEncounterManagement();
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -158,7 +157,6 @@ const Index = () => {
               isMobile={isMobile}
               contentHeight={contentHeight}
               loadedEncounterData={encounterData}
-              saveEncounterData={saveEncounterData}
             />
           </div>
         </div>
