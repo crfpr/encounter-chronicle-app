@@ -15,7 +15,10 @@ const Index = () => {
     exportEncounterData,
     exportPartyData,
     uploadEncounterData,
-    encounterTrackerRef
+    encounterTrackerRef,
+    autoSave,
+    toggleAutoSave,
+    autoSaveEncounter
   } = useEncounterManagement();
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -157,6 +160,9 @@ const Index = () => {
               isMobile={isMobile}
               contentHeight={contentHeight}
               loadedEncounterData={encounterData}
+              autoSave={autoSave}
+              toggleAutoSave={toggleAutoSave}
+              autoSaveEncounter={autoSaveEncounter}
             />
           </div>
         </div>
@@ -167,6 +173,8 @@ const Index = () => {
           handleExportEncounterData={handleExportEncounterData}
           handleExportPartyData={handleExportPartyData}
           handleUploadEncounterData={handleUploadEncounterData}
+          autoSave={autoSave}
+          toggleAutoSave={toggleAutoSave}
         />
       )}
     </div>

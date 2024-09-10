@@ -3,9 +3,10 @@ import { useState, useCallback, useRef } from 'react';
 export const useEncounterManagement = () => {
   const [encounterName, setEncounterName] = useState('New Encounter');
   const [encounterData, setEncounterData] = useState(null);
+  const [autoSave, setAutoSave] = useState(false);
   const encounterTrackerRef = useRef(null);
 
-  const exportEncounterData = useCallback(async () => {
+  const exportEncounterData = useCallback(async (customFileName = null) => {
     if (encounterTrackerRef.current) {
       try {
         const data = encounterTrackerRef.current.getEncounterData();
@@ -13,7 +14,7 @@ export const useEncounterManagement = () => {
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `${data.encounterName.replace(/\s+/g, '_')}_encounter.json`;
+        link.download = customFileName || `${data.encounterName.replace(/\s+/g, '_')}_encounter.json`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -134,6 +135,17 @@ export const useEncounterManagement = () => {
     }
   }, []);
 
+  const toggleAutoSave = useCallback(() => {
+    setAutoSave(prev => !prev);
+  }, []);
+
+  const autoSaveEncounter = useCallback((round, turnNumber) => {
+    if (autoSave) {
+      const fileName = `${encounterName.replace(/\s+/g, '_')}.r${round}.t${turnNumber}.json`;
+      exportEncounterData(fileName);
+    }
+  }, [autoSave, encounterName, exportEncounterData]);
+
   return {
     encounterName,
     setEncounterName,
@@ -142,6 +154,9 @@ export const useEncounterManagement = () => {
     exportEncounterData,
     exportPartyData,
     uploadEncounterData,
-    encounterTrackerRef
+    encounterTrackerRef,
+    autoSave,
+    toggleAutoSave,
+    autoSaveEncounter
   };
 };

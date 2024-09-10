@@ -8,7 +8,7 @@ import SwipeHandler from './SwipeHandler';
 import { useCharacterManagement } from '../hooks/useCharacterManagement';
 import { useEncounterLogic } from '../hooks/useEncounterLogic';
 
-const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile, contentHeight, loadedEncounterData }, ref) => {
+const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile, contentHeight, loadedEncounterData, autoSave, toggleAutoSave, autoSaveEncounter }, ref) => {
   const [notes, setNotes] = useState('');
   const [activePage, setActivePage] = useState('tracker');
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
@@ -82,6 +82,12 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
+  const handleNextTurn = useCallback(() => {
+    encounterLogic.handleNextTurn();
+    const activeCharIndex = (encounterLogic.activeCharacterIndex + 1) % characters.length;
+    autoSaveEncounter(encounterLogic.round, activeCharIndex + 1);
+  }, [encounterLogic, characters.length, autoSaveEncounter]);
+
   const renderContent = () => {
     const commonProps = {
       characters,
@@ -89,7 +95,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       activeCharacterIndex: encounterLogic.activeCharacterIndex,
       turnTime: encounterLogic.turnTime,
       onPreviousTurn: encounterLogic.handlePreviousTurn,
-      onNextTurn: encounterLogic.handleNextTurn,
+      onNextTurn: handleNextTurn,
       setIsNumericInputActive,
       updateCharacter,
       addCharacter,
@@ -181,7 +187,13 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       </div>
       {isMobile && (
         <div className="fixed bottom-0 left-0 right-0 z-[10001]">
-          <MobileMenu activePage={activePage} setActivePage={setActivePage} onExport={exportEncounterData} />
+          <MobileMenu 
+            activePage={activePage} 
+            setActivePage={setActivePage} 
+            onExport={exportEncounterData}
+            autoSave={autoSave}
+            toggleAutoSave={toggleAutoSave}
+          />
         </div>
       )}
       {isMobile && <SwipeHandler onSwipeLeft={() => handleSwipe('left')} onSwipeRight={() => handleSwipe('right')} />}
