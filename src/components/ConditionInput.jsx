@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
-import { Clock, X } from 'lucide-react';
+import { Clock, X, Infinity } from 'lucide-react';
 import { useNumericInput } from '../hooks/useNumericInput';
 
 const ConditionInput = ({ condition, onLabelChange, onDurationChange, onRemove, onTogglePersistent }) => {
@@ -55,11 +55,14 @@ const ConditionInput = ({ condition, onLabelChange, onDurationChange, onRemove, 
 
   const handleDurationBlur = () => {
     setIsDurationEditing(false);
-    if (localDuration === '') {
+    if (localDuration === '' || localDuration === null) {
       onDurationChange(null);
       onTogglePersistent();
     } else {
       onDurationChange(parseInt(localDuration, 10));
+      if (condition.isPersistent) {
+        onTogglePersistent();
+      }
     }
   };
 
@@ -110,7 +113,7 @@ const ConditionInput = ({ condition, onLabelChange, onDurationChange, onRemove, 
           size="sm"
           className="h-5 w-5 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-700 group"
         >
-          <Clock className="h-3 w-3 group-hover:text-white" />
+          <Infinity className="h-3 w-3 group-hover:text-white" />
         </Button>
       )}
       <Button
