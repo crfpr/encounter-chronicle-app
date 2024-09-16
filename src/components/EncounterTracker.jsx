@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef, forwardRef, useImperativeHandle } from 'react';
 import EncounterHeader from './EncounterHeader';
-import CombatantList from './CombatantList';
+import CharacterList from './CharacterList';
 import CombatantStats from './CombatantStats';
 import NotesSection from './NotesSection';
 import MobileMenu from './MobileMenu';
@@ -14,7 +14,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
   const trackerRef = useRef(null);
   const headerRef = useRef(null);
-  const combatantListRef = useRef(null);
+  const characterListRef = useRef(null);
 
   const {
     combatants,
@@ -109,7 +109,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
           />
         </div>
         <div ref={trackerRef} className={`flex-grow overflow-y-auto ${isMobile ? 'pb-20' : ''}`}>
-          <CombatantList ref={combatantListRef} {...commonProps} />
+          <CharacterList ref={characterListRef} {...commonProps} />
         </div>
       </div>
     );

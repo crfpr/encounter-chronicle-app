@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
-import CombatantCard from './CombatantCard';
+import CharacterCard from './CharacterCard';
 import { Button } from '../components/ui/button';
 
-const CombatantList = forwardRef(({ combatants, setCombatants, activeCombatantIndex, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, round, isMobile }, ref) => {
+const CharacterList = forwardRef(({ combatants, setCombatants, activeCombatantIndex, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, round, isMobile }, ref) => {
   const listRef = useRef(null);
   const activeCombatantRef = useRef(null);
 
@@ -100,7 +100,7 @@ const CombatantList = forwardRef(({ combatants, setCombatants, activeCombatantIn
           data-index={index}
           ref={index === activeCombatantIndex ? activeCombatantRef : null}
         >
-          <CombatantCard
+          <CharacterCard
             combatant={combatant}
             updateCombatant={updateCombatant}
             removeCombatant={removeCombatant}
@@ -128,4 +128,4 @@ const CombatantList = forwardRef(({ combatants, setCombatants, activeCombatantIn
   );
 });
 
-export default CombatantList;
+export default CharacterList;
