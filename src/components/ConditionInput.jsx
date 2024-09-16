@@ -55,9 +55,11 @@ const ConditionInput = ({ condition, onLabelChange, onDurationChange, onRemove, 
 
   const handleDurationBlur = () => {
     setIsDurationEditing(false);
-    onDurationChange(localDuration === '' ? null : parseInt(localDuration, 10));
     if (localDuration === '') {
+      onDurationChange(null);
       onTogglePersistent();
+    } else {
+      onDurationChange(parseInt(localDuration, 10));
     }
   };
 

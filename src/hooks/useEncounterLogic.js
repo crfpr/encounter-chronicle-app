@@ -65,23 +65,23 @@ export const useEncounterLogic = (combatants, setCombatants, autoSaveEncounter) 
     setCombatants(prevCombatants => {
       const updatedCombatants = prevCombatants.map((combatant, index) => {
         if (index === activeCombatantIndex) {
-          const updatedTokens = combatant.tokens ? combatant.tokens.map(token => {
-            if (!token.isPersistent && token.tokenDuration !== null && !combatant.hasActed) {
-              const newDuration = token.tokenDuration > 0 ? token.tokenDuration - 1 : 0;
-              if (newDuration !== token.tokenDuration) {
-                logEvent(`Token "${token.label}" for ${combatant.name} decremented to ${newDuration}`);
+          const updatedConditions = combatant.conditions ? combatant.conditions.map(condition => {
+            if (!condition.isPersistent && condition.conditionDuration !== null && !combatant.hasActed) {
+              const newDuration = condition.conditionDuration > 0 ? condition.conditionDuration - 1 : 0;
+              if (newDuration !== condition.conditionDuration) {
+                logEvent(`Condition "${condition.label}" for ${combatant.name} decremented to ${newDuration}`);
               }
-              return { ...token, tokenDuration: newDuration };
+              return { ...condition, conditionDuration: newDuration };
             }
-            return token;
-          }).filter(token => token.isPersistent || token.tokenDuration > 0) : [];
+            return condition;
+          }).filter(condition => condition.isPersistent || condition.conditionDuration > 0) : [];
 
           return {
             ...combatant,
             cumulativeTurnTime: combatant.hasActed ? combatant.cumulativeTurnTime : (combatant.cumulativeTurnTime || 0) + turnTime,
             turnCount: combatant.hasActed ? combatant.turnCount : (combatant.turnCount || 0) + 1,
             hasActed: true,
-            tokens: updatedTokens
+            conditions: updatedConditions
           };
         }
         return combatant;
