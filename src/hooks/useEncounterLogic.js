@@ -9,9 +9,12 @@ export const useEncounterLogic = (combatants, setCombatants, autoSaveEncounter) 
   const [encounterLog, setEncounterLog] = useState([]);
 
   const toggleEncounter = useCallback(() => {
-    setIsRunning(prevIsRunning => !prevIsRunning);
-    logEvent(isRunning ? 'Encounter paused' : 'Encounter started');
-  }, [isRunning]);
+    setIsRunning(prevIsRunning => {
+      const newIsRunning = !prevIsRunning;
+      logEvent(newIsRunning ? 'Encounter started' : 'Encounter paused');
+      return newIsRunning;
+    });
+  }, []);
 
   useEffect(() => {
     let interval;
@@ -42,7 +45,7 @@ export const useEncounterLogic = (combatants, setCombatants, autoSaveEncounter) 
       }
       return combatant;
     }));
-  }, []);
+  }, [setCombatants]);
 
   const changeTurn = useCallback((newIndex) => {
     setActiveCombatantIndex(newIndex);
@@ -62,7 +65,7 @@ export const useEncounterLogic = (combatants, setCombatants, autoSaveEncounter) 
     setCombatants(prevCombatants => {
       const updatedCombatants = prevCombatants.map((combatant, index) => {
         if (index === activeCombatantIndex) {
-          const updatedTokens = combatant.tokens.map(token => {
+          const updatedTokens = combatant.tokens ? combatant.tokens.map(token => {
             if (!token.isPersistent && token.tokenDuration !== null && !combatant.hasActed) {
               const newDuration = token.tokenDuration > 0 ? token.tokenDuration - 1 : 0;
               if (newDuration !== token.tokenDuration) {
@@ -71,7 +74,7 @@ export const useEncounterLogic = (combatants, setCombatants, autoSaveEncounter) 
               return { ...token, tokenDuration: newDuration };
             }
             return token;
-          }).filter(token => token.isPersistent || token.tokenDuration > 0);
+          }).filter(token => token.isPersistent || token.tokenDuration > 0) : [];
 
           return {
             ...combatant,
