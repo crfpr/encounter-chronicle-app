@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
 
-export const useEncounterLogic = (characters, setCharacters, autoSaveEncounter) => {
+export const useEncounterLogic = (combatants, setCombatants, autoSaveEncounter) => {
   const [round, setRound] = useState(1);
-  const [activeCharacterIndex, setActiveCharacterIndex] = useState(0);
+  const [activeCombatantIndex, setActiveCombatantIndex] = useState(0);
   const [encounterTime, setEncounterTime] = useState(0);
   const [turnTime, setTurnTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -26,47 +26,47 @@ export const useEncounterLogic = (characters, setCharacters, autoSaveEncounter) 
     return () => clearInterval(interval);
   }, [isRunning]);
 
-  const resetCharacterActions = useCallback((characterIndex) => {
-    setCharacters(prevCharacters => prevCharacters.map((char, index) => {
-      if (index === characterIndex) {
-        const updatedChar = {
-          ...char,
+  const resetCombatantActions = useCallback((combatantIndex) => {
+    setCombatants(prevCombatants => prevCombatants.map((combatant, index) => {
+      if (index === combatantIndex) {
+        const updatedCombatant = {
+          ...combatant,
           action: false,
           bonusAction: false,
           reaction: false,
-          currentMovement: char.maxMovement,
+          currentMovement: combatant.maxMovement,
         };
-        console.log(`Resetting actions and movement for ${char.name}:`, updatedChar);
-        logEvent(`Reset actions and movement for ${char.name}. Current movement set to ${updatedChar.currentMovement}`);
-        return updatedChar;
+        console.log(`Resetting actions and movement for ${combatant.name}:`, updatedCombatant);
+        logEvent(`Reset actions and movement for ${combatant.name}. Current movement set to ${updatedCombatant.currentMovement}`);
+        return updatedCombatant;
       }
-      return char;
+      return combatant;
     }));
   }, []);
 
   const changeTurn = useCallback((newIndex) => {
-    setActiveCharacterIndex(newIndex);
-    console.log(`Changing turn to character: ${characters[newIndex].name}`);
-    logEvent(`Turn changed to ${characters[newIndex].name}`);
-    resetCharacterActions(newIndex);
+    setActiveCombatantIndex(newIndex);
+    console.log(`Changing turn to combatant: ${combatants[newIndex].name}`);
+    logEvent(`Turn changed to ${combatants[newIndex].name}`);
+    resetCombatantActions(newIndex);
     setTurnTime(0);
     autoSaveEncounter(round, newIndex + 1);
-  }, [characters, resetCharacterActions, round, autoSaveEncounter]);
+  }, [combatants, resetCombatantActions, round, autoSaveEncounter]);
 
   const handlePreviousTurn = useCallback(() => {
-    const newIndex = activeCharacterIndex === 0 ? characters.length - 1 : activeCharacterIndex - 1;
+    const newIndex = activeCombatantIndex === 0 ? combatants.length - 1 : activeCombatantIndex - 1;
     changeTurn(newIndex);
-  }, [activeCharacterIndex, characters.length, changeTurn]);
+  }, [activeCombatantIndex, combatants.length, changeTurn]);
 
   const handleNextTurn = useCallback(() => {
-    setCharacters(prevCharacters => {
-      const updatedCharacters = prevCharacters.map((char, index) => {
-        if (index === activeCharacterIndex) {
-          const updatedTokens = char.tokens.map(token => {
-            if (!token.isPersistent && token.tokenDuration !== null && !char.hasActed) {
+    setCombatants(prevCombatants => {
+      const updatedCombatants = prevCombatants.map((combatant, index) => {
+        if (index === activeCombatantIndex) {
+          const updatedTokens = combatant.tokens.map(token => {
+            if (!token.isPersistent && token.tokenDuration !== null && !combatant.hasActed) {
               const newDuration = token.tokenDuration > 0 ? token.tokenDuration - 1 : 0;
               if (newDuration !== token.tokenDuration) {
-                logEvent(`Token "${token.label}" for ${char.name} decremented to ${newDuration}`);
+                logEvent(`Token "${token.label}" for ${combatant.name} decremented to ${newDuration}`);
               }
               return { ...token, tokenDuration: newDuration };
             }
@@ -74,17 +74,17 @@ export const useEncounterLogic = (characters, setCharacters, autoSaveEncounter) 
           }).filter(token => token.isPersistent || token.tokenDuration > 0);
 
           return {
-            ...char,
-            cumulativeTurnTime: char.hasActed ? char.cumulativeTurnTime : (char.cumulativeTurnTime || 0) + turnTime,
-            turnCount: char.hasActed ? char.turnCount : (char.turnCount || 0) + 1,
+            ...combatant,
+            cumulativeTurnTime: combatant.hasActed ? combatant.cumulativeTurnTime : (combatant.cumulativeTurnTime || 0) + turnTime,
+            turnCount: combatant.hasActed ? combatant.turnCount : (combatant.turnCount || 0) + 1,
             hasActed: true,
             tokens: updatedTokens
           };
         }
-        return char;
+        return combatant;
       });
 
-      const allHaveActed = updatedCharacters.every(char => char.hasActed);
+      const allHaveActed = updatedCombatants.every(combatant => combatant.hasActed);
 
       if (allHaveActed) {
         setRound(prevRound => {
@@ -92,20 +92,20 @@ export const useEncounterLogic = (characters, setCharacters, autoSaveEncounter) 
           logEvent(`Round ${prevRound + 1} started`);
           return prevRound + 1;
         });
-        return updatedCharacters.map(char => ({
-          ...char,
+        return updatedCombatants.map(combatant => ({
+          ...combatant,
           hasActed: false,
-          roundCount: (char.roundCount || 0) + 1,
-          legendaryActions: char.type === 'Legendary' ? [false, false, false] : char.legendaryActions
+          roundCount: (combatant.roundCount || 0) + 1,
+          legendaryActions: combatant.type === 'Legendary' ? [false, false, false] : combatant.legendaryActions
         }));
       }
 
-      return updatedCharacters;
+      return updatedCombatants;
     });
 
-    const newIndex = (activeCharacterIndex + 1) % characters.length;
+    const newIndex = (activeCombatantIndex + 1) % combatants.length;
     changeTurn(newIndex);
-  }, [characters, activeCharacterIndex, turnTime, changeTurn]);
+  }, [combatants, activeCombatantIndex, turnTime, changeTurn]);
 
   const logEvent = useCallback((event) => {
     setEncounterLog(prevLog => [
@@ -123,8 +123,8 @@ export const useEncounterLogic = (characters, setCharacters, autoSaveEncounter) 
   return {
     round,
     setRound,
-    activeCharacterIndex,
-    setActiveCharacterIndex,
+    activeCombatantIndex,
+    setActiveCombatantIndex,
     encounterTime,
     setEncounterTime,
     turnTime,
@@ -136,7 +136,7 @@ export const useEncounterLogic = (characters, setCharacters, autoSaveEncounter) 
     toggleEncounter,
     handlePreviousTurn,
     handleNextTurn,
-    resetCharacterActions,
+    resetCombatantActions,
     logEvent
   };
 };

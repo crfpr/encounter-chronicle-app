@@ -51,7 +51,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       setCombatants(loadedEncounterData.combatants || []);
       encounterLogic.logEvent('Encounter data loaded');
     }
-  }, [loadedEncounterData, setEncounterName, encounterLogic.logEvent, setCombatants]);
+  }, [loadedEncounterData, setEncounterName, encounterLogic, setCombatants]);
 
   const handleSwipe = useCallback((direction) => {
     if (isMobile) {
