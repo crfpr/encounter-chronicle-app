@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef, forwardRef, useImperativeHandle } from 'react';
 import EncounterHeader from './EncounterHeader';
-import CharacterList from './CharacterList';
-import CharacterStats from './CharacterStats';
+import CombatantList from './CombatantList';
+import CombatantStats from './CombatantStats';
 import NotesSection from './NotesSection';
 import MobileMenu from './MobileMenu';
 import SwipeHandler from './SwipeHandler';
-import { useCharacterManagement } from '../hooks/useCharacterManagement';
+import { useCombatantManagement } from '../hooks/useCombatantManagement';
 import { useEncounterLogic } from '../hooks/useEncounterLogic';
 
 const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEncounterData, uploadEncounterData, isMobile, contentHeight, loadedEncounterData, autoSave, toggleAutoSave, autoSaveEncounter }, ref) => {
@@ -14,27 +14,27 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   const [isNumericInputActive, setIsNumericInputActive] = useState(false);
   const trackerRef = useRef(null);
   const headerRef = useRef(null);
-  const characterListRef = useRef(null);
+  const combatantListRef = useRef(null);
 
   const {
-    characters,
-    setCharacters,
-    addCharacter,
-    removeCharacter,
-    updateCharacter
-  } = useCharacterManagement(loadedEncounterData);
+    combatants,
+    setCombatants,
+    addCombatant,
+    removeCombatant,
+    updateCombatant
+  } = useCombatantManagement(loadedEncounterData);
 
-  const encounterLogic = useEncounterLogic(characters, setCharacters, autoSaveEncounter);
+  const encounterLogic = useEncounterLogic(combatants, setCombatants, autoSaveEncounter);
 
   useImperativeHandle(ref, () => ({
     getEncounterData: () => ({
       encounterName,
-      characters,
+      combatants,
       round: encounterLogic.round,
       encounterTime: encounterLogic.encounterTime,
       notes,
       log: encounterLogic.encounterLog,
-      activeCharacterIndex: encounterLogic.activeCharacterIndex,
+      activeCombatantIndex: encounterLogic.activeCombatantIndex,
       isRunning: encounterLogic.isRunning
     })
   }));
@@ -42,16 +42,16 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   useEffect(() => {
     if (loadedEncounterData) {
       encounterLogic.setRound(loadedEncounterData.round || 1);
-      encounterLogic.setActiveCharacterIndex(loadedEncounterData.activeCharacterIndex || 0);
+      encounterLogic.setActiveCombatantIndex(loadedEncounterData.activeCombatantIndex || 0);
       encounterLogic.setEncounterTime(loadedEncounterData.encounterTime || 0);
       setNotes(loadedEncounterData.notes || '');
       encounterLogic.setEncounterLog(loadedEncounterData.log || []);
       setEncounterName(loadedEncounterData.encounterName || 'New Encounter');
       encounterLogic.setIsRunning(loadedEncounterData.isRunning || false);
-      setCharacters(loadedEncounterData.characters || []);
+      setCombatants(loadedEncounterData.combatants || []);
       encounterLogic.logEvent('Encounter data loaded');
     }
-  }, [loadedEncounterData, setEncounterName, encounterLogic.logEvent, setCharacters]);
+  }, [loadedEncounterData, setEncounterName, encounterLogic.logEvent, setCombatants]);
 
   const handleSwipe = useCallback((direction) => {
     if (isMobile) {
@@ -65,7 +65,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   }, [isMobile]);
 
   const handleKeyDown = useCallback((e) => {
-    if (!isMobile && characters.length > 1 && !isNumericInputActive) {
+    if (!isMobile && combatants.length > 1 && !isNumericInputActive) {
       if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
         e.preventDefault();
         if (e.key === 'ArrowUp') {
@@ -75,7 +75,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
         }
       }
     }
-  }, [isMobile, characters.length, isNumericInputActive, encounterLogic]);
+  }, [isMobile, combatants.length, isNumericInputActive, encounterLogic]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -84,16 +84,16 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
 
   const renderContent = () => {
     const commonProps = {
-      characters,
-      setCharacters,
-      activeCharacterIndex: encounterLogic.activeCharacterIndex,
+      combatants,
+      setCombatants,
+      activeCombatantIndex: encounterLogic.activeCombatantIndex,
       turnTime: encounterLogic.turnTime,
       onPreviousTurn: encounterLogic.handlePreviousTurn,
       onNextTurn: encounterLogic.handleNextTurn,
       setIsNumericInputActive,
-      updateCharacter,
-      addCharacter,
-      removeCharacter,
+      updateCombatant,
+      addCombatant,
+      removeCombatant,
       round: encounterLogic.round,
       isMobile
     };
@@ -109,7 +109,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
           />
         </div>
         <div ref={trackerRef} className={`flex-grow overflow-y-auto ${isMobile ? 'pb-20' : ''}`}>
-          <CharacterList ref={characterListRef} {...commonProps} />
+          <CombatantList ref={combatantListRef} {...commonProps} />
         </div>
       </div>
     );
@@ -133,7 +133,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
     const renderStats = () => (
       <div className="h-full flex flex-col px-2 sm:px-4">
         <div className="flex-grow overflow-y-auto">
-          <CharacterStats characters={characters} round={encounterLogic.round} key={encounterLogic.round} />
+          <CombatantStats combatants={combatants} round={encounterLogic.round} key={encounterLogic.round} />
         </div>
       </div>
     );
@@ -163,9 +163,9 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
               </div>
             </div>
             <div className="bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex-1 overflow-hidden flex flex-col shadow-md dark:shadow-none">
-              <h2 className="text-xl font-semibold mb-2">Character Stats</h2>
+              <h2 className="text-xl font-semibold mb-2">Combatant Stats</h2>
               <div className="flex-grow overflow-y-auto">
-                <CharacterStats characters={characters} round={encounterLogic.round} />
+                <CombatantStats combatants={combatants} round={encounterLogic.round} />
               </div>
             </div>
           </div>

@@ -3,31 +3,30 @@ import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/popover";
 import { Separator } from "../components/ui/separator";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import { useNumericInput } from '../hooks/useNumericInput';
 
-const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setIsNumericInputActive, isMobile }) => {
+const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActive, isMobile }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown, setCurrentHp] = useNumericInput(character.currentHp || 0);
-  const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(character.maxHp || 0);
+  const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown, setCurrentHp] = useNumericInput(combatant.currentHp || 0);
+  const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(combatant.maxHp || 0);
 
   useEffect(() => {
-    setCurrentHp(character.currentHp || 0);
-  }, [character.currentHp, setCurrentHp]);
+    setCurrentHp(combatant.currentHp || 0);
+  }, [combatant.currentHp, setCurrentHp]);
 
   const handleStateChange = (newState) => {
-    let updatedCharacter = { ...character, state: newState };
+    let updatedCombatant = { ...combatant, state: newState };
     if (newState === 'ko') {
-      updatedCharacter.currentHp = 0;
-      updatedCharacter.deathSaves = { successes: [], failures: [] };
+      updatedCombatant.currentHp = 0;
+      updatedCombatant.deathSaves = { successes: [], failures: [] };
     } else if (newState === 'stable') {
-      updatedCharacter.currentHp = 1;
+      updatedCombatant.currentHp = 1;
     } else if (newState === 'dead') {
-      updatedCharacter.currentHp = 0;
-    } else if (newState === 'alive' && updatedCharacter.currentHp === 0) {
-      updatedCharacter.currentHp = 1;
+      updatedCombatant.currentHp = 0;
+    } else if (newState === 'alive' && updatedCombatant.currentHp === 0) {
+      updatedCombatant.currentHp = 1;
     }
-    updateCharacter(updatedCharacter);
+    updateCombatant(updatedCombatant);
     setIsPopoverOpen(false);
   };
 
@@ -42,21 +41,21 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
 
   const handleHPChange = (value) => {
     const numericValue = Number(value);
-    let newState = character.state;
+    let newState = combatant.state;
 
-    if (numericValue <= 0 && Number(character.maxHp) > 0) {
+    if (numericValue <= 0 && Number(combatant.maxHp) > 0) {
       newState = 'ko';
     } else if (numericValue > 0) {
-      if (character.state === 'ko' || character.state === 'dead' || (character.state === 'stable' && numericValue > 1)) {
+      if (combatant.state === 'ko' || combatant.state === 'dead' || (combatant.state === 'stable' && numericValue > 1)) {
         newState = 'alive';
       }
     }
 
-    updateCharacter({
-      ...character,
+    updateCombatant({
+      ...combatant,
       currentHp: numericValue,
       state: newState,
-      deathSaves: newState === 'ko' ? { successes: [], failures: [] } : character.deathSaves
+      deathSaves: newState === 'ko' ? { successes: [], failures: [] } : combatant.deathSaves
     });
   };
 
@@ -66,7 +65,7 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
   };
 
   const handleMaxHpBlur = () => {
-    updateCharacter({ ...character, maxHp: Number(maxHp) });
+    updateCombatant({ ...combatant, maxHp: Number(maxHp) });
     setIsNumericInputActive(false);
   };
 
@@ -92,7 +91,7 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
       <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>HP</label>
       <div className="relative w-16 border border-zinc-300 dark:border-zinc-700 rounded overflow-hidden">
         <Input
-          id={`current-hp-${character.id}`}
+          id={`current-hp-${combatant.id}`}
           type="text"
           inputMode="numeric"
           value={currentHp}
@@ -105,7 +104,7 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
         />
         <Separator className="my-0 bg-zinc-300 dark:bg-zinc-700" />
         <Input
-          id={`max-hp-${character.id}`}
+          id={`max-hp-${combatant.id}`}
           type="text"
           inputMode="numeric"
           value={maxHp}
@@ -121,14 +120,14 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
   );
 
   const renderStateButton = () => (
-    character.type !== 'Environment' ? (
+    combatant.type !== 'Environment' ? (
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             className={`w-full h-[30px] text-xs ${getInputStyle()} border-zinc-300 dark:border-zinc-700`}
           >
-            {getStatusLabel(character.state)}
+            {getStatusLabel(combatant.state)}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0">
@@ -143,60 +142,10 @@ const HPSection = ({ character, isActive, updateCharacter, removeCharacter, setI
                 {getStatusLabel(state)}
               </Button>
             ))}
-            <Separator className="my-0" />
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  className="justify-start text-red-900 dark:text-red-500 hover:text-red-700 dark:hover:text-red-400"
-                >
-                  Delete
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete the character.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => removeCharacter(character.id)}>
-                    Delete
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
           </div>
         </PopoverContent>
       </Popover>
-    ) : (
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button 
-            variant="outline"
-            className={`w-full h-[30px] text-xs ${getInputStyle()} border-zinc-300 dark:border-zinc-700`}
-          >
-            Delete
-          </Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the environment.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => removeCharacter(character.id)}>
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    )
+    ) : null
   );
 
   return (
