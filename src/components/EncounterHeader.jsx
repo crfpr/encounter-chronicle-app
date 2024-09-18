@@ -12,17 +12,18 @@ const EncounterHeader = ({ isRunning, toggleEncounter, encounterTime, round }) =
   return (
     <div className="flex items-center justify-between w-full bg-white dark:bg-zinc-950">
       <div className="flex items-center space-x-2">
-        <div className="text-lg font-semibold">Round {round}</div>
+        <div className="text-lg font-semibold text-zinc-900 dark:text-zinc-100" aria-live="polite">Round {round}</div>
       </div>
       <div className="flex items-center space-x-2">
-        <div className="text-lg font-semibold">{formatTime(encounterTime)}</div>
+        <div className="text-lg font-semibold text-zinc-900 dark:text-zinc-100" aria-live="polite">{formatTime(encounterTime)}</div>
         <Button 
           onClick={toggleEncounter} 
           variant="outline" 
           size="icon"
-          className="h-8 w-8"
+          className="h-8 w-8 bg-zinc-100 hover:bg-zinc-200 text-zinc-900 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-100"
+          aria-label={isRunning ? "Pause encounter" : "Start encounter"}
         >
-          {isRunning ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+          {isRunning ? <Pause className="h-4 w-4" aria-hidden="true" /> : <Play className="h-4 w-4" aria-hidden="true" />}
         </Button>
       </div>
     </div>
