@@ -7,11 +7,12 @@ import { useNumericInput } from '../hooks/useNumericInput';
 const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActive }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown, setCurrentHp] = useNumericInput(combatant.currentHp);
-  const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(combatant.maxHp);
+  const [maxHp, handleMaxHpChange, handleMaxHpKeyDown, setMaxHp] = useNumericInput(combatant.maxHp);
 
   useEffect(() => {
     setCurrentHp(combatant.currentHp);
-  }, [combatant.currentHp, setCurrentHp]);
+    setMaxHp(combatant.maxHp);
+  }, [combatant.currentHp, combatant.maxHp, setCurrentHp, setMaxHp]);
 
   const handleStateChange = (newState) => {
     let updatedCombatant = { ...combatant, state: newState };

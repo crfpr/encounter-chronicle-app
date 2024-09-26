@@ -115,7 +115,7 @@ const CharacterCard = React.memo(({
               <Input
                 type="text"
                 inputMode="numeric"
-                value={ac}
+                value={ac === null ? '' : ac}
                 onChange={handleAcChange}
                 onKeyDown={(e) => handleInputKeyDown(e, 'ac', ac)}
                 onFocus={() => setIsNumericInputActive(true)}
@@ -127,6 +127,7 @@ const CharacterCard = React.memo(({
                   MozAppearance: 'textfield',
                 }}
                 id={`ac-${combatant.id}`}
+                placeholder="AC"
               />
             </div>
           </div>
@@ -179,7 +180,7 @@ const CharacterCard = React.memo(({
           <Input
             type="text"
             inputMode="numeric"
-            value={initiative}
+            value={initiative === null ? '' : initiative}
             onChange={handleInitiativeChange}
             onKeyDown={(e) => handleInputKeyDown(e, 'initiative', initiative)}
             onFocus={() => setIsNumericInputActive(true)}
