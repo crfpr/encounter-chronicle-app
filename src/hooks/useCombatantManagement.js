@@ -12,6 +12,7 @@ export const useCombatantManagement = (loadedEncounterData) => {
         legendaryResistances: char.legendaryResistances || [false, false, false],
         currentHp: char.currentHp !== undefined ? char.currentHp : null,
         maxHp: char.maxHp !== undefined ? char.maxHp : null,
+        isModified: false, // Add this line
       }));
     }
     return [];
@@ -29,6 +30,7 @@ export const useCombatantManagement = (loadedEncounterData) => {
         legendaryResistances: [false, false, false],
         currentHp: null,
         maxHp: null,
+        isModified: false, // Add this line
         ...(newCombatant.type === 'Environment' ? {
           action: undefined,
           bonusAction: undefined,
@@ -56,6 +58,7 @@ export const useCombatantManagement = (loadedEncounterData) => {
             legendaryResistances: updatedCombatant.legendaryResistances || c.legendaryResistances || [false, false, false],
             currentHp: updatedCombatant.currentHp,
             maxHp: updatedCombatant.maxHp,
+            isModified: true, // Set to true when updated
           };
 
           if (updatedCombatant.type === 'Environment') {

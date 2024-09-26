@@ -20,7 +20,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   }, [combatant.currentHp, combatant.maxHp, setCurrentHp, setMaxHp]);
 
   const handleStateChange = (newState) => {
-    let updatedCombatant = { ...combatant, state: newState };
+    let updatedCombatant = { ...combatant, state: newState, isModified: true };
 
     // Update HP only if HP has been previously set (not null)
     if (combatant.currentHp !== null) {
@@ -71,7 +71,8 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
       ...combatant,
       [type]: numericValue,
       state: newState,
-      deathSaves: newState === 'ko' ? { successes: [], failures: [] } : combatant.deathSaves
+      deathSaves: newState === 'ko' ? { successes: [], failures: [] } : combatant.deathSaves,
+      isModified: true, // Set to true when HP is changed
     });
   };
 
@@ -118,7 +119,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         onFocus={() => setIsNumericInputActive(true)}
         onBlur={handleCurrentHpBlur}
         className={`w-full text-center ${getInputStyle()} h-[30px] border-zinc-300 dark:border-zinc-700 no-spinners text-xs`}
-        placeholder="Current HP"
+        placeholder={combatant.isModified ? "Current HP" : "HP"}
       />
       <Input
         id={`max-hp-${combatant.id}`}
@@ -130,7 +131,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         onFocus={() => setIsNumericInputActive(true)}
         onBlur={handleMaxHpBlur}
         className={`w-full text-center ${getInputStyle()} h-[30px] border-zinc-300 dark:border-zinc-700 no-spinners text-xs`}
-        placeholder="Max HP"
+        placeholder={combatant.isModified ? "Max HP" : "Max"}
       />
     </div>
   );
