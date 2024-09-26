@@ -30,17 +30,17 @@ const CharacterCard = forwardRef(({
 
   const handleAddCondition = useCallback(() => {
     const newCondition = { id: Date.now(), label: 'Condition', conditionDuration: null, isPersistent: true };
-    updateCharacter({ ...character, conditions: [...character.conditions, newCondition] });
+    updateCharacter({ ...character, conditions: [...(character.conditions || []), newCondition] });
   }, [character, updateCharacter]);
 
   const handleRemoveCondition = useCallback((conditionId) => {
-    updateCharacter({ ...character, conditions: character.conditions.filter(condition => condition.id !== conditionId) });
+    updateCharacter({ ...character, conditions: (character.conditions || []).filter(condition => condition.id !== conditionId) });
   }, [character, updateCharacter]);
 
   const handleConditionChange = useCallback((conditionId, changes) => {
     updateCharacter({
       ...character,
-      conditions: character.conditions.map(condition => 
+      conditions: (character.conditions || []).map(condition => 
         condition.id === conditionId ? { ...condition, ...changes } : condition
       )
     });
@@ -81,7 +81,7 @@ const CharacterCard = forwardRef(({
     isActive ? 'bg-zinc-900 text-white dark:bg-zinc-900 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'
   , [isActive]);
 
-  const memoizedConditions = useMemo(() => character.conditions.map((condition) => (
+  const memoizedConditions = useMemo(() => (character.conditions || []).map((condition) => (
     <Badge
       key={condition.id}
       className={`h-[30px] px-1 flex items-center space-x-1 ${
