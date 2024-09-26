@@ -10,14 +10,20 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   const [maxHp, handleMaxHpChange, handleMaxHpKeyDown, setMaxHp] = useNumericInput(combatant.maxHp);
 
   useEffect(() => {
-    setCurrentHp(combatant.currentHp);
-    setMaxHp(combatant.maxHp);
+    // Only update if the combatant's currentHp and maxHp are explicitly set (not null)
+    if (combatant.currentHp !== null) {
+      setCurrentHp(combatant.currentHp);
+    }
+    if (combatant.maxHp !== null) {
+      setMaxHp(combatant.maxHp);
+    }
   }, [combatant.currentHp, combatant.maxHp, setCurrentHp, setMaxHp]);
 
   const handleStateChange = (newState) => {
     let updatedCombatant = { ...combatant, state: newState };
 
-    if (combatant.currentHp !== null) { // Prevent changes if HP is still null
+    // Update HP only if HP has been previously set (not null)
+    if (combatant.currentHp !== null) {
       if (newState === 'ko' || newState === 'dead') {
         updatedCombatant.currentHp = 0;
         setCurrentHp(0);
