@@ -67,13 +67,20 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
       }
     }
 
-    updateCombatant({
+    const updatedCombatant = {
       ...combatant,
       [type]: numericValue,
       state: newState,
       deathSaves: newState === 'ko' ? { successes: [], failures: [] } : combatant.deathSaves,
-      isModified: true, // Set to true when HP is changed
-    });
+      isModified: true,
+    };
+
+    // Log when isModified is changed to true
+    if (!combatant.isModified) {
+      console.log(`Combatant ${combatant.name} (ID: ${combatant.id}) HP modified for the first time.`);
+    }
+
+    updateCombatant(updatedCombatant);
   };
 
   const handleCurrentHpBlur = () => {
