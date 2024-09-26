@@ -5,28 +5,28 @@ import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/popove
 import { Separator } from "../components/ui/separator";
 import { useNumericInput } from '../hooks/useNumericInput';
 
-const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActive, isMobile }) => {
+const HPSection = ({ character, isActive, updateCharacter, setIsNumericInputActive, isMobile }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown, setCurrentHp] = useNumericInput(combatant.currentHp || 0);
-  const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(combatant.maxHp || 0);
+  const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown, setCurrentHp] = useNumericInput(character.currentHp || 0);
+  const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(character.maxHp || 0);
 
   useEffect(() => {
-    setCurrentHp(combatant.currentHp || 0);
-  }, [combatant.currentHp, setCurrentHp]);
+    setCurrentHp(character.currentHp || 0);
+  }, [character.currentHp, setCurrentHp]);
 
   const handleStateChange = (newState) => {
-    let updatedCombatant = { ...combatant, state: newState };
+    let updatedCharacter = { ...character, state: newState };
     if (newState === 'ko') {
-      updatedCombatant.currentHp = 0;
-      updatedCombatant.deathSaves = { successes: [], failures: [] };
+      updatedCharacter.currentHp = 0;
+      updatedCharacter.deathSaves = { successes: [], failures: [] };
     } else if (newState === 'stable') {
-      updatedCombatant.currentHp = 1;
+      updatedCharacter.currentHp = 1;
     } else if (newState === 'dead') {
-      updatedCombatant.currentHp = 0;
-    } else if (newState === 'alive' && updatedCombatant.currentHp === 0) {
-      updatedCombatant.currentHp = 1;
+      updatedCharacter.currentHp = 0;
+    } else if (newState === 'alive' && updatedCharacter.currentHp === 0) {
+      updatedCharacter.currentHp = 1;
     }
-    updateCombatant(updatedCombatant);
+    updateCharacter(updatedCharacter);
     setIsPopoverOpen(false);
   };
 
@@ -41,21 +41,21 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
 
   const handleHPChange = (value) => {
     const numericValue = Number(value);
-    let newState = combatant.state;
+    let newState = character.state;
 
-    if (numericValue <= 0 && Number(combatant.maxHp) > 0) {
+    if (numericValue <= 0 && Number(character.maxHp) > 0) {
       newState = 'ko';
     } else if (numericValue > 0) {
-      if (combatant.state === 'ko' || combatant.state === 'dead' || (combatant.state === 'stable' && numericValue > 1)) {
+      if (character.state === 'ko' || character.state === 'dead' || (character.state === 'stable' && numericValue > 1)) {
         newState = 'alive';
       }
     }
 
-    updateCombatant({
-      ...combatant,
+    updateCharacter({
+      ...character,
       currentHp: numericValue,
       state: newState,
-      deathSaves: newState === 'ko' ? { successes: [], failures: [] } : combatant.deathSaves
+      deathSaves: newState === 'ko' ? { successes: [], failures: [] } : character.deathSaves
     });
   };
 
@@ -65,7 +65,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   };
 
   const handleMaxHpBlur = () => {
-    updateCombatant({ ...combatant, maxHp: Number(maxHp) });
+    updateCharacter({ ...character, maxHp: Number(maxHp) });
     setIsNumericInputActive(false);
   };
 
@@ -84,14 +84,14 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   };
 
   const getInputStyle = () => 
-    isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
+    isActive ? 'bg-zinc-900 text-white dark:bg-zinc-900 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100';
 
   const renderHPInputs = () => (
     <div className="flex flex-col items-center w-full">
       <label className={`text-xs font-semibold mb-1 ${isActive ? 'text-white dark:text-zinc-100' : 'text-black dark:text-zinc-100'}`}>HP</label>
       <div className="relative w-16 border border-zinc-300 dark:border-zinc-700 rounded overflow-hidden">
         <Input
-          id={`current-hp-${combatant.id}`}
+          id={`current-hp-${character.id}`}
           type="text"
           inputMode="numeric"
           value={currentHp}
@@ -104,7 +104,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         />
         <Separator className="my-0 bg-zinc-300 dark:bg-zinc-700" />
         <Input
-          id={`max-hp-${combatant.id}`}
+          id={`max-hp-${character.id}`}
           type="text"
           inputMode="numeric"
           value={maxHp}
@@ -120,14 +120,14 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   );
 
   const renderStateButton = () => (
-    combatant.type !== 'Environment' ? (
+    character.type !== 'Environment' ? (
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             className={`w-full h-[30px] text-xs ${getInputStyle()} border-zinc-300 dark:border-zinc-700`}
           >
-            {getStatusLabel(combatant.state)}
+            {getStatusLabel(character.state)}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0">
@@ -149,7 +149,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   );
 
   return (
-    <div className={`${isMobile ? 'w-auto flex-shrink-0' : 'w-20 flex-shrink-0'} ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} border-l border-zinc-300 dark:border-zinc-700 flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
+    <div className={`${isMobile ? 'w-auto flex-shrink-0' : 'w-20 flex-shrink-0'} ${isActive ? 'bg-zinc-900 text-white dark:bg-zinc-900 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} border-l border-zinc-300 dark:border-zinc-700 flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
       <div className="flex flex-col items-center space-y-2 w-full">
         {renderHPInputs()}
         {renderStateButton()}
