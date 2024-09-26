@@ -16,19 +16,24 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
 
   const handleStateChange = (newState) => {
     let updatedCombatant = { ...combatant, state: newState };
-    if (newState === 'ko' || newState === 'dead') {
-      updatedCombatant.currentHp = 0;
-      setCurrentHp(0);
-    } else if (newState === 'stable') {
-      updatedCombatant.currentHp = 1;
-      setCurrentHp(1);
-    } else if (newState === 'alive' && (updatedCombatant.currentHp === 0 || updatedCombatant.currentHp === null)) {
-      updatedCombatant.currentHp = 1;
-      setCurrentHp(1);
+
+    if (combatant.currentHp !== null) { // Prevent changes if HP is still null
+      if (newState === 'ko' || newState === 'dead') {
+        updatedCombatant.currentHp = 0;
+        setCurrentHp(0);
+      } else if (newState === 'stable') {
+        updatedCombatant.currentHp = 1;
+        setCurrentHp(1);
+      } else if (newState === 'alive' && (updatedCombatant.currentHp === 0 || updatedCombatant.currentHp === null)) {
+        updatedCombatant.currentHp = 1;
+        setCurrentHp(1);
+      }
     }
+
     if (newState === 'ko') {
       updatedCombatant.deathSaves = { successes: [], failures: [] };
     }
+
     updateCombatant(updatedCombatant);
     setIsPopoverOpen(false);
   };
