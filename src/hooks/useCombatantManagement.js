@@ -10,8 +10,8 @@ export const useCombatantManagement = (loadedEncounterData) => {
         deathSaves: char.deathSaves || { successes: [], failures: [] },
         legendaryActions: char.legendaryActions || [false, false, false],
         legendaryResistances: char.legendaryResistances || [false, false, false],
-        currentHp: char.currentHp,
-        maxHp: char.maxHp,
+        currentHp: char.currentHp !== undefined ? char.currentHp : null,
+        maxHp: char.maxHp !== undefined ? char.maxHp : null,
       }));
     }
     return [];

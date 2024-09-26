@@ -22,7 +22,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
     } else if (newState === 'stable') {
       updatedCombatant.currentHp = 1;
       setCurrentHp(1);
-    } else if (newState === 'alive' && updatedCombatant.currentHp === 0) {
+    } else if (newState === 'alive' && (updatedCombatant.currentHp === 0 || updatedCombatant.currentHp === null)) {
       updatedCombatant.currentHp = 1;
       setCurrentHp(1);
     }
