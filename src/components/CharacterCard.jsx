@@ -120,7 +120,7 @@ const CharacterCard = React.memo(({
                 onKeyDown={(e) => handleInputKeyDown(e, 'ac', ac)}
                 onFocus={() => setIsNumericInputActive(true)}
                 onBlur={() => handleInputBlurAndSubmit('ac', ac)}
-                className="w-[40px] h-[40px] text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm"
+                className="w-[40px] h-[30px] text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm"
                 maxLength={2}
                 style={{
                   WebkitAppearance: 'none',
@@ -184,7 +184,7 @@ const CharacterCard = React.memo(({
             onKeyDown={(e) => handleInputKeyDown(e, 'initiative', initiative)}
             onFocus={() => setIsNumericInputActive(true)}
             onBlur={() => handleInputBlurAndSubmit('initiative', initiative)}
-            className={`w-full text-center ${getInputStyle()} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm overflow-visible`}
+            className={`w-full text-center ${getInputStyle()} h-[30px] border-zinc-300 dark:border-zinc-700 no-spinners text-xs`}
             maxLength={3}
             id={`initiative-${combatant.id}`}
             placeholder="Initiative"
