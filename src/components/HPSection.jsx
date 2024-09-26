@@ -10,21 +10,21 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   const [maxHp, handleMaxHpChange, handleMaxHpKeyDown, setMaxHp] = useNumericInput(combatant.maxHp);
 
   useEffect(() => {
-    setCurrentHp(combatant.currentHp === 0 ? '' : combatant.currentHp);
-    setMaxHp(combatant.maxHp === 0 ? '' : combatant.maxHp);
+    setCurrentHp(combatant.currentHp === null ? '' : combatant.currentHp);
+    setMaxHp(combatant.maxHp === null ? '' : combatant.maxHp);
   }, [combatant.currentHp, combatant.maxHp, setCurrentHp, setMaxHp]);
 
   const handleStateChange = (newState) => {
     let updatedCombatant = { ...combatant, state: newState };
-    if (newState === 'ko') {
+    if (newState === 'ko' || newState === 'dead') {
       updatedCombatant.currentHp = 0;
-      updatedCombatant.deathSaves = { successes: [], failures: [] };
+      setCurrentHp(0);
     } else if (newState === 'stable') {
       updatedCombatant.currentHp = 1;
-    } else if (newState === 'dead') {
-      updatedCombatant.currentHp = 0;
+      setCurrentHp(1);
     } else if (newState === 'alive' && updatedCombatant.currentHp === 0) {
       updatedCombatant.currentHp = 1;
+      setCurrentHp(1);
     }
     updateCombatant(updatedCombatant);
     setIsPopoverOpen(false);
