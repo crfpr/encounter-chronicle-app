@@ -92,37 +92,36 @@ const CharacterList = forwardRef(({ combatants, setCombatants, activeCombatantIn
   };
 
   return (
-    <div ref={listRef} className="space-y-4 overflow-y-auto h-full">
-      {combatants.map((combatant, index) => (
-        <div 
-          key={combatant.id} 
-          className={`relative transition-all duration-300 ease-in-out ${index === activeCombatantIndex ? 'z-10' : 'z-0'}`} 
-          data-index={index}
-          ref={index === activeCombatantIndex ? activeCombatantRef : null}
-        >
-          <CharacterCard
-            combatant={combatant}
-            updateCombatant={updateCombatant}
-            removeCombatant={removeCombatant}
-            isActive={index === activeCombatantIndex}
-            turnTime={turnTime}
-            onPreviousTurn={onPreviousTurn}
-            onNextTurn={onNextTurn}
-            setIsNumericInputActive={setIsNumericInputActive}
-            onInitiativeBlur={handleInitiativeBlur}
-            onInitiativeSubmit={handleInitiativeSubmit}
-            round={round}
-            isMobile={isMobile}
-          />
-        </div>
-      ))}
-      <div className="pb-6">
-        <Button 
-          onClick={addCombatant} 
-          className="w-full bg-zinc-800 hover:bg-zinc-700 text-white dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 dark:hover:text-zinc-100 transition-colors duration-200"
-        >
-          Add Combatant
-        </Button>
+    <div className="flex flex-col h-full">
+      <div ref={listRef} className="flex-grow space-y-4 overflow-y-auto">
+        {combatants.map((combatant, index) => (
+          <div 
+            key={combatant.id} 
+            className={`relative transition-all duration-300 ease-in-out ${index === activeCombatantIndex ? 'z-10' : 'z-0'}`} 
+            data-index={index}
+            ref={index === activeCombatantIndex ? activeCombatantRef : null}
+          >
+            <CharacterCard
+              combatant={combatant}
+              updateCombatant={updateCombatant}
+              removeCombatant={removeCombatant}
+              isActive={index === activeCombatantIndex}
+              turnTime={turnTime}
+              onPreviousTurn={onPreviousTurn}
+              onNextTurn={onNextTurn}
+              setIsNumericInputActive={setIsNumericInputActive}
+              onInitiativeBlur={handleInitiativeBlur}
+              onInitiativeSubmit={handleInitiativeSubmit}
+              round={round}
+              isMobile={isMobile}
+            />
+          </div>
+        ))}
+      </div>
+      <div className="sticky bottom-0 left-0 right-0 bg-white dark:bg-zinc-950 border-t border-zinc-300 dark:border-zinc-700 p-4 flex justify-between items-center">
+        <Button onClick={onPreviousTurn} variant="outline">Previous</Button>
+        <Button onClick={addCombatant} variant="outline">Add Combatant</Button>
+        <Button onClick={onNextTurn} variant="outline">Next</Button>
       </div>
     </div>
   );
