@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 
 export const useNumericInput = (initialValue, min = 0, max = 999) => {
-  const [value, setValue] = useState(initialValue);
+  const [value, setValue] = useState(initialValue === 0 ? '' : initialValue);
 
   const handleChange = useCallback((e) => {
     const newValue = e.target.value;

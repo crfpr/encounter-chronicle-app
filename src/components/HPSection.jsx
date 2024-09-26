@@ -10,8 +10,8 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   const [maxHp, handleMaxHpChange, handleMaxHpKeyDown, setMaxHp] = useNumericInput(combatant.maxHp);
 
   useEffect(() => {
-    setCurrentHp(combatant.currentHp);
-    setMaxHp(combatant.maxHp);
+    setCurrentHp(combatant.currentHp === 0 ? '' : combatant.currentHp);
+    setMaxHp(combatant.maxHp === 0 ? '' : combatant.maxHp);
   }, [combatant.currentHp, combatant.maxHp, setCurrentHp, setMaxHp]);
 
   const handleStateChange = (newState) => {
@@ -98,7 +98,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         id={`current-hp-${combatant.id}`}
         type="text"
         inputMode="numeric"
-        value={currentHp === null ? '' : currentHp}
+        value={currentHp}
         onChange={handleCurrentHpChange}
         onKeyDown={(e) => handleKeyDown(e, 'currentHp', currentHp)}
         onFocus={() => setIsNumericInputActive(true)}
@@ -110,7 +110,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         id={`max-hp-${combatant.id}`}
         type="text"
         inputMode="numeric"
-        value={maxHp === null ? '' : maxHp}
+        value={maxHp}
         onChange={handleMaxHpChange}
         onKeyDown={(e) => handleKeyDown(e, 'maxHp', maxHp)}
         onFocus={() => setIsNumericInputActive(true)}

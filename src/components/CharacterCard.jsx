@@ -48,7 +48,7 @@ const CharacterCard = React.memo(({
     if (field === 'initiative') {
       onInitiativeBlur(combatant.id, value);
     } else if (field === 'ac') {
-      updateCombatant({ ...combatant, ac: value });
+      updateCombatant({ ...combatant, ac: value === '' ? null : Number(value) });
     }
   }, [combatant.id, onInitiativeBlur, setIsNumericInputActive, updateCombatant]);
 
