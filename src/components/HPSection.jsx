@@ -7,11 +7,11 @@ import { useNumericInput } from '../hooks/useNumericInput';
 
 const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActive, isMobile }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown, setCurrentHp] = useNumericInput(combatant.currentHp || 0);
-  const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(combatant.maxHp || 0);
+  const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown, setCurrentHp] = useNumericInput(combatant.currentHp);
+  const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(combatant.maxHp);
 
   useEffect(() => {
-    setCurrentHp(combatant.currentHp || 0);
+    setCurrentHp(combatant.currentHp);
   }, [combatant.currentHp, setCurrentHp]);
 
   const handleStateChange = (newState) => {
@@ -40,14 +40,16 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   };
 
   const handleHPChange = (value) => {
-    const numericValue = Number(value);
+    const numericValue = value === '' ? null : Number(value);
     let newState = combatant.state;
 
-    if (numericValue <= 0 && Number(combatant.maxHp) > 0) {
-      newState = 'ko';
-    } else if (numericValue > 0) {
-      if (combatant.state === 'ko' || combatant.state === 'dead' || (combatant.state === 'stable' && numericValue > 1)) {
-        newState = 'alive';
+    if (numericValue !== null) {
+      if (numericValue <= 0 && Number(combatant.maxHp) > 0) {
+        newState = 'ko';
+      } else if (numericValue > 0) {
+        if (combatant.state === 'ko' || combatant.state === 'dead' || (combatant.state === 'stable' && numericValue > 1)) {
+          newState = 'alive';
+        }
       }
     }
 
@@ -65,7 +67,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   };
 
   const handleMaxHpBlur = () => {
-    updateCombatant({ ...combatant, maxHp: Number(maxHp) });
+    updateCombatant({ ...combatant, maxHp: maxHp === '' ? null : Number(maxHp) });
     setIsNumericInputActive(false);
   };
 
@@ -73,7 +75,11 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
     if (e.key === 'Enter') {
       e.preventDefault();
       e.target.blur();
-      handleInputBlurAndSubmit(field, value);
+      if (field === 'currentHp') {
+        handleCurrentHpBlur();
+      } else if (field === 'maxHp') {
+        handleMaxHpBlur();
+      }
     } else {
       if (field === 'currentHp') {
         handleCurrentHpKeyDown(e);
@@ -94,7 +100,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
           id={`current-hp-${combatant.id}`}
           type="text"
           inputMode="numeric"
-          value={currentHp}
+          value={currentHp === null ? '' : currentHp}
           onChange={handleCurrentHpChange}
           onKeyDown={(e) => handleKeyDown(e, 'currentHp', currentHp)}
           onFocus={() => setIsNumericInputActive(true)}
@@ -108,7 +114,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
           id={`max-hp-${combatant.id}`}
           type="text"
           inputMode="numeric"
-          value={maxHp}
+          value={maxHp === null ? '' : maxHp}
           onChange={handleMaxHpChange}
           onKeyDown={(e) => handleKeyDown(e, 'maxHp', maxHp)}
           onFocus={() => setIsNumericInputActive(true)}
