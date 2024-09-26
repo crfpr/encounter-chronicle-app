@@ -109,6 +109,11 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
           maxLength={3}
           placeholder="current"
         />
+        {currentHp === null && (
+          <span className="absolute inset-0 flex items-center justify-center pointer-events-none text-xs text-zinc-500 dark:text-zinc-400">
+            current
+          </span>
+        )}
         <Separator className="my-0 bg-zinc-300 dark:bg-zinc-700" />
         <Input
           id={`max-hp-${combatant.id}`}
@@ -123,6 +128,11 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
           maxLength={3}
           placeholder="max"
         />
+        {maxHp === null && (
+          <span className="absolute inset-0 flex items-center justify-center pointer-events-none text-xs text-zinc-500 dark:text-zinc-400 mt-[30px]">
+            max
+          </span>
+        )}
       </div>
     </div>
   );
