@@ -12,6 +12,8 @@ import { useNumericInput } from '../hooks/useNumericInput';
 import ShieldIcon from './ShieldIcon';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 import { Input } from '../components/ui/input';
+import TurnNavigator from './TurnNavigator';
+import PlaceholderTurnNavigator from './PlaceholderTurnNavigator';
 
 const CharacterCard = forwardRef(({ 
   character = {}, // Provide default empty object
