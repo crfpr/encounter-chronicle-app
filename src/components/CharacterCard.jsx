@@ -1,7 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { Input } from '../components/ui/input';
-import TurnNavigator from './TurnNavigator';
-import PlaceholderTurnNavigator from './PlaceholderTurnNavigator';
 import CombatantNameType from './CombatantNameType';
 import ConditionInput from './ConditionInput';
 import { PlusCircle, Trash2 } from 'lucide-react';
@@ -20,9 +18,6 @@ const CombatantCard = React.memo(({
   updateCombatant, 
   removeCombatant, 
   isActive, 
-  turnTime, 
-  onPreviousTurn, 
-  onNextTurn, 
   setIsNumericInputActive, 
   onInitiativeBlur, 
   isMobile, 
@@ -197,17 +192,6 @@ const CombatantCard = React.memo(({
             <span className="absolute inset-0 flex items-center justify-center pointer-events-none text-xs text-zinc-500 dark:text-zinc-400">
               Initiative
             </span>
-          )}
-        </div>
-        <div className="flex-1 flex items-center justify-center mt-2 h-[90px]">
-          {isActive ? (
-            <TurnNavigator
-              turnTime={turnTime}
-              onPreviousTurn={onPreviousTurn}
-              onNextTurn={onNextTurn}
-            />
-          ) : (
-            <PlaceholderTurnNavigator />
           )}
         </div>
       </div>

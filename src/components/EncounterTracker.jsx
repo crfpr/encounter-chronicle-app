@@ -89,7 +89,6 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       combatants,
       setCombatants,
       activeCombatantIndex: encounterLogic.activeCombatantIndex,
-      turnTime: encounterLogic.turnTime,
       onPreviousTurn: encounterLogic.handlePreviousTurn,
       onNextTurn: encounterLogic.handleNextTurn,
       setIsNumericInputActive,

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react
 import CharacterCard from './CharacterCard';
 import { Button } from '../components/ui/button';
 
-const CharacterList = forwardRef(({ combatants, setCombatants, activeCombatantIndex, turnTime, onPreviousTurn, onNextTurn, setIsNumericInputActive, round, isMobile }, ref) => {
+const CharacterList = forwardRef(({ combatants, setCombatants, activeCombatantIndex, onPreviousTurn, onNextTurn, setIsNumericInputActive, round, isMobile }, ref) => {
   const listRef = useRef(null);
   const activeCombatantRef = useRef(null);
 
@@ -106,9 +106,6 @@ const CharacterList = forwardRef(({ combatants, setCombatants, activeCombatantIn
               updateCombatant={updateCombatant}
               removeCombatant={removeCombatant}
               isActive={index === activeCombatantIndex}
-              turnTime={turnTime}
-              onPreviousTurn={onPreviousTurn}
-              onNextTurn={onNextTurn}
               setIsNumericInputActive={setIsNumericInputActive}
               onInitiativeBlur={handleInitiativeBlur}
               onInitiativeSubmit={handleInitiativeSubmit}
