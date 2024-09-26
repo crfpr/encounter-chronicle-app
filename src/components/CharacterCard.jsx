@@ -25,6 +25,18 @@ const CharacterCard = React.memo(({
   const [initiative, handleInitiativeChange, handleInitiativeKeyDown, setInitiative] = useNumericInput(combatant.initiative);
   const [ac, handleAcChange, handleAcKeyDown] = useNumericInput(combatant.ac);
 
+  // Log creation event
+  React.useEffect(() => {
+    console.log('Character card created:', {
+      id: combatant.id,
+      name: combatant.name,
+      type: combatant.type,
+      currentHp: combatant.currentHp,
+      maxHp: combatant.maxHp,
+      isModified: combatant.isModified
+    });
+  }, []);
+
   const handleAddCondition = useCallback(() => {
     const newCondition = { id: Date.now(), label: 'Condition', conditionDuration: null, isPersistent: true };
     updateCombatant({ ...combatant, conditions: [...combatant.conditions, newCondition] });

@@ -12,34 +12,40 @@ export const useCombatantManagement = (loadedEncounterData) => {
         legendaryResistances: char.legendaryResistances || [false, false, false],
         currentHp: char.currentHp !== undefined ? char.currentHp : null,
         maxHp: char.maxHp !== undefined ? char.maxHp : null,
-        isModified: false, // Add this line
+        isModified: false,
       }));
     }
     return [];
   });
 
   const addCombatant = useCallback((newCombatant) => {
-    setCombatants(prevCombatants => [
-      ...prevCombatants,
-      {
-        ...newCombatant,
-        hasActed: false,
-        state: 'alive',
-        deathSaves: { successes: [], failures: [] },
-        legendaryActions: [false, false, false],
-        legendaryResistances: [false, false, false],
-        currentHp: null,
-        maxHp: null,
-        isModified: false, // Add this line
-        ...(newCombatant.type === 'Environment' ? {
-          action: undefined,
-          bonusAction: undefined,
-          reaction: undefined,
-          currentMovement: undefined,
-          maxMovement: undefined
-        } : {})
-      }
-    ]);
+    const combatant = {
+      ...newCombatant,
+      hasActed: false,
+      state: 'alive',
+      deathSaves: { successes: [], failures: [] },
+      legendaryActions: [false, false, false],
+      legendaryResistances: [false, false, false],
+      currentHp: null,
+      maxHp: null,
+      isModified: false,
+      ...(newCombatant.type === 'Environment' ? {
+        action: undefined,
+        bonusAction: undefined,
+        reaction: undefined,
+        currentMovement: undefined,
+        maxMovement: undefined
+      } : {})
+    };
+    setCombatants(prevCombatants => [...prevCombatants, combatant]);
+    console.log('New combatant created:', {
+      id: combatant.id,
+      name: combatant.name,
+      type: combatant.type,
+      currentHp: combatant.currentHp,
+      maxHp: combatant.maxHp,
+      isModified: combatant.isModified
+    });
   }, []);
 
   const removeCombatant = useCallback((id) => {
@@ -58,7 +64,7 @@ export const useCombatantManagement = (loadedEncounterData) => {
             legendaryResistances: updatedCombatant.legendaryResistances || c.legendaryResistances || [false, false, false],
             currentHp: updatedCombatant.currentHp,
             maxHp: updatedCombatant.maxHp,
-            isModified: true, // Set to true when updated
+            isModified: true,
           };
 
           if (updatedCombatant.type === 'Environment') {
