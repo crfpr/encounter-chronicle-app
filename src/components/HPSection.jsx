@@ -101,6 +101,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
           onBlur={handleCurrentHpBlur}
           className={`w-full text-center ${getInputStyle()} h-[30px] border-none no-spinners text-sm`}
           maxLength={3}
+          placeholder="current"
         />
         <Separator className="my-0 bg-zinc-300 dark:bg-zinc-700" />
         <Input
@@ -114,6 +115,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
           onBlur={handleMaxHpBlur}
           className={`w-full text-center ${getInputStyle()} h-[30px] border-none no-spinners text-sm`}
           maxLength={3}
+          placeholder="max"
         />
       </div>
     </div>
