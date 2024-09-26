@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '../components/ui/button';
 import { Play, Pause } from 'lucide-react';
 
-const EncounterHeader = ({ isRunning, toggleEncounter, encounterTime, round }) => {
+const EncounterHeader = ({ isRunning, toggleEncounter, encounterTime, turnTime, round }) => {
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -15,6 +15,8 @@ const EncounterHeader = ({ isRunning, toggleEncounter, encounterTime, round }) =
         <div className="text-lg font-semibold text-zinc-900 dark:text-zinc-100" aria-live="polite">Round {round}</div>
       </div>
       <div className="flex items-center space-x-2">
+        <div className="text-lg font-light text-zinc-700 dark:text-zinc-300" aria-live="polite">{formatTime(turnTime)}</div>
+        <div className="w-px h-6 bg-zinc-300 dark:bg-zinc-700"></div>
         <div className="text-lg font-semibold text-zinc-900 dark:text-zinc-100" aria-live="polite">{formatTime(encounterTime)}</div>
         <Button 
           onClick={toggleEncounter} 

@@ -32,6 +32,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       combatants,
       round: encounterLogic.round,
       encounterTime: encounterLogic.encounterTime,
+      turnTime: encounterLogic.turnTime,
       notes,
       log: encounterLogic.encounterLog,
       activeCombatantIndex: encounterLogic.activeCombatantIndex,
@@ -44,6 +45,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       encounterLogic.setRound(loadedEncounterData.round || 1);
       encounterLogic.setActiveCombatantIndex(loadedEncounterData.activeCombatantIndex || 0);
       encounterLogic.setEncounterTime(loadedEncounterData.encounterTime || 0);
+      encounterLogic.setTurnTime(loadedEncounterData.turnTime || 0);
       setNotes(loadedEncounterData.notes || '');
       encounterLogic.setEncounterLog(loadedEncounterData.log || []);
       setEncounterName(loadedEncounterData.encounterName || 'New Encounter');
@@ -105,6 +107,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
             isRunning={encounterLogic.isRunning}
             toggleEncounter={encounterLogic.toggleEncounter}
             encounterTime={encounterLogic.encounterTime}
+            turnTime={encounterLogic.turnTime}
             round={encounterLogic.round}
           />
         </div>
