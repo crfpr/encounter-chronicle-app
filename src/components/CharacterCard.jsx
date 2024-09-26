@@ -13,7 +13,7 @@ import { useNumericInput } from '../hooks/useNumericInput';
 import ShieldIcon from './ShieldIcon';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
 
-const CombatantCard = React.memo(({ 
+const CharacterCard = React.memo(({ 
   combatant, 
   updateCombatant, 
   removeCombatant, 
@@ -152,8 +152,8 @@ const CombatantCard = React.memo(({
 
         {combatant.type === 'Legendary' && (
           <LegendaryFeatures
-            combatant={combatant}
-            updateCombatant={updateCombatant}
+            character={combatant}
+            updateCharacter={updateCombatant}
             isMobile={isMobile}
           />
         )}
@@ -235,4 +235,4 @@ const CombatantCard = React.memo(({
   );
 });
 
-export default CombatantCard;
+export default CharacterCard;

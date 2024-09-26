@@ -4,6 +4,10 @@ import { Label } from "./ui/label";
 import { cn } from "../lib/utils";
 
 const LegendaryFeatures = ({ character, updateCharacter, isMobile }) => {
+  if (!character || character.type !== 'Legendary') {
+    return null;
+  }
+
   const handleLegendaryActionToggle = (index) => {
     const updatedActions = [...(character.legendaryActions || [])];
     updatedActions[index] = !updatedActions[index];
@@ -40,6 +44,7 @@ const LegendaryFeatures = ({ character, updateCharacter, isMobile }) => {
     );
   };
 
+  // Only render if the character is alive
   if (character.state !== 'alive') {
     return null;
   }
