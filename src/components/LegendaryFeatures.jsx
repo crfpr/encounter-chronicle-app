@@ -4,18 +4,18 @@ import { Label } from "./ui/label";
 import { cn } from "../lib/utils";
 
 const LegendaryFeatures = ({ character, updateCharacter, isMobile }) => {
-  if (!character || character.type !== 'Legendary') {
+  if (!character || character.type !== 'Legendary' || character.state !== 'alive') {
     return null;
   }
 
   const handleLegendaryActionToggle = (index) => {
-    const updatedActions = [...(character.legendaryActions || [])];
+    const updatedActions = [...(character.legendaryActions || [false, false, false])];
     updatedActions[index] = !updatedActions[index];
     updateCharacter({ ...character, legendaryActions: updatedActions });
   };
 
   const handleLegendaryResistanceToggle = (index) => {
-    const updatedResistances = [...(character.legendaryResistances || [])];
+    const updatedResistances = [...(character.legendaryResistances || [false, false, false])];
     updatedResistances[index] = !updatedResistances[index];
     updateCharacter({ ...character, legendaryResistances: updatedResistances });
   };
@@ -43,11 +43,6 @@ const LegendaryFeatures = ({ character, updateCharacter, isMobile }) => {
       </div>
     );
   };
-
-  // Only render if the character is alive
-  if (character.state !== 'alive') {
-    return null;
-  }
 
   return (
     <div className="space-y-2">
