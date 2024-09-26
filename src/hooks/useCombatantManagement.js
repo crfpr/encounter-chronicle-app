@@ -9,43 +9,31 @@ export const useCombatantManagement = (loadedEncounterData) => {
         state: char.state || 'alive',
         deathSaves: char.deathSaves || { successes: [], failures: [] },
         legendaryActions: char.legendaryActions || [false, false, false],
-        legendaryResistances: char.legendaryResistances || [false, false, false],
-        currentHp: char.currentHp !== undefined ? char.currentHp : null,
-        maxHp: char.maxHp !== undefined ? char.maxHp : null,
-        isModified: false,
+        legendaryResistances: char.legendaryResistances || [false, false, false]
       }));
     }
     return [];
   });
 
   const addCombatant = useCallback((newCombatant) => {
-    const combatant = {
-      ...newCombatant,
-      hasActed: false,
-      state: 'alive',
-      deathSaves: { successes: [], failures: [] },
-      legendaryActions: [false, false, false],
-      legendaryResistances: [false, false, false],
-      currentHp: null,
-      maxHp: null,
-      isModified: false,
-      ...(newCombatant.type === 'Environment' ? {
-        action: undefined,
-        bonusAction: undefined,
-        reaction: undefined,
-        currentMovement: undefined,
-        maxMovement: undefined
-      } : {})
-    };
-    setCombatants(prevCombatants => [...prevCombatants, combatant]);
-    console.log('New combatant created:', {
-      id: combatant.id,
-      name: combatant.name,
-      type: combatant.type,
-      currentHp: combatant.currentHp,
-      maxHp: combatant.maxHp,
-      isModified: combatant.isModified
-    });
+    setCombatants(prevCombatants => [
+      ...prevCombatants,
+      {
+        ...newCombatant,
+        hasActed: false,
+        state: 'alive',
+        deathSaves: { successes: [], failures: [] },
+        legendaryActions: [false, false, false],
+        legendaryResistances: [false, false, false],
+        ...(newCombatant.type === 'Environment' ? {
+          action: undefined,
+          bonusAction: undefined,
+          reaction: undefined,
+          currentMovement: undefined,
+          maxMovement: undefined
+        } : {})
+      }
+    ]);
   }, []);
 
   const removeCombatant = useCallback((id) => {
@@ -61,10 +49,7 @@ export const useCombatantManagement = (loadedEncounterData) => {
             ...updatedCombatant,
             deathSaves: updatedCombatant.deathSaves || c.deathSaves || { successes: [], failures: [] },
             legendaryActions: updatedCombatant.legendaryActions || c.legendaryActions || [false, false, false],
-            legendaryResistances: updatedCombatant.legendaryResistances || c.legendaryResistances || [false, false, false],
-            currentHp: updatedCombatant.currentHp,
-            maxHp: updatedCombatant.maxHp,
-            isModified: true,
+            legendaryResistances: updatedCombatant.legendaryResistances || c.legendaryResistances || [false, false, false]
           };
 
           if (updatedCombatant.type === 'Environment') {

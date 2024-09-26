@@ -1,12 +1,12 @@
 import { useState, useCallback } from 'react';
 
 export const useNumericInput = (initialValue, min = 0, max = 999) => {
-  const [value, setValue] = useState(initialValue === null ? '' : initialValue);
+  const [value, setValue] = useState(initialValue);
 
   const handleChange = useCallback((e) => {
     const newValue = e.target.value;
     if (newValue === '' || (Number.isInteger(Number(newValue)) && Number(newValue) >= min && Number(newValue) <= max)) {
-      setValue(newValue === '' ? '' : Number(newValue));
+      setValue(newValue);
     }
   }, [min, max]);
 
@@ -15,8 +15,8 @@ export const useNumericInput = (initialValue, min = 0, max = 999) => {
       e.preventDefault();
       const increment = e.key === 'ArrowUp' ? 1 : -1;
       setValue(prevValue => {
-        const newValue = (prevValue === '' ? 0 : Number(prevValue)) + increment;
-        return newValue >= min && newValue <= max ? newValue : prevValue;
+        const newValue = Number(prevValue) + increment;
+        return newValue >= min && newValue <= max ? newValue.toString() : prevValue;
       });
     }
   }, [min, max]);

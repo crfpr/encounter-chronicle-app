@@ -7,33 +7,24 @@ import { useNumericInput } from '../hooks/useNumericInput';
 const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActive }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown, setCurrentHp] = useNumericInput(combatant.currentHp);
-  const [maxHp, handleMaxHpChange, handleMaxHpKeyDown, setMaxHp] = useNumericInput(combatant.maxHp);
+  const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(combatant.maxHp);
 
   useEffect(() => {
     setCurrentHp(combatant.currentHp);
-    setMaxHp(combatant.maxHp);
-  }, [combatant.currentHp, combatant.maxHp, setCurrentHp, setMaxHp]);
+  }, [combatant.currentHp, setCurrentHp]);
 
   const handleStateChange = (newState) => {
-    let updatedCombatant = { ...combatant, state: newState, isModified: true };
-
-    if (combatant.currentHp !== null) {
-      if (newState === 'ko' || newState === 'dead') {
-        updatedCombatant.currentHp = 0;
-        setCurrentHp(0);
-      } else if (newState === 'stable') {
-        updatedCombatant.currentHp = 1;
-        setCurrentHp(1);
-      } else if (newState === 'alive' && (updatedCombatant.currentHp === 0 || updatedCombatant.currentHp === null)) {
-        updatedCombatant.currentHp = 1;
-        setCurrentHp(1);
-      }
-    }
-
+    let updatedCombatant = { ...combatant, state: newState };
     if (newState === 'ko') {
+      updatedCombatant.currentHp = 0;
       updatedCombatant.deathSaves = { successes: [], failures: [] };
+    } else if (newState === 'stable') {
+      updatedCombatant.currentHp = 1;
+    } else if (newState === 'dead') {
+      updatedCombatant.currentHp = 0;
+    } else if (newState === 'alive' && updatedCombatant.currentHp === 0) {
+      updatedCombatant.currentHp = 1;
     }
-
     updateCombatant(updatedCombatant);
     setIsPopoverOpen(false);
   };
@@ -61,19 +52,12 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
       }
     }
 
-    const updatedCombatant = {
+    updateCombatant({
       ...combatant,
       [type]: numericValue,
       state: newState,
-      deathSaves: newState === 'ko' ? { successes: [], failures: [] } : combatant.deathSaves,
-      isModified: true,
-    };
-
-    if (!combatant.isModified) {
-      console.log(`Combatant ${combatant.name} (ID: ${combatant.id}) HP modified for the first time.`);
-    }
-
-    updateCombatant(updatedCombatant);
+      deathSaves: newState === 'ko' ? { successes: [], failures: [] } : combatant.deathSaves
+    });
   };
 
   const handleCurrentHpBlur = () => {
@@ -119,7 +103,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         onFocus={() => setIsNumericInputActive(true)}
         onBlur={handleCurrentHpBlur}
         className={`w-full text-center ${getInputStyle()} h-[30px] border-zinc-300 dark:border-zinc-700 no-spinners text-xs`}
-        placeholder={combatant.isModified ? "Current HP" : "HP"}
+        placeholder="Current HP"
       />
       <Input
         id={`max-hp-${combatant.id}`}
@@ -131,7 +115,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         onFocus={() => setIsNumericInputActive(true)}
         onBlur={handleMaxHpBlur}
         className={`w-full text-center ${getInputStyle()} h-[30px] border-zinc-300 dark:border-zinc-700 no-spinners text-xs`}
-        placeholder={combatant.isModified ? "Max HP" : "Max"}
+        placeholder="Max HP"
       />
     </div>
   );

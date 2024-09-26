@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Input } from '../components/ui/input';
 import CombatantNameType from './CombatantNameType';
 import ConditionInput from './ConditionInput';
@@ -25,28 +25,6 @@ const CharacterCard = React.memo(({
   const [initiative, handleInitiativeChange, handleInitiativeKeyDown, setInitiative] = useNumericInput(combatant.initiative);
   const [ac, handleAcChange, handleAcKeyDown] = useNumericInput(combatant.ac);
 
-  // Log creation event
-  React.useEffect(() => {
-    console.log('Character card created:', {
-      id: combatant.id,
-      name: combatant.name,
-      type: combatant.type,
-      currentHp: combatant.currentHp,
-      maxHp: combatant.maxHp,
-      isModified: combatant.isModified
-    });
-  }, []);
-
-  // HP value change listener
-  useEffect(() => {
-    console.log('HP values changed:', {
-      id: combatant.id,
-      name: combatant.name,
-      currentHp: combatant.currentHp,
-      maxHp: combatant.maxHp
-    });
-  }, [combatant.currentHp, combatant.maxHp]);
-
   const handleAddCondition = useCallback(() => {
     const newCondition = { id: Date.now(), label: 'Condition', conditionDuration: null, isPersistent: true };
     updateCombatant({ ...combatant, conditions: [...combatant.conditions, newCondition] });
@@ -70,7 +48,7 @@ const CharacterCard = React.memo(({
     if (field === 'initiative') {
       onInitiativeBlur(combatant.id, value);
     } else if (field === 'ac') {
-      updateCombatant({ ...combatant, ac: value === '' ? null : Number(value) });
+      updateCombatant({ ...combatant, ac: value });
     }
   }, [combatant.id, onInitiativeBlur, setIsNumericInputActive, updateCombatant]);
 
@@ -137,7 +115,7 @@ const CharacterCard = React.memo(({
               <Input
                 type="text"
                 inputMode="numeric"
-                value={ac === null ? '' : ac}
+                value={ac}
                 onChange={handleAcChange}
                 onKeyDown={(e) => handleInputKeyDown(e, 'ac', ac)}
                 onFocus={() => setIsNumericInputActive(true)}
@@ -149,7 +127,6 @@ const CharacterCard = React.memo(({
                   MozAppearance: 'textfield',
                 }}
                 id={`ac-${combatant.id}`}
-                placeholder="AC"
               />
             </div>
           </div>
@@ -202,7 +179,7 @@ const CharacterCard = React.memo(({
           <Input
             type="text"
             inputMode="numeric"
-            value={initiative === null ? '' : initiative}
+            value={initiative}
             onChange={handleInitiativeChange}
             onKeyDown={(e) => handleInputKeyDown(e, 'initiative', initiative)}
             onFocus={() => setIsNumericInputActive(true)}
