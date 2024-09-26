@@ -102,7 +102,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         onKeyDown={(e) => handleKeyDown(e, 'currentHp', currentHp)}
         onFocus={() => setIsNumericInputActive(true)}
         onBlur={handleCurrentHpBlur}
-        className={`w-full text-center ${getInputStyle()} h-[30px] border-zinc-300 dark:border-zinc-700 no-spinners text-xs`}
+        className={`w-full text-center ${getInputStyle()} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm`}
         placeholder="Current HP"
       />
       <Input
@@ -114,7 +114,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         onKeyDown={(e) => handleKeyDown(e, 'maxHp', maxHp)}
         onFocus={() => setIsNumericInputActive(true)}
         onBlur={handleMaxHpBlur}
-        className={`w-full text-center ${getInputStyle()} h-[30px] border-zinc-300 dark:border-zinc-700 no-spinners text-xs`}
+        className={`w-full text-center ${getInputStyle()} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm`}
         placeholder="Max HP"
       />
     </div>
@@ -126,7 +126,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className={`w-full h-[30px] text-xs ${getInputStyle()} border-zinc-300 dark:border-zinc-700`}
+            className={`w-full h-[40px] text-xs ${getInputStyle()} border-zinc-300 dark:border-zinc-700`}
           >
             {getStatusLabel(combatant.state)}
           </Button>
