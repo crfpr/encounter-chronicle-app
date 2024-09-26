@@ -10,8 +10,8 @@ export const useCombatantManagement = (loadedEncounterData) => {
         deathSaves: char.deathSaves || { successes: [], failures: [] },
         legendaryActions: char.legendaryActions || [false, false, false],
         legendaryResistances: char.legendaryResistances || [false, false, false],
-        currentHp: char.currentHp === 0 ? null : char.currentHp,
-        maxHp: char.maxHp === 0 ? null : char.maxHp,
+        currentHp: char.currentHp,
+        maxHp: char.maxHp,
       }));
     }
     return [];
@@ -54,8 +54,8 @@ export const useCombatantManagement = (loadedEncounterData) => {
             deathSaves: updatedCombatant.deathSaves || c.deathSaves || { successes: [], failures: [] },
             legendaryActions: updatedCombatant.legendaryActions || c.legendaryActions || [false, false, false],
             legendaryResistances: updatedCombatant.legendaryResistances || c.legendaryResistances || [false, false, false],
-            currentHp: updatedCombatant.currentHp === 0 ? null : updatedCombatant.currentHp,
-            maxHp: updatedCombatant.maxHp === 0 ? null : updatedCombatant.maxHp,
+            currentHp: updatedCombatant.currentHp,
+            maxHp: updatedCombatant.maxHp,
           };
 
           if (updatedCombatant.type === 'Environment') {
