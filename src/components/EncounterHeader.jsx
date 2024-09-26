@@ -15,9 +15,9 @@ const EncounterHeader = ({ isRunning, toggleEncounter, encounterTime, turnTime, 
         <div className="text-lg font-semibold text-zinc-900 dark:text-zinc-100" aria-live="polite">Round {round}</div>
       </div>
       <div className="flex items-center space-x-2">
-        <div className="text-lg font-light text-zinc-700 dark:text-zinc-300" aria-live="polite">{formatTime(turnTime)}</div>
+        <div className="text-lg font-light text-zinc-700 dark:text-zinc-300 w-16 text-right" aria-live="polite">{formatTime(turnTime)}</div>
         <div className="w-px h-6 bg-zinc-300 dark:bg-zinc-700"></div>
-        <div className="text-lg font-semibold text-zinc-900 dark:text-zinc-100" aria-live="polite">{formatTime(encounterTime)}</div>
+        <div className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 w-16 text-right" aria-live="polite">{formatTime(encounterTime)}</div>
         <Button 
           onClick={toggleEncounter} 
           variant="outline" 
