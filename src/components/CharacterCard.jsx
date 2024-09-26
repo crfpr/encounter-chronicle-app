@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Input } from '../components/ui/input';
 import CombatantNameType from './CombatantNameType';
 import ConditionInput from './ConditionInput';
@@ -36,6 +36,16 @@ const CharacterCard = React.memo(({
       isModified: combatant.isModified
     });
   }, []);
+
+  // HP value change listener
+  useEffect(() => {
+    console.log('HP values changed:', {
+      id: combatant.id,
+      name: combatant.name,
+      currentHp: combatant.currentHp,
+      maxHp: combatant.maxHp
+    });
+  }, [combatant.currentHp, combatant.maxHp]);
 
   const handleAddCondition = useCallback(() => {
     const newCondition = { id: Date.now(), label: 'Condition', conditionDuration: null, isPersistent: true };
@@ -185,6 +195,7 @@ const CharacterCard = React.memo(({
     </>
   );
 
+
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''} min-h-[150px]`}>
       <div className={`w-[80px] flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
@@ -241,6 +252,7 @@ const CharacterCard = React.memo(({
         updateCombatant={updateCombatant}
       />
     </div>
+  );
   );
 });
 
