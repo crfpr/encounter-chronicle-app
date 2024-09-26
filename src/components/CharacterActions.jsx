@@ -26,7 +26,7 @@ const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericIn
     return `h-[30px] px-2 text-xs border transition-colors ${
       isToggled
         ? isDarkMode
-          ? 'bg-zinc-50 text-zinc-900 dark:bg-zinc-50 dark:text-zinc-900'
+          ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white'
           : 'bg-zinc-700 text-white'
         : 'bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800'
     } border-zinc-300 dark:border-zinc-800`;

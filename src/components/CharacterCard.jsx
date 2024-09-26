@@ -1,8 +1,11 @@
-import React, { useState, useCallback, useMemo, forwardRef, useImperativeHandle } from 'react';
-import CharacterNameType from './CharacterNameType';
+import React, { useState, useCallback, useMemo } from 'react';
+import { Input } from '../components/ui/input';
+import TurnNavigator from './TurnNavigator';
+import PlaceholderTurnNavigator from './PlaceholderTurnNavigator';
+import CombatantNameType from './CombatantNameType';
 import ConditionInput from './ConditionInput';
 import { PlusCircle, Trash2 } from 'lucide-react';
-import CharacterActions from './CharacterActions';
+import CombatantActions from './CombatantActions';
 import HPSection from './HPSection';
 import CombatantStateManager from './CombatantStateManager';
 import LegendaryFeatures from './LegendaryFeatures';
@@ -11,14 +14,11 @@ import { Button } from '../components/ui/button';
 import { useNumericInput } from '../hooks/useNumericInput';
 import ShieldIcon from './ShieldIcon';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog';
-import { Input } from '../components/ui/input';
-import TurnNavigator from './TurnNavigator';
-import PlaceholderTurnNavigator from './PlaceholderTurnNavigator';
 
-const CharacterCard = forwardRef(({ 
-  character = {}, // Provide default empty object
-  updateCharacter, 
-  removeCharacter, 
+const CombatantCard = React.memo(({ 
+  combatant, 
+  updateCombatant, 
+  removeCombatant, 
   isActive, 
   turnTime, 
   onPreviousTurn, 
@@ -26,36 +26,36 @@ const CharacterCard = forwardRef(({
   setIsNumericInputActive, 
   onInitiativeBlur, 
   isMobile, 
-}, ref) => {
-  const [initiative, handleInitiativeChange, handleInitiativeKeyDown, setInitiative] = useNumericInput(character.initiative || '');
-  const [ac, handleAcChange, handleAcKeyDown] = useNumericInput(character.ac || '');
+}) => {
+  const [initiative, handleInitiativeChange, handleInitiativeKeyDown, setInitiative] = useNumericInput(combatant.initiative);
+  const [ac, handleAcChange, handleAcKeyDown] = useNumericInput(combatant.ac);
 
   const handleAddCondition = useCallback(() => {
     const newCondition = { id: Date.now(), label: 'Condition', conditionDuration: null, isPersistent: true };
-    updateCharacter({ ...character, conditions: [...(character.conditions || []), newCondition] });
-  }, [character, updateCharacter]);
+    updateCombatant({ ...combatant, conditions: [...combatant.conditions, newCondition] });
+  }, [combatant, updateCombatant]);
 
   const handleRemoveCondition = useCallback((conditionId) => {
-    updateCharacter({ ...character, conditions: (character.conditions || []).filter(condition => condition.id !== conditionId) });
-  }, [character, updateCharacter]);
+    updateCombatant({ ...combatant, conditions: combatant.conditions.filter(condition => condition.id !== conditionId) });
+  }, [combatant, updateCombatant]);
 
   const handleConditionChange = useCallback((conditionId, changes) => {
-    updateCharacter({
-      ...character,
-      conditions: (character.conditions || []).map(condition => 
+    updateCombatant({
+      ...combatant,
+      conditions: combatant.conditions.map(condition => 
         condition.id === conditionId ? { ...condition, ...changes } : condition
       )
     });
-  }, [character, updateCharacter]);
+  }, [combatant, updateCombatant]);
 
   const handleInputBlurAndSubmit = useCallback((field, value) => {
     setIsNumericInputActive(false);
     if (field === 'initiative') {
-      onInitiativeBlur(character.id, value);
+      onInitiativeBlur(combatant.id, value);
     } else if (field === 'ac') {
-      updateCharacter({ ...character, ac: value });
+      updateCombatant({ ...combatant, ac: value });
     }
-  }, [character.id, onInitiativeBlur, setIsNumericInputActive, updateCharacter]);
+  }, [combatant.id, onInitiativeBlur, setIsNumericInputActive, updateCombatant]);
 
   const handleInputKeyDown = useCallback((e, field, value) => {
     if (e.key === 'Enter') {
@@ -72,18 +72,18 @@ const CharacterCard = forwardRef(({
   }, [handleInitiativeKeyDown, handleAcKeyDown, handleInputBlurAndSubmit]);
 
   const getBorderStyle = useCallback(() => 
-    isActive ? 'border-zinc-50 border-2 -m-0.5' : 'border-zinc-300 dark:border-zinc-700'
+    isActive ? 'border-zinc-700 dark:border-zinc-700' : 'border-zinc-300 dark:border-zinc-700'
   , [isActive]);
 
   const getTabColor = useCallback(() => 
-    isActive ? 'bg-zinc-900 text-white dark:bg-zinc-900 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'
+    isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'
   , [isActive]);
 
   const getInputStyle = useCallback(() => 
-    isActive ? 'bg-zinc-900 text-white dark:bg-zinc-900 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'
+    isActive ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'
   , [isActive]);
 
-  const memoizedConditions = useMemo(() => (character.conditions || []).map((condition) => (
+  const memoizedConditions = useMemo(() => combatant.conditions.map((condition) => (
     <Badge
       key={condition.id}
       className={`h-[30px] px-1 flex items-center space-x-1 ${
@@ -98,19 +98,19 @@ const CharacterCard = forwardRef(({
         onTogglePersistent={() => handleConditionChange(condition.id, { isPersistent: !condition.isPersistent })}
       />
     </Badge>
-  )), [character.conditions, isActive, handleConditionChange, handleRemoveCondition]);
+  )), [combatant.conditions, isActive, handleConditionChange, handleRemoveCondition]);
 
-  const renderCharacterContent = () => (
+  const renderCombatantContent = () => (
     <>
       <div className="flex-grow space-y-2">
         <div className="flex items-start space-x-2 relative">
           <div className="flex-grow flex items-start">
             <div className={`flex-grow ${isMobile ? 'w-[40vw]' : ''}`}>
-              <CharacterNameType
-                name={character.name || 'New Character'}
-                type={character.type}
+              <CombatantNameType
+                name={combatant.name || 'New Combatant'}
+                type={combatant.type}
                 onUpdate={(newName, newType) => {
-                  updateCharacter({ ...character, name: newName || 'New Character', type: newType });
+                  updateCombatant({ ...combatant, name: newName || 'New Combatant', type: newType });
                 }}
                 isMobile={isMobile}
               />
@@ -125,40 +125,40 @@ const CharacterCard = forwardRef(({
                 onKeyDown={(e) => handleInputKeyDown(e, 'ac', ac)}
                 onFocus={() => setIsNumericInputActive(true)}
                 onBlur={() => handleInputBlurAndSubmit('ac', ac)}
-                className={`w-[40px] h-[40px] text-center ${getInputStyle()} border-none focus:ring-0 text-sm`}
+                className="w-[40px] h-[40px] text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm"
                 maxLength={2}
                 style={{
                   WebkitAppearance: 'none',
                   MozAppearance: 'textfield',
                 }}
-                id={`ac-${character.id}`}
+                id={`ac-${combatant.id}`}
               />
             </div>
           </div>
         </div>
 
-        {character.type !== 'Environment' && character.state === 'alive' && (
-          <CharacterActions
-            character={character}
+        {combatant.type !== 'Environment' && combatant.state === 'alive' && (
+          <CombatantActions
+            combatant={combatant}
             isActive={isActive}
-            updateCharacter={updateCharacter}
+            updateCombatant={updateCombatant}
             setIsNumericInputActive={setIsNumericInputActive}
             isMobile={isMobile}
           />
         )}
 
-        {character.type !== 'Environment' && character.state === 'ko' && (
+        {combatant.type !== 'Environment' && combatant.state === 'ko' && (
           <CombatantStateManager
-            character={character}
-            updateCharacter={updateCharacter}
+            combatant={combatant}
+            updateCombatant={updateCombatant}
             isMobile={isMobile}
           />
         )}
 
-        {character.type === 'Legendary' && (
+        {combatant.type === 'Legendary' && (
           <LegendaryFeatures
-            character={character}
-            updateCharacter={updateCharacter}
+            combatant={combatant}
+            updateCombatant={updateCombatant}
             isMobile={isMobile}
           />
         )}
@@ -191,7 +191,7 @@ const CharacterCard = forwardRef(({
             onBlur={() => handleInputBlurAndSubmit('initiative', initiative)}
             className={`w-full text-center ${getInputStyle()} h-[40px] border-zinc-300 dark:border-zinc-700 no-spinners text-sm overflow-visible`}
             maxLength={3}
-            id={`initiative-${character.id}`}
+            id={`initiative-${combatant.id}`}
           />
           {!initiative && (
             <span className="absolute inset-0 flex items-center justify-center pointer-events-none text-xs text-zinc-500 dark:text-zinc-400">
@@ -213,7 +213,7 @@ const CharacterCard = forwardRef(({
       </div>
       
       <div className={`flex-grow p-2 flex flex-col ${isMobile ? 'px-1' : ''} relative`}>
-        {renderCharacterContent()}
+        {renderCombatantContent()}
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button 
@@ -228,12 +228,12 @@ const CharacterCard = forwardRef(({
             <AlertDialogHeader>
               <AlertDialogTitle>Are you sure?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete the character.
+                This action cannot be undone. This will permanently delete the combatant.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={() => removeCharacter(character.id)}>
+              <AlertDialogAction onClick={() => removeCombatant(combatant.id)}>
                 Delete
               </AlertDialogAction>
             </AlertDialogFooter>
@@ -242,13 +242,13 @@ const CharacterCard = forwardRef(({
       </div>
 
       <HPSection
-        character={character}
+        combatant={combatant}
         isActive={isActive}
         setIsNumericInputActive={setIsNumericInputActive}
-        updateCharacter={updateCharacter}
+        updateCombatant={updateCombatant}
       />
     </div>
   );
 });
 
-export default CharacterCard;
+export default CombatantCard;
