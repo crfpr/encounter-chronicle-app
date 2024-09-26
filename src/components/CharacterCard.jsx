@@ -14,7 +14,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Input } from '../components/ui/input';
 
 const CharacterCard = forwardRef(({ 
-  character, 
+  character = {}, // Provide default empty object
   updateCharacter, 
   removeCharacter, 
   isActive, 
@@ -25,8 +25,8 @@ const CharacterCard = forwardRef(({
   onInitiativeBlur, 
   isMobile, 
 }, ref) => {
-  const [initiative, handleInitiativeChange, handleInitiativeKeyDown, setInitiative] = useNumericInput(character.initiative);
-  const [ac, handleAcChange, handleAcKeyDown] = useNumericInput(character.ac);
+  const [initiative, handleInitiativeChange, handleInitiativeKeyDown, setInitiative] = useNumericInput(character.initiative || '');
+  const [ac, handleAcChange, handleAcKeyDown] = useNumericInput(character.ac || '');
 
   const handleAddCondition = useCallback(() => {
     const newCondition = { id: Date.now(), label: 'Condition', conditionDuration: null, isPersistent: true };
