@@ -25,6 +25,8 @@ const CharacterCard = React.memo(({
   const [initiative, handleInitiativeChange, handleInitiativeKeyDown, setInitiative] = useNumericInput(combatant.initiative);
   const [ac, handleAcChange, handleAcKeyDown] = useNumericInput(combatant.ac);
 
+  console.log(`CharacterCard render - combatant.initiative: ${combatant.initiative}, initiative: ${initiative}`);
+
   const handleAddCondition = useCallback(() => {
     const newCondition = { id: Date.now(), label: 'Condition', conditionDuration: null, isPersistent: true };
     updateCombatant({ ...combatant, conditions: [...combatant.conditions, newCondition] });
@@ -46,6 +48,7 @@ const CharacterCard = React.memo(({
   const handleInputBlurAndSubmit = useCallback((field, value) => {
     setIsNumericInputActive(false);
     if (field === 'initiative') {
+      console.log(`Initiative blur - value: ${value}`);
       onInitiativeBlur(combatant.id, value);
     } else if (field === 'ac') {
       updateCombatant({ ...combatant, ac: value });

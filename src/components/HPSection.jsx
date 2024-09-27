@@ -10,10 +10,13 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(combatant.maxHp);
 
   useEffect(() => {
+    console.log(`HPSection useEffect - combatant.currentHp: ${combatant.currentHp}, currentHp: ${currentHp}`);
     setCurrentHp(combatant.currentHp);
   }, [combatant.currentHp, setCurrentHp]);
 
   const handleStateChange = (newState) => {
+    console.log(`State change from ${combatant.state} to ${newState}`);
+    console.log(`Before state change - currentHp: ${currentHp}, combatant.currentHp: ${combatant.currentHp}`);
     let updatedCombatant = { ...combatant, state: newState };
     if (newState === 'ko') {
       updatedCombatant.currentHp = '0';
@@ -25,6 +28,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
     } else if (newState === 'alive' && updatedCombatant.currentHp === '0') {
       updatedCombatant.currentHp = '1';
     }
+    console.log(`After state change - updatedCombatant.currentHp: ${updatedCombatant.currentHp}`);
     updateCombatant(updatedCombatant);
     setIsPopoverOpen(false);
   };
@@ -39,6 +43,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   };
 
   const handleHPChange = (type, value) => {
+    console.log(`handleHPChange - type: ${type}, value: ${value}, current state: ${combatant.state}`);
     const numericValue = value === '' ? '' : Number(value);
     let newState = combatant.state;
 
@@ -52,6 +57,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
       }
     }
 
+    console.log(`New state after HP change: ${newState}`);
     updateCombatant({
       ...combatant,
       [type]: value,
@@ -61,11 +67,13 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   };
 
   const handleCurrentHpBlur = () => {
+    console.log(`handleCurrentHpBlur - currentHp: ${currentHp}`);
     handleHPChange('currentHp', currentHp);
     setIsNumericInputActive(false);
   };
 
   const handleMaxHpBlur = () => {
+    console.log(`handleMaxHpBlur - maxHp: ${maxHp}`);
     handleHPChange('maxHp', maxHp);
     setIsNumericInputActive(false);
   };
