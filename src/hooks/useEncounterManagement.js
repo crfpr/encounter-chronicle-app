@@ -36,14 +36,14 @@ export const useEncounterManagement = () => {
         const data = encounterTrackerRef.current.getEncounterData();
         const partyData = {
           encounterName: data.encounterName,
-          characters: data.characters
-            .filter(char => char.type === 'PC')
-            .map(char => ({
-              characterName: char.name,
-              characterType: char.type,
-              characterMaxMovement: char.maxMovement,
-              characterAC: char.ac,
-              characterMaxHP: char.maxHp
+          combatants: data.combatants
+            .filter(combatant => combatant.type === 'PC')
+            .map(combatant => ({
+              combatantName: combatant.name,
+              combatantType: combatant.type,
+              combatantMaxMovement: combatant.maxMovement,
+              combatantAC: combatant.ac,
+              combatantMaxHP: combatant.maxHp
             }))
         };
         const blob = new Blob([JSON.stringify(partyData, null, 2)], { type: 'application/json' });
@@ -73,24 +73,24 @@ export const useEncounterManagement = () => {
       reader.onload = (e) => {
         try {
           const data = JSON.parse(e.target.result);
-          if (data.characters && Array.isArray(data.characters)) {
-            const isPartyData = data.characters.every(char => 
-              'characterName' in char && 'characterType' in char
+          if (data.combatants && Array.isArray(data.combatants)) {
+            const isPartyData = data.combatants.every(combatant => 
+              'combatantName' in combatant && 'combatantType' in combatant
             );
 
             let processedData;
             if (isPartyData) {
               processedData = {
                 encounterName: data.encounterName || 'Imported Party',
-                characters: data.characters.map(char => ({
+                combatants: data.combatants.map(combatant => ({
                   id: Date.now() + Math.random(),
-                  name: char.characterName,
-                  type: char.characterType,
-                  maxMovement: char.characterMaxMovement || 30,
-                  currentMovement: char.characterMaxMovement || 30,
-                  ac: char.characterAC || 10,
-                  maxHp: char.characterMaxHP || 10,
-                  currentHp: char.characterMaxHP || 10,
+                  name: combatant.combatantName,
+                  type: combatant.combatantType,
+                  maxMovement: combatant.combatantMaxMovement || 30,
+                  currentMovement: combatant.combatantMaxMovement || 30,
+                  ac: combatant.combatantAC || 10,
+                  maxHp: combatant.combatantMaxHP || 10,
+                  currentHp: combatant.combatantMaxHP || 10,
                   initiative: '',
                   action: false,
                   bonusAction: false,
@@ -107,16 +107,16 @@ export const useEncounterManagement = () => {
             } else {
               processedData = {
                 ...data,
-                characters: data.characters.map(char => ({
-                  ...char,
-                  id: char.id || Date.now() + Math.random(),
-                  state: char.state || 'alive',
-                  deathSaves: char.deathSaves || { successes: [], failures: [] },
-                  turnCount: char.turnCount || 0,
-                  roundCount: char.roundCount || 0,
-                  cumulativeTurnTime: char.cumulativeTurnTime || 0,
-                  tokens: char.tokens || [],
-                  conditions: char.conditions || []
+                combatants: data.combatants.map(combatant => ({
+                  ...combatant,
+                  id: combatant.id || Date.now() + Math.random(),
+                  state: combatant.state || 'alive',
+                  deathSaves: combatant.deathSaves || { successes: [], failures: [] },
+                  turnCount: combatant.turnCount || 0,
+                  roundCount: combatant.roundCount || 0,
+                  cumulativeTurnTime: combatant.cumulativeTurnTime || 0,
+                  tokens: combatant.tokens || [],
+                  conditions: combatant.conditions || []
                 }))
               };
             }
@@ -129,6 +129,7 @@ export const useEncounterManagement = () => {
           }
         } catch (error) {
           console.error('Error parsing JSON:', error);
+        
         }
       };
       reader.readAsText(file);
