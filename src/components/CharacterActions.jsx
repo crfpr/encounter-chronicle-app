@@ -3,22 +3,22 @@ import { ToggleGroup, ToggleGroupItem } from "../components/ui/toggle-group";
 import { Input } from '../components/ui/input';
 import { useNumericInput } from '../hooks/useNumericInput';
 
-const CombatantActions = ({ combatant, isActive, updateCombatant, setIsNumericInputActive, isMobile }) => {
-  const [currentMovement, handleCurrentMovementChange, handleCurrentMovementKeyDown, setCurrentMovement] = useNumericInput(combatant.currentMovement, 0, 999);
-  const [maxMovement, handleMaxMovementChange, handleMaxMovementKeyDown] = useNumericInput(combatant.maxMovement, 0, 999);
+const CharacterActions = ({ character, isActive, updateCharacter, setIsNumericInputActive, isMobile }) => {
+  const [currentMovement, handleCurrentMovementChange, handleCurrentMovementKeyDown, setCurrentMovement] = useNumericInput(character.currentMovement, 0, 999);
+  const [maxMovement, handleMaxMovementChange, handleMaxMovementKeyDown] = useNumericInput(character.maxMovement, 0, 999);
 
   useEffect(() => {
-    setCurrentMovement(combatant.currentMovement);
-  }, [combatant.currentMovement, setCurrentMovement]);
+    setCurrentMovement(character.currentMovement);
+  }, [character.currentMovement, setCurrentMovement]);
 
   const handleToggleAction = (value) => {
-    const updatedCombatant = {
-      ...combatant,
+    const updatedCharacter = {
+      ...character,
       action: value.includes('action'),
       bonusAction: value.includes('bonusAction'),
       reaction: value.includes('reaction')
     };
-    updateCombatant(updatedCombatant);
+    updateCharacter(updatedCharacter);
   };
 
   const getToggleGroupItemStyle = (isActive, isToggled) => {
@@ -29,15 +29,11 @@ const CombatantActions = ({ combatant, isActive, updateCombatant, setIsNumericIn
           ? 'bg-zinc-700 text-white dark:bg-zinc-700 dark:text-white'
           : 'bg-zinc-700 text-white'
         : 'bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800'
-        ? isLightMode
-          ? 'bg-zinc-700 text-white dark:bg-zinc-700 light:text-white'
-          : 'bg-zinc-700 text-white'
-        : 'bg-white text-black hover:bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800'
     } border-zinc-300 dark:border-zinc-800`;
   };
 
   const handleMovementChange = (type, value) => {
-    updateCombatant({ ...combatant, [type]: value });
+    updateCharacter({ ...character, [type]: value });
   };
 
   const handleKeyDown = (e, type) => {
@@ -60,28 +56,28 @@ const CombatantActions = ({ combatant, isActive, updateCombatant, setIsNumericIn
       <ToggleGroup 
         type="multiple" 
         value={[
-          combatant.action && 'action',
-          combatant.bonusAction && 'bonusAction',
-          combatant.reaction && 'reaction'
+          character.action && 'action',
+          character.bonusAction && 'bonusAction',
+          character.reaction && 'reaction'
         ].filter(Boolean)}
         onValueChange={handleToggleAction}
         className="flex"
       >
         <ToggleGroupItem 
           value="action" 
-          className={getToggleGroupItemStyle(isActive, combatant.action)}
+          className={getToggleGroupItemStyle(isActive, character.action)}
         >
           Action
         </ToggleGroupItem>
         <ToggleGroupItem 
           value="bonusAction" 
-          className={getToggleGroupItemStyle(isActive, combatant.bonusAction)}
+          className={getToggleGroupItemStyle(isActive, character.bonusAction)}
         >
           Bonus
         </ToggleGroupItem>
         <ToggleGroupItem 
           value="reaction" 
-          className={getToggleGroupItemStyle(isActive, combatant.reaction)}
+          className={getToggleGroupItemStyle(isActive, character.reaction)}
         >
           Reaction
         </ToggleGroupItem>
@@ -101,10 +97,10 @@ const CombatantActions = ({ combatant, isActive, updateCombatant, setIsNumericIn
             setIsNumericInputActive(false);
             handleMovementChange('currentMovement', currentMovement);
           }}
-          className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm px-1"
+          className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm"
           placeholder="Current"
           maxLength={3}
-          id={`current-movement-${combatant.id}`}
+          id={`current-movement-${character.id}`}
         />
         <span className="self-center text-xs">/</span>
         <div className="flex items-center">
@@ -122,10 +118,10 @@ const CombatantActions = ({ combatant, isActive, updateCombatant, setIsNumericIn
               setIsNumericInputActive(false);
               handleMovementChange('maxMovement', maxMovement);
             }}
-            className="w-16 text-center h-[30px] bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners text-sm px-1"
+            className="w-16 text-center h-[30px] bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners text-sm"
             placeholder="Max"
             maxLength={3}
-            id={`max-movement-${combatant.id}`}
+            id={`max-movement-${character.id}`}
           />
           <span className="text-xs ml-1">ft</span>
         </div>
@@ -134,4 +130,4 @@ const CombatantActions = ({ combatant, isActive, updateCombatant, setIsNumericIn
   );
 };
 
-export default CombatantActions;
+export default CharacterActions;
