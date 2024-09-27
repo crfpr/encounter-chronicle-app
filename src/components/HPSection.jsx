@@ -160,8 +160,6 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   );
 
   return (
-
-  return (
     <div className={`w-20 flex-shrink-0 ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} border-l border-zinc-300 dark:border-zinc-700 flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
       <div className="flex flex-col items-center space-y-2 w-full">
         {renderHPInputs()}
