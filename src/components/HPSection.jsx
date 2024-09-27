@@ -113,7 +113,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         onFocus={() => setIsNumericInputActive(true)}
         onBlur={handleCurrentHpBlur}
         className={`w-full text-center ${getInputStyle()} h-[30px] border-zinc-300 dark:border-zinc-700 no-spinners text-xs`}
-        placeholder="Current HP"
+        placeholder="HP"
       />
       <Input
         id={`max-hp-${combatant.id}`}

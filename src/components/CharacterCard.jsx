@@ -196,7 +196,7 @@ const CharacterCard = React.memo(({
             className={`w-full text-center ${getInputStyle()} h-[30px] border-zinc-300 dark:border-zinc-700 no-spinners text-xs`}
             maxLength={3}
             id={`initiative-${combatant.id}`}
-            placeholder="Initiative"
+            placeholder="Init."
           />
         </div>
       </div>
