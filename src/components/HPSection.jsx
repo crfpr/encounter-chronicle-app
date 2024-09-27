@@ -16,23 +16,38 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
     setCurrentHp(combatant.currentHp);
   }, [combatant.currentHp, setCurrentHp, combatant.id]);
 
-  const handleStateChange = (newState) => {
-    console.log(`State change from ${combatant.state} to ${newState}`);
-    console.log(`Before state change - currentHp: ${currentHp}, combatant.currentHp: ${combatant.currentHp}`);
-    let updatedCombatant = { ...combatant, state: newState };
-    if (newState === 'ko') {
-      updatedCombatant.currentHp = '0';
-      updatedCombatant.deathSaves = { successes: [], failures: [] };
-    } else if (newState === 'stable') {
-      updatedCombatant.currentHp = '1';
-    } else if (newState === 'dead') {
-      updatedCombatant.currentHp = '0';
-    } else if (newState === 'alive' && updatedCombatant.currentHp === '0') {
-      updatedCombatant.currentHp = '1';
-    }
-    console.log(`After state change - updatedCombatant.currentHp: ${updatedCombatant.currentHp}`);
-    updateCombatant(updatedCombatant);
-    setIsPopoverOpen(false);
+  // Comment out the handleHPChange function
+  /*
+  const handleHPChange = (type, value) => {
+    console.log(`handleHPChange - type: ${type}, value: ${value}, current state: ${combatant.state}`);
+    // ... rest of the function
+  };
+  */
+
+  const handleCurrentHpChange = (e) => {
+    const value = e.target.value;
+    setCurrentHp(value);
+    console.log(`Current HP changed to: ${value}`);
+  };
+
+  const handleMaxHpChange = (e) => {
+    const value = e.target.value;
+    setMaxHp(value);
+    console.log(`Max HP changed to: ${value}`);
+  };
+
+  const handleCurrentHpBlur = () => {
+    console.log(`handleCurrentHpBlur - currentHp: ${currentHp}`);
+    // Comment out the state update
+    // handleHPChange('currentHp', currentHp);
+    setIsNumericInputActive(false);
+  };
+
+  const handleMaxHpBlur = () => {
+    console.log(`handleMaxHpBlur - maxHp: ${maxHp}`);
+    // Comment out the state update
+    // handleHPChange('maxHp', maxHp);
+    setIsNumericInputActive(false);
   };
 
   const getStatusLabel = (state) => {
@@ -42,52 +57,6 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
       case 'dead': return 'Dead';
       default: return 'Alive';
     }
-  };
-
-  const handleHPChange = (type, value) => {
-    console.log(`handleHPChange - type: ${type}, value: ${value}, current state: ${combatant.state}`);
-    const numericValue = value === '' ? '' : Number(value);
-    let newState = combatant.state;
-
-    if (numericValue !== '') {
-      if (numericValue <= 0 && Number(combatant.maxHp) > 0) {
-        newState = 'ko';
-      } else if (numericValue > 0) {
-        if (combatant.state === 'ko' || combatant.state === 'dead' || (combatant.state === 'stable' && numericValue > 1)) {
-          newState = 'alive';
-        }
-      }
-    }
-
-    console.log(`New state after HP change: ${newState}`);
-    updateCombatant({
-      ...combatant,
-      [type]: value,
-      state: newState,
-      deathSaves: newState === 'ko' ? { successes: [], failures: [] } : combatant.deathSaves
-    });
-  };
-
-  const handleCurrentHpChange = (e) => {
-    const value = e.target.value;
-    setCurrentHp(value === '' ? '' : Number(value));
-  };
-
-  const handleMaxHpChange = (e) => {
-    const value = e.target.value;
-    setMaxHp(value === '' ? '' : Number(value));
-  };
-
-  const handleCurrentHpBlur = () => {
-    console.log(`handleCurrentHpBlur - currentHp: ${currentHp}`);
-    handleHPChange('currentHp', currentHp);
-    setIsNumericInputActive(false);
-  };
-
-  const handleMaxHpBlur = () => {
-    console.log(`handleMaxHpBlur - maxHp: ${maxHp}`);
-    handleHPChange('maxHp', maxHp);
-    setIsNumericInputActive(false);
   };
 
   const handleKeyDown = (e, field, value) => {
