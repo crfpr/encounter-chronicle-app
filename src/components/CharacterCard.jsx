@@ -31,7 +31,6 @@ const CharacterCard = React.memo(({
     console.log(`CharacterCard render #${renderCountRef.current} - combatant.id: ${combatant.id}, combatant.initiative: ${combatant.initiative}, local initiative: ${initiative}`);
   });
 
-
   const handleAddCondition = useCallback(() => {
     const newCondition = { id: Date.now(), label: 'Condition', conditionDuration: null, isPersistent: true };
     updateCombatant({ ...combatant, conditions: [...combatant.conditions, newCondition] });
@@ -128,7 +127,7 @@ const CharacterCard = React.memo(({
                 onKeyDown={(e) => handleInputKeyDown(e, 'ac', ac)}
                 onFocus={() => setIsNumericInputActive(true)}
                 onBlur={() => handleInputBlurAndSubmit('ac', ac)}
-                className="w-[40px] h-[30px] text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm"
+                className="w-[40px] h-[30px] text-center bg-transparent text-black dark:text-zinc-100 border-none focus:ring-0 text-sm px-1"
                 maxLength={2}
                 style={{
                   WebkitAppearance: 'none',
@@ -180,7 +179,6 @@ const CharacterCard = React.memo(({
     </>
   );
 
-
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''} min-h-[150px]`}>
       <div className={`w-[80px] flex-shrink-0 ${getTabColor()} border-r ${getBorderStyle()} flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
@@ -193,7 +191,7 @@ const CharacterCard = React.memo(({
             onKeyDown={(e) => handleInputKeyDown(e, 'initiative', initiative)}
             onFocus={() => setIsNumericInputActive(true)}
             onBlur={() => handleInputBlurAndSubmit('initiative', initiative)}
-            className={`w-full text-center ${getInputStyle()} h-[30px] border-zinc-300 dark:border-zinc-700 no-spinners text-xs`}
+            className={`w-full text-center ${getInputStyle()} h-[30px] border-zinc-300 dark:border-zinc-700 no-spinners text-xs px-1`}
             maxLength={3}
             id={`initiative-${combatant.id}`}
             placeholder="Init."

@@ -97,7 +97,7 @@ const CombatantActions = ({ combatant, isActive, updateCombatant, setIsNumericIn
             setIsNumericInputActive(false);
             handleMovementChange('currentMovement', currentMovement);
           }}
-          className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm"
+          className="w-16 text-center bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 h-[30px] border-zinc-300 dark:border-zinc-800 no-spinners text-sm px-1"
           placeholder="Current"
           maxLength={3}
           id={`current-movement-${combatant.id}`}
@@ -118,7 +118,7 @@ const CombatantActions = ({ combatant, isActive, updateCombatant, setIsNumericIn
               setIsNumericInputActive(false);
               handleMovementChange('maxMovement', maxMovement);
             }}
-            className="w-16 text-center h-[30px] bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners text-sm"
+            className="w-16 text-center h-[30px] bg-white dark:bg-zinc-950 text-black dark:text-zinc-100 border-zinc-300 dark:border-zinc-800 no-spinners text-sm px-1"
             placeholder="Max"
             maxLength={3}
             id={`max-movement-${combatant.id}`}

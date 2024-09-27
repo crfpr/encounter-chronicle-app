@@ -112,7 +112,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         onKeyDown={(e) => handleKeyDown(e, 'currentHp', currentHp)}
         onFocus={() => setIsNumericInputActive(true)}
         onBlur={handleCurrentHpBlur}
-        className={`w-full text-center ${getInputStyle()} h-[30px] border-zinc-300 dark:border-zinc-700 no-spinners text-xs`}
+        className={`w-full text-center ${getInputStyle()} h-[30px] border-zinc-300 dark:border-zinc-700 no-spinners text-xs px-1`}
         placeholder="HP"
       />
       <Input
@@ -124,7 +124,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         onKeyDown={(e) => handleKeyDown(e, 'maxHp', maxHp)}
         onFocus={() => setIsNumericInputActive(true)}
         onBlur={handleMaxHpBlur}
-        className={`w-full text-center ${getInputStyle()} h-[30px] border-zinc-300 dark:border-zinc-700 no-spinners text-xs`}
+        className={`w-full text-center ${getInputStyle()} h-[30px] border-zinc-300 dark:border-zinc-700 no-spinners text-xs px-1`}
         placeholder="Max HP"
       />
     </div>
