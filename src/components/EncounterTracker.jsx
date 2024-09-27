@@ -15,6 +15,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   const trackerRef = useRef(null);
   const headerRef = useRef(null);
   const characterListRef = useRef(null);
+  const renderCountRef = useRef(0);
 
   const {
     combatants,
@@ -25,6 +26,11 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
   } = useCombatantManagement(loadedEncounterData);
 
   const encounterLogic = useEncounterLogic(combatants, setCombatants, autoSaveEncounter);
+
+  useEffect(() => {
+    renderCountRef.current += 1;
+    console.log(`EncounterTracker render #${renderCountRef.current} - combatants:`, combatants);
+  });
 
   useImperativeHandle(ref, () => ({
     getEncounterData: () => ({
@@ -175,6 +181,7 @@ const EncounterTracker = forwardRef(({ encounterName, setEncounterName, exportEn
       );
     }
   };
+
 
   return (
     <div className="flex flex-col h-full">

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { Input } from '../components/ui/input';
 import CombatantNameType from './CombatantNameType';
 import ConditionInput from './ConditionInput';
@@ -24,8 +24,13 @@ const CharacterCard = React.memo(({
 }) => {
   const [initiative, handleInitiativeChange, handleInitiativeKeyDown, setInitiative] = useNumericInput(combatant.initiative);
   const [ac, handleAcChange, handleAcKeyDown] = useNumericInput(combatant.ac);
+  const renderCountRef = useRef(0);
 
-  console.log(`CharacterCard render - combatant.initiative: ${combatant.initiative}, initiative: ${initiative}`);
+  useEffect(() => {
+    renderCountRef.current += 1;
+    console.log(`CharacterCard render #${renderCountRef.current} - combatant.id: ${combatant.id}, combatant.initiative: ${combatant.initiative}, local initiative: ${initiative}`);
+  });
+
 
   const handleAddCondition = useCallback(() => {
     const newCondition = { id: Date.now(), label: 'Condition', conditionDuration: null, isPersistent: true };
@@ -174,6 +179,7 @@ const CharacterCard = React.memo(({
       </div>
     </>
   );
+
 
   return (
     <div className={`flex bg-white dark:bg-zinc-950 relative overflow-hidden rounded-lg border ${getBorderStyle()} box-content transition-all duration-200 ease-in-out ${isMobile ? 'mx-0' : ''} min-h-[150px]`}>

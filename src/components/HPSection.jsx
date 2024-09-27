@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/popover";
@@ -8,11 +8,13 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown, setCurrentHp] = useNumericInput(combatant.currentHp);
   const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(combatant.maxHp);
+  const renderCountRef = useRef(0);
 
   useEffect(() => {
-    console.log(`HPSection useEffect - combatant.currentHp: ${combatant.currentHp}, currentHp: ${currentHp}`);
+    renderCountRef.current += 1;
+    console.log(`HPSection useEffect #${renderCountRef.current} - combatant.id: ${combatant.id}, combatant.currentHp: ${combatant.currentHp}, local currentHp: ${currentHp}`);
     setCurrentHp(combatant.currentHp);
-  }, [combatant.currentHp, setCurrentHp]);
+  }, [combatant.currentHp, setCurrentHp, combatant.id]);
 
   const handleStateChange = (newState) => {
     console.log(`State change from ${combatant.state} to ${newState}`);
@@ -156,6 +158,8 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
       </Popover>
     ) : null
   );
+
+  return (
 
   return (
     <div className={`w-20 flex-shrink-0 ${isActive ? 'bg-zinc-800 text-white dark:bg-zinc-800 dark:text-zinc-100' : 'bg-white text-black dark:bg-zinc-950 dark:text-zinc-100'} border-l border-zinc-300 dark:border-zinc-700 flex flex-col items-center justify-between py-2 px-2 transition-colors duration-200`}>
