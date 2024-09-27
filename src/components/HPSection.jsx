@@ -16,13 +16,10 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
     setCurrentHp(combatant.currentHp);
   }, [combatant.currentHp, setCurrentHp, combatant.id]);
 
-  // Comment out the handleHPChange function
-  /*
   const handleHPChange = (type, value) => {
     console.log(`handleHPChange - type: ${type}, value: ${value}, current state: ${combatant.state}`);
-    // ... rest of the function
+    updateCombatant({ ...combatant, [type]: value });
   };
-  */
 
   const handleCurrentHpChange = (e) => {
     const value = e.target.value;
@@ -38,15 +35,13 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
 
   const handleCurrentHpBlur = () => {
     console.log(`handleCurrentHpBlur - currentHp: ${currentHp}`);
-    // Comment out the state update
-    // handleHPChange('currentHp', currentHp);
+    handleHPChange('currentHp', currentHp);
     setIsNumericInputActive(false);
   };
 
   const handleMaxHpBlur = () => {
     console.log(`handleMaxHpBlur - maxHp: ${maxHp}`);
-    // Comment out the state update
-    // handleHPChange('maxHp', maxHp);
+    handleHPChange('maxHp', maxHp);
     setIsNumericInputActive(false);
   };
 
