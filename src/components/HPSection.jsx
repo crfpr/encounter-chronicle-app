@@ -5,9 +5,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/popove
 import { useNumericInput } from '../hooks/useNumericInput';
 
 const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActive }) => {
+  const [currentHp, setCurrentHp] = useState(combatant.currentHp);
+  const [maxHp, setMaxHp] = useState(combatant.maxHp);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [currentHp, handleCurrentHpChange, handleCurrentHpKeyDown, setCurrentHp] = useNumericInput(combatant.currentHp);
-  const [maxHp, handleMaxHpChange, handleMaxHpKeyDown] = useNumericInput(combatant.maxHp);
   const renderCountRef = useRef(0);
 
   useEffect(() => {
@@ -68,6 +68,16 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
     });
   };
 
+  const handleCurrentHpChange = (e) => {
+    const value = e.target.value;
+    setCurrentHp(value === '' ? '' : Number(value));
+  };
+
+  const handleMaxHpChange = (e) => {
+    const value = e.target.value;
+    setMaxHp(value === '' ? '' : Number(value));
+  };
+
   const handleCurrentHpBlur = () => {
     console.log(`handleCurrentHpBlur - currentHp: ${currentHp}`);
     handleHPChange('currentHp', currentHp);
@@ -107,7 +117,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         id={`current-hp-${combatant.id}`}
         type="text"
         inputMode="numeric"
-        value={currentHp}
+        value={currentHp === '' ? '' : currentHp}
         onChange={handleCurrentHpChange}
         onKeyDown={(e) => handleKeyDown(e, 'currentHp', currentHp)}
         onFocus={() => setIsNumericInputActive(true)}
@@ -119,7 +129,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         id={`max-hp-${combatant.id}`}
         type="text"
         inputMode="numeric"
-        value={maxHp}
+        value={maxHp === '' ? '' : maxHp}
         onChange={handleMaxHpChange}
         onKeyDown={(e) => handleKeyDown(e, 'maxHp', maxHp)}
         onFocus={() => setIsNumericInputActive(true)}
