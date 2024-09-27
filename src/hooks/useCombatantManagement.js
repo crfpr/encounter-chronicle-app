@@ -20,6 +20,8 @@ export const useCombatantManagement = (loadedEncounterData) => {
       ...prevCombatants,
       {
         ...newCombatant,
+        currentHp: '',
+        maxHp: '',
         hasActed: false,
         state: 'alive',
         deathSaves: { successes: [], failures: [] },

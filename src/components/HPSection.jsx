@@ -16,14 +16,14 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   const handleStateChange = (newState) => {
     let updatedCombatant = { ...combatant, state: newState };
     if (newState === 'ko') {
-      updatedCombatant.currentHp = 0;
+      updatedCombatant.currentHp = '0';
       updatedCombatant.deathSaves = { successes: [], failures: [] };
     } else if (newState === 'stable') {
-      updatedCombatant.currentHp = 1;
+      updatedCombatant.currentHp = '1';
     } else if (newState === 'dead') {
-      updatedCombatant.currentHp = 0;
-    } else if (newState === 'alive' && updatedCombatant.currentHp === 0) {
-      updatedCombatant.currentHp = 1;
+      updatedCombatant.currentHp = '0';
+    } else if (newState === 'alive' && updatedCombatant.currentHp === '0') {
+      updatedCombatant.currentHp = '1';
     }
     updateCombatant(updatedCombatant);
     setIsPopoverOpen(false);
@@ -39,10 +39,10 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
   };
 
   const handleHPChange = (type, value) => {
-    const numericValue = value === '' ? null : Number(value);
+    const numericValue = value === '' ? '' : Number(value);
     let newState = combatant.state;
 
-    if (numericValue !== null) {
+    if (numericValue !== '') {
       if (numericValue <= 0 && Number(combatant.maxHp) > 0) {
         newState = 'ko';
       } else if (numericValue > 0) {
@@ -54,7 +54,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
 
     updateCombatant({
       ...combatant,
-      [type]: numericValue,
+      [type]: value,
       state: newState,
       deathSaves: newState === 'ko' ? { successes: [], failures: [] } : combatant.deathSaves
     });
@@ -97,7 +97,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         id={`current-hp-${combatant.id}`}
         type="text"
         inputMode="numeric"
-        value={currentHp === null ? '' : currentHp}
+        value={currentHp}
         onChange={handleCurrentHpChange}
         onKeyDown={(e) => handleKeyDown(e, 'currentHp', currentHp)}
         onFocus={() => setIsNumericInputActive(true)}
@@ -109,7 +109,7 @@ const HPSection = ({ combatant, isActive, updateCombatant, setIsNumericInputActi
         id={`max-hp-${combatant.id}`}
         type="text"
         inputMode="numeric"
-        value={maxHp === null ? '' : maxHp}
+        value={maxHp}
         onChange={handleMaxHpChange}
         onKeyDown={(e) => handleKeyDown(e, 'maxHp', maxHp)}
         onFocus={() => setIsNumericInputActive(true)}

@@ -15,6 +15,9 @@ export const useNumericInput = (initialValue, min = 0, max = 999) => {
       e.preventDefault();
       const increment = e.key === 'ArrowUp' ? 1 : -1;
       setValue(prevValue => {
+        if (prevValue === '') {
+          return increment > 0 ? min.toString() : max.toString();
+        }
         const newValue = Number(prevValue) + increment;
         return newValue >= min && newValue <= max ? newValue.toString() : prevValue;
       });
